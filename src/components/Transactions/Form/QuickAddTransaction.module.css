@@ -1,0 +1,80 @@
+/* components/transactions/QuickAddTransaction/QuickAddTransaction.module.css */
+
+.quickAddSection {
+    background: var(--mantine-color-dark-7);
+    border: 1px solid var(--mantine-color-dark-4);
+    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.08);
+}
+
+.titleIcon {
+    color: var(--mantine-color-cyan-5);
+}
+
+.hint {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--mantine-color-dark-2);
+}
+
+.dateInput {
+    width: 140px;
+}
+
+.descriptionInput {
+    flex: 2;
+    min-width: 200px;
+}
+
+.amountInput {
+    width: 120px;
+}
+
+.vendorInput {
+    width: 140px;
+}
+
+.submitButton {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    padding: 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+.submitButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 212, 255, 0.4);
+}
+
+.submitButton:active {
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .descriptionInput {
+        min-width: 150px;
+    }
+
+    .hint {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .quickAddSection form > div {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .dateInput,
+    .descriptionInput,
+    .amountInput,
+    .vendorInput {
+        width: 100%;
+    }
+
+    .submitButton {
+        width: 100%;
+    }
+}

@@ -1,19 +1,48 @@
-import { ReferenceLine } from 'recharts';
-import { LineChart } from '@mantine/charts';
+import { AreaChart, AreaChartSeries } from '@mantine/charts';
 import { Paper, Text, useMantineColorScheme } from '@mantine/core';
+import { AccountResponse } from '@/types/account';
+import { BudgetPerDay } from '@/types/dashboard';
 
-export function BalanceLineChartCard() {
+type BalanceLineChartCardProps = {
+  data: BudgetPerDay[] | undefined;
+  accounts: AccountResponse[] | undefined;
+};
+
+export function BalanceLineChartCard({ data, accounts }: BalanceLineChartCardProps) {
   const { colorScheme } = useMantineColorScheme();
 
-  const data = [
-    { date: '2025-01-01', ING: 1200, Amex: 1000 },
-    { date: '2025-01-05', ING: 1400, Amex: 500 },
-    { date: '2025-01-10', ING: 1350, Amex: 100 },
-    { date: '2025-01-15', ING: 1600, Amex: 300 },
-    { date: '2025-01-20', ING: 1550, Amex: 1000 },
-    { date: '2025-01-25', ING: 1800, Amex: 2000 },
-    { date: '2025-01-30', ING: 1950, Amex: 2100 },
-  ];
+  if (!data) {
+    return (
+      <Paper
+        shadow="md"
+        radius="lg"
+        p="lg"
+        style={{
+          background:
+            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        }}
+        h={380}
+      >
+        Error
+      </Paper>
+    );
+  }
+
+  const series: AreaChartSeries[] = [];
+  accounts?.forEach((account: AccountResponse) =>
+    series.push({ name: account.name, color: account.color })
+  );
+
+  const dictData: Record<string, any> = {};
+  for (const item of data) {
+    const newItem = { date: item.date };
+
+    if (!dictData[item.date]) {
+      dictData[item.date] = newItem;
+    }
+    dictData[item.date][item.accountName] = item.balance / 100;
+  }
+  const parsedData = Object.values(dictData);
 
   return (
     <Paper
@@ -30,20 +59,24 @@ export function BalanceLineChartCard() {
         Balance Over Time
       </Text>
 
-      <LineChart
+      <AreaChart
         h={300}
-        data={data}
+        data={parsedData}
         dataKey="date"
         withLegend
-        series={[
-          { name: 'ING', color: 'orange' },
-          { name: 'Amex', color: 'blue' },
-        ]}
+        series={series}
         gridAxis="x"
         curveType="monotone"
+        valueFormatter={(val: number) =>
+          new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val)
+        }
+        withDots={false}
+        strokeWidth={2}
+        fillOpacity={0.1}
+        tickLine="none"
       >
-        <ReferenceLine y={0} stroke="transparent" ifOverflow="extendDomain" />
-      </LineChart>
+        {/*<ReferenceLine y={0} stroke="transparent" ifOverflow="extendDomain" />*/}
+      </AreaChart>
     </Paper>
   );
 }

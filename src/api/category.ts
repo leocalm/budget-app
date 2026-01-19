@@ -1,40 +1,29 @@
 import { CategoryRequest, CategoryResponse } from '@/types/category';
+import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
 export async function fetchCategories(): Promise<CategoryResponse[]> {
-  const res = await fetch(`/api/categories`, { credentials: 'include' });
-  if (!res.ok) {
-    throw new Error('Failed to fetch categories');
-  }
-  return res.json();
+  return apiGet<CategoryResponse[]>('/api/categories');
+}
+
+export async function fetchUnbudgetedCategories(): Promise<CategoryResponse[]> {
+  return apiGet<CategoryResponse[]>('/api/categories/not-in-budget');
 }
 
 export async function fetchCategory(id: string): Promise<CategoryRequest> {
-  const res = await fetch(`/api/categories/${id}`, { credentials: 'include' });
-  if (!res.ok) {
-    throw new Error('Category not found');
-  }
-  return res.json();
+  return apiGet<CategoryRequest>(`/api/categories/${id}`);
 }
 
 export async function createCategory(payload: CategoryRequest): Promise<CategoryResponse> {
-  const res = await fetch(`/api/categories`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to create category');
-  }
-  return res.json();
+  return apiPost<CategoryResponse, CategoryRequest>('/api/categories', payload);
 }
 
 export async function deleteCategory(id: string): Promise<void> {
-  const res = await fetch(`/api/categories/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to delete category');
-  }
+  return apiDelete(`/api/categories/${id}`);
+}
+
+export async function updateCategory(
+  id: string,
+  payload: CategoryRequest
+): Promise<CategoryResponse> {
+  return apiPut<CategoryResponse, CategoryRequest>(`/api/categories/${id}`, payload);
 }

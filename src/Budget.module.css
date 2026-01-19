@@ -1,24 +1,37 @@
 .icon {
-  width: 22px;
-  height: 22px;
+    width: 22px;
+    height: 22px;
 }
 
 .dark {
-  @mixin dark {
-    display: none;
-  }
+    @mixin dark {
+        display: none;
+    }
 
-  @mixin light {
-    display: block;
-  }
+    @mixin light {
+        display: block;
+    }
 }
 
 .light {
-  @mixin light {
-    display: none;
-  }
+    @mixin light {
+        display: none;
+    }
 
-  @mixin dark {
-    display: block;
-  }
+    @mixin dark {
+        display: block;
+    }
+}
+
+.deleteButton {
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.deleteButton:hover {
+    color: var(--mantine-color-red-6) !important;
+    background-color: var(--mantine-color-red-0) !important;
+}
+
+:global([data-mantine-color-scheme='dark']) .deleteButton:hover {
+    background-color: rgba(250, 82, 82, 0.1) !important;
 }

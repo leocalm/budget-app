@@ -6,11 +6,16 @@ const config: StorybookConfig = {
     disableTelemetry: true,
     enableCrashReports: false,
   },
-  stories: ['../src/**/*.mdx', '../src/**/*.story.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-themes'],
+  stories: ['../src/**/*.story.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-themes', '@storybook/addon-vitest'],
   framework: {
     name: '@storybook/react-vite',
     options: {},
+  },
+  async viteFinal(config) {
+    config.plugins ??= [];
+    config.plugins.push((await import('vite-tsconfig-paths')).default());
+    return config;
   },
 };
 

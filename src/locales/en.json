@@ -1,0 +1,58 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "success": "Success",
+    "error": "Error"
+  },
+  "auth": {
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "transactions": {
+    "quickAddTransaction": {
+      "title": "Quick Add Transaction",
+      "hint": "Tab or Enter to move between fields • Ctrl+Enter to save",
+      "date": {
+        "placeholder": "Date"
+      },
+      "description": {
+        "placeholder": "Description (e.g., Lunch at McDonald's)"
+      },
+      "fromAccount": {
+        "placeholder": "Account..."
+      },
+      "toAccount": {
+        "placeholder": "To Account..."
+      },
+      "category": {
+        "placeholder": "Category..."
+      },
+      "vendor": {
+        "placeholder": "Vendor"
+      },
+      "recent": "Recent",
+      "success": "Transaction added successfully",
+      "error": {
+        "create": "Failed to create transaction",
+        "description": {
+          "required": "Description is required",
+          "maxLength": "Description must be less than 255 characters"
+        },
+        "amount": {
+          "required": "Amount is required",
+          "greaterThanZero": "Amount must be greater than 0"
+        },
+        "occurredAt": {
+          "required": "Date is required"
+        },
+        "fromAccount": {
+          "required": "Account is required"
+        },
+        "category": {
+          "required": "Category is required"
+        }
+      }
+    }
+  }
+}

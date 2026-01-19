@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #0a0e14;
+  --bg-secondary: #121720;
+  --bg-tertiary: #1a1f2e;
+  --bg-card: #151b26;
+  --bg-elevated: #1e2433;
+  --accent-primary: #00d4ff;
+  --accent-success: #00ffa3;
+  --accent-warning: #ffa940;
+  --accent-danger: #ff6b9d;
+  --accent-purple: #b47aff;
+  --text-primary: #ffffff;
+  --text-secondary: #8892a6;
+  --text-tertiary: #5a6272;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.1);
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+body {
+  background-color: var(--mantine-color-dark-9);
+  color: var(--mantine-color-text);
+}
+
+/* FadeInUp Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  /* Transaction Row - hide vendor column */
+  .vendor-column {
+    display: none;
+  }
+
+  /* Quick Add Form - adjust grid */
+  .form-row {
+    grid-template-columns: 1fr 1fr 1fr 48px !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Page Header - stack */
+  .header-top {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  /* Quick Add Form - single column */
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-row > * {
+    width: 100% !important;
+  }
+
+  /* Hide keyboard hint on mobile */
+  .quick-add-hint {
+    display: none !important;
+  }
+
+  /* Transaction Rows - responsive handling is done in component */
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}

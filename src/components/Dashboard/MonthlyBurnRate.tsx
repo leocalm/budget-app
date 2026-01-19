@@ -1,26 +1,38 @@
 import { Group, Paper, Progress, Text, useMantineColorScheme } from '@mantine/core';
+import { MonthlyBurnIn } from '@/types/dashboard';
 
 type MonthlyBurnRateProps = {
-  budget: number; // total monthly budget
-  spent: number; // amount spent so far
-  today: Date; // current date
+  data: MonthlyBurnIn | undefined;
 };
 
-export function MonthlyBurnRate({ budget, spent, today }: MonthlyBurnRateProps) {
+export function MonthlyBurnRate({ data }: MonthlyBurnRateProps) {
   const { colorScheme } = useMantineColorScheme();
 
-  const currentDay = today.getDate();
-  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  if (!data) {
+    return (
+      <Paper
+        radius="lg"
+        p="lg"
+        style={{
+          background:
+            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        }}
+      >
+        Error
+      </Paper>
+    );
+  }
 
-  const dailyBurn = spent / currentDay; // actual burn per day
-  const idealDailyBurn = budget / daysInMonth; // ideal to not overspend
-  const projectedTotal = dailyBurn * daysInMonth; // projected total spending
+  const currentDay = data.currentDay;
+  const daysInPeriod = data.daysInPeriod;
+  const totalBudget = data.totalBudget / 100;
+  const spentBudget = data.spentBudget / 100;
+
+  const dailyBurn = spentBudget / currentDay; // actual burn per day
+  const idealDailyBurn = totalBudget / daysInPeriod; // ideal to not overspend
+  const projectedTotal = dailyBurn * daysInPeriod; // projected total spending
 
   const burnRatePct = Math.min((dailyBurn / idealDailyBurn) * 100, 200);
-  // 100% = on track, >100% = overspending pace
-
-  const remainingDays = 5;
-  const remainingDaysPct = 100 - (100 * remainingDays) / 30;
 
   return (
     <Paper

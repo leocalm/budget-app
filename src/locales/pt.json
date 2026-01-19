@@ -1,0 +1,35 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar"
+  },
+  "auth": {
+    "login": "Logar",
+    "logout": "Sair"
+  },
+  "transactions": {
+    "quickAddTransaction": {
+      "title": "Adicionar Nova Transação",
+      "hint": "Tab ou Enter para mudar entre os campos • Ctrl+Enter para salvar",
+      "date": {
+        "placeholder": "Data"
+      },
+      "description": {
+        "placeholder": "Descrição (ex.: Almoço no McDonald's)"
+      },
+      "fromAccount": {
+        "placeholder": "Conta..."
+      },
+      "toAccount": {
+        "placeholder": "Conta Destino..."
+      },
+      "category": {
+        "placeholder": "Categoria..."
+      },
+      "vendor": {
+        "placeholder": "Fornecedor"
+      },
+      "recent": "Recentes"
+    }
+  }
+}

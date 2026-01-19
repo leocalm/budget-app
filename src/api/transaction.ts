@@ -1,127 +1,33 @@
-import { createVendor } from '@/api/vendor';
-import { TransactionRequest, TransactionResponse } from '@/types/transaction';
+import { Transaction, TransactionRequest, TransactionResponse } from '@/types/transaction';
+import { apiDelete, apiGet, apiPost } from './client';
 
-export async function fetchTransactions(): Promise<TransactionResponse[]> {
-  return [
-    {
-      id: 't1',
-      description: 'bla',
-      value: 10000,
-      occurredAt: new Date(),
-      transactionType: 'Incoming',
-      category: {
-        id: 'c1',
-        name: 'Cat 1',
-        category_type: 'Incoming',
-        color: 'red',
-        icon: 'wallet',
-        parent_id: null,
-      },
-      fromAccount: {
-        id: 'f1',
-        name: 'ING',
-        color: 'orange',
-        icon: 'cart',
-        account_type: 'Checking',
-        currency: {
-          id: 'c1',
-          name: 'Euro',
-          symbol: '€',
-          currency: 'EUR',
-          decimal_places: 2,
-        },
-        balance: 100,
-      },
-      toAccount: null,
-      vendor: {
-        id: 'v1',
-        name: 'Vendor 1',
-      },
-    },
-    {
-      id: 't2',
-      description: 'asdasdadadasd',
-      value: 12345,
-      occurredAt: new Date(),
-      transactionType: 'Outgoing',
-      category: {
-        id: 'c1',
-        name: 'Groceries',
-        category_type: 'Outgoing',
-        color: 'red',
-        icon: 'cart',
-        parent_id: null,
-      },
-      fromAccount: {
-        id: 'f1',
-        name: 'ING',
-        color: 'orange',
-        icon: 'cart',
-        account_type: 'Checking',
-        currency: {
-          id: 'c1',
-          name: 'Euro',
-          symbol: '€',
-          currency: 'EUR',
-          decimal_places: 2,
-        },
-        balance: 100,
-      },
-      toAccount: null,
-      vendor: {
-        id: 'v2',
-        name: 'Vendor 2',
-      },
-    },
-  ];
+export async function fetchTransactions(
+  selectedPeriodId: string | null
+): Promise<TransactionResponse[]> {
+  const query = selectedPeriodId ? `?period_id=${selectedPeriodId}` : '';
+  return apiGet<TransactionResponse[]>(`/api/transactions${query}`);
 }
 
-export async function createTransaction(
-  transaction: TransactionRequest
-): Promise<TransactionResponse> {
-  if (!transaction.vendor?.id) {
-    await createVendor(transaction.vendor);
-  }
-
-  console.log('Creating transaction ', transaction);
-
-  return {
-    id: 't3',
-    description: 'adasd',
-    value: 23245,
-    occurredAt: new Date(),
-    transactionType: 'Incoming',
-    category: {
-      id: 'c1',
-      name: 'Cat 1',
-      category_type: 'Incoming',
-      color: 'red',
-      icon: 'wallet',
-      parent_id: null,
-    },
-    fromAccount: {
-      id: 'f1',
-      name: 'ING',
-      color: 'orange',
-      icon: 'cart',
-      account_type: 'Checking',
-      currency: {
-        id: 'c1',
-        name: 'Euro',
-        symbol: '€',
-        currency: 'EUR',
-        decimal_places: 2,
-      },
-      balance: 100,
-    },
-    toAccount: null,
-    vendor: {
-      id: 'v1',
-      name: 'Vendor 1',
-    },
+export async function createTransaction(payload: Transaction): Promise<TransactionResponse> {
+  const requestPayload: TransactionRequest = {
+    description: payload.description,
+    amount: payload.amount,
+    occurredAt: payload.occurredAt,
+    categoryId: payload.category ? payload.category.id : '',
+    fromAccountId: payload.fromAccount ? payload.fromAccount.id : '',
+    toAccountId: payload.toAccount?.id,
+    vendorId: payload.vendor?.id,
   };
+
+  return createTransactionFromRequest(requestPayload);
 }
 
-export async function deleteTransaction(transactionId: string): Promise<void> {
-  console.log('Deleting transaction ', transactionId);
+export async function createTransactionFromRequest(
+  requestPayload: TransactionRequest
+): Promise<TransactionResponse> {
+  return apiPost<TransactionResponse, TransactionRequest>('/api/transactions', requestPayload);
+}
+
+export async function deleteTransaction(id: string): Promise<void> {
+  return apiDelete(`/api/transactions/${id}`);
 }

@@ -1,26 +1,43 @@
-import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
+import React, { useState } from 'react';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import {
+  ActionIcon,
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Group,
+  Popover,
+  Select,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCreateCategory } from '@/hooks/useCategories';
 import { CATEGORY_TYPES, CategoryRequest, CategoryType } from '@/types/category';
-import { getIcon, iconMap } from '@/utils/IconMap';
-import { IconSelector } from '@/utils/IconSelector';
 
-export function CreateCategoryForm() {
+interface CreateCategoryFormProps {
+  onCategoryCreated?: () => void;
+}
+
+export function CreateCategoryForm({ onCategoryCreated }: CreateCategoryFormProps) {
   const createMutation = useCreateCategory();
+  const [opened, setOpened] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState('❤️');
 
-  const iconOptions = Object.keys(iconMap).map((key) => ({
-    value: key,
-    label: key.charAt(0).toUpperCase() + key.slice(1),
-  }));
+  const emojiSelected = (values: typeof form.values, emoji: EmojiClickData) => {
+    values.icon = emoji.emoji;
+    setOpened(false);
+  };
 
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
       name: '',
       color: 'red',
-      icon: 'wallet',
-      parent_id: null,
-      category_type: '',
+      icon: '❤️',
+      parentId: null,
+      categoryType: '',
     },
 
     validate: {
@@ -33,74 +50,92 @@ export function CreateCategoryForm() {
       name: values.name,
       color: values.color,
       icon: values.icon,
-      parent_id: null,
-      category_type: values.category_type as CategoryType,
+      parentId: null,
+      categoryType: values.categoryType as CategoryType,
     };
 
     createMutation.mutate(categoryData, {
       onSuccess: () => {
         form.reset();
+        onCategoryCreated?.();
       },
     });
   };
 
   return (
     <form onSubmit={form.onSubmit((values) => submitForm(values))}>
-      {createMutation.isError && (
-        <Alert color="red" mb="md" title="Error">
-          {createMutation.error.message || 'Failed to create category'}
-        </Alert>
-      )}
-
-      {createMutation.isSuccess && (
-        <Alert color="green" mb="md" title="Success">
-          Category created successfully!
-        </Alert>
-      )}
-
-      <Select
-        withAsterisk
-        placeholder="Select icon"
-        data={iconOptions}
-        renderOption={({ option }) => (
-          <Group gap="xs">
-            {getIcon(option.value, 16)}
-            {option.label}
-          </Group>
+      <Stack gap="md">
+        {createMutation.isError && (
+          <Alert color="red" variant="light">
+            {createMutation.error.message || 'Failed to create category'}
+          </Alert>
         )}
-        searchable
-        key={form.key('icon')}
-        {...form.getInputProps('icon')}
-        radius="xl"
-      />
 
-      <IconSelector
-        value={form.key('icon')}
-        onChange={(icon) => form.setFieldValue('icon', icon)}
-      />
+        <Grid gutter="md" align="flex-end">
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <Group gap="xs" align="flex-end" wrap="nowrap">
+              <Box style={{ flexShrink: 0 }}>
+                <Popover
+                  opened={opened}
+                  onChange={setOpened}
+                  position="bottom-start"
+                  withArrow
+                  shadow="md"
+                  width={250}
+                >
+                  <Popover.Target>
+                    <ActionIcon
+                      variant="outline"
+                      size={36} // Matches standard Mantine input height
+                      radius="md"
+                      onClick={() => setOpened((o) => !o)}
+                      styles={{
+                        root: {
+                          borderColor: 'var(--mantine-color-default-border)',
+                          color: 'var(--mantine-color-dimmed)',
+                        },
+                      }}
+                    >
+                      {selectedIcon}
+                    </ActionIcon>
+                  </Popover.Target>
 
-      <TextInput
-        withAsterisk
-        label="Category Name"
-        placeholder="Category Name"
-        key={form.key('name')}
-        {...form.getInputProps('name')}
-        radius="xl"
-      />
+                  <Popover.Dropdown p="xs">
+                    <EmojiPicker
+                      open={opened}
+                      onEmojiClick={(emojiData) => emojiSelected(form.values, emojiData)}
+                    />
+                  </Popover.Dropdown>
+                </Popover>
+              </Box>
+              <TextInput
+                label="Category Name"
+                placeholder="e.g. Rent, Groceries"
+                style={{ flex: 1 }}
+                {...form.getInputProps('name')}
+                required
+              />
+            </Group>
+          </Grid.Col>
 
-      <Select
-        withAsterisk
-        label="Category Type"
-        placeholder="Category Type"
-        data={[...CATEGORY_TYPES]}
-        key={form.key('category_type')}
-        {...form.getInputProps('category_type')}
-        radius="xl"
-      />
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Select
+              label="Type"
+              placeholder="Select type"
+              data={[...CATEGORY_TYPES]}
+              searchable
+              {...form.getInputProps('categoryType')}
+              required
+            />
+          </Grid.Col>
+        </Grid>
 
-      <Group justify="flex-end" mt="md">
-        <Button type="submit">Create Category</Button>
-      </Group>
+        <Group justify="flex-end" mt="lg">
+          <Button type="submit" px="xl">
+            Create Category
+          </Button>
+        </Group>
+      </Stack>
     </form>
   );
 }

@@ -7,17 +7,34 @@ import {
   Text,
   useMantineColorScheme,
 } from '@mantine/core';
+import { MonthProgress } from '@/types/dashboard';
 
-interface MonthProgressProps {
-  refreshKey?: number;
-}
+type MonthProgressCardProps = {
+  data: MonthProgress | undefined;
+};
 
-export const MonthProgress: React.FC<MonthProgressProps> = ({ refreshKey }) => {
+export const MonthProgressCard = ({ data }: MonthProgressCardProps) => {
   const { colorScheme } = useMantineColorScheme();
-  const date = new Date();
-  const remainingDays = 10;
-  const daysInCycle = 30;
-  const progress = (100 * (daysInCycle - remainingDays)) / daysInCycle;
+
+  if (!data) {
+    return (
+      <Paper
+        shadow="md"
+        radius="lg"
+        p="lg"
+        style={{
+          background:
+            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        }}
+      >
+        Error
+      </Paper>
+    );
+  }
+
+  const date = data.currentDate;
+  const remainingDays = data.remainingDays;
+  const progress = data.daysPassedPercentage;
 
   return (
     <Paper
@@ -36,7 +53,7 @@ export const MonthProgress: React.FC<MonthProgressProps> = ({ refreshKey }) => {
             Month Progress
           </Text>
           <Text size="lg" fw={600}>
-            {date.toLocaleDateString()}
+            {date}
           </Text>
           <Text size="sm" c="dimmed">
             {remainingDays} days remaining

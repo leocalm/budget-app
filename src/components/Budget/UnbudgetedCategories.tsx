@@ -1,98 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import { IconCheck } from '@tabler/icons-react';
-import { ActionIcon, Group, NumberInput, Paper, Stack, Table, Title } from '@mantine/core';
-import { createBudgetCategory } from '@/api/budget';
-import { fetchCategories } from '@/api/category';
-import { CategoryNameIcon } from '@/components/Categories/CategoryNameIcon';
+import React from 'react';
+import { Badge, Group, Paper, Stack, Text, UnstyledButton } from '@mantine/core';
+import { useCreateBudgetCategory } from '@/hooks/useCategories';
 import { CategoryResponse } from '@/types/category';
 
 interface UnbudgetedCategoriesProps {
-  onBudgetCategoryCreated?: () => void;
-  refreshKey?: number;
+  onCategoryAdded?: (id: string, initialValue: number) => void;
+  categories: CategoryResponse[];
+  isLoading: boolean;
 }
 
 export function UnbudgetedCategories({
-  onBudgetCategoryCreated,
-  refreshKey,
+  onCategoryAdded,
+  categories,
+  isLoading,
 }: UnbudgetedCategoriesProps) {
-  const [categories, setCategories] = useState<CategoryResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const createMutation = useCreateBudgetCategory();
 
-  useEffect(() => {
-    setLoading(true);
-    fetchCategories()
-      .then(setCategories)
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
-  }, [refreshKey]);
-  const [values, setValues] = useState<Record<string, number | undefined>>({});
-
-  const handleValueChange = (categoryId: string, floatValue: number | undefined) => {
-    if (typeof floatValue !== 'number' || Number.isNaN(floatValue)) {
-      setValues((prev) => ({ ...prev, [categoryId]: undefined }));
-      return;
-    }
-    const cents = Math.round(floatValue * 100);
-    setValues((prev) => ({ ...prev, [categoryId]: cents }));
-  };
-
-  const handleSubmit = async (categoryId: string) => {
-    const cents = values[categoryId];
-    if (cents == null) {
-      return;
-    }
-    await createBudgetCategory({
-      category_id: categoryId,
-      budgeted_value: cents,
-    });
-
-    onBudgetCategoryCreated?.();
-  };
-
-  const rows = categories.map((category: CategoryResponse) => {
-    const cents = values[category.id];
-    const displayValue = typeof cents === 'number' ? cents / 100 : undefined;
-
-    return (
-      <Table.Tr key={category.id}>
-        <Table.Td align="center">
-          <CategoryNameIcon category={category} />
-        </Table.Td>
-        <Table.Td align="center">{category.category_type}</Table.Td>
-        <Table.Td align="center">
-          <Group justify="center">
-            <NumberInput
-              placeholder="Amount"
-              value={displayValue}
-              onValueChange={({ floatValue }) => handleValueChange(category.id, floatValue)}
-              thousandSeparator
-              decimalScale={2}
-              fixedDecimalScale
-              allowNegative={false}
-            />
-            <ActionIcon
-              color="green"
-              onClick={() => handleSubmit(category.id)}
-              aria-label="Submit budget category"
-              disabled={values[category.id] == null}
-            >
-              <IconCheck size={16} />
-            </ActionIcon>
-          </Group>
-        </Table.Td>
-      </Table.Tr>
+  const handleAdd = (categoryId: string) => {
+    createMutation.mutate(
+      { categoryId, budgetedValue: 0 },
+      {
+        onSuccess: (newBudgetCategory) => {
+          onCategoryAdded?.(newBudgetCategory.id, 0);
+        },
+      }
     );
-  });
+  };
+
+  if (isLoading) {
+    return <Text size="sm">Loading...</Text>;
+  }
+
+  if (!categories || categories.length === 0) {
+    return (
+      <Paper withBorder p="md" radius="md" style={{ borderStyle: 'dashed' }}>
+        <Text size="xs" c="dimmed" ta="center">
+          All categories are budgeted!
+        </Text>
+      </Paper>
+    );
+  }
 
   return (
-    <Paper shadow="md" radius="lg" p="xl" h="100%">
-      <Stack>
-        <Title order={2}>Unbudgeted Categories</Title>
-        <Table>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Stack>
-    </Paper>
+    <Stack gap="xs">
+      <Group gap="xs">
+        {categories.map((category) => (
+          <UnstyledButton
+            key={category.id}
+            onClick={() => handleAdd(category.id)}
+            disabled={createMutation.isPending}
+          >
+            <Badge
+              variant="light"
+              color="blue"
+              size="lg"
+              radius="sm"
+              leftSection={<span>➕</span>}
+              style={{ cursor: 'pointer' }}
+              styles={{
+                root: { textTransform: 'none', paddingLeft: 8, paddingRight: 10 },
+              }}
+            >
+              {category.icon} {category.name}
+            </Badge>
+          </UnstyledButton>
+        ))}
+      </Group>
+    </Stack>
   );
 }

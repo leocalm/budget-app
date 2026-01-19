@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { IconBriefcase, IconCurrencyEuro, IconTag } from '@tabler/icons-react';
 import {
   Alert,
   Button,
   ColorInput,
-  DEFAULT_THEME,
+  Grid,
   Group,
   NumberInput,
   Select,
+  Stack,
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -20,23 +22,23 @@ interface CreateAccountFormProps {
 export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) {
   const [, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
       name: '',
-      account_type: '',
+      accountType: '',
       balance: 0,
       color: '',
       icon: 'wallet',
       currency: 'EUR',
+      spendLimit: undefined,
     },
 
     validate: {
       name: (value) => (!value || value.length < 2 ? 'Name must have at least 2 letters' : null),
-      account_type: (value) => (value ? null : 'Account type is required'),
-      balance: (value) => (!value ? 'Balance must be non-zero' : null),
+      accountType: (value) => (value ? null : 'Account type is required'),
     },
   });
 
@@ -48,11 +50,12 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
     try {
       const accountData: AccountRequest = {
         name: values.name,
-        account_type: values.account_type as AccountType,
-        balance: values.balance,
+        accountType: values.accountType as AccountType,
+        balance: values.balance * 100,
         color: values.color,
         icon: values.icon,
         currency: values.currency,
+        spendLimit: (values.spendLimit || 0) * 100,
       };
 
       await createAccount(accountData);
@@ -67,64 +70,102 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
     }
   };
 
+  const hasLimit =
+    form.values.accountType === 'CreditCard' || form.values.accountType === 'Allowance';
+
+  const bottomRowColSpan = hasLimit ? { base: 12, md: 4 } : { base: 12, md: 6 };
   return (
     <form onSubmit={form.onSubmit((values) => submitForm(values))}>
-      {error && (
-        <Alert color="red" mb="md" title="Error">
-          {error}
-        </Alert>
-      )}
+      <Stack gap="md">
+        {error && (
+          <Alert color="red" variant="light">
+            {error}
+          </Alert>
+        )}
 
-      {success && (
-        <Alert color="green" mb="md" title="Success">
-          Account created successfully!
-        </Alert>
-      )}
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <TextInput
+              label="Account Name"
+              placeholder="e.g. Main Checking, Savings, Cash"
+              leftSection={<IconTag size={16} />}
+              {...form.getInputProps('name')}
+              required
+            />
+          </Grid.Col>
 
-      <TextInput
-        withAsterisk
-        label="Account Name"
-        placeholder="Account Name"
-        key={form.key('name')}
-        {...form.getInputProps('name')}
-      />
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Select
+              label="Type"
+              placeholder="Search type..."
+              data={[...ACCOUNT_TYPES]}
+              searchable
+              nothingFoundMessage="No types found..."
+              leftSection={<IconBriefcase size={16} />}
+              {...form.getInputProps('accountType')}
+              required
+            />
+          </Grid.Col>
 
-      <Select
-        withAsterisk
-        label="Account Type"
-        placeholder="Account Type"
-        data={[...ACCOUNT_TYPES]}
-        key={form.key('account_type')}
-        {...form.getInputProps('account_type')}
-      />
+          <Grid.Col span={bottomRowColSpan}>
+            <NumberInput
+              label="Initial Balance"
+              placeholder="0.00"
+              decimalScale={2}
+              fixedDecimalScale
+              leftSection={<IconCurrencyEuro size={16} />}
+              {...form.getInputProps('balance')}
+              required
+            />
+          </Grid.Col>
 
-      <NumberInput
-        withAsterisk
-        label="Initial Balance"
-        placeholder="Initial Balance"
-        key={form.key('balance')}
-        {...form.getInputProps('balance')}
-      />
+          {hasLimit && (
+            <Grid.Col span={bottomRowColSpan}>
+              <NumberInput
+                label="Spend Limit"
+                placeholder="0.00"
+                decimalScale={2}
+                fixedDecimalScale
+                leftSection={<IconCurrencyEuro size={16} />}
+                {...form.getInputProps('spendLimit')}
+                required
+              />
+            </Grid.Col>
+          )}
 
-      <ColorInput
-        placeholder="Pick color"
-        label="Account color"
-        disallowInput
-        withPicker={false}
-        swatches={[
-          ...DEFAULT_THEME.colors.red,
-          ...DEFAULT_THEME.colors.green,
-          ...DEFAULT_THEME.colors.blue,
-          ...DEFAULT_THEME.colors.orange,
-          ...DEFAULT_THEME.colors.yellow,
-        ]}
-        key={form.key('color')}
-        {...form.getInputProps('color')}
-      />
+          <Grid.Col span={bottomRowColSpan}>
+            <ColorInput
+              label="Theme Color"
+              placeholder="Pick a color for the card"
+              disallowInput
+              withPicker={false}
+              swatchesPerRow={10}
+              swatches={[
+                '#fa5252',
+                '#fd7e14',
+                '#fab005',
+                '#82c91e',
+                '#40c057',
+                '#15aabf',
+                '#228be6',
+                '#4c6ef5',
+                '#7950f2',
+                '#be4bdb',
+              ]}
+              {...form.getInputProps('color')}
+            />
+          </Grid.Col>
+        </Grid>
 
-      <Group justify="flex-end" mt="md">
-        <Button type="submit">Create Account</Button>
-      </Group>
+        <Group justify="flex-end" mt="lg">
+          <Button variant="light" color="gray" onClick={() => form.reset()}>
+            Reset
+          </Button>
+          <Button type="submit" px="xl">
+            Create Account
+          </Button>
+        </Group>
+      </Stack>
     </form>
   );
 }

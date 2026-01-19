@@ -1,32 +1,40 @@
-import React from 'react';
+import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import {
   Group,
-  NumberFormatter,
   Paper,
   RingProgress,
+  Stack,
   Text,
+  ThemeIcon,
   useMantineColorScheme,
 } from '@mantine/core';
+import { MonthlyBurnIn } from '@/types/dashboard';
 
 interface RemainingBudgetCardProps {
-  refreshKey?: number;
+  data: MonthlyBurnIn | undefined;
+  totalAsset: number | undefined;
 }
 
-export const RemainingBudgetCard: React.FC<RemainingBudgetCardProps> = ({ refreshKey }) => {
-  const amountBudgeted: number = 100000 / 100;
-  const leftToSpend: number = 80000 / 100;
-  const currencySymbol: string = '€';
-  const spent = amountBudgeted - leftToSpend;
-  const used = (100 * spent) / amountBudgeted;
+export function RemainingBudgetCard({ data, totalAsset }: RemainingBudgetCardProps) {
   const { colorScheme } = useMantineColorScheme();
-  const color = used < 50 ? 'green' : used < 75 ? 'blue' : 'red';
+  const percentage = data ? (data.spentBudget / data.totalBudget) * 100 : 0;
+  const isOverBudget = percentage > 100;
 
-  const data = [
-    {
-      value: used,
-      color,
-    },
-  ];
+  if (!data || !totalAsset) {
+    return (
+      <Paper
+        shadow="md"
+        radius="lg"
+        p="lg"
+        style={{
+          background:
+            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        }}
+      >
+        Error
+      </Paper>
+    );
+  }
 
   return (
     <Paper
@@ -40,54 +48,41 @@ export const RemainingBudgetCard: React.FC<RemainingBudgetCardProps> = ({ refres
       }}
     >
       <Group justify="space-between" align="center">
-        <div>
-          <Text size="lg" fw={600}>
-            Remaining budget
+        <Stack gap={0}>
+          <Text size="xs" c="dimmed" fw={700} tt="uppercase">
+            Total Assets
           </Text>
-          <Text size="xl" fw={700}>
-            <NumberFormatter
-              value={leftToSpend}
-              decimalScale={2}
-              decimalSeparator=","
-              thousandSeparator="."
-              fixedDecimalScale
-              prefix={currencySymbol}
-            />
+          <Text size="xl" fw={800} style={{ fontFamily: 'monospace' }}>
+            €{(totalAsset / 100).toLocaleString()}
           </Text>
 
-          <Text size="sm" c="dimmed">
-            You’ve spent{' '}
-            <NumberFormatter
-              value={spent}
-              decimalScale={2}
-              decimalSeparator=","
-              thousandSeparator="."
-              fixedDecimalScale
-              prefix={currencySymbol}
-            />{' '}
-            of{' '}
-            <NumberFormatter
-              value={amountBudgeted}
-              decimalScale={2}
-              decimalSeparator=","
-              thousandSeparator="."
-              fixedDecimalScale
-              prefix={currencySymbol}
-            />
-          </Text>
-        </div>
+          <Group gap="xs" mt="md">
+            <ThemeIcon color={isOverBudget ? 'red' : 'green'} variant="light" radius="xl">
+              {isOverBudget ? <IconTrendingDown size={16} /> : <IconTrendingUp size={16} />}
+            </ThemeIcon>
+            <div>
+              <Text size="xs" c="dimmed">
+                Remaining Budget
+              </Text>
+              <Text fw={700} c={isOverBudget ? 'red' : 'green'}>
+                €{((data?.totalBudget - data?.spentBudget) / 100).toLocaleString()}
+              </Text>
+            </div>
+          </Group>
+        </Stack>
 
         <RingProgress
-          sections={data}
-          thickness={16}
+          size={120}
+          thickness={8}
           roundCaps
+          sections={[{ value: Math.min(percentage, 100), color: isOverBudget ? 'red' : 'blue' }]}
           label={
-            <Text c={color} fw={700} ta="center" size="xl">
-              {used}%
+            <Text ta="center" fw={700} size="sm">
+              {percentage.toFixed(0)}%
             </Text>
           }
         />
       </Group>
     </Paper>
   );
-};
+}

@@ -1,16 +1,26 @@
 import '@mantine/core/styles.css';
+import '@mantine/charts/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 
+import React from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import type { Preview } from '@storybook/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../src/theme';
+
+dayjs.extend(customParseFormat);
 
 export const parameters = {
   layout: 'fullscreen',
   options: {
     showPanel: false,
-    // @ts-expect-error – storybook throws build error for (a: any, b: any)
-    storySort: (a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }),
+    storySort: (a: any, b: any) => a.title.localeCompare(b.title, undefined, { numeric: true }),
   },
   backgrounds: { disable: true },
+  // interactions settings for the interactions addon / test runtime
+  interactions: { timeout: 2000 },
 };
 
 export const globalTypes = {
@@ -29,13 +39,22 @@ export const globalTypes = {
 };
 
 export const decorators = [
-  (renderStory: any, context: any) => {
-    const scheme = (context.globals.theme || 'light') as 'light' | 'dark';
+  // Use standard Story param instead of renderStory
+  (Story: any, context: any) => {
+    const scheme = (context.globals?.theme || 'light') as 'light' | 'dark';
     return (
       <MantineProvider theme={theme} forceColorScheme={scheme}>
         <ColorSchemeScript />
-        {renderStory()}
+        <Story />
       </MantineProvider>
     );
   },
 ];
+
+const preview: Preview = {
+  parameters: {
+    actions: { argTypesRegex: '^on.*' },
+  },
+};
+
+export default preview;

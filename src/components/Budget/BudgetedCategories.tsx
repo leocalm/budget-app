@@ -1,70 +1,181 @@
-import React, { useEffect, useState } from 'react';
-import { IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Paper, Stack, Table, Title } from '@mantine/core';
-import { deleteBudgetCategory, fetchBudgetCategories } from '@/api/budget';
+import React from 'react';
+import {
+  ActionIcon,
+  Divider,
+  Group,
+  NumberInput,
+  Paper,
+  ScrollArea,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useDeleteBudgetCategory, useUpdateBudgetCategory } from '@/hooks/useCategories';
 import { BudgetCategoryResponse } from '@/types/budget';
 
-interface BudgetedCategoriesFormProps {
-  onBudgetCategoryDeleted?: () => void;
-  refreshKey?: number;
+interface BudgetedCategoriesProps {
+  editingId: string | null;
+  onEditingChange: (id: string | null) => void;
+  categories: BudgetCategoryResponse[];
 }
 
 export function BudgetedCategories({
-  onBudgetCategoryDeleted,
-  refreshKey,
-}: BudgetedCategoriesFormProps) {
-  const [budgetCategories, setBudgetCategories] = React.useState<BudgetCategoryResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  editingId,
+  onEditingChange,
+  categories,
+}: BudgetedCategoriesProps) {
+  const deleteMutation = useDeleteBudgetCategory();
+  const updateMutation = useUpdateBudgetCategory();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchBudgetCategories()
-      .then(setBudgetCategories)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [refreshKey]);
+  const form = useForm({
+    initialValues: {
+      budgetedValue: 0,
+    },
+    validate: {
+      budgetedValue: (value) => (value < 0 ? 'Value must be positive' : null),
+    },
+  });
+
+  React.useEffect(() => {
+    console.log(editingId);
+    if (editingId) {
+      const category = categories?.find((c) => c.id === editingId);
+      if (category) {
+        form.setValues({
+          budgetedValue: category.budgetedValue / 100,
+        });
+      } else {
+        // If category is not in the list yet, we set a default
+        form.setValues({ budgetedValue: 0 });
+      }
+    }
+  }, [editingId, categories]);
+
+  React.useEffect(() => {
+    if (editingId && inputRef.current) {
+      // The timeout ensures the DOM has painted the new row before focusing
+      const timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [editingId, categories]);
 
   const handleDelete = async (id: string) => {
-    await deleteBudgetCategory(id);
-    onBudgetCategoryDeleted?.();
+    deleteMutation.mutate(id);
   };
 
-  // <CategoryNameIcon category={budgetCategory.category} />
+  const handleSave = (values: typeof form.values) => {
+    if (!editingId) {
+      return;
+    }
 
-  const rows = budgetCategories.map((budgetCategory) => {
-    const displayValue = budgetCategory.budgeted_value / 100;
+    updateMutation.mutate({
+      id: editingId,
+      payload: values.budgetedValue * 100,
+    });
+
+    onEditingChange(null);
+  };
+
+  const rows = categories?.map((budgetCategory) => {
+    const isEditing = editingId === budgetCategory.id;
+    const displayValue = budgetCategory.budgetedValue / 100;
 
     return (
       <Table.Tr key={budgetCategory.id}>
-        <Table.Td align="center">{budgetCategory.category.name}</Table.Td>
-        <Table.Td align="center">Outgoing</Table.Td>
-        <Table.Td align="center">{displayValue}</Table.Td>
-        <Table.Td align="center">
-          <ActionIcon color="red" onClick={() => handleDelete(budgetCategory.id)}>
-            <IconTrash size={16} />
-          </ActionIcon>
+        <Table.Td>
+          <Group gap="sm">
+            <Text size="sm" fw={500}>
+              {budgetCategory.category.icon} {budgetCategory.category.name}
+            </Text>
+          </Group>
+        </Table.Td>
+        <Table.Td>
+          <Group justify="flex-end" gap="xs">
+            {isEditing ? (
+              <NumberInput
+                {...form.getInputProps('budgetedValue')}
+                ref={inputRef}
+                decimalScale={2}
+                fixedDecimalScale
+                size="xs"
+                w={110}
+                variant="filled"
+                hideControls
+                prefix="€"
+              />
+            ) : (
+              <Text size="sm" fw={700} style={{ fontFamily: 'monospace' }}>
+                €{displayValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </Text>
+            )}
+          </Group>
+        </Table.Td>
+        <Table.Td>
+          <Group justify="flex-end" gap={4}>
+            {isEditing ? (
+              <>
+                <ActionIcon variant="light" color="blue" type="submit">
+                  <span>✅</span>
+                </ActionIcon>
+                <ActionIcon variant="light" color="gray" onClick={() => onEditingChange(null)}>
+                  <span>❌</span>
+                </ActionIcon>
+              </>
+            ) : (
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                onClick={() => {
+                  onEditingChange(budgetCategory.id);
+                  form.setValues({ budgetedValue: displayValue });
+                }}
+              >
+                <span>✏️</span>
+              </ActionIcon>
+            )}
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={() => handleDelete(budgetCategory.id)}
+            >
+              <span>🗑️</span>
+            </ActionIcon>
+          </Group>
         </Table.Td>
       </Table.Tr>
     );
   });
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   return (
-    <Paper shadow="md" radius="lg" p="xl" h="100%">
-      <Stack>
-        <Title order={2}>Budgeted Categories</Title>
-        <Table>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Stack>
+    <Paper shadow="sm" radius="md" p="xl" withBorder h="100%">
+      <form onSubmit={form.onSubmit(handleSave)}>
+        <Stack gap="md">
+          <Group justify="space-between" align="flex-end">
+            <div>
+              <Title order={3} fw={700}>
+                Budgeted Categories
+              </Title>
+              <Text size="xs" c="dimmed">
+                Adjust your monthly spending limits
+              </Text>
+            </div>
+          </Group>
+
+          <Divider variant="dashed" />
+
+          <ScrollArea offsetScrollbars>
+            <Table verticalSpacing="sm" horizontalSpacing="0" variant="simple">
+              <Table.Tbody>{rows}</Table.Tbody>
+            </Table>
+          </ScrollArea>
+        </Stack>
+      </form>
     </Paper>
   );
 }

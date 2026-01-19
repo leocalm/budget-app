@@ -1,0 +1,24 @@
+import { Box, Center, Container } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
+import { Logo } from '@/components/Layout/Logo';
+
+export function AuthLayout() {
+  return (
+    <Box
+      style={{
+        minHeight: '100vh',
+        background: 'var(--mantine-color-dark-9)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
+      <Container size={420} my={40}>
+        <Center mb={30}>
+          <Logo />
+        </Center>
+        <Outlet />
+      </Container>
+    </Box>
+  );
+}

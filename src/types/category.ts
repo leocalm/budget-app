@@ -6,14 +6,14 @@ export interface CategoryResponse {
   name: string;
   color: string;
   icon: string;
-  parent_id: string | null;
-  category_type: CategoryType;
+  parentId: string | null;
+  categoryType: CategoryType;
 }
 
 export interface CategoryRequest {
   name: string;
   color: string;
   icon: string;
-  parent_id: string | null;
-  category_type: CategoryType;
+  parentId: string | null;
+  categoryType: CategoryType;
 }

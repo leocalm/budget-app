@@ -1,32 +1,14 @@
-import { Vendor } from '@/types/vendor';
+import { Vendor, VendorRequest } from '@/types/vendor';
+import { apiGet, apiPost, apiDelete } from './client';
 
 export async function fetchVendors(): Promise<Vendor[]> {
-  const res = await fetch(`/api/vendors`, { credentials: 'include' });
-  if (!res.ok) {
-    throw new Error('Failed to fetch vendors');
-  }
-  return res.json();
+  return apiGet<Vendor[]>('/api/vendors');
 }
 
-export async function createVendor(payload: Vendor): Promise<Vendor> {
-  const res = await fetch(`/api/vendors`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to create vendor');
-  }
-  return res.json();
+export async function createVendor(payload: VendorRequest): Promise<Vendor> {
+  return apiPost<Vendor, VendorRequest>('/api/vendors', payload);
 }
 
 export async function deleteVendor(id: string): Promise<void> {
-  const res = await fetch(`/api/vendors/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to delete vendor');
-  }
+  return apiDelete(`/api/vendors/${id}`);
 }

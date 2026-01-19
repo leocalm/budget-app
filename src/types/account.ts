@@ -1,12 +1,12 @@
-export const ACCOUNT_TYPES = ["Checking", "Savings", "CreditCard", "Wallet"] as const;
-export type AccountType = typeof ACCOUNT_TYPES[number];
+export const ACCOUNT_TYPES = ['Checking', 'Savings', 'CreditCard', 'Wallet', 'Allowance'] as const;
+export type AccountType = (typeof ACCOUNT_TYPES)[number];
 
 export interface CurrencyResponse {
   id: string;
   name: string;
   symbol: string;
   currency: string;
-  decimal_places: number;
+  decimalPlaces: number;
 }
 
 export interface AccountResponse {
@@ -14,16 +14,18 @@ export interface AccountResponse {
   name: string;
   color: string;
   icon: string;
-  account_type: AccountType;
+  accountType: AccountType;
   currency: CurrencyResponse;
   balance: number;
+  spendLimit?: number;
 }
 
 export interface AccountRequest {
   name: string;
   color: string;
   icon: string;
-  account_type: AccountType;
+  accountType: AccountType;
   currency: string;
   balance: number;
+  spendLimit?: number;
 }
