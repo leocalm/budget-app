@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { mockAccounts } from '@/mocks/budgetData';
 import { AccountResponse } from '@/types/account';
 import { AccountsTableView } from './AccountsTableView';
@@ -48,13 +48,17 @@ export const Interactive: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Check if accounts are rendered
-    await expect(canvas.getByText('Checking')).toBeInTheDocument();
-    await expect(canvas.getByText('Savings')).toBeInTheDocument();
+    // Check if accounts are rendered - use getAllByText since "Checking" appears multiple times
+    const checkingElements = canvas.getAllByText('Checking');
+    await expect(checkingElements.length).toBeGreaterThan(0);
 
-    // Open menu for the first account
+    const savingsElements = canvas.getAllByText('Savings');
+    await expect(savingsElements.length).toBeGreaterThan(0);
+
+    // Get menu buttons - there should be one per account
     const menuButtons = canvas.getAllByRole('button');
-    // The ActionIcon for the menu is likely the first button in the card
+
+    // Open menu for the first account (Checking account)
     await userEvent.click(menuButtons[0]);
 
     // Wait for menu to appear (it's in a portal, so look in body)
@@ -64,8 +68,15 @@ export const Interactive: Story = {
     // Click delete
     await userEvent.click(deleteButton);
 
-    // Verify account is removed
-    await expect(canvas.queryByText('Checking')).not.toBeInTheDocument();
+    // Wait for account to be removed - all "Checking" texts should be gone
+    await waitFor(() => {
+      const remainingChecking = canvas.queryAllByText('Checking');
+      expect(remainingChecking.length).toBe(0);
+    });
+
+    // Verify "Savings" account is still present
+    const remainingSavings = canvas.getAllByText('Savings');
+    await expect(remainingSavings.length).toBeGreaterThan(0);
   },
 };
 

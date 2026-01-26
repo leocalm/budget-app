@@ -21,6 +21,8 @@ jobs:
           cache-dependency-path: '**/yarn.lock'
       - name: Install dependencies
         run: yarn
+      - name: Install browsers
+        run: npm run install-browsers
       - name: Run build
         run: npm run build
       - name: Run tests

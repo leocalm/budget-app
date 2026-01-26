@@ -10,6 +10,8 @@ import type { Preview } from '@storybook/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../src/theme';
 
+import '../src/i18n';
+
 dayjs.extend(customParseFormat);
 
 export const parameters = {

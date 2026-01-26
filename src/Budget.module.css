@@ -33,5 +33,5 @@
 }
 
 :global([data-mantine-color-scheme='dark']) .deleteButton:hover {
-    background-color: rgba(250, 82, 82, 0.1) !important;
+    background-color: rgb(250, 82, 82, 0.1) !important;
 }

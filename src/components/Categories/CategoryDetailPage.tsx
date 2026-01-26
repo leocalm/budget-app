@@ -18,7 +18,9 @@ export function CategoryDetailPage() {
 
   // Filter transactions for this category
   const categoryTransactions = useMemo(() => {
-    if (!transactions || !id) {return [];}
+    if (!transactions || !id) {
+      return [];
+    }
     return transactions.filter((t) => t.category.id === id);
   }, [transactions, id]);
 

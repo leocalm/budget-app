@@ -3,7 +3,7 @@
 .quickAddSection {
     background: var(--mantine-color-dark-7);
     border: 1px solid var(--mantine-color-dark-4);
-    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.08);
+    box-shadow: 0 4px 16px rgb(0, 212, 255, 0.08);
 }
 
 .titleIcon {
@@ -37,13 +37,13 @@
     height: 48px;
     min-width: 48px;
     padding: 0 !important;
-    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 4px 12px rgb(0, 212, 255, 0.3);
     transition: all 0.2s ease;
 }
 
 .submitButton:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 212, 255, 0.4);
+    box-shadow: 0 6px 16px rgb(0, 212, 255, 0.4);
 }
 
 .submitButton:active {

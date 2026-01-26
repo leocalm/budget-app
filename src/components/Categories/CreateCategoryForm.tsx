@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { ActionIcon, Alert, Box, Button, Grid, Group, Popover, Select, Stack, TextInput, } from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Group,
+  Popover,
+  Select,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCreateCategory } from '@/hooks/useCategories';
 import { CATEGORY_TYPES, CategoryRequest, CategoryType } from '@/types/category';

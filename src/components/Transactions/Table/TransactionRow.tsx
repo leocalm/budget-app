@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Group, Text, useMantineTheme } from '@mantine/core';
+import { Box, Group, Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { TransactionResponse } from '@/types/transaction';
 import { AccountBadge } from './AccountBadge';
@@ -106,95 +106,69 @@ export const TransactionRow = ({
     );
   }
 
-  // Desktop Layout
+  // Desktop Layout - using Table.Tr for proper HTML structure
   return (
-    <Box
+    <Table.Tr
       onClick={() => onClick?.(t)}
       style={{
-        padding: '24px 32px',
-        display: 'grid',
-        gridTemplateColumns: '2fr 1.5fr 1fr 1fr 0.8fr 60px',
-        gap: '24px',
-        alignItems: 'center',
-        transition: 'all 0.2s ease',
-        borderBottom: '1px solid transparent',
         cursor: onClick ? 'pointer' : 'default',
         animation: `fadeInUp 0.4s ease backwards`,
         animationDelay: `${animationDelay}s`,
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-        e.currentTarget.style.borderBottomColor = 'rgba(255, 255, 255, 0.06)';
-        const actions = e.currentTarget.querySelector('.transaction-actions') as HTMLElement;
-        if (actions) {
-          actions.style.opacity = '1';
-        }
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'transparent';
-        e.currentTarget.style.borderBottomColor = 'transparent';
-        const actions = e.currentTarget.querySelector('.transaction-actions') as HTMLElement;
-        if (actions) {
-          actions.style.opacity = '0';
-        }
-      }}
     >
-      {/* Column 1 - Description */}
-      <Box style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 }}>
-        <Text
-          size="md"
-          fw={600}
-          style={{
-            color: '#ffffff',
-            fontSize: '15px',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {isTransfer ? translator('transactions.list.row.transferDescription') : t.description}
+      {/* Date */}
+      <Table.Td>
+        <Text size="sm" c="dimmed">
+          {new Date(t.occurredAt).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+          })}
         </Text>
-        {t.vendor && (
+      </Table.Td>
+
+      {/* Description & Vendor */}
+      <Table.Td>
+        <Box style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <Text
-            size="sm"
+            size="md"
+            fw={600}
             style={{
-              color: '#5a6272',
-              fontSize: '13px',
+              color: '#ffffff',
+              fontSize: '15px',
             }}
           >
-            {t.vendor.name}
+            {isTransfer ? translator('transactions.list.row.transferDescription') : t.description}
           </Text>
-        )}
-      </Box>
+          {t.vendor && (
+            <Text size="sm" c="dimmed" style={{ fontSize: '13px' }}>
+              {t.vendor.name}
+            </Text>
+          )}
+        </Box>
+      </Table.Td>
 
-      {/* Column 2 - Category Badge */}
-      <Box style={{ minWidth: 0 }}>
+      {/* Category Badge */}
+      <Table.Td>
         <CategoryBadge category={t.category} />
-      </Box>
+      </Table.Td>
 
-      {/* Column 3 - Account Badge */}
-      <Box style={{ minWidth: 0 }}>
-        <AccountBadge account={t.fromAccount} />
-      </Box>
+      {/* Account Badges */}
+      <Table.Td>
+        <Group gap="xs">
+          <AccountBadge account={t.fromAccount} />
+          {t.toAccount && (
+            <>
+              <Text size="sm" c="dimmed">
+                →
+              </Text>
+              <AccountBadge account={t.toAccount} />
+            </>
+          )}
+        </Group>
+      </Table.Td>
 
-      {/* Column 4 - Vendor Name (hidden on smaller screens via CSS) */}
-      <Box className="vendor-column" style={{ minWidth: 0 }}>
-        <Text
-          size="sm"
-          style={{
-            color: '#8892a6',
-            fontSize: '13px',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {t.vendor?.name || '-'}
-        </Text>
-      </Box>
-
-      {/* Column 5 - Amount */}
-      <Box style={{ textAlign: 'right', minWidth: 0 }}>
+      {/* Amount */}
+      <Table.Td>
         <Text
           style={{
             fontFamily: "'JetBrains Mono', monospace",
@@ -202,14 +176,17 @@ export const TransactionRow = ({
             fontSize: '16px',
             color: amountColor,
             whiteSpace: 'nowrap',
+            textAlign: 'right',
           }}
         >
           {formattedAmount}
         </Text>
-      </Box>
+      </Table.Td>
 
-      {/* Column 6 - Actions */}
-      <ActionButtons onEdit={() => onEdit(t)} onDelete={() => onDelete(t.id)} />
-    </Box>
+      {/* Actions */}
+      <Table.Td>
+        <ActionButtons onEdit={() => onEdit(t)} onDelete={() => onDelete(t.id)} />
+      </Table.Td>
+    </Table.Tr>
   );
 };
