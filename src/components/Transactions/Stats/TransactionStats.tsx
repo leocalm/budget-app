@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, SimpleGrid, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 interface TransactionStatsProps {
   income: number;
@@ -54,11 +55,27 @@ const StatCard = ({ label, value, color, type }: StatCardProps) => {
 };
 
 export function TransactionStats({ income, expenses, balance }: TransactionStatsProps) {
+  const { t } = useTranslation();
   return (
     <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg" mb="xl">
-      <StatCard label="Total Income" value={income} color="#00ffa3" type="income" />
-      <StatCard label="Total Expenses" value={expenses} color="#ff6b9d" type="expenses" />
-      <StatCard label="Net Change" value={balance} color="#00d4ff" type="net" />
+      <StatCard
+        label={t('transactions.stats.totalIncome')}
+        value={income}
+        color="#00ffa3"
+        type="income"
+      />
+      <StatCard
+        label={t('transactions.stats.totalExpenses')}
+        value={expenses}
+        color="#ff6b9d"
+        type="expenses"
+      />
+      <StatCard
+        label={t('transactions.stats.netChange')}
+        value={balance}
+        color="#00d4ff"
+        type="net"
+      />
     </SimpleGrid>
   );
 }

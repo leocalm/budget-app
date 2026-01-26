@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Group, Text, UnstyledButton } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 export type TransactionTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
 
@@ -21,22 +22,26 @@ interface QuickFilter {
   id: string;
 }
 
-const filterTabs: FilterTab[] = [
-  { label: 'All Transactions', value: 'all' },
-  { label: 'Incoming', value: 'Incoming' },
-  { label: 'Outgoing', value: 'Outgoing' },
-  { label: 'Transfers', value: 'Transfer' },
-];
-
-const quickFilters: QuickFilter[] = [
-  { icon: '📅', label: 'Date Range', id: 'date' },
-  { icon: '🏦', label: 'Account: All', id: 'account' },
-  { icon: '🏷️', label: 'Category: All', id: 'category' },
-  { icon: '💰', label: 'Amount: All', id: 'amount' },
-];
-
-export function TransactionFilters({ typeFilter, onTypeFilterChange }: TransactionFiltersProps) {
+export function TransactionFilters({
+  typeFilter,
+  onTypeFilterChange,
+}: TransactionFiltersProps) {
+  const { t } = useTranslation();
   const [activeQuickFilters, setActiveQuickFilters] = useState<string[]>([]);
+
+  const filterTabs: FilterTab[] = [
+    { label: t('transactions.filters.allTransactions'), value: 'all' },
+    { label: t('transactions.filters.incoming'), value: 'Incoming' },
+    { label: t('transactions.filters.outgoing'), value: 'Outgoing' },
+    { label: t('transactions.filters.transfers'), value: 'Transfer' },
+  ];
+
+  const quickFilters: QuickFilter[] = [
+    { icon: '📅', label: t('transactions.filters.dateRange'), id: 'date' },
+    { icon: '🏦', label: t('transactions.filters.accountAll'), id: 'account' },
+    { icon: '🏷️', label: t('transactions.filters.categoryAll'), id: 'category' },
+    { icon: '💰', label: t('transactions.filters.amountAll'), id: 'amount' },
+  ];
 
   const toggleQuickFilter = (id: string) => {
     setActiveQuickFilters((prev) =>
@@ -75,7 +80,8 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               color: typeFilter === tab.value ? '#00d4ff' : '#8892a6',
-              background: typeFilter === tab.value ? 'rgba(0, 212, 255, 0.1)' : 'transparent',
+              background:
+                typeFilter === tab.value ? 'rgba(0, 212, 255, 0.1)' : 'transparent',
             }}
             onMouseEnter={(e) => {
               if (typeFilter !== tab.value) {
@@ -105,8 +111,12 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
               onClick={() => toggleQuickFilter(filter.id)}
               style={{
                 padding: '8px 16px',
-                background: isActive ? 'rgba(0, 212, 255, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${isActive ? '#00d4ff' : 'rgba(255, 255, 255, 0.06)'}`,
+                background: isActive
+                  ? 'rgba(0, 212, 255, 0.15)'
+                  : 'rgba(255, 255, 255, 0.03)',
+                border: `1px solid ${
+                  isActive ? '#00d4ff' : 'rgba(255, 255, 255, 0.06)'
+                }`,
                 borderRadius: '8px',
                 fontSize: '13px',
                 color: isActive ? '#00d4ff' : '#8892a6',

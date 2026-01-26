@@ -9,8 +9,10 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function RegisterPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -20,11 +22,13 @@ export function RegisterPage() {
       confirmPassword: '',
     },
     validate: {
-      name: (val) => (val.length < 2 ? 'Name must have at least 2 letters' : null),
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+      name: (val) =>
+        val.length < 2 ? t('auth.register.validation.nameMinLength') : null,
+      email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.register.validation.invalidEmail')),
+      password: (val) =>
+        val.length <= 6 ? t('auth.register.validation.passwordMinLength') : null,
       confirmPassword: (val, values) =>
-        val !== values.password ? 'Passwords do not match' : null,
+        val !== values.password ? t('auth.register.validation.passwordsDoNotMatch') : null,
     },
   });
 
@@ -37,46 +41,46 @@ export function RegisterPage() {
   return (
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <Title order={2} ta="center" mt="md" mb={50}>
-        Create an account
+        {t('auth.register.createAccountTitle')}
       </Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
-          label="Full Name"
-          placeholder="John Doe"
+          label={t('auth.register.fullNameLabel')}
+          placeholder={t('auth.register.fullNamePlaceholder')}
           required
           {...form.getInputProps('name')}
         />
         <TextInput
-          label="Email"
-          placeholder="you@example.com"
+          label={t('auth.register.emailLabel')}
+          placeholder={t('auth.register.emailPlaceholder')}
           required
           mt="md"
           {...form.getInputProps('email')}
         />
         <PasswordInput
-          label="Password"
-          placeholder="Your password"
+          label={t('auth.register.passwordLabel')}
+          placeholder={t('auth.register.passwordPlaceholder')}
           required
           mt="md"
           {...form.getInputProps('password')}
         />
         <PasswordInput
-          label="Confirm Password"
-          placeholder="Confirm your password"
+          label={t('auth.register.confirmPasswordLabel')}
+          placeholder={t('auth.register.confirmPasswordPlaceholder')}
           required
           mt="md"
           {...form.getInputProps('confirmPassword')}
         />
         <Button fullWidth mt="xl" type="submit">
-          Register
+          {t('auth.register.registerButton')}
         </Button>
       </form>
 
       <Text c="dimmed" size="sm" ta="center" mt={20}>
-        Already have an account?{' '}
+        {t('auth.register.alreadyHaveAccount')}{' '}
         <Anchor component={Link} to="/auth/login" size="sm">
-          Login
+          {t('auth.register.login')}
         </Anchor>
       </Text>
     </Paper>

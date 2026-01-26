@@ -1,5 +1,5 @@
 import { Transaction, TransactionRequest, TransactionResponse } from '@/types/transaction';
-import { apiDelete, apiGet, apiPost } from './client';
+import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
 export async function fetchTransactions(
   selectedPeriodId: string | null
@@ -30,4 +30,14 @@ export async function createTransactionFromRequest(
 
 export async function deleteTransaction(id: string): Promise<void> {
   return apiDelete(`/api/transactions/${id}`);
+}
+
+export async function updateTransaction(
+  id: string,
+  requestPayload: TransactionRequest
+): Promise<TransactionResponse> {
+  return apiPut<TransactionResponse, TransactionRequest>(
+    `/api/transactions/${id}`,
+    requestPayload
+  );
 }

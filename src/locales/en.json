@@ -6,7 +6,53 @@
     "error": "Error"
   },
   "auth": {
-    "login": "Log in",
+    "login": {
+      "welcomeBack": "Welcome back!",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign in",
+      "noAccountYet": "Do not have an account yet?",
+      "createAccount": "Create account",
+      "validation": {
+        "invalidEmail": "Invalid email",
+        "passwordMinLength": "Password should include at least 6 characters"
+      }
+    },
+    "register": {
+      "createAccountTitle": "Create an account",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Your password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "registerButton": "Register",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login",
+      "validation": {
+        "nameMinLength": "Name must have at least 2 letters",
+        "invalidEmail": "Invalid email",
+        "passwordMinLength": "Password should include at least 6 characters",
+        "passwordsDoNotMatch": "Passwords do not match"
+      }
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email to get a reset link",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "resetPasswordButton": "Reset password",
+      "backToLogin": "Back to the login page",
+      "validation": {
+        "invalidEmail": "Invalid email"
+      }
+    },
     "logout": "Log out"
   },
   "transactions": {
@@ -53,6 +99,188 @@
           "required": "Category is required"
         }
       }
+    },
+    "editTransaction": {
+      "success": "Transaction updated successfully",
+      "error": {
+        "update": "Failed to update transaction"
+      },
+      "date": {
+        "label": "Date"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter description"
+      },
+      "amount": {
+        "label": "Amount"
+      },
+      "fromAccount": {
+        "label": "Account",
+        "placeholder": "Select account"
+      },
+      "toAccount": {
+        "label": "To Account",
+        "placeholder": "Select destination account"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select category"
+      },
+      "vendor": {
+        "label": "Vendor (optional)",
+        "placeholder": "Enter vendor name"
+      },
+      "saveChanges": "Save Changes"
+    },
+    "list": {
+      "date": "Date",
+      "descriptionVendor": "Description / Vendor",
+      "category": "Category",
+      "accounts": "Accounts (From → To)",
+      "amount": "Amount",
+      "row": {
+        "transferDescription": "Internal Transfer"
+      }
+    },
+    "stats": {
+      "totalIncome": "Total Income",
+      "totalExpenses": "Total Expenses",
+      "netChange": "Net Change"
+    },
+    "filters": {
+      "allTransactions": "All Transactions",
+      "incoming": "Incoming",
+      "outgoing": "Outgoing",
+      "transfers": "Transfers",
+      "dateRange": "Date Range",
+      "accountAll": "Account: All",
+      "categoryAll": "Category: All",
+      "amountAll": "Amount: All"
+    },
+    "section": {
+      "showing": "Showing {{count}} transactions in {{period}}",
+      "thisPeriod": "this period",
+      "searchPlaceholder": "Search transactions...",
+      "noTransactionsFound": "No transactions found",
+      "adjustFilters": "Try adjusting your filters or add a new transaction"
+    },
+    "tableView": {
+      "addTransaction": "Add Transaction",
+      "createTransaction": "Create Transaction",
+      "error": {
+        "load": "Error loading transactions"
+      }
+    },
+    "pageHeader": {
+      "export": "Export"
+    },
+    "container": {
+      "confirmDelete": "Are you sure you want to delete this transaction?",
+      "thisPeriod": "this period",
+      "title": "Transactions",
+      "subtitle": "Review and manage your financial activity for the selected period.",
+      "editTitle": "Edit Transaction",
+      "editing": "Editing"
+    }
+  },
+  "budget": {
+    "details": {
+      "title": "Budget Details",
+      "totalIncoming": "Total Incoming",
+      "totalOutgoing": "Total Outgoing",
+      "difference": "Difference"
+    },
+    "overview": {
+      "utilization": "Budget Utilization",
+      "spent": "Spent",
+      "remaining": "Remaining",
+      "status": "Status",
+      "overBudget": "Over Budget",
+      "onTrack": "On Track",
+      "overBudgetMessage": "You have exceeded your total budget limit for this period.",
+      "onTrackMessage": "You are within your planned budget limits.",
+      "allocation": "Allocation"
+    },
+    "container": {
+      "title": "Monthly Budget",
+      "description": "Manage your spending limits and assign budgets to your categories.",
+      "unbudgetedTitle": "Unbudgeted",
+      "unbudgetedDescription": "Click a category to set its monthly limit and add it to your plan."
+    },
+    "budgetedCategories": {
+      "title": "Budgeted Categories",
+      "description": "Adjust your monthly spending limits",
+      "error": {
+        "positiveValue": "Value must be positive"
+      }
+    },
+    "configuration": {
+      "title": "Budget Configuration",
+      "budgetNameLabel": "Budget Name",
+      "budgetNamePlaceholder": "My Budget",
+      "startDayLabel": "Start day",
+      "startDayPlaceholder": "Stard day",
+      "updateButton": "Update Budget",
+      "error": {
+        "nameLength": "Name must have at least 2 letters",
+        "startDayRange": "Start day must be between 1 and 31",
+        "load": "Error loading categories"
+      }
+    },
+    "unbudgetedCategories": {
+      "loading": "Loading...",
+      "allBudgeted": "All categories are budgeted!"
+    }
+  },
+  "transactionsPage": {
+    "title": "Transactions",
+    "subtitle": "Review and manage your financial activity for the selected period."
+  },
+  "router": {
+    "goals": "Goals Page",
+    "recurring": "Recurring Page",
+    "help": "Help Page",
+    "more": "More Page"
+  },
+  "layout": {
+    "logo": {
+      "title": "BudgetApp"
+    },
+    "userMenu": {
+      "userName": "John Doe",
+      "userEmail": "john@example.com",
+      "application": "Application",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "navigation": {
+      "overview": "Overview",
+      "dashboard": "Dashboard",
+      "transactions": "Transactions",
+      "management": "Management",
+      "accounts": "Accounts",
+      "categories": "Categories",
+      "budgetPlan": "Budget Plan",
+      "insights": "Insights",
+      "reports": "Reports",
+      "goals": "Goals",
+      "recurring": "Recurring",
+      "other": "Other",
+      "settings": "Settings",
+      "helpSupport": "Help & Support"
+    }
+  },
+  "accounts": {
+    "card": {
+      "viewDetails": "View Details",
+      "editAccount": "Edit Account",
+      "deleteAccount": "Delete Account",
+      "currentBalance": "Current Balance",
+      "thisPeriod": "this period",
+      "monthlySpent": "Monthly Spent",
+      "transactions": "Transactions"
     }
   }
 }

@@ -11,9 +11,11 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useTranslation } from 'react-i18next';
 import { useBudget, useUpdateBudget } from '@/hooks/useBudget';
 
 export function BudgetConfiguration() {
+  const { t } = useTranslation();
   const { data: budgets, isLoading, isError } = useBudget();
   const updateMutation = useUpdateBudget();
 
@@ -27,9 +29,14 @@ export function BudgetConfiguration() {
     },
 
     validate: {
-      name: (value) => (!value || value.length < 2 ? 'Name must have at least 2 letters' : null),
+      name: (value) =>
+        !value || value.length < 2
+          ? t('budget.configuration.error.nameLength')
+          : null,
       startDay: (value: number | undefined) =>
-        value && (value < 1 || value > 31) ? 'Start day must be between 1 and 31' : null,
+        value && (value < 1 || value > 31)
+          ? t('budget.configuration.error.startDayRange')
+          : null,
     },
   });
 
@@ -54,24 +61,24 @@ export function BudgetConfiguration() {
     return <Loader />;
   }
   if (isError) {
-    return <Alert color="red">Error loading categories</Alert>;
+    return <Alert color="red">{t('budget.configuration.error.load')}</Alert>;
   }
 
   return (
     <Paper shadow="md" radius="lg" p="xl" h="100%">
       <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
         <Stack align="flex-start">
-          <Title order={2}>Budget Configuration</Title>
+          <Title order={2}>{t('budget.configuration.title')}</Title>
           <TextInput
-            label="Budget Name"
-            placeholder="My Budget"
+            label={t('budget.configuration.budgetNameLabel')}
+            placeholder={t('budget.configuration.budgetNamePlaceholder')}
             key={form.key('name')}
             {...form.getInputProps('name')}
           />
 
           <NumberInput
-            label="Start day"
-            placeholder="Stard day"
+            label={t('budget.configuration.startDayLabel')}
+            placeholder={t('budget.configuration.startDayPlaceholder')}
             min={1}
             max={31}
             key={form.key('startDay')}
@@ -80,7 +87,7 @@ export function BudgetConfiguration() {
         </Stack>
 
         <Group justify="flex-end" mt="md">
-          <Button type="submit">Update Budget</Button>
+          <Button type="submit">{t('budget.configuration.updateButton')}</Button>
         </Group>
       </form>
     </Paper>

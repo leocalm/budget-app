@@ -16,6 +16,7 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse, CategoryType } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
+import { useTranslation } from 'react-i18next';
 
 interface EditTransactionFormProps {
   transaction: TransactionResponse;
@@ -64,6 +65,7 @@ export const EditTransactionForm = ({
   onCancel,
   isPending = false,
 }: EditTransactionFormProps) => {
+  const { t } = useTranslation();
   const form = useForm<EditFormValues>({
     initialValues: {
       description: transaction.description,
@@ -78,19 +80,22 @@ export const EditTransactionForm = ({
     validate: {
       description: (value) => {
         if (!value || value.trim().length === 0) {
-          return 'Description is required';
+          return t('transactions.quickAddTransaction.error.description.required');
         }
         return null;
       },
       amount: (value) => {
         if (!value || value <= 0) {
-          return 'Amount must be greater than 0';
+          return t('transactions.quickAddTransaction.error.amount.greaterThanZero');
         }
         return null;
       },
-      occurredAt: (value) => (!value ? 'Date is required' : null),
-      fromAccountId: (value) => (!value ? 'Account is required' : null),
-      categoryId: (value) => (!value ? 'Category is required' : null),
+      occurredAt: (value) =>
+        !value ? t('transactions.quickAddTransaction.error.occurredAt.required') : null,
+      fromAccountId: (value) =>
+        !value ? t('transactions.quickAddTransaction.error.fromAccount.required') : null,
+      categoryId: (value) =>
+        !value ? t('transactions.quickAddTransaction.error.category.required') : null,
     },
   });
 
@@ -103,14 +108,14 @@ export const EditTransactionForm = ({
     try {
       await onSave(values);
       notifications.show({
-        title: 'Success',
-        message: 'Transaction updated successfully',
+        title: t('common.success'),
+        message: t('transactions.editTransaction.success'),
         color: 'green',
       });
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to update transaction',
+        title: t('common.error'),
+        message: t('transactions.editTransaction.error.update'),
         color: 'red',
       });
     }
@@ -121,9 +126,9 @@ export const EditTransactionForm = ({
       <Stack gap="md">
         {/* Date */}
         <DateInput
-          label="Date"
+          label={t('transactions.editTransaction.date.label')}
           value={form.values.occurredAt}
-          onChange={(value) => form.setFieldValue('occurredAt', value)}
+          onChange={(value) => form.setFieldValue('occurredAt', value as Date | null)}
           error={form.errors.occurredAt}
           valueFormat="YYYY-MM-DD"
           styles={inputStyles}
@@ -131,8 +136,8 @@ export const EditTransactionForm = ({
 
         {/* Description */}
         <TextInput
-          label="Description"
-          placeholder="Enter description"
+          label={t('transactions.editTransaction.description.label')}
+          placeholder={t('transactions.editTransaction.description.placeholder')}
           value={form.values.description}
           onChange={(e) => form.setFieldValue('description', e.currentTarget.value)}
           error={form.errors.description}
@@ -141,7 +146,7 @@ export const EditTransactionForm = ({
 
         {/* Amount */}
         <NumberInput
-          label="Amount"
+          label={t('transactions.editTransaction.amount.label')}
           placeholder="0.00"
           value={form.values.amount}
           onChange={(value) => form.setFieldValue('amount', Number(value) || 0)}
@@ -159,8 +164,8 @@ export const EditTransactionForm = ({
 
         {/* From Account */}
         <Select
-          label="Account"
-          placeholder="Select account"
+          label={t('transactions.editTransaction.fromAccount.label')}
+          placeholder={t('transactions.editTransaction.fromAccount.placeholder')}
           value={form.values.fromAccountId}
           onChange={(value) => form.setFieldValue('fromAccountId', value || '')}
           data={accounts.map((acc) => ({
@@ -175,8 +180,8 @@ export const EditTransactionForm = ({
         {/* To Account (for transfers) */}
         {form.values.categoryType === 'Transfer' && (
           <Select
-            label="To Account"
-            placeholder="Select destination account"
+            label={t('transactions.editTransaction.toAccount.label')}
+            placeholder={t('transactions.editTransaction.toAccount.placeholder')}
             value={form.values.toAccountId}
             onChange={(value) => form.setFieldValue('toAccountId', value || '')}
             data={accounts
@@ -194,8 +199,8 @@ export const EditTransactionForm = ({
         {/* Category (not for transfers) */}
         {form.values.categoryType !== 'Transfer' && (
           <Select
-            label="Category"
-            placeholder="Select category"
+            label={t('transactions.editTransaction.category.label')}
+            placeholder={t('transactions.editTransaction.category.placeholder')}
             value={form.values.categoryId}
             onChange={(value) => form.setFieldValue('categoryId', value || '')}
             data={filteredCategories.map((cat) => ({
@@ -211,8 +216,8 @@ export const EditTransactionForm = ({
         {/* Vendor (not for transfers) */}
         {form.values.categoryType !== 'Transfer' && (
           <Autocomplete
-            label="Vendor (optional)"
-            placeholder="Enter vendor name"
+            label={t('transactions.editTransaction.vendor.label')}
+            placeholder={t('transactions.editTransaction.vendor.placeholder')}
             value={form.values.vendorName}
             onChange={(value) => form.setFieldValue('vendorName', value)}
             data={vendors.map((v) => v.name)}
@@ -234,7 +239,7 @@ export const EditTransactionForm = ({
               },
             }}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             type="submit"
@@ -249,7 +254,7 @@ export const EditTransactionForm = ({
               },
             }}
           >
-            Save Changes
+            {t('transactions.editTransaction.saveChanges')}
           </Button>
         </Group>
       </Stack>

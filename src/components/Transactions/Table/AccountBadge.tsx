@@ -41,7 +41,7 @@ export const AccountBadge = ({ account }: AccountBadgeProps) => {
         borderRadius: '8px',
         fontSize: '13px',
         fontFamily: "'JetBrains Mono', monospace",
-        color: '#8892a6',
+        color: account.color,
         fontWeight: 500,
       }}
     >
@@ -52,7 +52,7 @@ export const AccountBadge = ({ account }: AccountBadgeProps) => {
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: '13px',
           fontWeight: 500,
-          color: '#8892a6',
+          color: account.color,
           whiteSpace: 'nowrap',
         }}
       >
