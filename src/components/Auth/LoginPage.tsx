@@ -11,8 +11,10 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -21,8 +23,9 @@ export function LoginPage() {
       keepLogged: false,
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+      email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.login.validation.invalidEmail')),
+      password: (val) =>
+        val.length <= 6 ? t('auth.login.validation.passwordMinLength') : null,
     },
   });
 
@@ -35,38 +38,41 @@ export function LoginPage() {
   return (
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <Title order={2} ta="center" mt="md" mb={50}>
-        Welcome back!
+        {t('auth.login.welcomeBack')}
       </Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
-          label="Email"
-          placeholder="you@example.com"
+          label={t('auth.login.emailLabel')}
+          placeholder={t('auth.login.emailPlaceholder')}
           required
           {...form.getInputProps('email')}
         />
         <PasswordInput
-          label="Password"
-          placeholder="Your password"
+          label={t('auth.login.passwordLabel')}
+          placeholder={t('auth.login.passwordPlaceholder')}
           required
           mt="md"
           {...form.getInputProps('password')}
         />
         <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" {...form.getInputProps('keepLogged', { type: 'checkbox' })} />
+          <Checkbox
+            label={t('auth.login.rememberMe')}
+            {...form.getInputProps('keepLogged', { type: 'checkbox' })}
+          />
           <Anchor component={Link} to="/auth/forgot-password" size="sm">
-            Forgot password?
+            {t('auth.login.forgotPassword')}
           </Anchor>
         </Group>
         <Button fullWidth mt="xl" type="submit">
-          Sign in
+          {t('auth.login.signIn')}
         </Button>
       </form>
 
       <Text c="dimmed" size="sm" ta="center" mt={20}>
-        Do not have an account yet?{' '}
+        {t('auth.login.noAccountYet')}{' '}
         <Anchor component={Link} to="/auth/register" size="sm">
-          Create account
+          {t('auth.login.createAccount')}
         </Anchor>
       </Text>
     </Paper>

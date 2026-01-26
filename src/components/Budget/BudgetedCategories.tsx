@@ -12,6 +12,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useTranslation } from 'react-i18next';
 import { useDeleteBudgetCategory, useUpdateBudgetCategory } from '@/hooks/useCategories';
 import { BudgetCategoryResponse } from '@/types/budget';
 
@@ -26,6 +27,7 @@ export function BudgetedCategories({
   onEditingChange,
   categories,
 }: BudgetedCategoriesProps) {
+  const { t } = useTranslation();
   const deleteMutation = useDeleteBudgetCategory();
   const updateMutation = useUpdateBudgetCategory();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -35,7 +37,8 @@ export function BudgetedCategories({
       budgetedValue: 0,
     },
     validate: {
-      budgetedValue: (value) => (value < 0 ? 'Value must be positive' : null),
+      budgetedValue: (value) =>
+        value < 0 ? t('budget.budgetedCategories.error.positiveValue') : null,
     },
   });
 
@@ -159,10 +162,10 @@ export function BudgetedCategories({
           <Group justify="space-between" align="flex-end">
             <div>
               <Title order={3} fw={700}>
-                Budgeted Categories
+                {t('budget.budgetedCategories.title')}
               </Title>
               <Text size="xs" c="dimmed">
-                Adjust your monthly spending limits
+                {t('budget.budgetedCategories.description')}
               </Text>
             </div>
           </Group>

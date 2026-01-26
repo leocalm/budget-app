@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, Text, TextInput } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { TransactionResponse } from '@/types/transaction';
 import { groupTransactionsByDate, TransactionGroup } from './TransactionGroup';
 
@@ -15,13 +16,14 @@ export interface TransactionsSectionProps {
 
 export const TransactionsSection = ({
   transactions,
-  period = 'this period',
+  period,
   searchQuery,
   onSearchChange,
   onEdit,
   onDelete,
   onClick,
 }: TransactionsSectionProps) => {
+  const { t } = useTranslation();
   // Group transactions by date
   const groupedTransactions = useMemo(() => {
     return groupTransactionsByDate(transactions);
@@ -57,17 +59,10 @@ export const TransactionsSection = ({
             color: '#8892a6',
           }}
         >
-          Showing{' '}
-          <Text
-            component="span"
-            style={{
-              color: '#00d4ff',
-              fontWeight: 700,
-            }}
-          >
-            {transactions.length} transactions
-          </Text>{' '}
-          in {period}
+          {t('transactions.section.showing', {
+            count: transactions.length,
+            period: period || t('transactions.section.thisPeriod'),
+          })}
         </Text>
 
         {/* Search Box */}
@@ -77,7 +72,7 @@ export const TransactionsSection = ({
           }}
         >
           <TextInput
-            placeholder="Search transactions..."
+            placeholder={t('transactions.section.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.currentTarget.value)}
             leftSection={<span style={{ color: '#5a6272' }}>🔍</span>}
@@ -131,12 +126,21 @@ export const TransactionsSection = ({
               textAlign: 'center',
             }}
           >
-            <Text style={{ fontSize: '48px', opacity: 0.5, marginBottom: '16px' }}>💳</Text>
-            <Text style={{ fontSize: '16px', fontWeight: 600, color: '#8892a6', marginBottom: '8px' }}>
-              No transactions found
+            <Text style={{ fontSize: '48px', opacity: 0.5, marginBottom: '16px' }}>
+              💳
+            </Text>
+            <Text
+              style={{
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#8892a6',
+                marginBottom: '8px',
+              }}
+            >
+              {t('transactions.section.noTransactionsFound')}
             </Text>
             <Text style={{ fontSize: '14px', color: '#5a6272' }}>
-              Try adjusting your filters or add a new transaction
+              {t('transactions.section.adjustFilters')}
             </Text>
           </Box>
         )}

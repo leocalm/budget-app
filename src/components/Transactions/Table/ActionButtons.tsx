@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, UnstyledButton } from '@mantine/core';
+import { Box, UnstyledButton, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 export interface ActionButtonsProps {
   onEdit: () => void;
@@ -22,13 +23,16 @@ const actionBtnStyle: React.CSSProperties = {
 };
 
 export const ActionButtons = ({ onEdit, onDelete }: ActionButtonsProps) => {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
   return (
     <Box
       className="transaction-actions"
       style={{
         display: 'flex',
         gap: '8px',
-        opacity: 0,
+        opacity: isMobile ? 1 : 0, // Always visible on mobile
         transition: 'opacity 0.2s ease',
       }}
     >
