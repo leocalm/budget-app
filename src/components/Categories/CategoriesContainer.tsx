@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Group, SegmentedControl, SimpleGrid, Stack, Text, Title } from '@mantine/core';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
 import { CategoryResponse } from '@/types/category';
@@ -9,7 +8,6 @@ import { CreateCategory } from './CreateCategory';
 type CategoryTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
 
 export function CategoriesContainer() {
-  const navigate = useNavigate();
   const { data: categories } = useCategories();
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const deleteMutation = useDeleteCategory();

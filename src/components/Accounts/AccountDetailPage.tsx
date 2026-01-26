@@ -22,7 +22,9 @@ export function AccountDetailPage() {
 
   // Filter transactions for this account
   const accountTransactions = useMemo(() => {
-    if (!transactions || !id) {return [];}
+    if (!transactions || !id) {
+      return [];
+    }
     return transactions.filter((t) => t.fromAccount.id === id || t.toAccount?.id === id);
   }, [transactions, id]);
 

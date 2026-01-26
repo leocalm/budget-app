@@ -1,4 +1,3 @@
-;
 // components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
 // components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
 // components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
@@ -8,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QuickAddTransaction } from './QuickAddTransaction';
-
 
 const queryClient = new QueryClient({
   defaultOptions: {

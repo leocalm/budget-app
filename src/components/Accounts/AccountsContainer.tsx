@@ -13,7 +13,9 @@ export function AccountsContainer() {
 
   // Calculate Summary Stats
   const summary = useMemo(() => {
-    if (!accounts) {return { totalAssets: 0, totalLiabilities: 0, netWorth: 0 };}
+    if (!accounts) {
+      return { totalAssets: 0, totalLiabilities: 0, netWorth: 0 };
+    }
 
     return accounts.reduce(
       (acc, account) => {
@@ -32,7 +34,9 @@ export function AccountsContainer() {
 
   // Mock Stats for individual cards (since we don't have the history endpoint connected yet)
   const accountStats = useMemo(() => {
-    if (!accounts) {return {};}
+    if (!accounts) {
+      return {};
+    }
     const stats: Record<string, AccountStats> = {};
 
     accounts.forEach((acc) => {
