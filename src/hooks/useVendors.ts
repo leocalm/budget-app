@@ -1,4 +1,3 @@
-;
 // hooks/useVendors.ts
 // hooks/useVendors.ts
 // hooks/useVendors.ts
@@ -7,7 +6,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createVendor, fetchVendors } from '@/api/vendor';
 import { VendorRequest } from '@/types/vendor';
-
 
 export const queryKeys = {
   vendors: () => ['vendors'] as const,

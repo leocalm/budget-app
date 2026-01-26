@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Button, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Box, Button, Text, Title } from '@mantine/core';
 
 export interface PageHeaderProps {
   title: string;

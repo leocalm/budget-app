@@ -1,5 +1,5 @@
-import { Paper, Stack, Title, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Paper, Stack, Text, Title } from '@mantine/core';
 
 export function BudgetDetails() {
   const { t } = useTranslation();

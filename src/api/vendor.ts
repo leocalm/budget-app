@@ -1,5 +1,5 @@
 import { Vendor, VendorRequest } from '@/types/vendor';
-import { apiGet, apiPost, apiDelete } from './client';
+import { apiDelete, apiGet, apiPost } from './client';
 
 export async function fetchVendors(): Promise<Vendor[]> {
   return apiGet<Vendor[]>('/api/vendors');

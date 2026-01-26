@@ -36,8 +36,5 @@ export async function updateTransaction(
   id: string,
   requestPayload: TransactionRequest
 ): Promise<TransactionResponse> {
-  return apiPut<TransactionResponse, TransactionRequest>(
-    `/api/transactions/${id}`,
-    requestPayload
-  );
+  return apiPut<TransactionResponse, TransactionRequest>(`/api/transactions/${id}`, requestPayload);
 }

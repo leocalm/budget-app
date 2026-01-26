@@ -1,15 +1,7 @@
-import {
-  Anchor,
-  Button,
-  Paper,
-  PasswordInput,
-  Text,
-  TextInput,
-  Title,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
+import { Anchor, Button, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core';
+import { useForm } from '@mantine/form';
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -22,11 +14,9 @@ export function RegisterPage() {
       confirmPassword: '',
     },
     validate: {
-      name: (val) =>
-        val.length < 2 ? t('auth.register.validation.nameMinLength') : null,
+      name: (val) => (val.length < 2 ? t('auth.register.validation.nameMinLength') : null),
       email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.register.validation.invalidEmail')),
-      password: (val) =>
-        val.length <= 6 ? t('auth.register.validation.passwordMinLength') : null,
+      password: (val) => (val.length <= 6 ? t('auth.register.validation.passwordMinLength') : null),
       confirmPassword: (val, values) =>
         val !== values.password ? t('auth.register.validation.passwordsDoNotMatch') : null,
     },

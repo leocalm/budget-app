@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -11,7 +12,6 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslation } from 'react-i18next';
 import { useBudget, useUpdateBudget } from '@/hooks/useBudget';
 
 export function BudgetConfiguration() {
@@ -30,13 +30,9 @@ export function BudgetConfiguration() {
 
     validate: {
       name: (value) =>
-        !value || value.length < 2
-          ? t('budget.configuration.error.nameLength')
-          : null,
+        !value || value.length < 2 ? t('budget.configuration.error.nameLength') : null,
       startDay: (value: number | undefined) =>
-        value && (value < 1 || value > 31)
-          ? t('budget.configuration.error.startDayRange')
-          : null,
+        value && (value < 1 || value > 31) ? t('budget.configuration.error.startDayRange') : null,
     },
   });
 

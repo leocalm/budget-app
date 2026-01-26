@@ -28,10 +28,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
         <MonthProgressCard data={dashboardData?.monthProgress} />
       </Grid.Col>
       <Grid.Col span={{ base: 12, lg: 8 }}>
-        <BalanceLineChartCard
-          data={dashboardData?.budgetPerDay || []}
-          accounts={accounts || []}
-        />
+        <BalanceLineChartCard data={dashboardData?.budgetPerDay || []} accounts={accounts || []} />
       </Grid.Col>
       <Grid.Col span={{ base: 12, lg: 4 }}>
         <CategoriesChartCard data={dashboardData?.spentPerCategory} />

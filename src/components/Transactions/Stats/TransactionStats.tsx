@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, SimpleGrid, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Box, SimpleGrid, Text } from '@mantine/core';
 
 interface TransactionStatsProps {
   income: number;

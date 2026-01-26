@@ -1,5 +1,5 @@
-import { Paper, Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Group, Paper, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 
 export function BottomNavigation() {
   const navigate = useNavigate();

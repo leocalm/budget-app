@@ -1,6 +1,6 @@
-import { NavLink, Stack, Text, Box } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Box, NavLink, Stack, Text } from '@mantine/core';
 
 interface NavigationProps {
   onNavigate?: () => void;

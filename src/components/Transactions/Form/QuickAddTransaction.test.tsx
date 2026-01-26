@@ -1,4 +1,3 @@
-;
 // components/transactions/QuickAddTransaction/QuickAddTransaction.test.tsx
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -6,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
 import { QuickAddTransaction } from './QuickAddTransaction';
-
 
 // Mock hooks
 vi.mock('@/hooks/useAccounts', () => ({

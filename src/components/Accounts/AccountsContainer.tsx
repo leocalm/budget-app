@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack, Text, Title } from '@mantine/core';
 import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
-import { AccountsTableView, AccountStats } from './AccountsTableView';
 import { AccountsSummary } from './AccountsSummary';
+import { AccountsTableView, AccountStats } from './AccountsTableView';
 import { CreateAccount } from './CreateAccount';
 
 export function AccountsContainer() {
@@ -34,16 +34,16 @@ export function AccountsContainer() {
   const accountStats = useMemo(() => {
     if (!accounts) return {};
     const stats: Record<string, AccountStats> = {};
-    
-    accounts.forEach(acc => {
+
+    accounts.forEach((acc) => {
       stats[acc.id] = {
         balanceHistory: [
-            { date: '2024-01-01', balance: acc.balance * 0.9 },
-            { date: '2024-01-15', balance: acc.balance * 0.95 },
-            { date: '2024-01-30', balance: acc.balance }
+          { date: '2024-01-01', balance: acc.balance * 0.9 },
+          { date: '2024-01-15', balance: acc.balance * 0.95 },
+          { date: '2024-01-30', balance: acc.balance },
         ],
         monthlySpent: 0, // This would come from transaction aggregation
-        transactionCount: 0
+        transactionCount: 0,
       };
     });
     return stats;

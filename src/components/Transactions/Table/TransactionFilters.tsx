@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Group, Text, UnstyledButton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Box, Group, Text, UnstyledButton } from '@mantine/core';
 
 export type TransactionTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
 
@@ -22,10 +22,7 @@ interface QuickFilter {
   id: string;
 }
 
-export function TransactionFilters({
-  typeFilter,
-  onTypeFilterChange,
-}: TransactionFiltersProps) {
+export function TransactionFilters({ typeFilter, onTypeFilterChange }: TransactionFiltersProps) {
   const { t } = useTranslation();
   const [activeQuickFilters, setActiveQuickFilters] = useState<string[]>([]);
 
@@ -80,8 +77,7 @@ export function TransactionFilters({
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               color: typeFilter === tab.value ? '#00d4ff' : '#8892a6',
-              background:
-                typeFilter === tab.value ? 'rgba(0, 212, 255, 0.1)' : 'transparent',
+              background: typeFilter === tab.value ? 'rgba(0, 212, 255, 0.1)' : 'transparent',
             }}
             onMouseEnter={(e) => {
               if (typeFilter !== tab.value) {
@@ -111,12 +107,8 @@ export function TransactionFilters({
               onClick={() => toggleQuickFilter(filter.id)}
               style={{
                 padding: '8px 16px',
-                background: isActive
-                  ? 'rgba(0, 212, 255, 0.15)'
-                  : 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${
-                  isActive ? '#00d4ff' : 'rgba(255, 255, 255, 0.06)'
-                }`,
+                background: isActive ? 'rgba(0, 212, 255, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                border: `1px solid ${isActive ? '#00d4ff' : 'rgba(255, 255, 255, 0.06)'}`,
                 borderRadius: '8px',
                 fontSize: '13px',
                 color: isActive ? '#00d4ff' : '#8892a6',

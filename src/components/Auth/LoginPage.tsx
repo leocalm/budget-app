@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Anchor,
   Button,
@@ -10,8 +12,6 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -24,8 +24,7 @@ export function LoginPage() {
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.login.validation.invalidEmail')),
-      password: (val) =>
-        val.length <= 6 ? t('auth.login.validation.passwordMinLength') : null,
+      password: (val) => (val.length <= 6 ? t('auth.login.validation.passwordMinLength') : null),
     },
   });
 

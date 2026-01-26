@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Text,
-  Title,
-  useMantineColorScheme,
-} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Divider, Grid, Paper, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
 import { useBudgetedCategories, useUnbudgetedCategories } from '@/hooks/useCategories';
 import { BudgetedCategories } from './BudgetedCategories';
 import { BudgetOverview } from './BudgetOverview';

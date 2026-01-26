@@ -1,5 +1,5 @@
-import { Grid, Stack, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Grid, Stack, Text, Title } from '@mantine/core';
 import { BasicAppShell } from '@/AppShell';
 import { TransactionsTable } from '@/components/Transactions';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';

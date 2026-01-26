@@ -1,13 +1,5 @@
-import {
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  Group,
-  ThemeIcon,
-  RingProgress,
-} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Group, Paper, RingProgress, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core';
 import { BudgetAllocationChart } from './BudgetAllocationChart';
 
 interface BudgetOverviewProps {
@@ -16,11 +8,7 @@ interface BudgetOverviewProps {
   allocationData: { name: string; value: number; color: string }[];
 }
 
-export function BudgetOverview({
-  totalBudget,
-  totalSpent,
-  allocationData,
-}: BudgetOverviewProps) {
+export function BudgetOverview({ totalBudget, totalSpent, allocationData }: BudgetOverviewProps) {
   const { t } = useTranslation();
   const percentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
   const remaining = totalBudget - totalSpent;
@@ -82,9 +70,7 @@ export function BudgetOverview({
                   {isOverBudget ? <span>⚠️</span> : <span>✅</span>}
                 </ThemeIcon>
                 <Text fw={600}>
-                  {isOverBudget
-                    ? t('budget.overview.overBudget')
-                    : t('budget.overview.onTrack')}
+                  {isOverBudget ? t('budget.overview.overBudget') : t('budget.overview.onTrack')}
                 </Text>
               </Group>
               <Text size="sm" c="dimmed" lh={1.4}>

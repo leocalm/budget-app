@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Autocomplete,
   Button,
@@ -16,7 +17,6 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse, CategoryType } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
-import { useTranslation } from 'react-i18next';
 
 interface EditTransactionFormProps {
   transaction: TransactionResponse;

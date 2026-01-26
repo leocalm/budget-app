@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Box, Text, TextInput } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Box, Text, TextInput } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
 import { groupTransactionsByDate, TransactionGroup } from './TransactionGroup';
 
@@ -126,9 +126,7 @@ export const TransactionsSection = ({
               textAlign: 'center',
             }}
           >
-            <Text style={{ fontSize: '48px', opacity: 0.5, marginBottom: '16px' }}>
-              💳
-            </Text>
+            <Text style={{ fontSize: '48px', opacity: 0.5, marginBottom: '16px' }}>💳</Text>
             <Text
               style={{
                 fontSize: '16px',

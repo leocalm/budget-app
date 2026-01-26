@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Sparkline } from '@mantine/charts';
 import {
   ActionIcon,
   Badge,
@@ -10,8 +12,6 @@ import {
   ThemeIcon,
   useMantineColorScheme,
 } from '@mantine/core';
-import { Sparkline } from '@mantine/charts';
-import { useTranslation } from 'react-i18next';
 import type { AccountResponse } from '@/types/account';
 
 interface BudgetPerDay {
@@ -44,8 +44,7 @@ export function AccountCard({
 
   // Calculate stats
   const currentBalance = account.balance / 100;
-  const startBalance =
-    balanceHistory.length > 0 ? balanceHistory[0].balance / 100 : currentBalance;
+  const startBalance = balanceHistory.length > 0 ? balanceHistory[0].balance / 100 : currentBalance;
   const balanceChange = currentBalance - startBalance;
   const isPositive = balanceChange >= 0;
 
@@ -54,9 +53,7 @@ export function AccountCard({
       padding="lg"
       radius="md"
       style={{
-        backgroundColor: isDark
-          ? 'var(--mantine-color-dark-7)'
-          : 'var(--mantine-color-white)',
+        backgroundColor: isDark ? 'var(--mantine-color-dark-7)' : 'var(--mantine-color-white)',
         border: '1px solid var(--mantine-color-default-border)',
       }}
     >
@@ -84,10 +81,7 @@ export function AccountCard({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<span>👁️</span>}
-              onClick={() => onViewDetails(account)}
-            >
+            <Menu.Item leftSection={<span>👁️</span>} onClick={() => onViewDetails(account)}>
               {t('accounts.card.viewDetails')}
             </Menu.Item>
             <Menu.Item leftSection={<span>✏️</span>} onClick={() => onEdit(account)}>
@@ -108,11 +102,7 @@ export function AccountCard({
         <Text size="xs" c="dimmed" fw={700} tt="uppercase">
           {t('accounts.card.currentBalance')}
         </Text>
-        <Text
-          size="2xl"
-          fw={700}
-          style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
-        >
+        <Text size="2xl" fw={700} style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}>
           {account.currency.symbol}{' '}
           {currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </Text>

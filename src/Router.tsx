@@ -1,8 +1,8 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 import { BasicAppShell } from './AppShell';
-import { Accounts } from './components/Accounts/Accounts';
 import { AccountDetailPage } from './components/Accounts/AccountDetailPage';
+import { Accounts } from './components/Accounts/Accounts';
 import { AuthLayout } from './components/Auth/AuthLayout';
 import { ForgotPasswordPage } from './components/Auth/ForgotPasswordPage';
 import { LoginPage } from './components/Auth/LoginPage';

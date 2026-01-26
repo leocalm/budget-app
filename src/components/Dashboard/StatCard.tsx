@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Group, Paper, Skeleton, Text, rem, useMantineColorScheme } from '@mantine/core';
+import { Card, Group, Paper, rem, Skeleton, Text, useMantineColorScheme } from '@mantine/core';
 
 interface StatCardProps {
   icon: React.ElementType;
@@ -50,9 +50,7 @@ export function StatCard({
       onClick={onClick}
       style={{
         cursor: onClick ? 'pointer' : 'default',
-        backgroundColor: featured
-          ? 'rgba(0, 212, 255, 0.08)'
-          : 'var(--mantine-color-dark-7)',
+        backgroundColor: featured ? 'rgba(0, 212, 255, 0.08)' : 'var(--mantine-color-dark-7)',
         borderColor: featured ? 'rgba(0, 212, 255, 0.2)' : 'var(--mantine-color-dark-4)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
         boxShadow: featured ? '0 0 32px rgba(0, 212, 255, 0.15)' : undefined,
@@ -71,7 +69,11 @@ export function StatCard({
               borderRadius: 6,
             }}
           >
-            <Icon style={{ width: rem(14), height: rem(14), fontSize: rem(14), lineHeight: 1 }} stroke={1.5} color="var(--mantine-color-dimmed)" />
+            <Icon
+              style={{ width: rem(14), height: rem(14), fontSize: rem(14), lineHeight: 1 }}
+              stroke={1.5}
+              color="var(--mantine-color-dimmed)"
+            />
           </div>
           <Text size="xs" c="dimmed" fw={700} tt="uppercase" style={{ letterSpacing: 0.8 }}>
             {label}
@@ -103,16 +105,36 @@ export function StatCard({
           {trend && (
             <Group gap={2}>
               {trend.direction === 'up' ? (
-                <span style={{ fontSize: 14, color: trend.positive ? 'var(--mantine-color-green-5)' : 'var(--mantine-color-red-5)' }}>↗️</span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: trend.positive
+                      ? 'var(--mantine-color-green-5)'
+                      : 'var(--mantine-color-red-5)',
+                  }}
+                >
+                  ↗️
+                </span>
               ) : (
-                <span style={{ fontSize: 14, color: trend.positive ? 'var(--mantine-color-green-5)' : 'var(--mantine-color-red-5)' }}>↘️</span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: trend.positive
+                      ? 'var(--mantine-color-green-5)'
+                      : 'var(--mantine-color-red-5)',
+                  }}
+                >
+                  ↘️
+                </span>
               )}
               <Text
                 size="xs"
                 fw={600}
                 c={trend.positive ? 'green.5' : 'red.5'}
                 style={{
-                  backgroundColor: trend.positive ? 'rgba(0, 255, 163, 0.1)' : 'rgba(255, 107, 157, 0.1)',
+                  backgroundColor: trend.positive
+                    ? 'rgba(0, 255, 163, 0.1)'
+                    : 'rgba(255, 107, 157, 0.1)',
                   padding: '2px 6px',
                   borderRadius: 4,
                 }}
@@ -122,7 +144,9 @@ export function StatCard({
             </Group>
           )}
           {trend && meta && (
-            <Text size="xs" c="dimmed">•</Text>
+            <Text size="xs" c="dimmed">
+              •
+            </Text>
           )}
           {meta && (
             <Text size="sm" c="dimmed">

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollArea, Table, useMantineColorScheme } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { ScrollArea, Table, useMantineColorScheme } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionRow } from '../Table/TransactionRow';
 

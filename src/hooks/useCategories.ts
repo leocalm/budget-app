@@ -7,10 +7,10 @@ import {
 } from '@/api/budget';
 import {
   createCategory,
-  updateCategory,
   deleteCategory,
   fetchCategories,
   fetchUnbudgetedCategories,
+  updateCategory,
 } from '@/api/category';
 import { BudgetCategoryRequest } from '@/types/budget';
 import { CategoryRequest } from '@/types/category';

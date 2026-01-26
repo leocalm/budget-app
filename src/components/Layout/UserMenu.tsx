@@ -1,5 +1,5 @@
-import { Menu, Group, Avatar, Text, UnstyledButton, rem } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Avatar, Group, Menu, rem, Text, UnstyledButton } from '@mantine/core';
 
 export function UserMenu() {
   const { t } = useTranslation();

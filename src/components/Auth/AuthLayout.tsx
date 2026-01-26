@@ -1,5 +1,5 @@
-import { Box, Center, Container } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
+import { Box, Center, Container } from '@mantine/core';
 import { Logo } from '@/components/Layout/Logo';
 
 export function AuthLayout() {

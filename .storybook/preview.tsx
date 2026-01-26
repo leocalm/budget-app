@@ -3,9 +3,9 @@ import '@mantine/charts/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
-import React from 'react';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../src/theme';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Divider,
@@ -12,7 +13,6 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslation } from 'react-i18next';
 import { useDeleteBudgetCategory, useUpdateBudgetCategory } from '@/hooks/useCategories';
 import { BudgetCategoryResponse } from '@/types/budget';
 

@@ -1,17 +1,7 @@
-import {
-  Anchor,
-  Box,
-  Button,
-  Center,
-  Group,
-  Paper,
-  Text,
-  TextInput,
-  Title,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { Anchor, Box, Button, Center, Group, Paper, Text, TextInput, Title } from '@mantine/core';
+import { useForm } from '@mantine/form';
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
@@ -20,7 +10,8 @@ export function ForgotPasswordPage() {
       email: '',
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.forgotPassword.validation.invalidEmail')),
+      email: (val) =>
+        /^\S+@\S+$/.test(val) ? null : t('auth.forgotPassword.validation.invalidEmail'),
     },
   });
 

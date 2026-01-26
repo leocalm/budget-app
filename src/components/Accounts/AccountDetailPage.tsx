@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ActionIcon, Group, Paper, Stack, Text, Title, Loader, Button } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ActionIcon, Button, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { fetchAccount } from '@/api/account';
-import { useTransactions, useDeleteTransaction } from '@/hooks/useTransactions';
 import { TransactionList } from '@/components/Transactions';
+import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
 import { AccountCard } from './AccountCard';
 
 export function AccountDetailPage() {
@@ -23,9 +23,7 @@ export function AccountDetailPage() {
   // Filter transactions for this account
   const accountTransactions = useMemo(() => {
     if (!transactions || !id) return [];
-    return transactions.filter(
-      t => t.fromAccount.id === id || t.toAccount?.id === id
-    );
+    return transactions.filter((t) => t.fromAccount.id === id || t.toAccount?.id === id);
   }, [transactions, id]);
 
   if (isLoadingAccount) {
@@ -50,7 +48,7 @@ export function AccountDetailPage() {
         </Button>
       </Group>
 
-      <AccountCard 
+      <AccountCard
         account={account}
         balanceHistory={[]} // Placeholder for history data
         monthlySpent={0} // Placeholder
@@ -59,16 +57,20 @@ export function AccountDetailPage() {
         onDelete={() => {}}
         onViewDetails={() => {}}
       />
-      
+
       <Paper withBorder p="md" radius="md">
-        <Title order={4} mb="md">Transaction History</Title>
+        <Title order={4} mb="md">
+          Transaction History
+        </Title>
         {accountTransactions.length > 0 ? (
-          <TransactionList 
-            transactions={accountTransactions} 
-            deleteTransaction={(txId) => deleteTransactionMutation.mutateAsync(txId)} 
+          <TransactionList
+            transactions={accountTransactions}
+            deleteTransaction={(txId) => deleteTransactionMutation.mutateAsync(txId)}
           />
         ) : (
-          <Text c="dimmed" ta="center" py="xl">No transactions found for this account.</Text>
+          <Text c="dimmed" ta="center" py="xl">
+            No transactions found for this account.
+          </Text>
         )}
       </Paper>
     </Stack>

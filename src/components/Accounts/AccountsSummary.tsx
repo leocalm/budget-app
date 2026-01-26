@@ -38,16 +38,15 @@ export function AccountsSummary({ totalAssets, totalLiabilities, netWorth }: Acc
               <Text c="dimmed" tt="uppercase" fw={700} size="xs">
                 {stat.label}
               </Text>
-              <Text fw={700} size="xl" style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}>
+              <Text
+                fw={700}
+                size="xl"
+                style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
+              >
                 € {Math.abs(stat.value / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </Text>
             </div>
-            <ThemeIcon
-              color={stat.color}
-              variant="light"
-              size={38}
-              radius="md"
-            >
+            <ThemeIcon color={stat.color} variant="light" size={38} radius="md">
               <stat.icon />
             </ThemeIcon>
           </Group>
