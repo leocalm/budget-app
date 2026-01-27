@@ -54,6 +54,7 @@ vi.mock('@/hooks/useVendors', () => ({
   }),
   useCreateVendor: () => ({
     mutate: vi.fn(),
+    isPending: false,
   }),
 }));
 
