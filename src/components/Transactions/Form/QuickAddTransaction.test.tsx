@@ -261,15 +261,15 @@ describe('QuickAddTransaction', () => {
   });
 
   it('validates description max length', async () => {
-    const user = userEvent.setup();
-
     renderComponent();
 
     const longDescription = 'a'.repeat(256);
-    await user.type(screen.getByPlaceholderText(/description/i), longDescription);
+    fireEvent.change(screen.getByPlaceholderText(/description/i), {
+      target: { value: longDescription },
+    });
 
     const submitButton = screen.getByRole('button', { name: '+' });
-    await user.click(submitButton);
+    fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByText('Description must be less than 255 characters')).toBeInTheDocument();
