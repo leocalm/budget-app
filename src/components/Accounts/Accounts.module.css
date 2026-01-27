@@ -1,0 +1,388 @@
+/* ── Page Header ── */
+.header {
+  margin-bottom: var(--space-2xl);
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.headerTitle h2 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+}
+
+.headerSubtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.addButton {
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgb(0, 212, 255, 0.3);
+}
+
+.addButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgb(0, 212, 255, 0.4);
+}
+
+/* ── Summary Grid ── */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.summaryCard {
+  background: var(--bg-card);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+}
+
+.summaryLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+}
+
+.summaryValue {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: var(--space-sm);
+}
+
+.summaryValueGradient {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.summaryValuePositive {
+  color: var(--accent-success);
+}
+
+.summaryValueNegative {
+  color: var(--accent-danger);
+}
+
+.summaryMeta {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ── Accounts Grid ── */
+.accountsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* ── Account Card ── */
+.accountCard {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  animation: fade-in-up 0.5s ease backwards;
+}
+
+.accountCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-accent-color, var(--accent-primary));
+  opacity: 0.8;
+}
+
+.accountCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 16px rgb(0, 0, 0, 0.16));
+  border-color: var(--border-medium);
+}
+
+.accountCard:hover .accountActions {
+  opacity: 1;
+}
+
+/* Stagger animations */
+.accountCard:nth-child(1) { animation-delay: 0.1s; }
+.accountCard:nth-child(2) { animation-delay: 0.15s; }
+.accountCard:nth-child(3) { animation-delay: 0.2s; }
+.accountCard:nth-child(4) { animation-delay: 0.25s; }
+.accountCard:nth-child(5) { animation-delay: 0.3s; }
+.accountCard:nth-child(6) { animation-delay: 0.35s; }
+.accountCard:nth-child(7) { animation-delay: 0.4s; }
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Account Header ── */
+.accountHeader {
+  padding: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.accountInfo {
+  flex: 1;
+}
+
+.accountName {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.accountType {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgb(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.accountActions {
+  display: flex;
+  gap: var(--space-sm);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.actionIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+.actionIcon:hover {
+  background: rgb(0, 212, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ── Balance Section ── */
+.balanceSection {
+  padding: 0 var(--space-xl) var(--space-xl);
+}
+
+.balanceLabel {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.balanceAmount {
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: var(--space-md);
+}
+
+.balanceChange {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.balanceChangePositive {
+  background: rgb(0, 255, 163, 0.1);
+  color: var(--accent-success);
+}
+
+.balanceChangeNegative {
+  background: rgb(255, 107, 157, 0.1);
+  color: var(--accent-danger);
+}
+
+.balanceChangeNeutral {
+  background: rgb(255, 255, 255, 0.05);
+  color: var(--text-tertiary);
+}
+
+/* ── Chart Section ── */
+.chartSection {
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.chartContainer {
+  height: 80px;
+  position: relative;
+}
+
+/* ── Stats Section ── */
+.statsSection {
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.statValue {
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+}
+
+/* ── Status Section ── */
+.statusSection {
+  padding: var(--space-md) var(--space-xl);
+  background: rgb(255, 255, 255, 0.02);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 13px;
+}
+
+.statusIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-success);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.statusText {
+  color: var(--text-secondary);
+}
+
+/* ── Quick Actions ── */
+.quickActions {
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.quickActionBtn {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: rgb(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: Sora, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.quickActionBtn:hover {
+  background: rgb(0, 212, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+  .accountsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .accountsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

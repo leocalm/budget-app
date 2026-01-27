@@ -1,57 +1,50 @@
 import React from 'react';
-import { Group, Paper, SimpleGrid, Text, ThemeIcon } from '@mantine/core';
+import styles from './Accounts.module.css';
 
 interface AccountsSummaryProps {
   totalAssets: number;
   totalLiabilities: number;
   netWorth: number;
+  accountCount: number;
 }
 
-export function AccountsSummary({ totalAssets, totalLiabilities, netWorth }: AccountsSummaryProps) {
-  const stats = [
-    {
-      label: 'Total Assets',
-      value: totalAssets,
-      icon: () => <span>🪙</span>,
-      color: 'green',
-    },
-    {
-      label: 'Total Liabilities',
-      value: totalLiabilities,
-      icon: () => <span>💳</span>,
-      color: 'red',
-    },
-    {
-      label: 'Net Worth',
-      value: netWorth,
-      icon: () => <span>⚖️</span>,
-      color: netWorth >= 0 ? 'blue' : 'orange',
-    },
-  ];
+export function AccountsSummary({
+  totalAssets,
+  totalLiabilities,
+  netWorth,
+  accountCount,
+}: AccountsSummaryProps) {
+  const formatCurrency = (value: number) => {
+    const abs = Math.abs(value / 100);
+    const formatted = abs.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    return value < 0 ? `-\u20AC ${formatted}` : `\u20AC ${formatted}`;
+  };
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
-      {stats.map((stat) => (
-        <Paper key={stat.label} withBorder p="md" radius="md">
-          <Group justify="space-between">
-            <div>
-              <Text c="dimmed" tt="uppercase" fw={700} size="xs">
-                {stat.label}
-              </Text>
-              <Text
-                fw={700}
-                size="xl"
-                style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
-              >
-                € {Math.abs(stat.value / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-              </Text>
-            </div>
-            <ThemeIcon color={stat.color} variant="light" size={38} radius="md">
-              <stat.icon />
-            </ThemeIcon>
-          </Group>
-        </Paper>
-      ))}
-    </SimpleGrid>
+    <div className={styles.summaryGrid}>
+      <div className={styles.summaryCard}>
+        <div className={styles.summaryLabel}>Total Net Worth</div>
+        <div className={`${styles.summaryValue} ${styles.summaryValueGradient}`}>
+          {formatCurrency(netWorth)}
+        </div>
+        <div className={styles.summaryMeta}>
+          Across {accountCount} account{accountCount !== 1 ? 's' : ''}
+        </div>
+      </div>
+      <div className={styles.summaryCard}>
+        <div className={styles.summaryLabel}>Total Assets</div>
+        <div className={`${styles.summaryValue} ${styles.summaryValuePositive}`}>
+          {formatCurrency(totalAssets)}
+        </div>
+        <div className={styles.summaryMeta}>Cash &amp; savings</div>
+      </div>
+      <div className={styles.summaryCard}>
+        <div className={styles.summaryLabel}>Total Liabilities</div>
+        <div className={`${styles.summaryValue} ${styles.summaryValueNegative}`}>
+          {formatCurrency(totalLiabilities)}
+        </div>
+        <div className={styles.summaryMeta}>Credit cards &amp; debt</div>
+      </div>
+    </div>
   );
 }

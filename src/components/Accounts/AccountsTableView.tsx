@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Drawer, Modal, SimpleGrid, Text, useMantineTheme } from '@mantine/core';
+import { Drawer, Modal, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { AccountResponse } from '@/types/account';
+import styles from './Accounts.module.css';
 import { AccountCard } from './AccountCard';
 import { EditAccountForm } from './EditAccountForm';
 
@@ -38,29 +39,31 @@ export function AccountsTableView({
   }
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
-      {accounts?.map((account) => {
-        const stats = accountStats[account.id] || {
-          balanceHistory: [],
-          monthlySpent: 0,
-          transactionCount: 0,
-        };
-        return (
-          <AccountCard
-            key={account.id}
-            account={account}
-            balanceHistory={stats.balanceHistory}
-            monthlySpent={stats.monthlySpent}
-            transactionCount={stats.transactionCount}
-            onEdit={(account) => {
-              setSelected(account);
-              openEdit();
-            }}
-            onDelete={() => onDelete(account.id)}
-            onViewDetails={() => onViewDetails?.(account)}
-          />
-        );
-      })}
+    <>
+      <div className={styles.accountsGrid}>
+        {accounts?.map((account) => {
+          const stats = accountStats[account.id] || {
+            balanceHistory: [],
+            monthlySpent: 0,
+            transactionCount: 0,
+          };
+          return (
+            <AccountCard
+              key={account.id}
+              account={account}
+              balanceHistory={stats.balanceHistory}
+              monthlySpent={stats.monthlySpent}
+              transactionCount={stats.transactionCount}
+              onEdit={(acc) => {
+                setSelected(acc);
+                openEdit();
+              }}
+              onDelete={() => onDelete(account.id)}
+              onViewDetails={() => onViewDetails?.(account)}
+            />
+          );
+        })}
+      </div>
       {isMobile ? (
         <Drawer opened={editOpened} onClose={closeEdit} title="Edit Account" position="bottom">
           <div>
@@ -90,6 +93,6 @@ export function AccountsTableView({
           )}
         </Modal>
       )}
-    </SimpleGrid>
+    </>
   );
 }
