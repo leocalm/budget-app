@@ -109,7 +109,7 @@ describe('QuickAddTransaction', () => {
   it('validates required fields on submit', async () => {
     renderComponent();
 
-    const submitButton = screen.getByRole('button', { name: '+' });
+    const submitButton = screen.getByRole('button', { name: /plus/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -137,7 +137,7 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByText('🍔 Comida'));
 
     // Submit
-    const submitButton = screen.getByRole('button', { name: '+' });
+    const submitButton = screen.getByRole('button', { name: /plus/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -180,7 +180,7 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByText('🍔 Comida'));
 
     // Submit
-    const submitButton = screen.getByRole('button', { name: '+' });
+    const submitButton = screen.getByRole('button', { name: /plus/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -253,7 +253,7 @@ describe('QuickAddTransaction', () => {
 
     await user.type(screen.getByPlaceholderText('0.00'), '0');
 
-    const submitButton = screen.getByRole('button', { name: '+' });
+    const submitButton = screen.getByRole('button', { name: /plus/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -269,7 +269,7 @@ describe('QuickAddTransaction', () => {
       target: { value: longDescription },
     });
 
-    const submitButton = screen.getByRole('button', { name: '+' });
+    const submitButton = screen.getByRole('button', { name: /plus/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
