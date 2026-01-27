@@ -6,5 +6,5 @@ export function BudgetPage() {
     <BasicAppShell>
       <Budget />
     </BasicAppShell>
-  )
+  );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Affix,
@@ -17,7 +18,12 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { Transaction, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
-import { TransactionFormFields, TransactionFormProvider, TransactionFormValues, useTransactionForm, } from '../Form';
+import {
+  TransactionFormFields,
+  TransactionFormProvider,
+  TransactionFormValues,
+  useTransactionForm,
+} from '../Form';
 import { MobileTransactionCard, TransactionList } from '../List';
 
 export interface TransactionsTableViewProps {
@@ -47,6 +53,7 @@ export const TransactionsTableView = ({
   deleteTransaction,
   createVendor,
 }: TransactionsTableViewProps) => {
+  const { t } = useTranslation();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
@@ -125,7 +132,7 @@ export const TransactionsTableView = ({
   if (isError) {
     return (
       <Alert color="red" variant="light">
-        Error loading transactions
+        {t('transactions.tableView.error.load')}
       </Alert>
     );
   }
@@ -191,7 +198,7 @@ export const TransactionsTableView = ({
               <Drawer
                 opened={drawerOpened}
                 onClose={closeDrawer}
-                title="Add Transaction"
+                title={t('transactions.tableView.addTransaction')}
                 position="bottom"
                 size="80%"
                 padding="md"
@@ -207,7 +214,7 @@ export const TransactionsTableView = ({
                     size="sm"
                   />
                   <Button type="submit" fullWidth leftSection={<span>➕</span>}>
-                    Create Transaction
+                    {t('transactions.tableView.createTransaction')}
                   </Button>
                 </Stack>
               </Drawer>

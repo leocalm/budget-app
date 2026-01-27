@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Divider,
@@ -26,6 +27,7 @@ export function BudgetedCategories({
   onEditingChange,
   categories,
 }: BudgetedCategoriesProps) {
+  const { t } = useTranslation();
   const deleteMutation = useDeleteBudgetCategory();
   const updateMutation = useUpdateBudgetCategory();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -35,12 +37,12 @@ export function BudgetedCategories({
       budgetedValue: 0,
     },
     validate: {
-      budgetedValue: (value) => (value < 0 ? 'Value must be positive' : null),
+      budgetedValue: (value) =>
+        value < 0 ? t('budget.budgetedCategories.error.positiveValue') : null,
     },
   });
 
   React.useEffect(() => {
-    console.log(editingId);
     if (editingId) {
       const category = categories?.find((c) => c.id === editingId);
       if (category) {
@@ -159,10 +161,10 @@ export function BudgetedCategories({
           <Group justify="space-between" align="flex-end">
             <div>
               <Title order={3} fw={700}>
-                Budgeted Categories
+                {t('budget.budgetedCategories.title')}
               </Title>
               <Text size="xs" c="dimmed">
-                Adjust your monthly spending limits
+                {t('budget.budgetedCategories.description')}
               </Text>
             </div>
           </Group>

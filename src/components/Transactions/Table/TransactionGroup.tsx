@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@mantine/core';
+import { Box, Table, Text } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionRow } from './TransactionRow';
 
@@ -76,16 +76,20 @@ export const TransactionGroup = ({
       </Box>
 
       {/* Transaction Rows */}
-      {transactions.map((transaction, index) => (
-        <TransactionRow
-          key={transaction.id}
-          transaction={transaction}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onClick={onClick}
-          animationDelay={baseAnimationDelay + index * 0.05}
-        />
-      ))}
+      <Table>
+        <Table.Tbody>
+          {transactions.map((transaction, index) => (
+            <TransactionRow
+              key={transaction.id}
+              transaction={transaction}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onClick={onClick}
+              animationDelay={baseAnimationDelay + index * 0.05}
+            />
+          ))}
+        </Table.Tbody>
+      </Table>
     </Box>
   );
 };

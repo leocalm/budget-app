@@ -27,7 +27,15 @@ export function TopCategoriesChart({ data }: TopCategoriesChartProps) {
               <Text size="sm" fw={500} w={120} truncate>
                 {item.category}
               </Text>
-              <div style={{ flex: 1, height: 32, background: 'rgba(255, 255, 255, 0.03)', borderRadius: 4, overflow: 'hidden' }}>
+              <div
+                style={{
+                  flex: 1,
+                  height: 32,
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                }}
+              >
                 <div
                   style={{
                     width: `${width}%`,
@@ -41,7 +49,11 @@ export function TopCategoriesChart({ data }: TopCategoriesChartProps) {
               <Text
                 size="sm"
                 fw={600}
-                style={{ fontFamily: 'var(--mantine-font-family-monospace)', width: 60, textAlign: 'right' }}
+                style={{
+                  fontFamily: 'var(--mantine-font-family-monospace)',
+                  width: 60,
+                  textAlign: 'right',
+                }}
                 c="dimmed"
               >
                 €{item.amount}

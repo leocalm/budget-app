@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { Divider, Grid, Paper, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
 import { useBudgetedCategories, useUnbudgetedCategories } from '@/hooks/useCategories';
 import { BudgetedCategories } from './BudgetedCategories';
@@ -7,6 +8,7 @@ import { BudgetOverview } from './BudgetOverview';
 import { UnbudgetedCategories } from './UnbudgetedCategories';
 
 export function BudgetContainer() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { colorScheme } = useMantineColorScheme();
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -37,10 +39,10 @@ export function BudgetContainer() {
     <Stack gap="xl">
       <div>
         <Title order={2} fw={800}>
-          Monthly Budget
+          {t('budget.container.title')}
         </Title>
         <Text c="dimmed" size="sm">
-          Manage your spending limits and assign budgets to your categories.
+          {t('budget.container.description')}
         </Text>
       </div>
 
@@ -74,10 +76,10 @@ export function BudgetContainer() {
             }}
           >
             <Title order={4} mb={4}>
-              Unbudgeted
+              {t('budget.container.unbudgetedTitle')}
             </Title>
             <Text size="xs" c="dimmed" mb="lg">
-              Click a category to set its monthly limit and add it to your plan.
+              {t('budget.container.unbudgetedDescription')}
             </Text>
 
             <Divider mb="lg" variant="dashed" />

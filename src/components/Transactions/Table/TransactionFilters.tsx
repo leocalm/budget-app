@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Group, Text, UnstyledButton } from '@mantine/core';
 
 export type TransactionTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
@@ -21,22 +22,23 @@ interface QuickFilter {
   id: string;
 }
 
-const filterTabs: FilterTab[] = [
-  { label: 'All Transactions', value: 'all' },
-  { label: 'Incoming', value: 'Incoming' },
-  { label: 'Outgoing', value: 'Outgoing' },
-  { label: 'Transfers', value: 'Transfer' },
-];
-
-const quickFilters: QuickFilter[] = [
-  { icon: '📅', label: 'Date Range', id: 'date' },
-  { icon: '🏦', label: 'Account: All', id: 'account' },
-  { icon: '🏷️', label: 'Category: All', id: 'category' },
-  { icon: '💰', label: 'Amount: All', id: 'amount' },
-];
-
 export function TransactionFilters({ typeFilter, onTypeFilterChange }: TransactionFiltersProps) {
+  const { t } = useTranslation();
   const [activeQuickFilters, setActiveQuickFilters] = useState<string[]>([]);
+
+  const filterTabs: FilterTab[] = [
+    { label: t('transactions.filters.allTransactions'), value: 'all' },
+    { label: t('transactions.filters.incoming'), value: 'Incoming' },
+    { label: t('transactions.filters.outgoing'), value: 'Outgoing' },
+    { label: t('transactions.filters.transfers'), value: 'Transfer' },
+  ];
+
+  const quickFilters: QuickFilter[] = [
+    { icon: '📅', label: t('transactions.filters.dateRange'), id: 'date' },
+    { icon: '🏦', label: t('transactions.filters.accountAll'), id: 'account' },
+    { icon: '🏷️', label: t('transactions.filters.categoryAll'), id: 'category' },
+    { icon: '💰', label: t('transactions.filters.amountAll'), id: 'amount' },
+  ];
 
   const toggleQuickFilter = (id: string) => {
     setActiveQuickFilters((prev) =>

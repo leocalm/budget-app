@@ -1,4 +1,5 @@
-;
+// components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
+// components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
 // components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
 // components/transactions/QuickAddTransaction/QuickAddTransaction.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QuickAddTransaction } from './QuickAddTransaction';
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,92 +61,6 @@ const meta: Meta<typeof QuickAddTransaction> = {
 
 export default meta;
 type Story = StoryObj<typeof QuickAddTransaction>;
-
-// Mock data for stories
-const mockAccounts = [
-  {
-    id: '1',
-    name: 'ING',
-    icon: '💳',
-    color: '#00ffa3',
-    account_type: 'Checking' as const,
-    balance: 500,
-    currency: {
-      id: '1',
-      name: 'Euro',
-      symbol: '€',
-      currency: 'EUR',
-      decimal_places: 2,
-    },
-  },
-  {
-    id: '2',
-    name: 'AMEX',
-    icon: '💳',
-    color: '#00d4ff',
-    account_type: 'CreditCard' as const,
-    balance: -1362.55,
-    currency: {
-      id: '1',
-      name: 'Euro',
-      symbol: '€',
-      currency: 'EUR',
-      decimal_places: 2,
-    },
-  },
-];
-
-const mockCategories = [
-  {
-    id: '1',
-    name: 'Comida',
-    icon: '🍔',
-    color: '#b47aff',
-    parent_id: null,
-    category_type: 'Outgoing' as const,
-  },
-  {
-    id: '2',
-    name: 'Mercado',
-    icon: '🛒',
-    color: '#ffa940',
-    parent_id: null,
-    category_type: 'Outgoing' as const,
-  },
-  {
-    id: '3',
-    name: 'Farmacia',
-    icon: '💊',
-    color: '#ff6b9d',
-    parent_id: null,
-    category_type: 'Outgoing' as const,
-  },
-];
-
-const mockVendors = [
-  { id: '1', name: "McDonald's" },
-  { id: '2', name: 'Albert Heijn' },
-  { id: '3', name: 'Etos' },
-  { id: '4', name: 'Netflix' },
-];
-
-// Mock API handlers
-const mockApiHandlers = {
-  getAccounts: () => Promise.resolve(mockAccounts),
-  getCategories: () => Promise.resolve(mockCategories),
-  getVendors: () => Promise.resolve(mockVendors),
-  createTransaction: (data: any) => {
-    console.log('Creating transaction:', data);
-    return Promise.resolve({
-      id: 'new-1',
-      ...data,
-      category: mockCategories.find((c) => c.id === data.category_id),
-      from_account: mockAccounts.find((a) => a.id === data.from_account_id),
-      to_account: null,
-      vendor: mockVendors.find((v) => v.id === data.vendor_id),
-    });
-  },
-};
 
 // Default story
 export const Default: Story = {

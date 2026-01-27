@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box } from '@mantine/core';
+import { Table } from '@mantine/core';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
@@ -12,7 +12,10 @@ const meta: Meta<typeof TransactionRow> = {
   component: TransactionRow,
   decorators: [
     (Story) => (
-      <Box
+      <Table
+        verticalSpacing="sm"
+        highlightOnHover
+        striped="even"
         style={{
           background: '#151b26',
           borderRadius: '16px',
@@ -20,8 +23,10 @@ const meta: Meta<typeof TransactionRow> = {
           overflow: 'hidden',
         }}
       >
-        <Story />
-      </Box>
+        <Table.Tbody>
+          <Story />
+        </Table.Tbody>
+      </Table>
     ),
   ],
 };

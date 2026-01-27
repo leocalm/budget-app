@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollArea, Table, useMantineColorScheme } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionRow } from '../Table/TransactionRow';
@@ -14,6 +15,7 @@ export const TransactionList = ({
   deleteTransaction,
   editTransaction,
 }: TransactionListProps) => {
+  const { t } = useTranslation();
   const { colorScheme } = useMantineColorScheme();
 
   return (
@@ -30,12 +32,12 @@ export const TransactionList = ({
           }}
         >
           <Table.Tr>
-            <Table.Th w={110}>Date</Table.Th>
-            <Table.Th>Description / Vendor</Table.Th>
-            <Table.Th w={180}>Category</Table.Th>
-            <Table.Th w={250}>Accounts (From → To)</Table.Th>
+            <Table.Th w={110}>{t('transactions.list.date')}</Table.Th>
+            <Table.Th>{t('transactions.list.descriptionVendor')}</Table.Th>
+            <Table.Th w={180}>{t('transactions.list.category')}</Table.Th>
+            <Table.Th w={250}>{t('transactions.list.accounts')}</Table.Th>
             <Table.Th w={120} align="right">
-              Amount
+              {t('transactions.list.amount')}
             </Table.Th>
             <Table.Th w={50} />
           </Table.Tr>

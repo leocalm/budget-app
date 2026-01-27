@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Alert, Button, ColorInput, Grid, Group, NumberInput, Select, Stack, TextInput, } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  ColorInput,
+  Grid,
+  Group,
+  NumberInput,
+  Select,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useUpdateAccount } from '@/hooks/useAccounts';
 import { ACCOUNT_TYPES, AccountRequest, AccountResponse, AccountType } from '@/types/account';

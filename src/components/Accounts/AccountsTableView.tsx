@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Drawer,
-  Modal,
-  SimpleGrid,
-  Text,
-  useMantineColorScheme,
-  useMantineTheme,
-} from '@mantine/core';
+import { Drawer, Modal, SimpleGrid, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { AccountResponse } from '@/types/account';
 import { AccountCard } from './AccountCard';
@@ -35,7 +28,6 @@ export function AccountsTableView({
   accountStats = {},
   onViewDetails,
 }: AccountsTableViewProps) {
-  const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);

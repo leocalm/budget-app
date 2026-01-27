@@ -18,24 +18,64 @@ export const theme = createTheme({
     ],
     // Accents (Index 5 matches the spec hex codes)
     cyan: [
-      '#e0fbff', '#b3f2ff', '#80eaff', '#4de1ff', '#1ad9ff', 
-      '#00d4ff', '#00aacc', '#008099', '#005566', '#002b33'
+      '#e0fbff',
+      '#b3f2ff',
+      '#80eaff',
+      '#4de1ff',
+      '#1ad9ff',
+      '#00d4ff',
+      '#00aacc',
+      '#008099',
+      '#005566',
+      '#002b33',
     ],
     green: [
-      '#e0ffed', '#b3ffdb', '#80ffc8', '#4dffb6', '#1affa4', 
-      '#00ffa3', '#00cc82', '#009962', '#006641', '#003321'
+      '#e0ffed',
+      '#b3ffdb',
+      '#80ffc8',
+      '#4dffb6',
+      '#1affa4',
+      '#00ffa3',
+      '#00cc82',
+      '#009962',
+      '#006641',
+      '#003321',
     ],
     orange: [
-      '#fff0e0', '#ffe2b3', '#ffd380', '#ffc44d', '#ffb51a', 
-      '#ffa940', '#cc8733', '#996526', '#664419', '#33220d'
+      '#fff0e0',
+      '#ffe2b3',
+      '#ffd380',
+      '#ffc44d',
+      '#ffb51a',
+      '#ffa940',
+      '#cc8733',
+      '#996526',
+      '#664419',
+      '#33220d',
     ],
     pink: [
-      '#ffe0ea', '#ffb3cc', '#ff80ad', '#ff4d8f', '#ff1a70', 
-      '#ff6b9d', '#cc567e', '#99405e', '#662b3f', '#33151f'
+      '#ffe0ea',
+      '#ffb3cc',
+      '#ff80ad',
+      '#ff4d8f',
+      '#ff1a70',
+      '#ff6b9d',
+      '#cc567e',
+      '#99405e',
+      '#662b3f',
+      '#33151f',
     ],
     violet: [
-      '#f2e0ff', '#dfb3ff', '#cc80ff', '#b94dff', '#a61aff', 
-      '#b47aff', '#9062cc', '#6c4999', '#483166', '#241833'
+      '#f2e0ff',
+      '#dfb3ff',
+      '#cc80ff',
+      '#b94dff',
+      '#a61aff',
+      '#b47aff',
+      '#9062cc',
+      '#6c4999',
+      '#483166',
+      '#241833',
     ],
   },
   primaryColor: 'cyan',
@@ -77,6 +117,6 @@ export const theme = createTheme({
         card: '#151b26',
         elevated: '#1e2433',
       },
-    }
-  }
+    },
+  },
 });

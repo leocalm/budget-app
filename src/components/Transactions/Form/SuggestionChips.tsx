@@ -1,8 +1,6 @@
-;
 // components/transactions/QuickAddTransaction/SuggestionChips.tsx
 import { Group, Text, UnstyledButton } from '@mantine/core';
 import classes from './SuggestionChips.module.css';
-
 
 interface Suggestion {
   vendor: string;
@@ -16,7 +14,9 @@ interface SuggestionChipsProps {
 }
 
 export const SuggestionChips = ({ suggestions, onSelect }: SuggestionChipsProps) => {
-  if (suggestions.length === 0) {return null;}
+  if (suggestions.length === 0) {
+    return null;
+  }
 
   return (
     <Group gap="sm" wrap="wrap">

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget App - Complete Layout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-tertiary: #1a1f2e;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* App Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation (Desktop) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Period Selector */
+        .period-selector {
+            padding: var(--space-md) var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .period-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .period-dropdown {
+            position: relative;
+        }
+
+        .period-button {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .period-button:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .period-icon {
+            font-size: 16px;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            flex: 1;
+            padding: var(--space-lg) var(--space-md);
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            padding: 0 var(--space-md);
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: 12px var(--space-md);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(180, 122, 255, 0.15) 100%);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            background: rgba(255, 107, 157, 0.2);
+            color: var(--accent-danger);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* User Menu */
+        .user-menu {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-card);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-menu-icon {
+            font-size: 18px;
+            color: var(--text-tertiary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        /* Top Bar (Mobile) */
+        .mobile-topbar {
+            display: none;
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--space-md);
+            z-index: 90;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-menu-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+
+        .mobile-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .mobile-period {
+            padding: 8px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        /* Bottom Navigation (Mobile) */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            padding: var(--space-sm) var(--space-sm) calc(var(--space-sm) + env(safe-area-inset-bottom));
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(18, 23, 32, 0.95);
+        }
+
+        .bottom-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: var(--space-sm);
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 60px;
+            transition: all 0.2s ease;
+            border-radius: var(--radius-sm);
+        }
+
+        .bottom-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .bottom-nav-item.active {
+            color: var(--accent-primary);
+        }
+
+        .bottom-nav-icon {
+            font-size: 24px;
+        }
+
+        .bottom-nav-item.active .bottom-nav-icon {
+            transform: scale(1.1);
+        }
+
+        /* Content Container */
+        .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        /* Dashboard Content (Example) */
+        .page-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-medium);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card.featured {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-card.featured::before {
+            opacity: 1;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-sm);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card.featured .stat-value {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding-bottom: 80px;
+            }
+
+            .mobile-topbar {
+                display: flex;
+            }
+
+            .bottom-nav {
+                display: block;
+            }
+
+            .content-container {
+                padding: var(--space-md);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .stat-card.featured .stat-value {
+                font-size: 36px;
+            }
+        }
+
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 20, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 99;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card {
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo -->
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <div class="logo-icon">💰</div>
+                    <span class="logo-text">BudgetApp</span>
+                </a>
+            </div>
+
+            <!-- Period Selector -->
+            <div class="period-selector">
+                <div class="period-label">Current Period</div>
+                <div class="period-dropdown">
+                    <button class="period-button">
+                        <span>📅 Jan/26</span>
+                        <span class="period-icon">▼</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a href="#" class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span>Transactions</span>
+                        <span class="nav-badge">12</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">💰</span>
+                        <span>Monthly Budget</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🏦</span>
+                        <span>Accounts</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🏷️</span>
+                        <span>Categories</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Insights</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📈</span>
+                        <span>Reports</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🎯</span>
+                        <span>Goals</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        <span>Recurring</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Other</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span>Help & Support</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Menu -->
+            <div class="user-menu">
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-email">john@example.com</div>
+                    </div>
+                    <span class="user-menu-icon">⋯</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Top Bar -->
+            <div class="mobile-topbar">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <div class="mobile-logo">💰</div>
+                <div class="mobile-period">Jan/26</div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="content-container">
+                <div class="page-header">
+                    <h1 class="page-title">Financial Dashboard</h1>
+                    <p class="page-subtitle">Overview of your financial activity for January 2026</p>
+                </div>
+
+                <!-- Stats Grid (Example Content) -->
+                <div class="stats-grid">
+                    <div class="stat-card featured">
+                        <div class="stat-label">
+                            <div class="stat-icon">💰</div>
+                            Remaining Budget
+                        </div>
+                        <div class="stat-value">€2,188.54</div>
+                        <div class="stat-meta">
+                            <span>€8,046 limit</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <div class="stat-icon">💳</div>
+                            Total Assets
+                        </div>
+                        <div class="stat-value">€538.62</div>
+                        <div class="stat-meta">
+                            <span>7 accounts</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <div class="stat-icon">📊</div>
+                            Avg. Daily Spend
+                        </div>
+                        <div class="stat-value">€222.56</div>
+                        <div class="stat-meta">
+                            <span>Past 7 days</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <div class="stat-icon">📈</div>
+                            Month Progress
+                        </div>
+                        <div class="stat-value">86%</div>
+                        <div class="stat-meta">
+                            <span>5 days left</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="bottom-nav">
+            <div class="bottom-nav-items">
+                <a href="#" class="bottom-nav-item active">
+                    <span class="bottom-nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="bottom-nav-item">
+                    <span class="bottom-nav-icon">💳</span>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" class="bottom-nav-item">
+                    <span class="bottom-nav-icon">💰</span>
+                    <span>Budget</span>
+                </a>
+                <a href="#" class="bottom-nav-item">
+                    <span class="bottom-nav-icon">🏦</span>
+                    <span>Accounts</span>
+                </a>
+                <a href="#" class="bottom-nav-item">
+                    <span class="bottom-nav-icon">⋯</span>
+                    <span>More</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Navigation active state
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Close mobile menu after selection
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Bottom nav active state
+        document.querySelectorAll('.bottom-nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Period selector (placeholder)
+        document.querySelector('.period-button').addEventListener('click', () => {
+            alert('Period selector would open here with options like:\n\n• This Month\n• Last Month\n• This Year\n• Custom Range');
+        });
+
+        // User profile menu (placeholder)
+        document.querySelector('.user-profile').addEventListener('click', () => {
+            alert('User menu would open here with options like:\n\n• Profile Settings\n• Preferences\n• Security\n• Log Out');
+        });
+    </script>
+</body>
+</html>

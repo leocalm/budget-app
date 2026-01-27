@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Sparkline } from '@mantine/charts';
 import {
   ActionIcon,
   Badge,
@@ -10,7 +12,6 @@ import {
   ThemeIcon,
   useMantineColorScheme,
 } from '@mantine/core';
-import { Sparkline } from '@mantine/charts';
 import type { AccountResponse } from '@/types/account';
 
 interface BudgetPerDay {
@@ -37,6 +38,7 @@ export function AccountCard({
   onDelete,
   onViewDetails,
 }: AccountCardProps) {
+  const { t } = useTranslation();
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -80,17 +82,17 @@ export function AccountCard({
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item leftSection={<span>👁️</span>} onClick={() => onViewDetails(account)}>
-              View Details
+              {t('accounts.card.viewDetails')}
             </Menu.Item>
             <Menu.Item leftSection={<span>✏️</span>} onClick={() => onEdit(account)}>
-              Edit Account
+              {t('accounts.card.editAccount')}
             </Menu.Item>
             <Menu.Item
               color="red"
               leftSection={<span>🗑️</span>}
               onClick={() => onDelete(account.id)}
             >
-              Delete Account
+              {t('accounts.card.deleteAccount')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -98,7 +100,7 @@ export function AccountCard({
 
       <Stack gap="xs" mb="xl">
         <Text size="xs" c="dimmed" fw={700} tt="uppercase">
-          Current Balance
+          {t('accounts.card.currentBalance')}
         </Text>
         <Text size="2xl" fw={700} style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}>
           {account.currency.symbol}{' '}
@@ -113,7 +115,7 @@ export function AccountCard({
             })}
           </Badge>
           <Text size="xs" c="dimmed">
-            this period
+            {t('accounts.card.thisPeriod')}
           </Text>
         </Group>
       </Stack>
@@ -132,7 +134,7 @@ export function AccountCard({
       <Group grow>
         <div>
           <Text size="xs" c="dimmed">
-            Monthly Spent
+            {t('accounts.card.monthlySpent')}
           </Text>
           <Text size="sm" fw={600}>
             {account.currency.symbol} {(monthlySpent / 100).toLocaleString()}
@@ -140,7 +142,7 @@ export function AccountCard({
         </div>
         <div>
           <Text size="xs" c="dimmed">
-            Transactions
+            {t('accounts.card.transactions')}
           </Text>
           <Text size="sm" fw={600}>
             {transactionCount}

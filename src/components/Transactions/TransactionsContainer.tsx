@@ -1,16 +1,25 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Modal, Stack } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Box, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
+import { useAccounts } from '@/hooks/useAccounts';
 import { useBudgetPeriods } from '@/hooks/useBudget';
-import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
-import { TransactionResponse } from '@/types/transaction';
-import { QuickAddTransaction } from './Form';
+import { useCategories } from '@/hooks/useCategories';
+import {
+  useDeleteTransaction,
+  useTransactions,
+  useUpdateTransaction,
+} from '@/hooks/useTransactions';
+import { useCreateVendor, useVendors } from '@/hooks/useVendors';
+import { TransactionRequest, TransactionResponse } from '@/types/transaction';
+import { EditFormValues, EditTransactionForm, QuickAddTransaction } from './Form';
 import { ExportButton, PageHeader } from './PageHeader';
 import { TransactionStats } from './Stats';
 import { TransactionFilters, TransactionsSection, TransactionTypeFilter } from './Table';
 
 export function TransactionsContainer() {
+  const { t } = useTranslation();
   // State for filters
   const [typeFilter, setTypeFilter] = useState<TransactionTypeFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,6 +34,9 @@ export function TransactionsContainer() {
   // Data Fetching
   const { data: transactions } = useTransactions(selectedPeriodId);
   const { data: periods } = useBudgetPeriods();
+  const { data: accounts = [] } = useAccounts();
+  const { data: categories = [] } = useCategories();
+  const { data: vendors = [] } = useVendors();
 
   // Find the selected period from periods list
   const selectedPeriod = useMemo(() => {
@@ -36,6 +48,8 @@ export function TransactionsContainer() {
 
   // Mutations
   const deleteTransactionMutation = useDeleteTransaction();
+  const updateTransactionMutation = useUpdateTransaction();
+  const createVendorMutation = useCreateVendor();
 
   // Client-side filtering
   const filteredTransactions = useMemo(() => {
@@ -43,19 +57,19 @@ export function TransactionsContainer() {
       return [];
     }
 
-    return transactions.filter((t) => {
+    return transactions.filter((tx) => {
       // Filter by Type
-      if (typeFilter !== 'all' && t.category.categoryType !== typeFilter) {
+      if (typeFilter !== 'all' && tx.category.categoryType !== typeFilter) {
         return false;
       }
 
       // Filter by Search
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        const matchesDesc = t.description?.toLowerCase().includes(query);
-        const matchesVendor = t.vendor?.name.toLowerCase().includes(query);
-        const matchesCategory = t.category.name.toLowerCase().includes(query);
-        const matchesAmount = t.amount.toString().includes(query);
+        const matchesDesc = tx.description?.toLowerCase().includes(query);
+        const matchesVendor = tx.vendor?.name.toLowerCase().includes(query);
+        const matchesCategory = tx.category.name.toLowerCase().includes(query);
+        const matchesAmount = tx.amount.toString().includes(query);
 
         if (!matchesDesc && !matchesVendor && !matchesCategory && !matchesAmount) {
           return false;
@@ -69,13 +83,13 @@ export function TransactionsContainer() {
   // Calculate Stats
   const stats = useMemo(() => {
     return filteredTransactions.reduce(
-      (acc, t) => {
-        if (t.category.categoryType === 'Incoming') {
-          acc.income += t.amount;
-          acc.balance += t.amount;
-        } else if (t.category.categoryType === 'Outgoing') {
-          acc.expenses += t.amount;
-          acc.balance -= t.amount;
+      (acc, tx) => {
+        if (tx.category.categoryType === 'Incoming') {
+          acc.income += tx.amount;
+          acc.balance += tx.amount;
+        } else if (tx.category.categoryType === 'Outgoing') {
+          acc.expenses += tx.amount;
+          acc.balance -= tx.amount;
         }
         return acc;
       },
@@ -89,10 +103,51 @@ export function TransactionsContainer() {
     openEditModal();
   };
 
+  // Handle save edited transaction
+  const handleSaveEdit = async (values: EditFormValues) => {
+    if (!editingTransaction) {
+      return;
+    }
+
+    // Find or create vendor
+    let vendorId: string | undefined = undefined;
+    if (values.vendorName.trim()) {
+      const existingVendor = vendors.find(
+        (v) => v.name.toLowerCase() === values.vendorName.toLowerCase()
+      );
+      if (existingVendor) {
+        vendorId = existingVendor.id;
+      } else {
+        const newVendor = await createVendorMutation.mutateAsync({
+          name: values.vendorName.trim(),
+        });
+        vendorId = newVendor.id;
+      }
+    }
+
+    const transactionData: TransactionRequest = {
+      description: values.description.trim(),
+      amount: Math.round(values.amount * 100), // Convert to cents
+      occurredAt: values.occurredAt!.toISOString().split('T')[0],
+      categoryId: values.categoryId,
+      fromAccountId: values.fromAccountId,
+      toAccountId: values.categoryType === 'Transfer' ? values.toAccountId : undefined,
+      vendorId,
+    };
+
+    await updateTransactionMutation.mutateAsync({
+      id: editingTransaction.id,
+      data: transactionData,
+    });
+
+    closeEditModal();
+    setEditingTransaction(null);
+  };
+
   // Handle delete transaction
   const handleDelete = async (id: string) => {
     // eslint-disable-next-line no-alert
-    if (window.confirm('Are you sure you want to delete this transaction?')) {
+    if (window.confirm(t('transactions.container.confirmDelete'))) {
       await deleteTransactionMutation.mutateAsync(id);
     }
   };
@@ -105,11 +160,11 @@ export function TransactionsContainer() {
   // Get period display name
   const periodName = useMemo(() => {
     if (!selectedPeriod?.startDate) {
-      return 'this period';
+      return t('transactions.container.thisPeriod');
     }
     const start = new Date(selectedPeriod.endDate);
     return start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  }, [selectedPeriod]);
+  }, [selectedPeriod, t]);
 
   return (
     <Box
@@ -121,8 +176,8 @@ export function TransactionsContainer() {
     >
       {/* Page Header */}
       <PageHeader
-        title="Transactions"
-        subtitle="Review and manage your financial activity for the selected period."
+        title={t('transactions.container.title')}
+        subtitle={t('transactions.container.subtitle')}
         actions={<ExportButton onClick={handleExport} />}
       />
 
@@ -153,8 +208,11 @@ export function TransactionsContainer() {
       {/* Edit Modal */}
       <Modal
         opened={editModalOpened}
-        onClose={closeEditModal}
-        title="Edit Transaction"
+        onClose={() => {
+          closeEditModal();
+          setEditingTransaction(null);
+        }}
+        title={t('transactions.container.editTitle')}
         size="lg"
         styles={{
           header: {
@@ -169,6 +227,9 @@ export function TransactionsContainer() {
           content: {
             background: '#151b26',
           },
+          body: {
+            padding: '24px',
+          },
           close: {
             color: '#5a6272',
             '&:hover': {
@@ -179,10 +240,18 @@ export function TransactionsContainer() {
         }}
       >
         {editingTransaction && (
-          <Stack gap="md">
-            {/* TODO: Add edit form with pre-populated values */}
-            <Box style={{ color: '#8892a6' }}>Editing: {editingTransaction.description}</Box>
-          </Stack>
+          <EditTransactionForm
+            transaction={editingTransaction}
+            accounts={accounts}
+            categories={categories}
+            vendors={vendors}
+            onSave={handleSaveEdit}
+            onCancel={() => {
+              closeEditModal();
+              setEditingTransaction(null);
+            }}
+            isPending={updateTransactionMutation.isPending}
+          />
         )}
       </Modal>
     </Box>

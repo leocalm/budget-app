@@ -4,6 +4,7 @@ import {
   createTransactionFromRequest,
   deleteTransaction,
   fetchTransactions,
+  updateTransaction,
 } from '@/api/transaction';
 import { Transaction, TransactionRequest } from '@/types/transaction';
 
@@ -43,6 +44,18 @@ export const useCreateTransactionFromRequest = () => {
   return useMutation({
     mutationFn: (newTransaction: TransactionRequest) =>
       createTransactionFromRequest(newTransaction),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+    },
+  });
+};
+
+export const useUpdateTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: TransactionRequest }) =>
+      updateTransaction(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Group, SimpleGrid, Stack, Text, Title } from '@mantine/core';
 import { initialTransactions } from '@/mocks/budgetData';
+import { BalanceOverTimeChart } from './BalanceOverTimeChart';
 import { RecentActivityTable } from './RecentActivityTable';
 import { StatCard } from './StatCard';
-import { BalanceOverTimeChart } from './BalanceOverTimeChart';
 import { TopCategoriesChart } from './TopCategoriesChart';
 
 const balanceHistory = [
@@ -28,16 +28,35 @@ export function DashboardContainer() {
   return (
     <Stack gap="lg">
       <Group justify="space-between" align="center" mb="md">
-        <Title order={1} style={{ 
-          background: 'linear-gradient(135deg, var(--mantine-color-white) 0%, var(--mantine-color-cyan-5) 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
+        <Title
+          order={1}
+          style={{
+            background:
+              'linear-gradient(135deg, var(--mantine-color-white) 0%, var(--mantine-color-cyan-5) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
           Financial Dashboard
         </Title>
-        <Group gap="xs" bg="dark.7" p="xs" style={{ borderRadius: 'var(--mantine-radius-md)', border: '1px solid var(--mantine-color-dark-4)' }}>
+        <Group
+          gap="xs"
+          bg="dark.7"
+          p="xs"
+          style={{
+            borderRadius: 'var(--mantine-radius-md)',
+            border: '1px solid var(--mantine-color-dark-4)',
+          }}
+        >
           <span>📅</span>
-          <Text size="sm" fw={500} c="dimmed" style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}>Jan/26</Text>
+          <Text
+            size="sm"
+            fw={500}
+            c="dimmed"
+            style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}
+          >
+            Jan/26
+          </Text>
         </Group>
       </Group>
 
@@ -62,11 +81,11 @@ export function DashboardContainer() {
           value="€ 222.56"
           meta="Past 7 days"
         />
-        <StatCard 
-          icon={() => <span>💳</span>} 
-          label="Month Progress" 
-          value="86%" 
-          meta="5 days until reset" 
+        <StatCard
+          icon={() => <span>💳</span>}
+          label="Month Progress"
+          value="86%"
+          meta="5 days until reset"
         />
       </SimpleGrid>
 

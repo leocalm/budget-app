@@ -17,7 +17,6 @@ interface CategoryCardProps {
   budgetLimit?: number;
   onEdit: (category: CategoryResponse) => void;
   onDelete: (id: string) => void;
-  onClick?: (category: CategoryResponse) => void;
 }
 
 export function CategoryCard({
@@ -27,7 +26,6 @@ export function CategoryCard({
   budgetLimit,
   onEdit,
   onDelete,
-  onClick,
 }: CategoryCardProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';

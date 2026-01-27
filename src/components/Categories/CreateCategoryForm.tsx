@@ -23,7 +23,7 @@ interface CreateCategoryFormProps {
 export function CreateCategoryForm({ onCategoryCreated }: CreateCategoryFormProps) {
   const createMutation = useCreateCategory();
   const [opened, setOpened] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState('❤️');
+  const [selectedIcon] = useState('❤️');
 
   const emojiSelected = (values: typeof form.values, emoji: EmojiClickData) => {
     values.icon = emoji.emoji;

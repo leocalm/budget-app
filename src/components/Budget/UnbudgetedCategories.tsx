@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Badge, Group, Paper, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useCreateBudgetCategory } from '@/hooks/useCategories';
 import { CategoryResponse } from '@/types/category';
@@ -14,6 +15,7 @@ export function UnbudgetedCategories({
   categories,
   isLoading,
 }: UnbudgetedCategoriesProps) {
+  const { t } = useTranslation();
   const createMutation = useCreateBudgetCategory();
 
   const handleAdd = (categoryId: string) => {
@@ -28,14 +30,14 @@ export function UnbudgetedCategories({
   };
 
   if (isLoading) {
-    return <Text size="sm">Loading...</Text>;
+    return <Text size="sm">{t('budget.unbudgetedCategories.loading')}</Text>;
   }
 
   if (!categories || categories.length === 0) {
     return (
       <Paper withBorder p="md" radius="md" style={{ borderStyle: 'dashed' }}>
         <Text size="xs" c="dimmed" ta="center">
-          All categories are budgeted!
+          {t('budget.unbudgetedCategories.allBudgeted')}
         </Text>
       </Paper>
     );

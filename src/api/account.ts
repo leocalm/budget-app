@@ -1,5 +1,5 @@
 import { AccountRequest, AccountResponse } from '../types/account';
-import { apiGet, apiPost, apiPut, apiDelete } from './client';
+import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
 export async function fetchAccounts(): Promise<AccountResponse[]> {
   return apiGet<AccountResponse[]>('/api/accounts');

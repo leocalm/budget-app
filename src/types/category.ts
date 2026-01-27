@@ -1,5 +1,5 @@
-export const CATEGORY_TYPES = ["Incoming", "Outgoing", "Transfer"] as const;
-export type CategoryType = typeof CATEGORY_TYPES[number];
+export const CATEGORY_TYPES = ['Incoming', 'Outgoing', 'Transfer'] as const;
+export type CategoryType = (typeof CATEGORY_TYPES)[number];
 
 export interface CategoryResponse {
   id: string;

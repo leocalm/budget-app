@@ -1,46 +1,84 @@
-import { NavLink, Stack, Text, Box } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-const navigationSections = [
-  {
-    title: 'Overview',
-    items: [
-      { icon: () => <span>📊</span>, label: 'Dashboard', route: '/dashboard' },
-      { icon: () => <span>💶</span>, label: 'Transactions', route: '/transactions' },
-    ],
-  },
-  {
-    title: 'Management',
-    items: [
-      { icon: () => <span>👛</span>, label: 'Accounts', route: '/accounts' },
-      { icon: () => <span>🏷️</span>, label: 'Categories', route: '/categories' },
-      { icon: () => <span>📊</span>, label: 'Budget Plan', route: '/budget' },
-    ],
-  },
-  {
-    title: 'Insights',
-    items: [
-      { icon: () => <span>📈</span>, label: 'Reports', route: '/reports' },
-      { icon: () => <span>🎯</span>, label: 'Goals', route: '/goals' },
-      { icon: () => <span>🔁</span>, label: 'Recurring', route: '/recurring' },
-    ],
-  },
-  {
-    title: 'Other',
-    items: [
-      { icon: () => <span>⚙️</span>, label: 'Settings', route: '/settings' },
-      { icon: () => <span>❓</span>, label: 'Help & Support', route: '/help' },
-    ],
-  },
-];
+import { Box, NavLink, Stack, Text } from '@mantine/core';
 
 interface NavigationProps {
   onNavigate?: () => void;
 }
 
 export function Navigation({ onNavigate }: NavigationProps) {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const navigationSections = [
+    {
+      title: t('layout.navigation.overview'),
+      items: [
+        {
+          icon: () => <span>📊</span>,
+          label: t('layout.navigation.dashboard'),
+          route: '/dashboard',
+        },
+        {
+          icon: () => <span>💶</span>,
+          label: t('layout.navigation.transactions'),
+          route: '/transactions',
+        },
+      ],
+    },
+    {
+      title: t('layout.navigation.management'),
+      items: [
+        {
+          icon: () => <span>👛</span>,
+          label: t('layout.navigation.accounts'),
+          route: '/accounts',
+        },
+        {
+          icon: () => <span>🏷️</span>,
+          label: t('layout.navigation.categories'),
+          route: '/categories',
+        },
+        {
+          icon: () => <span>📊</span>,
+          label: t('layout.navigation.budgetPlan'),
+          route: '/budget',
+        },
+      ],
+    },
+    {
+      title: t('layout.navigation.insights'),
+      items: [
+        {
+          icon: () => <span>📈</span>,
+          label: t('layout.navigation.reports'),
+          route: '/reports',
+        },
+        { icon: () => <span>🎯</span>, label: t('layout.navigation.goals'), route: '/goals' },
+        {
+          icon: () => <span>🔁</span>,
+          label: t('layout.navigation.recurring'),
+          route: '/recurring',
+        },
+      ],
+    },
+    {
+      title: t('layout.navigation.other'),
+      items: [
+        {
+          icon: () => <span>⚙️</span>,
+          label: t('layout.navigation.settings'),
+          route: '/settings',
+        },
+        {
+          icon: () => <span>❓</span>,
+          label: t('layout.navigation.helpSupport'),
+          route: '/help',
+        },
+      ],
+    },
+  ];
 
   return (
     <Stack gap="md">

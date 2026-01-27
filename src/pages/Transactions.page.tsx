@@ -1,13 +1,13 @@
+import { useTranslation } from 'react-i18next';
 import { Grid, Stack, Text, Title } from '@mantine/core';
 import { BasicAppShell } from '@/AppShell';
 import { TransactionsTable } from '@/components/Transactions';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useBudgetPeriods } from '@/hooks/useBudget';
 import { useTransactions } from '@/hooks/useTransactions';
 
 export function TransactionsPage() {
-  const { data: periods = [] } = useBudgetPeriods();
-  const { selectedPeriodId, setSelectedPeriodId } = useBudgetPeriodSelection();
+  const { t } = useTranslation();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
 
   const { data: transactions, isLoading, isError } = useTransactions(selectedPeriodId);
 
@@ -17,10 +17,10 @@ export function TransactionsPage() {
         <Grid gutter="md">
           <Grid.Col span={{ base: 12, md: 4 }}>
             <Title order={2} fw={800}>
-              Transactions
+              {t('transactionsPage.title')}
             </Title>
             <Text size="sm" c="dimmed">
-              Review and manage your financial activity for the selected period.
+              {t('transactionsPage.subtitle')}
             </Text>
           </Grid.Col>
 
