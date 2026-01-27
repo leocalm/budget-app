@@ -330,6 +330,7 @@ export const QuickAddTransaction = ({
           <UnstyledButton
             type="submit"
             disabled={isPending}
+            aria-label="plus"
             style={{
               width: '48px',
               height: '48px',
