@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
+import { IconPlus, IconX } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
+import { Button, Collapse, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
 import { AccountsSummary } from './AccountsSummary';
@@ -63,20 +64,27 @@ export function AccountsContainer() {
   const accountCount = accounts?.length ?? 0;
 
   return (
-    <div>
+    <Stack gap="xl">
       {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <div className={styles.headerTitle}>
-            <h2>Accounts</h2>
-            <p className={styles.headerSubtitle}>Manage your banks, wallets, and credit cards.</p>
-          </div>
-          <button type="button" className={styles.addButton} onClick={toggleCreate}>
-            <span>+</span>
-            {createOpened ? 'Cancel' : 'Add Account'}
-          </button>
+      <Group justify="space-between" align="flex-start">
+        <div>
+          <Title order={2} fw={700} mb="xs">
+            Accounts
+          </Title>
+          <Text size="sm" c="dimmed">
+            Manage your banks, wallets, and credit cards.
+          </Text>
         </div>
-      </div>
+        <Button
+          onClick={toggleCreate}
+          variant={createOpened ? 'light' : 'filled'}
+          color={createOpened ? 'gray' : undefined}
+          leftSection={createOpened ? <IconX size={18} /> : <IconPlus size={18} />}
+          className={createOpened ? undefined : styles.addButton}
+        >
+          {createOpened ? 'Cancel' : 'Add Account'}
+        </Button>
+      </Group>
 
       {/* Create Account Form (collapsible) */}
       <Collapse in={createOpened}>
@@ -122,6 +130,6 @@ export function AccountsContainer() {
         accountStats={accountStats}
         onViewDetails={(account) => navigate(`/accounts/${account.id}`)}
       />
-    </div>
+    </Stack>
   );
 }

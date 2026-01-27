@@ -1,4 +1,5 @@
 import React from 'react';
+import { Paper, SimpleGrid, Text } from '@mantine/core';
 import styles from './Accounts.module.css';
 
 interface AccountsSummaryProps {
@@ -21,30 +22,40 @@ export function AccountsSummary({
   };
 
   return (
-    <div className={styles.summaryGrid}>
-      <div className={styles.summaryCard}>
-        <div className={styles.summaryLabel}>Total Net Worth</div>
-        <div className={`${styles.summaryValue} ${styles.summaryValueGradient}`}>
+    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg" mb="xl">
+      <Paper withBorder p="xl" radius="lg">
+        <Text size="xs" fw={600} tt="uppercase" lts="0.05em" c="dimmed" mb="md">
+          Total Net Worth
+        </Text>
+        <Text size="2xl" fw={700} ff="monospace" mb="xs" className={styles.summaryValueGradient}>
           {formatCurrency(netWorth)}
-        </div>
-        <div className={styles.summaryMeta}>
+        </Text>
+        <Text size="sm" c="dimmed">
           Across {accountCount} account{accountCount !== 1 ? 's' : ''}
-        </div>
-      </div>
-      <div className={styles.summaryCard}>
-        <div className={styles.summaryLabel}>Total Assets</div>
-        <div className={`${styles.summaryValue} ${styles.summaryValuePositive}`}>
+        </Text>
+      </Paper>
+      <Paper withBorder p="xl" radius="lg">
+        <Text size="xs" fw={600} tt="uppercase" lts="0.05em" c="dimmed" mb="md">
+          Total Assets
+        </Text>
+        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--accent-success)">
           {formatCurrency(totalAssets)}
-        </div>
-        <div className={styles.summaryMeta}>Cash &amp; savings</div>
-      </div>
-      <div className={styles.summaryCard}>
-        <div className={styles.summaryLabel}>Total Liabilities</div>
-        <div className={`${styles.summaryValue} ${styles.summaryValueNegative}`}>
+        </Text>
+        <Text size="sm" c="dimmed">
+          Cash &amp; savings
+        </Text>
+      </Paper>
+      <Paper withBorder p="xl" radius="lg">
+        <Text size="xs" fw={600} tt="uppercase" lts="0.05em" c="dimmed" mb="md">
+          Total Liabilities
+        </Text>
+        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--accent-danger)">
           {formatCurrency(totalLiabilities)}
-        </div>
-        <div className={styles.summaryMeta}>Credit cards &amp; debt</div>
-      </div>
-    </div>
+        </Text>
+        <Text size="sm" c="dimmed">
+          Credit cards &amp; debt
+        </Text>
+      </Paper>
+    </SimpleGrid>
   );
 }
