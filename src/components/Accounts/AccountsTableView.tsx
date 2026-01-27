@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Drawer, Modal, Text, useMantineTheme } from '@mantine/core';
+import { Drawer, Modal, SimpleGrid, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { AccountResponse } from '@/types/account';
 import { AccountCard } from './AccountCard';
 import { EditAccountForm } from './EditAccountForm';
-import styles from './Accounts.module.css';
 
 export interface AccountStats {
   balanceHistory: { date: string; balance: number }[];
@@ -40,7 +39,7 @@ export function AccountsTableView({
 
   return (
     <>
-      <div className={styles.accountsGrid}>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
         {accounts?.map((account) => {
           const stats = accountStats[account.id] || {
             balanceHistory: [],
@@ -63,7 +62,7 @@ export function AccountsTableView({
             />
           );
         })}
-      </div>
+      </SimpleGrid>
       {isMobile ? (
         <Drawer opened={editOpened} onClose={closeEdit} title="Edit Account" position="bottom">
           <div>

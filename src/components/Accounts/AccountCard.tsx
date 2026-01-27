@@ -1,5 +1,18 @@
 import React from 'react';
 import { Sparkline } from '@mantine/charts';
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
 import type { AccountResponse } from '@/types/account';
 import styles from './Accounts.module.css';
 
@@ -70,12 +83,7 @@ export function AccountCard({
     return 'var(--accent-success)';
   };
 
-  const balanceChangeClass =
-    balanceChange === 0
-      ? styles.balanceChangeNeutral
-      : isPositive
-        ? styles.balanceChangePositive
-        : styles.balanceChangeNegative;
+  const balanceChangeColor = balanceChange === 0 ? 'gray' : isPositive ? 'green' : 'red';
 
   const balanceChangeText =
     balanceChange === 0
@@ -104,112 +112,119 @@ export function AccountCard({
       : String(transactionCount);
 
   return (
-    <div
+    <Paper
       className={styles.accountCard}
       style={{ '--card-accent-color': accentColor } as React.CSSProperties}
+      radius="lg"
+      withBorder
     >
       {/* Header */}
-      <div className={styles.accountHeader}>
-        <div className={styles.accountInfo}>
-          <h3 className={styles.accountName}>
-            {account.name}
-            <span className={styles.accountType}>
+      <Group justify="space-between" align="flex-start" p="xl" pb="lg">
+        <Box style={{ flex: 1 }}>
+          <Group gap="sm" mb="xs">
+            <Title order={3} size="h4" fw={700}>
+              {account.name}
+            </Title>
+            <Badge variant="light" color="gray" size="sm" tt="uppercase">
               {typeMeta.icon} {typeMeta.label}
-            </span>
-          </h3>
-        </div>
-        <div className={styles.accountActions}>
-          <button
-            type="button"
-            className={styles.actionIcon}
-            title="Edit"
-            onClick={() => onEdit(account)}
-          >
-            \u2699\uFE0F
-          </button>
-          <button
-            type="button"
-            className={styles.actionIcon}
+            </Badge>
+          </Group>
+        </Box>
+        <Group gap="xs" className={styles.accountActions}>
+          <ActionIcon variant="subtle" color="gray" title="Edit" onClick={() => onEdit(account)}>
+            <span>\u2699\uFE0F</span>
+          </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
             title="Delete"
             onClick={() => onDelete(account.id)}
           >
-            \u22EF
-          </button>
-        </div>
-      </div>
+            <span>\u22EF</span>
+          </ActionIcon>
+        </Group>
+      </Group>
 
       {/* Balance */}
-      <div className={styles.balanceSection}>
-        <div className={styles.balanceLabel}>Current Balance</div>
-        <div className={styles.balanceAmount} style={{ color: getBalanceColor() }}>
+      <Box px="xl" pb="xl">
+        <Text size="sm" c="dimmed" mb="xs">
+          Current Balance
+        </Text>
+        <Text size="2xl" fw={700} ff="monospace" c={getBalanceColor()} mb="md">
           {isNegativeBalance ? '-' : ''}
           {account.currency.symbol} {formatCurrency(Math.abs(currentBalance))}
-        </div>
-        <span className={`${styles.balanceChange} ${balanceChangeClass}`}>{balanceChangeText}</span>
-      </div>
+        </Text>
+        <Badge variant="light" color={balanceChangeColor} size="lg" ff="monospace">
+          {balanceChangeText}
+        </Badge>
+      </Box>
 
       {/* Sparkline Chart */}
-      <div className={styles.chartSection}>
-        <div className={styles.chartContainer}>
-          <Sparkline
-            data={
-              balanceHistory.length > 0
-                ? balanceHistory.map((h) => h.balance / 100)
-                : [currentBalance, currentBalance]
-            }
-            h={80}
-            curveType="monotone"
-            color={accentColor}
-            fillOpacity={0.2}
-            strokeWidth={2}
-          />
-        </div>
-      </div>
+      <Divider />
+      <Box p="lg" px="xl">
+        <Sparkline
+          data={
+            balanceHistory.length > 0
+              ? balanceHistory.map((h) => h.balance / 100)
+              : [currentBalance, currentBalance]
+          }
+          h={80}
+          curveType="monotone"
+          color={accentColor}
+          fillOpacity={0.2}
+          strokeWidth={2}
+        />
+      </Box>
 
       {/* Stats */}
-      <div className={styles.statsSection}>
-        <div className={styles.statItem}>
-          <div className={styles.statLabel}>{stat1Label}</div>
-          <div
-            className={styles.statValue}
-            style={
+      <Divider />
+      <SimpleGrid cols={2} spacing="lg" p="lg" px="xl">
+        <Stack gap={4}>
+          <Text size="xs" fw={600} c="dimmed">
+            {stat1Label}
+          </Text>
+          <Text
+            size="sm"
+            fw={700}
+            ff="monospace"
+            c={
               !isCreditCard && !hasSpendLimit && monthlySpent !== 0
-                ? { color: 'var(--accent-danger)' }
-                : undefined
+                ? 'var(--accent-danger)'
+                : 'var(--text-secondary)'
             }
           >
             {stat1Value}
-          </div>
-        </div>
-        <div className={styles.statItem}>
-          <div className={styles.statLabel}>{stat2Label}</div>
-          <div className={styles.statValue}>{stat2Value}</div>
-        </div>
-      </div>
+          </Text>
+        </Stack>
+        <Stack gap={4}>
+          <Text size="xs" fw={600} c="dimmed">
+            {stat2Label}
+          </Text>
+          <Text size="sm" fw={700} ff="monospace" c="var(--text-secondary)">
+            {stat2Value}
+          </Text>
+        </Stack>
+      </SimpleGrid>
 
       {/* Status */}
-      <div className={styles.statusSection}>
-        <div className={styles.statusIndicator} />
-        <span className={styles.statusText}>Active</span>
-      </div>
+      <Divider />
+      <Group gap="sm" px="xl" py="sm">
+        <Box className={styles.statusIndicator} />
+        <Text size="sm" c="dimmed">
+          Active
+        </Text>
+      </Group>
 
       {/* Quick Actions */}
-      <div className={styles.quickActions}>
-        <button
-          type="button"
-          className={styles.quickActionBtn}
-          onClick={() => onViewDetails(account)}
-        >
+      <Divider />
+      <Group grow gap="sm" p="lg" px="xl">
+        <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
           \uD83D\uDCCA View Details
-        </button>
-        <button
-          type="button"
-          className={styles.quickActionBtn}
-          onClick={() => onViewDetails(account)}
-        >
+        </Button>
+        <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
           {isCreditCard ? '\uD83D\uDCB3 Pay Bill' : '\uD83D\uDCB8 Transfer'}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Group>
+    </Paper>
   );
 }
