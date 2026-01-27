@@ -18,7 +18,7 @@ export function AccountsSummary({
   const formatCurrency = (value: number) => {
     const abs = Math.abs(value / 100);
     const formatted = abs.toLocaleString('en-US', { minimumFractionDigits: 2 });
-    return value < 0 ? `-\u20AC ${formatted}` : `\u20AC ${formatted}`;
+    return value < 0 ? `-€ ${formatted}` : `€ ${formatted}`;
   };
 
   return (

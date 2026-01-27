@@ -32,11 +32,11 @@ interface AccountCardProps {
 }
 
 const ACCOUNT_TYPE_META: Record<string, { icon: string; label: string }> = {
-  CreditCard: { icon: '\uD83D\uDCB3', label: 'Credit Card' },
-  Checking: { icon: '\uD83C\uDFE6', label: 'Checking' },
-  Savings: { icon: '\uD83D\uDCB0', label: 'Savings' },
-  Wallet: { icon: '\uD83D\uDCB3', label: 'Debit Card' },
-  Allowance: { icon: '\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67', label: 'Allowance' },
+  CreditCard: { icon: '💳', label: 'Credit Card' },
+  Checking: { icon: '🏦', label: 'Checking' },
+  Savings: { icon: '💰', label: 'Savings' },
+  Wallet: { icon: '💳', label: 'Debit Card' },
+  Allowance: { icon: '👨‍👩‍👧', label: 'Allowance' },
 };
 
 const ACCOUNT_TYPE_COLORS: Record<string, string> = {
@@ -64,7 +64,7 @@ export function AccountCard({
 
   const accentColor = account.color || ACCOUNT_TYPE_COLORS[account.accountType] || '#00d4ff';
   const typeMeta = ACCOUNT_TYPE_META[account.accountType] || {
-    icon: '\uD83D\uDCB3',
+    icon: '💳',
     label: account.accountType,
   };
 
@@ -88,7 +88,7 @@ export function AccountCard({
   const balanceChangeText =
     balanceChange === 0
       ? 'No change'
-      : `${isPositive ? '\u2191' : '\u2193'} ${account.currency.symbol}${formatCurrency(Math.abs(balanceChange))} this month`;
+      : `${isPositive ? '↑' : '↓'} ${account.currency.symbol}${formatCurrency(Math.abs(balanceChange))} this month`;
 
   // Determine stats based on account type
   const isCreditCard = account.accountType === 'CreditCard';
@@ -132,7 +132,7 @@ export function AccountCard({
         </Box>
         <Group gap="xs" className={styles.accountActions}>
           <ActionIcon variant="subtle" color="gray" title="Edit" onClick={() => onEdit(account)}>
-            <span>\u2699\uFE0F</span>
+            <span>✏️</span>
           </ActionIcon>
           <ActionIcon
             variant="subtle"
@@ -140,7 +140,7 @@ export function AccountCard({
             title="Delete"
             onClick={() => onDelete(account.id)}
           >
-            <span>\u22EF</span>
+            <span>🗑️</span>
           </ActionIcon>
         </Group>
       </Group>
@@ -219,10 +219,10 @@ export function AccountCard({
       <Divider />
       <Group grow gap="sm" p="lg" px="xl">
         <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
-          \uD83D\uDCCA View Details
+          📊 View Details
         </Button>
         <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
-          {isCreditCard ? '\uD83D\uDCB3 Pay Bill' : '\uD83D\uDCB8 Transfer'}
+          {isCreditCard ? '💳 Pay Bill' : '💸 Transfer'}
         </Button>
       </Group>
     </Paper>
