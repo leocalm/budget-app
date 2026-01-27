@@ -1,122 +1,134 @@
 import React from 'react';
-import {
-  ActionIcon,
-  Card,
-  Group,
-  Menu,
-  Progress,
-  Text,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { ActionIcon, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import { CategoryResponse } from '@/types/category';
+import styles from './Categories.module.css';
 
 interface CategoryCardProps {
   category: CategoryResponse;
   monthlySpent: number;
   transactionCount: number;
-  budgetLimit?: number;
+  trend?: {
+    direction: 'up' | 'down';
+    percentage: number;
+  };
   onEdit: (category: CategoryResponse) => void;
   onDelete: (id: string) => void;
+  onClick?: (category: CategoryResponse) => void;
 }
+
+// Category type meta info for icons and labels
+const CATEGORY_TYPE_META: Record<string, { icon: string; label: string }> = {
+  Outgoing: { icon: '💸', label: 'Outgoing' },
+  Incoming: { icon: '💵', label: 'Incoming' },
+  Transfer: { icon: '🔄', label: 'Transfer' },
+};
+
+// Define background colors with alpha for each category type
+const getCategoryBackground = (color: string) => {
+  // Convert hex to rgba with 10% opacity
+  return `${color}1A`;
+};
 
 export function CategoryCard({
   category,
   monthlySpent,
   transactionCount,
-  budgetLimit,
+  trend,
   onEdit,
   onDelete,
+  onClick,
 }: CategoryCardProps) {
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === 'dark';
+  const typeMeta = CATEGORY_TYPE_META[category.categoryType] || {
+    icon: '💸',
+    label: category.categoryType,
+  };
 
-  // Calculate budget progress if a limit exists
-  const percentage = budgetLimit ? (monthlySpent / budgetLimit) * 100 : 0;
-  const isOverBudget = percentage > 100;
+  const formatCurrency = (value: number) => {
+    return (value / 100).toLocaleString('en-US', { minimumFractionDigits: 2 });
+  };
+
+  const handleCardClick = () => {
+    onClick?.(category);
+  };
+
+  const categoryColor = category.color || '#00d4ff';
+  const categoryBg = getCategoryBackground(categoryColor);
 
   return (
-    <Card
-      padding="lg"
-      radius="md"
-      style={{
-        backgroundColor: isDark ? 'var(--mantine-color-dark-7)' : 'var(--mantine-color-white)',
-        border: '1px solid var(--mantine-color-default-border)',
-        borderTop: `4px solid ${category.color || 'var(--mantine-color-gray-5)'}`,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        cursor: 'pointer',
-      }}
-      // onClick={() => onClick?.(category)}
+    <Paper
+      className={styles.categoryCard}
+      style={
+        { '--category-color': categoryColor, '--category-bg': categoryBg } as React.CSSProperties
+      }
+      radius="lg"
+      withBorder
+      p="lg"
+      onClick={handleCardClick}
     >
-      <Group justify="space-between" mb="md">
-        <Group gap="sm">
-          <div>
-            <Text fw={700} size="sm">
-              {category.icon} {category.name}
-            </Text>
-            <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-              {category.categoryType}
-            </Text>
-          </div>
-        </Group>
-
-        <Menu position="bottom-end" withinPortal>
-          <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" onClick={(e) => e.stopPropagation()}>
-              <span>⋮</span>
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item leftSection={<span>✏️</span>} onClick={() => onEdit(category)}>
-              Edit Category
-            </Menu.Item>
-            <Menu.Item
-              color="red"
-              leftSection={<span>🗑️</span>}
-              onClick={() => onDelete(category.id)}
-            >
-              Delete Category
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </Group>
-
-      <Group justify="space-between" align="flex-end" mt="sm">
-        <div>
-          <Text size="xs" c="dimmed" fw={600}>
-            Monthly Spent
-          </Text>
-          <Text fw={700} size="lg" style={{ fontFamily: 'var(--mantine-font-family-monospace)' }}>
-            € {(monthlySpent / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-          </Text>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-          <Text size="xs" c="dimmed" fw={600}>
-            Transactions
-          </Text>
-          <Text fw={700} size="lg">
-            {transactionCount}
-          </Text>
-        </div>
-      </Group>
-
-      {budgetLimit && (
-        <div style={{ marginTop: 16 }}>
-          <Group justify="space-between" mb={4}>
-            <Text size="xs" c="dimmed">
-              Budget: € {(budgetLimit / 100).toLocaleString()}
-            </Text>
-            <Text size="xs" c={isOverBudget ? 'red' : 'dimmed'} fw={isOverBudget ? 700 : 400}>
-              {percentage.toFixed(0)}%
-            </Text>
-          </Group>
-          <Progress
-            value={Math.min(percentage, 100)}
-            color={isOverBudget ? 'red' : percentage > 85 ? 'orange' : 'green'}
+      {/* Header */}
+      <Group justify="space-between" align="flex-start" mb="lg">
+        <Box
+          className={styles.categoryIconWrapper}
+          style={{ '--category-bg': categoryBg } as React.CSSProperties}
+        >
+          {category.icon}
+        </Box>
+        <Group gap="xs" className={styles.categoryActions}>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            title="Edit"
             size="sm"
-            radius="xl"
-          />
-        </div>
-      )}
-    </Card>
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(category);
+            }}
+          >
+            <span>✏️</span>
+          </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            title="Delete"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(category.id);
+            }}
+          >
+            <span>🗑️</span>
+          </ActionIcon>
+        </Group>
+      </Group>
+
+      {/* Category Info */}
+      <Box mb="md">
+        <Text size="lg" fw={700} mb={4}>
+          {category.name}
+        </Text>
+        <span className={styles.categoryType}>
+          {typeMeta.icon} {typeMeta.label}
+        </span>
+      </Box>
+
+      {/* Stats */}
+      <div className={styles.categoryStats}>
+        <Stack gap={4}>
+          <Text className={styles.statLabel}>This Month</Text>
+          <Text className={styles.statValue}>€ {formatCurrency(monthlySpent)}</Text>
+          {trend && (
+            <Text
+              className={`${styles.trend} ${trend.direction === 'up' ? styles.trendUp : styles.trendDown}`}
+            >
+              {trend.direction === 'up' ? '↑' : '↓'} {trend.percentage}%
+            </Text>
+          )}
+        </Stack>
+        <Stack gap={4}>
+          <Text className={styles.statLabel}>Transactions</Text>
+          <Text className={styles.statValue}>{transactionCount}</Text>
+        </Stack>
+      </div>
+    </Paper>
   );
 }

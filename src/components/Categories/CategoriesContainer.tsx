@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Group, SegmentedControl, SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, SimpleGrid, Stack, Tabs, Text, Title } from '@mantine/core';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
-import { CategoryResponse } from '@/types/category';
 import { CategoryCard } from './CategoryCard';
-import { CreateCategory } from './CreateCategory';
+import styles from './Categories.module.css';
 
 type CategoryTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
 
@@ -17,10 +16,23 @@ export function CategoriesContainer() {
   const getCategoryStats = (categoryId: string) => {
     // Deterministic pseudo-random based on ID
     const hash = categoryId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const monthlySpent = (hash % 500) * 100; // 0 - 500.00
+    const prevMonthSpent = ((hash + 1) % 450) * 100;
+
+    // Calculate trend
+    const diff = monthlySpent - prevMonthSpent;
+    const trend =
+      diff !== 0
+        ? {
+            direction: diff > 0 ? ('up' as const) : ('down' as const),
+            percentage: Math.abs(Math.round((diff / Math.max(prevMonthSpent, 1)) * 100)),
+          }
+        : undefined;
+
     return {
-      monthlySpent: (hash % 500) * 100, // 0 - 500.00
+      monthlySpent,
       transactionCount: hash % 20,
-      budgetLimit: hash % 2 === 0 ? (hash % 1000) * 100 : undefined,
+      trend,
     };
   };
 
@@ -34,82 +46,83 @@ export function CategoriesContainer() {
     return categories.filter((c) => c.categoryType === typeFilter);
   }, [categories, typeFilter]);
 
-  // Group categories by type for better organization when "all" is selected
-  const groupedCategories = useMemo(() => {
-    if (typeFilter !== 'all') {
-      return { [typeFilter]: filteredCategories };
-    }
-
-    const groups: Record<string, CategoryResponse[]> = {
-      Outgoing: [],
-      Incoming: [],
-      Transfer: [],
-    };
-
-    filteredCategories.forEach((c) => {
-      if (groups[c.categoryType]) {
-        groups[c.categoryType].push(c);
-      }
-    });
-
-    return groups;
-  }, [filteredCategories, typeFilter]);
-
   const onDeleteCategory = (id: string) => {
     deleteMutation.mutate(id);
   };
 
+  // Count categories by type
+  const categoryCounts = useMemo(() => {
+    if (!categories) {
+      return { all: 0, Outgoing: 0, Incoming: 0, Transfer: 0 };
+    }
+    return {
+      all: categories.length,
+      Outgoing: categories.filter((c) => c.categoryType === 'Outgoing').length,
+      Incoming: categories.filter((c) => c.categoryType === 'Incoming').length,
+      Transfer: categories.filter((c) => c.categoryType === 'Transfer').length,
+    };
+  }, [categories]);
+
   return (
-    <Stack gap="lg">
-      <Group justify="space-between" align="flex-end">
+    <Stack gap="xl">
+      {/* Header */}
+      <Group justify="space-between" align="flex-start">
         <div>
-          <Title order={2}>Categories</Title>
-          <Text c="dimmed">Organize your transactions</Text>
+          <Title order={1} fw={700} mb="xs">
+            Categories
+          </Title>
+          <Text size="md" c="dimmed">
+            Organize your transactions into meaningful groups.
+          </Text>
         </div>
-        <CreateCategory />
+        <Button className={styles.addButton} size="md">
+          <span style={{ fontSize: '16px', marginRight: '4px' }}>+</span>
+          Add Category
+        </Button>
       </Group>
 
-      <SegmentedControl
+      {/* Filter Tabs */}
+      <Tabs
         value={typeFilter}
         onChange={(value) => setTypeFilter(value as CategoryTypeFilter)}
-        data={[
-          { label: 'All', value: 'all' },
-          { label: 'Expenses', value: 'Outgoing' },
-          { label: 'Income', value: 'Incoming' },
-          { label: 'Transfers', value: 'Transfer' },
-        ]}
-        size="sm"
-        radius="md"
-      />
+        classNames={{
+          root: styles.filterTabs,
+          tab: styles.filterTab,
+        }}
+      >
+        <Tabs.List style={{ display: 'flex', gap: '8px' }}>
+          <Tabs.Tab value="all">
+            All <span className={styles.filterCount}>{categoryCounts.all}</span>
+          </Tabs.Tab>
+          <Tabs.Tab value="Outgoing">
+            Spending <span className={styles.filterCount}>{categoryCounts.Outgoing}</span>
+          </Tabs.Tab>
+          <Tabs.Tab value="Incoming">
+            Income <span className={styles.filterCount}>{categoryCounts.Incoming}</span>
+          </Tabs.Tab>
+          <Tabs.Tab value="Transfer">
+            Transfer <span className={styles.filterCount}>{categoryCounts.Transfer}</span>
+          </Tabs.Tab>
+        </Tabs.List>
+      </Tabs>
 
-      {Object.entries(groupedCategories).map(
-        ([type, cats]) =>
-          cats.length > 0 && (
-            <Stack key={type} gap="md">
-              {typeFilter === 'all' && (
-                <Text fw={700} c="dimmed" tt="uppercase" size="sm" mt="md">
-                  {type === 'Outgoing' ? 'Expenses' : type === 'Incoming' ? 'Income' : 'Transfers'}
-                </Text>
-              )}
-              <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg">
-                {cats.map((category) => {
-                  const stats = getCategoryStats(category.id);
-                  return (
-                    <CategoryCard
-                      key={category.id}
-                      category={category}
-                      monthlySpent={stats.monthlySpent}
-                      transactionCount={stats.transactionCount}
-                      budgetLimit={stats.budgetLimit}
-                      onEdit={() => {}} // Connect to edit modal
-                      onDelete={onDeleteCategory} // Connect to delete mutation
-                    />
-                  );
-                })}
-              </SimpleGrid>
-            </Stack>
-          )
-      )}
+      {/* Categories Grid */}
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
+        {filteredCategories.map((category) => {
+          const stats = getCategoryStats(category.id);
+          return (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              monthlySpent={stats.monthlySpent}
+              transactionCount={stats.transactionCount}
+              trend={stats.trend}
+              onEdit={() => {}} // Connect to edit modal
+              onDelete={onDeleteCategory}
+            />
+          );
+        })}
+      </SimpleGrid>
     </Stack>
   );
 }

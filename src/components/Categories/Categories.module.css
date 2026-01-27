@@ -1,0 +1,212 @@
+/* ── Add Button gradient ── */
+.addButton {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  border: none;
+  box-shadow: 0 4px 16px rgb(0 212 255 / 30%);
+}
+
+.addButton:hover {
+  box-shadow: 0 6px 20px rgb(0 212 255 / 40%);
+}
+
+/* ── Filter Tabs ── */
+.filterTabs {
+  background: var(--bg-card, var(--mantine-color-dark-6));
+  padding: var(--space-sm, 8px);
+  border-radius: var(--radius-md, 12px);
+  border: 1px solid var(--border-subtle, rgb(255, 255, 255, 0.06));
+}
+
+.filterTab {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary, var(--mantine-color-dimmed));
+  background: transparent;
+  border: none;
+  text-align: center;
+}
+
+.filterTab:hover:not([data-active]) {
+  background: rgb(255, 255, 255, 0.03);
+  color: var(--text-primary, var(--mantine-color-text));
+}
+
+.filterCount {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  background: rgb(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── Category Card: accent bar + hover effects + animations ── */
+.categoryCard {
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: fade-in-up 0.4s ease backwards;
+  cursor: pointer;
+}
+
+.categoryCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--category-color, var(--accent-primary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 16px rgb(0 0 0 / 16%));
+  border-color: var(--border-medium, rgb(255, 255, 255, 0.1));
+}
+
+.categoryCard:hover::before {
+  opacity: 1;
+}
+
+.categoryCard:hover .categoryActions {
+  opacity: 1;
+}
+
+/* Stagger animations */
+.categoryCard:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.categoryCard:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.categoryCard:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.categoryCard:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.categoryCard:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.categoryCard:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.categoryCard:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.categoryCard:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.categoryCard:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Category icon wrapper ── */
+.categoryIconWrapper {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--category-bg, rgb(0, 212, 255, 0.1));
+  border-radius: var(--radius-md, 12px);
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+/* ── Hover-reveal actions ── */
+.categoryActions {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* ── Category type badge ── */
+.categoryType {
+  font-size: 12px;
+  color: var(--text-tertiary, var(--mantine-color-dimmed));
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgb(255, 255, 255, 0.05);
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ── Stats section ── */
+.categoryStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md, 16px);
+  padding-top: var(--space-md, 16px);
+  border-top: 1px solid var(--border-subtle, rgb(255, 255, 255, 0.06));
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary, var(--mantine-color-dimmed));
+}
+
+.statValue {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--mantine-font-family-monospace);
+  color: var(--text-primary, var(--mantine-color-text));
+}
+
+/* ── Trend indicators ── */
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.trendUp {
+  color: var(--accent-danger, var(--mantine-color-red-6));
+}
+
+.trendDown {
+  color: var(--accent-success, var(--mantine-color-green-6));
+}
