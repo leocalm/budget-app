@@ -1,0 +1,228 @@
+/* ── Add Button gradient ── */
+.addButton {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+    border: none;
+    box-shadow: 0 4px 16px rgb(0 212 255 / 30%);
+}
+
+.addButton:hover {
+    box-shadow: 0 6px 20px rgb(0 212 255 / 40%);
+}
+
+/* ── Budget Category Item: card with hover effects + animations ── */
+.budgetCategoryItem {
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: fade-in-up 0.4s ease backwards;
+    cursor: pointer;
+}
+
+.budgetCategoryItem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--category-color, var(--accent-primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.budgetCategoryItem:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md, 0 4px 16px rgb(0 0 0 / 16%));
+    border-color: var(--border-medium, rgb(255, 255, 255, 0.1));
+}
+
+.budgetCategoryItem:hover::before {
+    opacity: 1;
+}
+
+.budgetCategoryItem:hover .itemActions {
+    opacity: 1;
+}
+
+/* Stagger animations for list items */
+.budgetCategoryItem:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.budgetCategoryItem:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.budgetCategoryItem:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.budgetCategoryItem:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.budgetCategoryItem:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.budgetCategoryItem:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.budgetCategoryItem:nth-child(7) {
+    animation-delay: 0.35s;
+}
+
+.budgetCategoryItem:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+.budgetCategoryItem:nth-child(9) {
+    animation-delay: 0.45s;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Category icon wrapper ── */
+.categoryIconWrapper {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--category-bg, rgb(0, 212, 255, 0.1));
+    border-radius: var(--radius-md, 12px);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+/* ── Hover-reveal actions ── */
+.itemActions {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* ── Progress bar styles ── */
+.progressBar {
+    height: 8px;
+    border-radius: 4px;
+    background: rgb(255, 255, 255, 0.05);
+    overflow: hidden;
+    position: relative;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    background: var(--progress-color, var(--accent-success));
+    animation: shimmer 2s infinite;
+}
+
+/* Color variants for progress bar */
+.progressFill.success {
+    background: linear-gradient(90deg, var(--accent-success) 0%, var(--accent-success) 100%);
+}
+
+.progressFill.warning {
+    background: linear-gradient(90deg, var(--accent-warning) 0%, var(--accent-warning) 100%);
+}
+
+.progressFill.danger {
+    background: linear-gradient(90deg, var(--accent-danger) 0%, var(--accent-danger) 100%);
+}
+
+/* ── Shimmer animation ── */
+@keyframes shimmer {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ── Breakdown list item with colored dot ── */
+.breakdownItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.breakdownDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--dot-color, var(--accent-primary));
+}
+
+.breakdownLabel {
+    font-size: 14px;
+    color: var(--text-secondary, var(--mantine-color-dimmed));
+    flex: 1;
+}
+
+.breakdownValue {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--mantine-font-family-monospace);
+    color: var(--text-primary, var(--mantine-color-text));
+    text-align: right;
+}
+
+/* ── Gradient text for donut center ── */
+.donutCenterGradient {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ── Status badge ── */
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgb(0, 212, 255, 0.1);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+/* ── Category amounts section ── */
+.amountsSection {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.spentAmount {
+    font-weight: 700;
+    font-family: var(--mantine-font-family-monospace);
+    color: var(--text-primary, var(--mantine-color-text));
+}
+
+.budgetAmount {
+    color: var(--text-secondary, var(--mantine-color-dimmed));
+    font-family: var(--mantine-font-family-monospace);
+}

@@ -1,96 +1,62 @@
 import { useTranslation } from 'react-i18next';
-import { Group, Paper, RingProgress, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core';
+import { Grid, Paper, Stack, Text } from '@mantine/core';
 import { BudgetAllocationChart } from './BudgetAllocationChart';
+import { BudgetBreakdownList } from './BudgetBreakdownList';
 
 interface BudgetOverviewProps {
   totalBudget: number;
   totalSpent: number;
+  remaining: number;
+  overBudget: number;
   allocationData: { name: string; value: number; color: string }[];
+  unbudgetedCount: number;
 }
 
-export function BudgetOverview({ totalBudget, totalSpent, allocationData }: BudgetOverviewProps) {
+export function BudgetOverview({
+  totalBudget,
+  totalSpent,
+  remaining,
+  overBudget,
+  allocationData,
+  unbudgetedCount,
+}: BudgetOverviewProps) {
   const { t } = useTranslation();
-  const percentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
-  const remaining = totalBudget - totalSpent;
-  const isOverBudget = remaining < 0;
 
   return (
-    <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
-      <Paper withBorder p="md" radius="md">
-        <Stack gap="xs">
-          <Text size="xs" c="dimmed" fw={700} tt="uppercase">
-            {t('budget.overview.utilization')}
-          </Text>
-          <Group align="center" gap="xl">
-            <RingProgress
-              size={120}
-              thickness={12}
-              roundCaps
-              sections={[
-                { value: Math.min(percentage, 100), color: isOverBudget ? 'red' : 'blue' },
-              ]}
-              label={
-                <Text c={isOverBudget ? 'red' : 'blue'} fw={700} ta="center" size="xl">
-                  {percentage.toFixed(0)}%
-                </Text>
-              }
-            />
-            <div>
-              <Text size="sm" c="dimmed">
-                {t('budget.overview.spent')}
-              </Text>
-              <Text fw={700} size="lg">
-                €{(totalSpent / 100).toLocaleString()}
-              </Text>
-              <Text size="sm" c="dimmed" mt="xs">
-                {t('budget.overview.remaining')}
-              </Text>
-              <Text fw={700} size="lg" c={isOverBudget ? 'red' : 'green'}>
-                €{(remaining / 100).toLocaleString()}
-              </Text>
+    <Grid gutter={{ base: 'md', md: 'xl' }}>
+      {/* Left: Budget Allocation Chart */}
+      <Grid.Col span={{ base: 12, md: 6 }}>
+        <Paper withBorder p="xl" radius="md" h="100%">
+          <Stack gap="md" h="100%">
+            <Text size="xs" c="dimmed" fw={700} tt="uppercase">
+              {t('budget.overview.allocationTitle')}
+            </Text>
+            <div
+              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <BudgetAllocationChart data={allocationData} totalBudget={totalBudget} />
             </div>
-          </Group>
-        </Stack>
-      </Paper>
+          </Stack>
+        </Paper>
+      </Grid.Col>
 
-      <Paper withBorder p="md" radius="md">
-        <Stack gap="xs" h="100%">
-          <Text size="xs" c="dimmed" fw={700} tt="uppercase">
-            {t('budget.overview.status')}
-          </Text>
-          <Group align="flex-start" justify="space-between" h="100%">
-            <Stack gap="xs">
-              <Group>
-                <ThemeIcon
-                  color={isOverBudget ? 'red' : 'green'}
-                  variant="light"
-                  size="lg"
-                  radius="md"
-                >
-                  {isOverBudget ? <span>⚠️</span> : <span>✅</span>}
-                </ThemeIcon>
-                <Text fw={600}>
-                  {isOverBudget ? t('budget.overview.overBudget') : t('budget.overview.onTrack')}
-                </Text>
-              </Group>
-              <Text size="sm" c="dimmed" lh={1.4}>
-                {isOverBudget
-                  ? t('budget.overview.overBudgetMessage')
-                  : t('budget.overview.onTrackMessage')}
-              </Text>
-            </Stack>
-          </Group>
-        </Stack>
-      </Paper>
-
-      <Paper withBorder p="md" radius="md">
-        <Stack gap="xs">
-          <Text size="xs" c="dimmed" fw={700} tt="uppercase">
-            {t('budget.overview.allocation')}
-          </Text>
-          <BudgetAllocationChart data={allocationData} totalBudget={totalBudget} />
-        </Stack>
-      </Paper>
-    </SimpleGrid>
+      {/* Right: Budget Breakdown List */}
+      <Grid.Col span={{ base: 12, md: 6 }}>
+        <Paper withBorder p="xl" radius="md">
+          <Stack gap="md">
+            <Text size="xs" c="dimmed" fw={700} tt="uppercase">
+              {t('budget.overview.breakdownTitle')}
+            </Text>
+            <BudgetBreakdownList
+              totalBudget={totalBudget}
+              totalSpent={totalSpent}
+              remaining={remaining}
+              overBudget={overBudget}
+              unbudgetedCount={unbudgetedCount}
+            />
+          </Stack>
+        </Paper>
+      </Grid.Col>
+    </Grid>
   );
 }

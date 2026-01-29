@@ -14,6 +14,7 @@ import { DashboardPage } from './components/Dashboard/DashboardPage';
 import { ReportsPage } from './components/Reports/ReportsPage';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { Transactions } from './components/Transactions/Transactions';
+import { Vendors } from './components/Vendors/Vendors';
 import { BudgetProvider } from './context/BudgetContext';
 
 const Layout = () => (
@@ -38,6 +39,7 @@ export function Router() {
         { path: 'accounts/:id', element: <AccountDetailPage /> },
         { path: 'categories', element: <Categories /> },
         { path: 'categories/:id', element: <CategoryDetailPage /> },
+        { path: 'vendors', element: <Vendors /> },
         { path: 'budget', element: <Budget /> },
         // Placeholders for other routes
         { path: 'reports', element: <ReportsPage /> },

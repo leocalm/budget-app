@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { IconPlus, IconX } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -82,9 +81,12 @@ export function AccountsContainer() {
               onClick={toggleCreate}
               variant={createOpened ? 'light' : 'filled'}
               color={createOpened ? 'gray' : undefined}
-              leftSection={createOpened ? <IconX size={18} /> : <IconPlus size={18} />}
               className={createOpened ? undefined : styles.addButton}
+              size="md"
             >
+              <span style={{ fontSize: '16px', marginRight: '4px' }}>
+                {createOpened ? '' + '' : '+'}
+              </span>
               {createOpened ? 'Cancel' : 'Add Account'}
             </Button>
           }

@@ -191,29 +191,45 @@
       "totalOutgoing": "Total Outgoing",
       "difference": "Difference"
     },
+    "container": {
+      "title": "Monthly Budget",
+      "subtitle": "Manage your spending limits and assign budgets to your categories.",
+      "addCategory": "Add Category"
+    },
     "overview": {
-      "utilization": "Budget Utilization",
-      "spent": "Spent",
-      "remaining": "Remaining",
-      "status": "Status",
+      "allocationTitle": "Budget Allocation",
+      "breakdownTitle": "Budget Breakdown",
+      "totalBudget": "Total Budget",
+      "allocated": "Allocated to Categories",
+      "spent": "Currently Spent",
+      "remaining": "Remaining Budget",
       "overBudget": "Over Budget",
+      "unbudgeted": "{{count}} categories",
+      "utilization": "Budget Utilization",
+      "status": "Status",
       "onTrack": "On Track",
       "overBudgetMessage": "You have exceeded your total budget limit for this period.",
       "onTrackMessage": "You are within your planned budget limits.",
       "allocation": "Allocation"
     },
-    "container": {
-      "title": "Monthly Budget",
-      "description": "Manage your spending limits and assign budgets to your categories.",
-      "unbudgetedTitle": "Unbudgeted",
-      "unbudgetedDescription": "Click a category to set its monthly limit and add it to your plan."
-    },
     "budgetedCategories": {
       "title": "Budgeted Categories",
+      "status": "{{onTrack}} of {{total}} on track",
+      "`spent`": "€{{spent}}",
+      "of": "of €{{budget}}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noCategories": "No budgeted categories yet",
+      "addFirst": "Click \"Add Category\" to get started",
       "description": "Adjust your monthly spending limits",
       "error": {
         "positiveValue": "Value must be positive"
-      }
+      },
+      "onTrack": "on track",
+      "nearLimit": "near limit",
+      "overBudget": "over budget",
+      "over": "over",
+      "remaining": "remaining"
     },
     "configuration": {
       "title": "Budget Configuration",
@@ -229,8 +245,10 @@
       }
     },
     "unbudgetedCategories": {
-      "loading": "Loading...",
-      "allBudgeted": "All categories are budgeted!"
+      "title": "Unbudgeted",
+      "allBudgeted": "All categories are budgeted!",
+      "subtitle": "Click a category to set its monthly limit and add it to your plan.",
+      "loading": "Loading..."
     }
   },
   "transactionsPage": {
@@ -262,6 +280,7 @@
       "management": "Management",
       "accounts": "Accounts",
       "categories": "Categories",
+      "vendors": "Vendors",
       "budgetPlan": "Budget Plan",
       "insights": "Insights",
       "reports": "Reports",
@@ -281,6 +300,100 @@
       "thisPeriod": "this period",
       "monthlySpent": "Monthly Spent",
       "transactions": "Transactions"
+    }
+  },
+  "vendors": {
+    "title": "Vendors",
+    "subtitle": "Manage your transaction vendors",
+    "addVendor": "Add Vendor",
+    "editVendor": "Edit Vendor",
+    "deleteVendor": "Delete Vendor",
+    "viewTransactions": "View Transactions",
+    "searchPlaceholder": "Search vendors...",
+    "sortByName": "A→Z",
+    "sortByUsage": "Most Used",
+    "sortByRecent": "Recent",
+    "transactionCount": "Transactions",
+    "lastUsed": "Last Used",
+    "never": "Never",
+    "form": {
+      "nameLabel": "Vendor Name",
+      "namePlaceholder": "Enter vendor name",
+      "saveButton": "Save Vendor",
+      "cancelButton": "Cancel"
+    },
+    "delete": {
+      "confirmTitle": "Delete Vendor",
+      "confirmMessage": "Are you sure you want to delete this vendor?",
+      "confirmButton": "Delete",
+      "cancelButton": "Cancel"
+    },
+    "errors": {
+      "cannotDelete": "Cannot Delete",
+      "vendorInUse": "This vendor is used in {{count}} transaction(s)",
+      "nameRequired": "Vendor name is required",
+      "nameMinLength": "Vendor name must be at least 2 characters",
+      "nameMaxLength": "Vendor name must be less than 100 characters"
+    },
+    "success": {
+      "created": "Vendor created successfully",
+      "updated": "Vendor updated successfully",
+      "deleted": "Vendor deleted successfully"
+    },
+    "empty": {
+      "title": "No vendors yet",
+      "subtitle": "Add your first vendor to track where your money goes"
+    }
+  },
+  "dashboard": {
+    "title": "Financial Dashboard",
+    "stats": {
+      "remainingBudget": {
+        "label": "Remaining Budget",
+        "meta": "{{limit}} limit",
+        "trend": {
+          "up": "↑ {{percent}}% vs last month",
+          "down": "↓ {{percent}}% vs last month"
+        }
+      },
+      "totalAssets": {
+        "label": "Total Assets",
+        "trend": {
+          "up": "↑ {{percent}}%",
+          "down": "↓ {{percent}}%"
+        }
+      },
+      "avgDailySpend": {
+        "label": "Avg. Daily Spend",
+        "meta": "Past 7 days"
+      },
+      "monthProgress": {
+        "label": "Month Progress",
+        "meta": "{{days}} days until reset",
+        "metaSingular": "{{days}} day until reset"
+      }
+    },
+    "charts": {
+      "balanceOverTime": {
+        "title": "Balance Over Time",
+        "noData": "No balance data available"
+      },
+      "topCategories": {
+        "title": "Top Categories"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "viewAll": "View All",
+      "table": {
+        "date": "Date",
+        "description": "Description / Vendor",
+        "category": "Category",
+        "account": "Account",
+        "amount": "Amount"
+      },
+      "noTransactions": "No recent transactions",
+      "addFirst": "Add your first transaction to get started"
     }
   }
 }
