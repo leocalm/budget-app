@@ -41,6 +41,11 @@ export function Navigation({ onNavigate }: NavigationProps) {
           route: '/categories',
         },
         {
+          icon: () => <span>🏪</span>,
+          label: t('layout.navigation.vendors'),
+          route: '/vendors',
+        },
+        {
           icon: () => <span>📊</span>,
           label: t('layout.navigation.budgetPlan'),
           route: '/budget',

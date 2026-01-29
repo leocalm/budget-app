@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge, Group, Paper, Stack, Text, UnstyledButton } from '@mantine/core';
+import { Badge, Center, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useCreateBudgetCategory } from '@/hooks/useCategories';
 import { CategoryResponse } from '@/types/category';
 
@@ -35,39 +35,71 @@ export function UnbudgetedCategories({
 
   if (!categories || categories.length === 0) {
     return (
-      <Paper withBorder p="md" radius="md" style={{ borderStyle: 'dashed' }}>
-        <Text size="xs" c="dimmed" ta="center">
-          {t('budget.unbudgetedCategories.allBudgeted')}
-        </Text>
-      </Paper>
+      <Center>
+        <Stack gap="md" align="center">
+          <Text size="lg" fw={600}>
+            ✅
+          </Text>
+          <div style={{ textAlign: 'center' }}>
+            <Text size="sm" fw={600}>
+              {t('budget.unbudgetedCategories.allBudgeted')}
+            </Text>
+            <Text size="xs" c="dimmed" mt={4}>
+              All categories have been assigned a budget.
+            </Text>
+          </div>
+        </Stack>
+      </Center>
     );
   }
 
   return (
-    <Stack gap="xs">
-      <Group gap="xs">
-        {categories.map((category) => (
-          <UnstyledButton
-            key={category.id}
-            onClick={() => handleAdd(category.id)}
-            disabled={createMutation.isPending}
+    <Stack gap="sm">
+      {categories.map((category) => (
+        <UnstyledButton
+          key={category.id}
+          onClick={() => handleAdd(category.id)}
+          disabled={createMutation.isPending}
+          style={{ width: '100%' }}
+        >
+          <Badge
+            variant="light"
+            color="blue"
+            size="md"
+            radius="md"
+            leftSection={<span>➕</span>}
+            style={{
+              cursor: 'pointer',
+              width: '100%',
+              justifyContent: 'flex-start',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (e.currentTarget) {
+                e.currentTarget.style.background = 'rgba(0, 212, 255, 0.2)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (e.currentTarget) {
+                e.currentTarget.style.background = '';
+                e.currentTarget.style.transform = '';
+              }
+            }}
+            styles={{
+              root: {
+                textTransform: 'none',
+                paddingLeft: 10,
+                paddingRight: 12,
+                fontSize: 13,
+                fontWeight: 500,
+              },
+            }}
           >
-            <Badge
-              variant="light"
-              color="blue"
-              size="lg"
-              radius="sm"
-              leftSection={<span>➕</span>}
-              style={{ cursor: 'pointer' }}
-              styles={{
-                root: { textTransform: 'none', paddingLeft: 8, paddingRight: 10 },
-              }}
-            >
-              {category.icon} {category.name}
-            </Badge>
-          </UnstyledButton>
-        ))}
-      </Group>
+            {category.icon} {category.name}
+          </Badge>
+        </UnstyledButton>
+      ))}
     </Stack>
   );
 }

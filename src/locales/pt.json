@@ -31,5 +31,67 @@
       },
       "recent": "Recentes"
     }
+  },
+  "layout": {
+    "navigation": {
+      "overview": "Visão Geral",
+      "dashboard": "Dashboard",
+      "transactions": "Transações",
+      "management": "Gestão",
+      "accounts": "Contas",
+      "categories": "Categorias",
+      "vendors": "Fornecedores",
+      "budgetPlan": "Orçamento",
+      "insights": "Análises",
+      "reports": "Relatórios",
+      "goals": "Metas",
+      "recurring": "Recorrentes",
+      "other": "Outro",
+      "settings": "Configurações",
+      "helpSupport": "Ajuda e Suporte"
+    }
+  },
+  "vendors": {
+    "title": "Fornecedores",
+    "subtitle": "Gerencie seus fornecedores de transações",
+    "addVendor": "Adicionar Fornecedor",
+    "editVendor": "Editar Fornecedor",
+    "deleteVendor": "Excluir Fornecedor",
+    "viewTransactions": "Ver Transações",
+    "searchPlaceholder": "Procurar fornecedores...",
+    "sortByName": "A→Z",
+    "sortByUsage": "Mais Usado",
+    "sortByRecent": "Recente",
+    "transactionCount": "Transações",
+    "lastUsed": "Último Uso",
+    "never": "Nunca",
+    "form": {
+      "nameLabel": "Nome do Fornecedor",
+      "namePlaceholder": "Digite o nome do fornecedor",
+      "saveButton": "Salvar Fornecedor",
+      "cancelButton": "Cancelar"
+    },
+    "delete": {
+      "confirmTitle": "Excluir Fornecedor",
+      "confirmMessage": "Tem certeza que deseja excluir este fornecedor?",
+      "confirmButton": "Excluir",
+      "cancelButton": "Cancelar"
+    },
+    "errors": {
+      "cannotDelete": "Não é Possível Excluir",
+      "vendorInUse": "Este fornecedor é usado em {{count}} transação(ões)",
+      "nameRequired": "Nome do fornecedor é obrigatório",
+      "nameMinLength": "Nome do fornecedor deve ter pelo menos 2 caracteres",
+      "nameMaxLength": "Nome do fornecedor deve ter menos de 100 caracteres"
+    },
+    "success": {
+      "created": "Fornecedor criado com sucesso",
+      "updated": "Fornecedor atualizado com sucesso",
+      "deleted": "Fornecedor excluído com sucesso"
+    },
+    "empty": {
+      "title": "Ainda não há fornecedores",
+      "subtitle": "Adicione seu primeiro fornecedor para rastrear onde seu dinheiro vai"
+    }
   }
 }

@@ -28,12 +28,37 @@ export function StatCard({
 }: StatCardProps) {
   if (loading) {
     return (
-      <Paper p="lg" radius="md" withBorder>
-        <Group justify="space-between" mb="xs">
+      <Paper
+        p="lg"
+        radius="md"
+        withBorder
+        style={{
+          backgroundColor: featured
+            ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
+            : 'var(--mantine-color-dark-7)',
+          borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--mantine-color-dark-4)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {featured && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 4,
+              background:
+                'linear-gradient(90deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)',
+            }}
+          />
+        )}
+        <Group justify="space-between" mb="xs" style={featured ? { paddingTop: '8px' } : {}}>
           <Skeleton height={20} width="50%" />
           <Skeleton height={30} width={30} radius="md" />
         </Group>
-        <Skeleton height={30} width="70%" mb="xs" />
+        <Skeleton height={featured ? 50 : 30} width="70%" mb="xs" />
         <Skeleton height={15} width="40%" />
       </Paper>
     );
@@ -47,13 +72,31 @@ export function StatCard({
       onClick={onClick}
       style={{
         cursor: onClick ? 'pointer' : 'default',
-        backgroundColor: featured ? 'rgba(0, 212, 255, 0.08)' : 'var(--mantine-color-dark-7)',
-        borderColor: featured ? 'rgba(0, 212, 255, 0.2)' : 'var(--mantine-color-dark-4)',
+        backgroundColor: featured
+          ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
+          : 'var(--mantine-color-dark-7)',
+        borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--mantine-color-dark-4)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        boxShadow: featured ? '0 0 32px rgba(0, 212, 255, 0.15)' : undefined,
+        boxShadow: featured ? '0 0 40px rgba(0, 212, 255, 0.2)' : undefined,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <Group justify="space-between" mb="xs">
+      {/* Top accent bar for featured cards */}
+      {featured && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 4,
+            background:
+              'linear-gradient(90deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)',
+          }}
+        />
+      )}
+      <Group justify="space-between" mb="xs" style={featured ? { paddingTop: '8px' } : {}}>
         <Group gap="xs">
           <div
             style={{
@@ -81,16 +124,17 @@ export function StatCard({
       <Group align="flex-end" gap="xs" mb="xs">
         <Text
           fw={700}
-          size="xl"
           style={{
-            fontSize: rem(28),
+            fontSize: featured ? rem(48) : rem(28),
             fontFamily: 'var(--mantine-font-family-monospace)',
             lineHeight: 1.2,
+            color: featured ? undefined : 'white',
             background: featured
               ? 'linear-gradient(135deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)'
               : undefined,
             WebkitBackgroundClip: featured ? 'text' : undefined,
             WebkitTextFillColor: featured ? 'transparent' : undefined,
+            backgroundClip: featured ? 'text' : undefined,
           }}
         >
           {value}

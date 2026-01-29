@@ -1,36 +1,28 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Divider,
-  Group,
-  NumberInput,
-  Paper,
-  ScrollArea,
-  Stack,
-  Table,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDeleteBudgetCategory, useUpdateBudgetCategory } from '@/hooks/useCategories';
 import { BudgetCategoryResponse } from '@/types/budget';
+import { BudgetCategoryItem } from './BudgetCategoryItem';
 
 interface BudgetedCategoriesProps {
   editingId: string | null;
   onEditingChange: (id: string | null) => void;
   categories: BudgetCategoryResponse[];
+  categorySpending: Map<string, number>;
 }
 
 export function BudgetedCategories({
   editingId,
   onEditingChange,
   categories,
+  categorySpending,
 }: BudgetedCategoriesProps) {
   const { t } = useTranslation();
   const deleteMutation = useDeleteBudgetCategory();
   const updateMutation = useUpdateBudgetCategory();
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const form = useForm({
     initialValues: {
@@ -50,7 +42,6 @@ export function BudgetedCategories({
           budgetedValue: category.budgetedValue / 100,
         });
       } else {
-        // If category is not in the list yet, we set a default
         form.setValues({ budgetedValue: 0 });
       }
     }
@@ -58,16 +49,15 @@ export function BudgetedCategories({
 
   React.useEffect(() => {
     if (editingId && inputRef.current) {
-      // The timeout ensures the DOM has painted the new row before focusing
       const timeoutId = setTimeout(() => {
         inputRef.current?.focus();
         inputRef.current?.select();
       }, 50);
       return () => clearTimeout(timeoutId);
     }
-  }, [editingId, categories]);
+  }, [editingId]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     deleteMutation.mutate(id);
   };
 
@@ -84,98 +74,74 @@ export function BudgetedCategories({
     onEditingChange(null);
   };
 
-  const rows = categories?.map((budgetCategory) => {
-    const isEditing = editingId === budgetCategory.id;
-    const displayValue = budgetCategory.budgetedValue / 100;
+  // Calculate how many are on track
+  const onTrackCount = categories.filter((cat) => {
+    const spent = categorySpending.get(cat.category.id) || 0;
+    const percentage = cat.budgetedValue > 0 ? (spent / cat.budgetedValue) * 100 : 0;
+    return percentage <= 100;
+  }).length;
 
+  if (categories.length === 0) {
     return (
-      <Table.Tr key={budgetCategory.id}>
-        <Table.Td>
-          <Group gap="sm">
-            <Text size="sm" fw={500}>
-              {budgetCategory.category.icon} {budgetCategory.category.name}
-            </Text>
-          </Group>
-        </Table.Td>
-        <Table.Td>
-          <Group justify="flex-end" gap="xs">
-            {isEditing ? (
-              <NumberInput
-                {...form.getInputProps('budgetedValue')}
-                ref={inputRef}
-                decimalScale={2}
-                fixedDecimalScale
-                size="xs"
-                w={110}
-                variant="filled"
-                hideControls
-                prefix="€"
-              />
-            ) : (
-              <Text size="sm" fw={700} style={{ fontFamily: 'monospace' }}>
-                €{displayValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-              </Text>
-            )}
-          </Group>
-        </Table.Td>
-        <Table.Td>
-          <Group justify="flex-end" gap={4}>
-            {isEditing ? (
-              <>
-                <ActionIcon variant="light" color="blue" type="submit">
-                  <span>✅</span>
-                </ActionIcon>
-                <ActionIcon variant="light" color="gray" onClick={() => onEditingChange(null)}>
-                  <span>❌</span>
-                </ActionIcon>
-              </>
-            ) : (
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                onClick={() => {
-                  onEditingChange(budgetCategory.id);
-                  form.setValues({ budgetedValue: displayValue });
-                }}
-              >
-                <span>✏️</span>
-              </ActionIcon>
-            )}
-            <ActionIcon
-              variant="subtle"
-              color="red"
-              onClick={() => handleDelete(budgetCategory.id)}
-            >
-              <span>🗑️</span>
-            </ActionIcon>
-          </Group>
-        </Table.Td>
-      </Table.Tr>
+      <Paper shadow="sm" radius="md" p="xl" withBorder h="100%">
+        <Stack gap="md" align="center" justify="center" style={{ minHeight: 300 }}>
+          <Title order={3} fw={700}>
+            {t('budget.budgetedCategories.noCategories')}
+          </Title>
+          <Text size="sm" c="dimmed" ta="center">
+            {t('budget.budgetedCategories.addFirst')}
+          </Text>
+        </Stack>
+      </Paper>
     );
-  });
+  }
 
   return (
     <Paper shadow="sm" radius="md" p="xl" withBorder h="100%">
       <form onSubmit={form.onSubmit(handleSave)}>
         <Stack gap="md">
-          <Group justify="space-between" align="flex-end">
-            <div>
-              <Title order={3} fw={700}>
-                {t('budget.budgetedCategories.title')}
-              </Title>
-              <Text size="xs" c="dimmed">
-                {t('budget.budgetedCategories.description')}
-              </Text>
-            </div>
-          </Group>
+          <div>
+            <Group justify="space-between" align="flex-end">
+              <div>
+                <Title order={3} fw={700}>
+                  {t('budget.budgetedCategories.title')}
+                </Title>
+                <Text size="xs" c="dimmed" mt={4}>
+                  {t('budget.budgetedCategories.status', {
+                    onTrack: onTrackCount,
+                    total: categories.length,
+                  })}
+                </Text>
+              </div>
+            </Group>
+          </div>
 
           <Divider variant="dashed" />
 
-          <ScrollArea offsetScrollbars>
-            <Table verticalSpacing="sm" horizontalSpacing="0" variant="simple">
-              <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
-          </ScrollArea>
+          <Stack gap="md">
+            {categories.map((category) => (
+              <BudgetCategoryItem
+                key={category.id}
+                category={category}
+                spent={categorySpending.get(category.category.id) || 0}
+                isEditing={editingId === category.id}
+                editingValue={
+                  editingId === category.id
+                    ? form.values.budgetedValue
+                    : category.budgetedValue / 100
+                }
+                onEditStart={() => {
+                  onEditingChange(category.id);
+                  form.setValues({ budgetedValue: category.budgetedValue / 100 });
+                }}
+                onEditCancel={() => onEditingChange(null)}
+                onEditChange={(value) => form.setFieldValue('budgetedValue', value)}
+                onEditSave={() => handleSave(form.values)}
+                onDelete={() => handleDelete(category.id)}
+                inputRef={inputRef}
+              />
+            ))}
+          </Stack>
         </Stack>
       </form>
     </Paper>
