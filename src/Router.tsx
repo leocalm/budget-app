@@ -6,6 +6,7 @@ import { Accounts } from './components/Accounts/Accounts';
 import { AuthLayout } from './components/Auth/AuthLayout';
 import { ForgotPasswordPage } from './components/Auth/ForgotPasswordPage';
 import { LoginPage } from './components/Auth/LoginPage';
+import { ProtectedRoute } from './components/Auth/ProtectedRoute';
 import { RegisterPage } from './components/Auth/RegisterPage';
 import { Budget } from './components/Budget/Budget';
 import { Categories } from './components/Categories/Categories';
@@ -15,14 +16,17 @@ import { ReportsPage } from './components/Reports/ReportsPage';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { Transactions } from './components/Transactions/Transactions';
 import { Vendors } from './components/Vendors/Vendors';
+import { AuthProvider } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
 
 const Layout = () => (
-  <BudgetProvider>
-    <BasicAppShell>
-      <Outlet />
-    </BasicAppShell>
-  </BudgetProvider>
+  <ProtectedRoute>
+    <BudgetProvider>
+      <BasicAppShell>
+        <Outlet />
+      </BasicAppShell>
+    </BudgetProvider>
+  </ProtectedRoute>
 );
 
 export function Router() {
@@ -60,5 +64,9 @@ export function Router() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }

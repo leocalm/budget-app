@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Alert,
   Anchor,
@@ -17,12 +17,23 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { login } from '@/api/auth';
+import { useAuth } from '@/context/AuthContext';
 
 export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, login: authLogin } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const from = (location.state as any)?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, location]);
 
   const form = useForm({
     initialValues: {
@@ -46,13 +57,12 @@ export function LoginPage() {
         password: values.password,
       });
 
-      // Store user info in localStorage or sessionStorage based on "Remember me"
-      const storage = values.rememberMe ? localStorage : sessionStorage;
-      storage.setItem('user', JSON.stringify(response.user));
+      // Update auth context with user data
+      authLogin(response.user, values.rememberMe);
 
-      // Navigate to dashboard on success
-      // Authentication cookie is automatically stored by the browser
-      navigate('/dashboard');
+      // Navigate to the page user was trying to access, or dashboard
+      const from = (location.state as any)?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('auth.login.errors.generic'));
     } finally {

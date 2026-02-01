@@ -1,8 +1,40 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
+import { logout as apiLogout } from '@/api/auth';
+import { useAuth } from '@/context/AuthContext';
 
 export function UserMenu() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      // Call backend logout endpoint
+      await apiLogout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear auth state regardless of API response
+      logout();
+      setLoggingOut(false);
+      navigate('/auth/login');
+    }
+  };
+
+  // Get user initials for avatar
+  const getInitials = (name: string) => {
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
   return (
     <Menu shadow="md" width={200} position="right-end">
       <Menu.Target>
@@ -13,14 +45,14 @@ export function UserMenu() {
         >
           <Group>
             <Avatar radius="xl" color="cyan">
-              JD
+              {user?.name ? getInitials(user.name) : 'U'}
             </Avatar>
             <div style={{ flex: 1 }}>
               <Text size="sm" fw={500}>
-                {t('layout.userMenu.userName')}
+                {user?.name || t('layout.userMenu.userName')}
               </Text>
               <Text c="dimmed" size="xs">
-                {t('layout.userMenu.userEmail')}
+                {user?.email || t('layout.userMenu.userEmail')}
               </Text>
             </div>
             <span style={{ fontSize: 14 }}>➡️</span>
@@ -37,7 +69,12 @@ export function UserMenu() {
           {t('layout.userMenu.settings')}
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item color="red" leftSection={<span style={{ fontSize: 14 }}>🚪</span>}>
+        <Menu.Item
+          color="red"
+          leftSection={<span style={{ fontSize: 14 }}>🚪</span>}
+          onClick={handleLogout}
+          disabled={loggingOut}
+        >
           {t('layout.userMenu.logout')}
         </Menu.Item>
       </Menu.Dropdown>
