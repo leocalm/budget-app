@@ -14,10 +14,11 @@ import {
 } from '@/api/category';
 import { BudgetCategoryRequest } from '@/types/budget';
 import { CategoryRequest } from '@/types/category';
+import { queryKeys } from './queryKeys';
 
 export const useCategories = () => {
   return useQuery({
-    queryKey: ['categories'], // Unique key for caching
+    queryKey: queryKeys.categories(),
     queryFn: fetchCategories,
   });
 };
@@ -28,7 +29,7 @@ export const useDeleteCategory = () => {
   return useMutation({
     mutationFn: deleteCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
     },
   });
 };
@@ -39,7 +40,7 @@ export const useCreateCategory = () => {
   return useMutation({
     mutationFn: (newCategory: CategoryRequest) => createCategory(newCategory),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
     },
   });
 };
@@ -51,14 +52,14 @@ export const useUpdateCategory = () => {
     mutationFn: ({ id, payload }: { id: string; payload: CategoryRequest }) =>
       updateCategory(id, payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: ['categories'] })]);
+      await Promise.all([queryClient.invalidateQueries({ queryKey: queryKeys.categories() })]);
     },
   });
 };
 
 export const useUnbudgetedCategories = () => {
   return useQuery({
-    queryKey: ['unbudgetedCategories'],
+    queryKey: queryKeys.unbudgetedCategories(),
     queryFn: fetchUnbudgetedCategories,
   });
 };
@@ -70,8 +71,8 @@ export const useCreateBudgetCategory = () => {
     mutationFn: (payload: BudgetCategoryRequest) => createBudgetCategory(payload),
     onSuccess: async () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['unbudgetedCategories'] }),
-        queryClient.invalidateQueries({ queryKey: ['budgetedCategories'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
       ]);
     },
   });
@@ -79,7 +80,7 @@ export const useCreateBudgetCategory = () => {
 
 export const useBudgetedCategories = () => {
   return useQuery({
-    queryKey: ['budgetedCategories'],
+    queryKey: queryKeys.budgetedCategories(),
     queryFn: fetchBudgetCategories,
   });
 };
@@ -91,8 +92,8 @@ export const useDeleteBudgetCategory = () => {
     mutationFn: (id: string) => deleteBudgetCategory(id),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['unbudgetedCategories'] }),
-        queryClient.refetchQueries({ queryKey: ['budgetedCategories'] }),
+        queryClient.refetchQueries({ queryKey: queryKeys.unbudgetedCategories() }),
+        queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() }),
       ]);
     },
   });
@@ -105,7 +106,7 @@ export const useUpdateBudgetCategory = () => {
     mutationFn: ({ id, payload }: { id: string; payload: number }) =>
       updateBudgetCategory(id, payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.refetchQueries({ queryKey: ['budgetedCategories'] })]);
+      await Promise.all([queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() })]);
     },
   });
 };

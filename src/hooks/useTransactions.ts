@@ -7,10 +7,11 @@ import {
   updateTransaction,
 } from '@/api/transaction';
 import { Transaction, TransactionRequest } from '@/types/transaction';
+import { queryKeys } from './queryKeys';
 
 export const useTransactions = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: ['transactions', selectedPeriodId],
+    queryKey: queryKeys.transactions(selectedPeriodId),
     queryFn: () => fetchTransactions(selectedPeriodId),
     enabled: selectedPeriodId !== null,
   });
@@ -22,7 +23,7 @@ export const useDeleteTransaction = () => {
   return useMutation({
     mutationFn: deleteTransaction,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };
@@ -33,7 +34,7 @@ export const useCreateTransaction = () => {
   return useMutation({
     mutationFn: (newTransaction: Transaction) => createTransaction(newTransaction),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };
@@ -45,7 +46,7 @@ export const useCreateTransactionFromRequest = () => {
     mutationFn: (newTransaction: TransactionRequest) =>
       createTransactionFromRequest(newTransaction),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };
@@ -57,7 +58,7 @@ export const useUpdateTransaction = () => {
     mutationFn: ({ id, data }: { id: string; data: TransactionRequest }) =>
       updateTransaction(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };

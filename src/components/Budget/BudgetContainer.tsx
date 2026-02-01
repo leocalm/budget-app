@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/Transactions/PageHeader';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useBudgetedCategories, useUnbudgetedCategories } from '@/hooks/useCategories';
 import { useTransactions } from '@/hooks/useTransactions';
+import { queryKeys } from '@/hooks/queryKeys';
 import { BudgetedCategories } from './BudgetedCategories';
 import { BudgetOverview } from './BudgetOverview';
 import { UnbudgetedCategories } from './UnbudgetedCategories';
@@ -47,8 +48,8 @@ export function BudgetContainer() {
 
   const handleCategoryAdded = async (newId: string) => {
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['budgetedCategories'] }),
-      queryClient.invalidateQueries({ queryKey: ['unbudgetedCategories'] }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
     ]);
     setEditingId(newId);
   };

@@ -5,6 +5,7 @@ import { ActionIcon, Button, Group, Loader, Paper, Stack, Text, Title } from '@m
 import { fetchAccount } from '@/api/account';
 import { TransactionList } from '@/components/Transactions';
 import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
+import { queryKeys } from '@/hooks/queryKeys';
 import { AccountCard } from './AccountCard';
 
 export function AccountDetailPage() {
@@ -13,7 +14,7 @@ export function AccountDetailPage() {
   const deleteTransactionMutation = useDeleteTransaction();
 
   const { data: account, isLoading: isLoadingAccount } = useQuery({
-    queryKey: ['account', id],
+    queryKey: queryKeys.account(id!),
     queryFn: () => fetchAccount(id!),
     enabled: !!id,
   });
