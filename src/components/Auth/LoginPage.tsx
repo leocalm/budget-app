@@ -1,36 +1,63 @@
+import { useState } from 'react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
+  Alert,
   Anchor,
   Button,
   Checkbox,
   Group,
   Paper,
   PasswordInput,
+  Stack,
   Text,
   TextInput,
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { login } from '@/api/auth';
 
 export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm({
     initialValues: {
       email: '',
       password: '',
-      keepLogged: false,
+      rememberMe: false,
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.login.validation.invalidEmail')),
-      password: (val) => (val.length <= 6 ? t('auth.login.validation.passwordMinLength') : null),
+      password: (val) => (val.length < 6 ? t('auth.login.validation.passwordMinLength') : null),
     },
   });
 
-  const handleSubmit = () => {
-    // TODO: Implement login logic
-    navigate('/dashboard');
+  const handleSubmit = async (values: typeof form.values) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await login({
+        email: values.email,
+        password: values.password,
+      });
+
+      // Store user info in localStorage or sessionStorage based on "Remember me"
+      const storage = values.rememberMe ? localStorage : sessionStorage;
+      storage.setItem('user', JSON.stringify(response.user));
+
+      // Navigate to dashboard on success
+      // Authentication cookie is automatically stored by the browser
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('auth.login.errors.generic'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,31 +67,49 @@ export function LoginPage() {
       </Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          label={t('auth.login.emailLabel')}
-          placeholder={t('auth.login.emailPlaceholder')}
-          required
-          {...form.getInputProps('email')}
-        />
-        <PasswordInput
-          label={t('auth.login.passwordLabel')}
-          placeholder={t('auth.login.passwordPlaceholder')}
-          required
-          mt="md"
-          {...form.getInputProps('password')}
-        />
-        <Group justify="space-between" mt="lg">
-          <Checkbox
-            label={t('auth.login.rememberMe')}
-            {...form.getInputProps('keepLogged', { type: 'checkbox' })}
+        <Stack gap="md">
+          {error && (
+            <Alert
+              icon={<IconAlertCircle size={16} />}
+              title={t('auth.login.errors.title')}
+              color="red"
+              variant="light"
+            >
+              {error}
+            </Alert>
+          )}
+
+          <TextInput
+            label={t('auth.login.emailLabel')}
+            placeholder={t('auth.login.emailPlaceholder')}
+            required
+            disabled={loading}
+            {...form.getInputProps('email')}
           />
-          <Anchor component={Link} to="/auth/forgot-password" size="sm">
-            {t('auth.login.forgotPassword')}
-          </Anchor>
-        </Group>
-        <Button fullWidth mt="xl" type="submit">
-          {t('auth.login.signIn')}
-        </Button>
+
+          <PasswordInput
+            label={t('auth.login.passwordLabel')}
+            placeholder={t('auth.login.passwordPlaceholder')}
+            required
+            disabled={loading}
+            {...form.getInputProps('password')}
+          />
+
+          <Group justify="space-between">
+            <Checkbox
+              label={t('auth.login.rememberMe')}
+              disabled={loading}
+              {...form.getInputProps('rememberMe', { type: 'checkbox' })}
+            />
+            <Anchor component={Link} to="/auth/forgot-password" size="sm">
+              {t('auth.login.forgotPassword')}
+            </Anchor>
+          </Group>
+
+          <Button fullWidth type="submit" loading={loading}>
+            {t('auth.login.signIn')}
+          </Button>
+        </Stack>
       </form>
 
       <Text c="dimmed" size="sm" ta="center" mt={20}>

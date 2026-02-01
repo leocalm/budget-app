@@ -4,7 +4,30 @@
     "cancel": "Cancelar"
   },
   "auth": {
-    "login": "Logar",
+    "login": {
+      "welcomeBack": "Bem-vindo de volta!",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Sua senha",
+      "rememberMe": "Lembrar-me",
+      "forgotPassword": "Esqueceu a senha?",
+      "signIn": "Entrar",
+      "noAccountYet": "Ainda não tem uma conta?",
+      "createAccount": "Criar conta",
+      "validation": {
+        "invalidEmail": "E-mail inválido",
+        "passwordMinLength": "A senha deve ter pelo menos 6 caracteres"
+      },
+      "errors": {
+        "title": "Falha no Login",
+        "generic": "Ocorreu um erro ao fazer login. Por favor, tente novamente.",
+        "invalidCredentials": "E-mail ou senha inválidos. Por favor, tente novamente.",
+        "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão com a internet.",
+        "rateLimited": "Muitas tentativas de login. Por favor, tente novamente mais tarde.",
+        "serverError": "Erro no servidor. Por favor, tente novamente mais tarde."
+      }
+    },
     "logout": "Sair"
   },
   "transactions": {
