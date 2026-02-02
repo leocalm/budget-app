@@ -136,12 +136,12 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             p="xl"
             withBorder
             style={{
-              background: 'var(--mantine-color-dark-7)',
-              borderColor: 'var(--mantine-color-dark-4)',
+              background: 'var(--bg-card)',
+              borderColor: 'var(--border-medium)',
             }}
           >
             <Group justify="space-between" mb="xl">
-              <Text fw={600} size="lg" c="white">
+              <Text fw={600} size="lg">
                 {t('dashboard.charts.topCategories.title')}
               </Text>
             </Group>
@@ -157,12 +157,12 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
           p="xl"
           withBorder
           style={{
-            background: 'var(--mantine-color-dark-7)',
-            borderColor: 'var(--mantine-color-dark-4)',
+            background: 'var(--bg-card)',
+            borderColor: 'var(--border-medium)',
           }}
         >
           <Group justify="space-between" mb="md">
-            <Text fw={600} size="lg" c="white">
+            <Text fw={600} size="lg">
               {t('dashboard.recentActivity.title')}
             </Text>
             <Button

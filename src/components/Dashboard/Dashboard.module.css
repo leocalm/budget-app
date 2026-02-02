@@ -1,18 +1,3 @@
-/* ── CSS Variables (from redesign) ── */
-:root {
-    --bg-card: #151b26;
-    --bg-elevated: #1e2433;
-    --accent-primary: #00d4ff;
-    --accent-success: #00ffa3;
-    --accent-warning: #ffa940;
-    --accent-danger: #ff6b9d;
-    --accent-purple: #b47aff;
-    --text-secondary: #8892a6;
-    --text-tertiary: #5a6272;
-    --border-subtle: rgb(255, 255, 255, 0.06);
-    --shadow-glow: 0 0 32px rgb(0, 212, 255, 0.15);
-}
-
 /* ── Dashboard Header ── */
 .dashboardHeader {
     border-bottom: 1px solid var(--border-subtle);
@@ -24,11 +9,21 @@
     font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.02em;
+    margin: 0 !important;
+}
+
+[data-mantine-color-scheme="dark"] .dashboardTitle {
     background: linear-gradient(135deg, #fff 0%, var(--accent-primary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 0 !important;
+}
+
+[data-mantine-color-scheme="light"] .dashboardTitle {
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* ── Stats Grid Layout ── */
@@ -61,8 +56,8 @@
 
 .statCard:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgb(0 0 0 / 16%);
-    border-color: rgb(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-medium);
 }
 
 .statCard:hover::before {
@@ -70,10 +65,16 @@
 }
 
 /* ── Featured Stat Card Styling ── */
-.statCard.featured {
+[data-mantine-color-scheme="dark"] .statCard.featured {
     background: linear-gradient(135deg, rgb(0, 212, 255, 0.12) 0%, rgb(180, 122, 255, 0.08) 100%);
     border: 1px solid rgb(0, 212, 255, 0.25);
     box-shadow: 0 0 40px rgb(0, 212, 255, 0.2);
+}
+
+[data-mantine-color-scheme="light"] .statCard.featured {
+    background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.05) 100%);
+    border: 1px solid rgb(0, 212, 255, 0.2);
+    box-shadow: 0 0 24px rgb(0, 212, 255, 0.12);
 }
 
 .statCard.featured::before {
@@ -198,10 +199,17 @@
 .categoryBarWrapper {
     flex: 3;
     height: 32px;
-    background: rgb(255, 255, 255, 0.03);
     border-radius: 8px;
     overflow: hidden;
     position: relative;
+}
+
+[data-mantine-color-scheme="dark"] .categoryBarWrapper {
+    background: rgb(255, 255, 255, 0.03);
+}
+
+[data-mantine-color-scheme="light"] .categoryBarWrapper {
+    background: rgb(0, 0, 0, 0.04);
 }
 
 .categoryBar {

@@ -9,7 +9,6 @@ import {
   SimpleGrid,
   Tabs,
   Text,
-  useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
@@ -20,7 +19,6 @@ import { EditCategoryForm } from './EditCategoryForm';
 
 export function CategoriesTable() {
   const { data: categories, isLoading } = useCategories();
-  const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const deleteMutation = useDeleteCategory();
@@ -42,8 +40,7 @@ export function CategoriesTable() {
         radius="md"
         style={{
           borderLeft: `4px solid var(--mantine-color-${accentColor}-6)`,
-          backgroundColor:
-            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-white)',
+          backgroundColor: 'var(--bg-card)',
         }}
       >
         <Group justify="space-between" wrap="nowrap">

@@ -33,7 +33,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         <Navigation onNavigate={onNavigate} />
       </AppShell.Section>
 
-      <AppShell.Section pt="md" style={{ borderTop: '1px solid var(--mantine-color-dark-4)' }}>
+      <AppShell.Section pt="md" style={{ borderTop: '1px solid var(--border-medium)' }}>
         <UserMenu />
       </AppShell.Section>
     </AppShell.Navbar>

@@ -16,6 +16,20 @@ export const theme = createTheme({
       '#121720', // 8 - secondary
       '#0a0e14', // 9 - primary
     ],
+    // Custom light palette (inverted from dark)
+    // 0-3: text colors (darkest to light), 4: borders, 5: elevated, 6: tertiary, 7-9: backgrounds (light)
+    light: [
+      '#141517', // 0 - primary text (darkest)
+      '#2e3035', // 1 - secondary text
+      '#5c5f66', // 2 - tertiary text
+      '#909296', // 3 - muted text
+      '#e9ecef', // 4 - borders/dividers
+      '#f8f9fa', // 5 - elevated background
+      '#f1f3f5', // 6 - tertiary background
+      '#ffffff', // 7 - card background
+      '#fafbfc', // 8 - secondary background
+      '#ffffff', // 9 - primary background
+    ],
     // Accents (Index 5 matches the spec hex codes)
     cyan: [
       '#e0fbff',

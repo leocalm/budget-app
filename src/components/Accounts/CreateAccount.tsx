@@ -1,15 +1,5 @@
 import { IconPlus, IconX } from '@tabler/icons-react';
-import {
-  Button,
-  Collapse,
-  Divider,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { Button, Collapse, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { CreateAccountForm } from './CreateAccountForm';
 
@@ -19,7 +9,6 @@ interface CreateAccountProps {
 
 export function CreateAccount({ onAccountCreated }: CreateAccountProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const { colorScheme } = useMantineColorScheme();
 
   const onAccountCreatedInternal = () => {
     close();
@@ -54,10 +43,7 @@ export function CreateAccount({ onAccountCreated }: CreateAccountProps) {
           radius="md"
           mb="xl"
           style={{
-            background:
-              colorScheme === 'dark'
-                ? 'var(--mantine-color-dark-6)'
-                : 'var(--mantine-color-gray-0)',
+            background: 'var(--bg-elevated)',
           }}
         >
           <Stack gap="md">

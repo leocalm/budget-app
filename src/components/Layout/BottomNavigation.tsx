@@ -22,7 +22,7 @@ export function BottomNavigation() {
       h={80}
       style={{
         zIndex: 100,
-        borderTop: '1px solid var(--mantine-color-dark-4)',
+        borderTop: '1px solid var(--border-medium)',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
       radius={0}

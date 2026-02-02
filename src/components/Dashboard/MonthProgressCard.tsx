@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Group,
-  NumberFormatter,
-  Paper,
-  Progress,
-  Text,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { Group, NumberFormatter, Paper, Progress, Text } from '@mantine/core';
 import { MonthProgress } from '@/types/dashboard';
 
 type MonthProgressCardProps = {
@@ -14,8 +7,6 @@ type MonthProgressCardProps = {
 };
 
 export const MonthProgressCard = ({ data }: MonthProgressCardProps) => {
-  const { colorScheme } = useMantineColorScheme();
-
   if (!data) {
     return (
       <Paper
@@ -23,8 +14,7 @@ export const MonthProgressCard = ({ data }: MonthProgressCardProps) => {
         radius="lg"
         p="lg"
         style={{
-          background:
-            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+          background: 'var(--bg-card)',
         }}
       >
         Error
@@ -43,8 +33,7 @@ export const MonthProgressCard = ({ data }: MonthProgressCardProps) => {
       p="lg"
       h="100%"
       style={{
-        background:
-          colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        background: 'var(--bg-card)',
       }}
     >
       <Group justify="space-between" align="center">

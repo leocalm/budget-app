@@ -1,13 +1,5 @@
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
-import {
-  Group,
-  Paper,
-  RingProgress,
-  Stack,
-  Text,
-  ThemeIcon,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { Group, Paper, RingProgress, Stack, Text, ThemeIcon } from '@mantine/core';
 import { MonthlyBurnIn } from '@/types/dashboard';
 
 interface RemainingBudgetCardProps {
@@ -16,37 +8,19 @@ interface RemainingBudgetCardProps {
 }
 
 export function RemainingBudgetCard({ data, totalAsset }: RemainingBudgetCardProps) {
-  const { colorScheme } = useMantineColorScheme();
   const percentage = data ? (data.spentBudget / data.totalBudget) * 100 : 0;
   const isOverBudget = percentage > 100;
 
   if (!data || !totalAsset) {
     return (
-      <Paper
-        shadow="md"
-        radius="lg"
-        p="lg"
-        style={{
-          background:
-            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
-        }}
-      >
+      <Paper shadow="md" radius="lg" p="lg" style={{ background: 'var(--bg-card)' }}>
         Error
       </Paper>
     );
   }
 
   return (
-    <Paper
-      shadow="md"
-      radius="lg"
-      p="lg"
-      h="100%"
-      style={{
-        background:
-          colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
-      }}
-    >
+    <Paper shadow="md" radius="lg" p="lg" h="100%" style={{ background: 'var(--bg-card)' }}>
       <Group justify="space-between" align="center">
         <Stack gap={0}>
           <Text size="xs" c="dimmed" fw={700} tt="uppercase">

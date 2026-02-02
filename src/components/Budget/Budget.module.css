@@ -116,9 +116,16 @@
 .progressBar {
     height: 8px;
     border-radius: 4px;
-    background: rgb(255, 255, 255, 0.05);
     overflow: hidden;
     position: relative;
+}
+
+[data-mantine-color-scheme="dark"] .progressBar {
+    background: rgb(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="light"] .progressBar {
+    background: rgb(0, 0, 0, 0.06);
 }
 
 .progressFill {

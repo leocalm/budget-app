@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Group, SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { Box, Group, SimpleGrid, Stack, Text, Title, useMantineColorScheme } from '@mantine/core';
 import { initialTransactions } from '@/mocks/budgetData';
 import { BalanceOverTimeChart } from './BalanceOverTimeChart';
 import { RecentActivityTable } from './RecentActivityTable';
@@ -25,6 +25,9 @@ const topCategories = [
 ];
 
 export function DashboardContainer() {
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
+
   return (
     <Box
       style={{
@@ -38,8 +41,9 @@ export function DashboardContainer() {
           <Title
             order={1}
             style={{
-              background:
-                'linear-gradient(135deg, var(--mantine-color-white) 0%, var(--mantine-color-cyan-5) 100%)',
+              background: isDark
+                ? 'linear-gradient(135deg, #ffffff 0%, var(--mantine-color-cyan-5) 100%)'
+                : 'linear-gradient(135deg, var(--text-primary) 0%, var(--mantine-color-cyan-5) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
@@ -48,11 +52,11 @@ export function DashboardContainer() {
           </Title>
           <Group
             gap="xs"
-            bg="dark.7"
             p="xs"
             style={{
               borderRadius: 'var(--mantine-radius-md)',
-              border: '1px solid var(--mantine-color-dark-4)',
+              border: '1px solid var(--border-medium)',
+              background: 'var(--bg-card)',
             }}
           >
             <span>📅</span>

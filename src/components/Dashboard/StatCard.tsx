@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Group, Paper, rem, Skeleton, Text } from '@mantine/core';
+import { Card, Group, Paper, rem, Skeleton, Text, useMantineColorScheme } from '@mantine/core';
 
 interface StatCardProps {
   icon: React.ElementType;
@@ -26,6 +26,9 @@ export function StatCard({
   loading,
   onClick,
 }: StatCardProps) {
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
+
   if (loading) {
     return (
       <Paper
@@ -33,10 +36,12 @@ export function StatCard({
         radius="md"
         withBorder
         style={{
-          backgroundColor: featured
-            ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
-            : 'var(--mantine-color-dark-7)',
-          borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--mantine-color-dark-4)',
+          background: featured
+            ? isDark
+              ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
+              : 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.05) 100%)'
+            : 'var(--bg-card)',
+          borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--border-medium)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -72,12 +77,18 @@ export function StatCard({
       onClick={onClick}
       style={{
         cursor: onClick ? 'pointer' : 'default',
-        backgroundColor: featured
-          ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
-          : 'var(--mantine-color-dark-7)',
-        borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--mantine-color-dark-4)',
+        background: featured
+          ? isDark
+            ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
+            : 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.05) 100%)'
+          : 'var(--bg-card)',
+        borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--border-medium)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        boxShadow: featured ? '0 0 40px rgba(0, 212, 255, 0.2)' : undefined,
+        boxShadow: featured
+          ? isDark
+            ? '0 0 40px rgba(0, 212, 255, 0.2)'
+            : '0 0 24px rgba(0, 212, 255, 0.12)'
+          : undefined,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -105,7 +116,7 @@ export function StatCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
               borderRadius: 6,
             }}
           >
@@ -128,7 +139,7 @@ export function StatCard({
             fontSize: featured ? rem(48) : rem(28),
             fontFamily: 'var(--mantine-font-family-monospace)',
             lineHeight: 1.2,
-            color: featured ? undefined : 'white',
+            color: featured ? undefined : 'var(--text-primary)',
             background: featured
               ? 'linear-gradient(135deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)'
               : undefined,

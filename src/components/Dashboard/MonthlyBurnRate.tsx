@@ -1,4 +1,4 @@
-import { Group, Paper, Progress, Text, useMantineColorScheme } from '@mantine/core';
+import { Group, Paper, Progress, Text } from '@mantine/core';
 import { MonthlyBurnIn } from '@/types/dashboard';
 
 type MonthlyBurnRateProps = {
@@ -6,16 +6,13 @@ type MonthlyBurnRateProps = {
 };
 
 export function MonthlyBurnRate({ data }: MonthlyBurnRateProps) {
-  const { colorScheme } = useMantineColorScheme();
-
   if (!data) {
     return (
       <Paper
         radius="lg"
         p="lg"
         style={{
-          background:
-            colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+          background: 'var(--bg-card)',
         }}
       >
         Error
@@ -39,8 +36,7 @@ export function MonthlyBurnRate({ data }: MonthlyBurnRateProps) {
       radius="lg"
       p="lg"
       style={{
-        background:
-          colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        background: 'var(--bg-card)',
       }}
     >
       <Group justify="space-between" align="flex-start">

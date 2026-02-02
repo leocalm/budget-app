@@ -7,7 +7,7 @@ export function AuthLayout() {
     <Box
       style={{
         minHeight: '100vh',
-        background: 'var(--mantine-color-dark-9)',
+        background: 'var(--bg-primary)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

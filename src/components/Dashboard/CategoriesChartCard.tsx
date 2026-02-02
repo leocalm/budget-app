@@ -1,13 +1,4 @@
-import {
-  Grid,
-  Paper,
-  Progress,
-  ScrollArea,
-  Stack,
-  Text,
-  Tooltip,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { Grid, Paper, Progress, ScrollArea, Stack, Text, Tooltip } from '@mantine/core';
 import { SpentPerCategory } from '@/types/dashboard';
 
 type CategoriesChartCardProps = {
@@ -15,8 +6,6 @@ type CategoriesChartCardProps = {
 };
 
 export function CategoriesChartCard({ data }: CategoriesChartCardProps) {
-  const { colorScheme } = useMantineColorScheme();
-
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'EUR',
@@ -63,8 +52,7 @@ export function CategoriesChartCard({ data }: CategoriesChartCardProps) {
       radius="lg"
       p="lg"
       style={{
-        background:
-          colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+        background: 'var(--bg-card)',
       }}
       h={380}
     >

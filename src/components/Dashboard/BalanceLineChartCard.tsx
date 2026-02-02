@@ -24,8 +24,8 @@ export function BalanceLineChartCard({ data, accounts, isLoading }: BalanceLineC
         withBorder
         h={400}
         style={{
-          background: 'var(--mantine-color-dark-7)',
-          borderColor: 'var(--mantine-color-dark-4)',
+          background: 'var(--bg-card)',
+          borderColor: 'var(--border-medium)',
         }}
       >
         <Stack gap="md">
@@ -46,8 +46,8 @@ export function BalanceLineChartCard({ data, accounts, isLoading }: BalanceLineC
         withBorder
         h={400}
         style={{
-          background: 'var(--mantine-color-dark-7)',
-          borderColor: 'var(--mantine-color-dark-4)',
+          background: 'var(--bg-card)',
+          borderColor: 'var(--border-medium)',
         }}
       >
         <Group justify="center" h="100%">
@@ -83,12 +83,12 @@ export function BalanceLineChartCard({ data, accounts, isLoading }: BalanceLineC
       p="xl"
       withBorder
       style={{
-        background: 'var(--mantine-color-dark-7)',
-        borderColor: 'var(--mantine-color-dark-4)',
+        background: 'var(--bg-card)',
+        borderColor: 'var(--border-medium)',
       }}
     >
       <Group justify="space-between" mb="xl">
-        <Text fw={600} size="lg" c="white">
+        <Text fw={600} size="lg">
           {t('dashboard.charts.balanceOverTime.title')}
         </Text>
         {accounts && accounts.length > 0 && (

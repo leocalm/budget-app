@@ -1,21 +1,12 @@
 @import 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap';
 
+/* Shared accent colors (used in both themes) */
 :root {
-    --bg-primary: #0a0e14;
-    --bg-secondary: #121720;
-    --bg-tertiary: #1a1f2e;
-    --bg-card: #151b26;
-    --bg-elevated: #1e2433;
     --accent-primary: #00d4ff;
     --accent-success: #00ffa3;
     --accent-warning: #ffa940;
     --accent-danger: #ff6b9d;
     --accent-purple: #b47aff;
-    --text-primary: #fff;
-    --text-secondary: #8892a6;
-    --text-tertiary: #5a6272;
-    --border-subtle: rgb(255, 255, 255, 0.06);
-    --border-medium: rgb(255, 255, 255, 0.1);
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
@@ -28,9 +19,43 @@
     --radius-xl: 24px;
 }
 
+/* Dark theme variables (default) */
+[data-mantine-color-scheme="dark"] {
+    --bg-primary: #0a0e14;
+    --bg-secondary: #121720;
+    --bg-tertiary: #1a1f2e;
+    --bg-card: #151b26;
+    --bg-elevated: #1e2433;
+    --text-primary: #fff;
+    --text-secondary: #8892a6;
+    --text-tertiary: #5a6272;
+    --border-subtle: rgb(255, 255, 255, 0.06);
+    --border-medium: rgb(255, 255, 255, 0.1);
+    --shadow-sm: 0 2px 8px rgb(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 16px rgb(0, 0, 0, 0.16);
+    --shadow-lg: 0 8px 32px rgb(0, 0, 0, 0.24);
+}
+
+/* Light theme variables */
+[data-mantine-color-scheme="light"] {
+    --bg-primary: #fff;
+    --bg-secondary: #fafbfc;
+    --bg-tertiary: #f1f3f5;
+    --bg-card: #fff;
+    --bg-elevated: #f8f9fa;
+    --text-primary: #141517;
+    --text-secondary: #5c5f66;
+    --text-tertiary: #909296;
+    --border-subtle: rgb(0, 0, 0, 0.08);
+    --border-medium: rgb(0, 0, 0, 0.15);
+    --shadow-sm: 0 2px 8px rgb(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgb(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgb(0, 0, 0, 0.16);
+}
+
 body {
-    background-color: var(--mantine-color-dark-9);
-    color: var(--mantine-color-text);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 /* FadeInUp Animation */
@@ -111,8 +136,13 @@ body {
 }
 
 /* Selection */
-::selection {
+[data-mantine-color-scheme="dark"] ::selection {
     background: rgb(0, 212, 255, 0.3);
+    color: var(--text-primary);
+}
+
+[data-mantine-color-scheme="light"] ::selection {
+    background: rgb(0, 212, 255, 0.2);
     color: var(--text-primary);
 }
 

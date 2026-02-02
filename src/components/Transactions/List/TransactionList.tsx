@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollArea, Table, useMantineColorScheme } from '@mantine/core';
+import { ScrollArea, Table } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionRow } from '../Table/TransactionRow';
 
@@ -16,7 +16,6 @@ export const TransactionList = ({
   editTransaction,
 }: TransactionListProps) => {
   const { t } = useTranslation();
-  const { colorScheme } = useMantineColorScheme();
 
   return (
     <ScrollArea offsetScrollbars h="calc(100vh - 250px)">
@@ -25,8 +24,7 @@ export const TransactionList = ({
           style={{
             position: 'sticky',
             top: 0,
-            backgroundColor:
-              colorScheme === 'dark' ? 'var(--mantine-color-dark-7)' : 'var(--mantine-color-white)',
+            backgroundColor: 'var(--bg-card)',
             zIndex: 1,
             boxShadow: '0 1px 0 var(--mantine-color-default-border)',
           }}
