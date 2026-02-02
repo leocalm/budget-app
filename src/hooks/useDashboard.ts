@@ -6,38 +6,39 @@ import {
   getMonthProgress,
   getSpentByCategory,
 } from '@/api/dashboard';
+import { queryKeys } from './queryKeys';
 
 export const useSpentPerCategory = () => {
   return useQuery({
-    queryKey: ['spentPerCategory'],
+    queryKey: queryKeys.spentPerCategory(),
     queryFn: getSpentByCategory,
   });
 };
 
 export const useMonthlyBurnIn = () => {
   return useQuery({
-    queryKey: ['monthlyBurnIn'],
+    queryKey: queryKeys.monthlyBurnIn(),
     queryFn: getMonthlyBurnIn,
   });
 };
 
 export const useMonthProgress = () => {
   return useQuery({
-    queryKey: ['monthProgress'],
+    queryKey: queryKeys.monthProgress(),
     queryFn: getMonthProgress,
   });
 };
 
 export const useBudgetPerDay = () => {
   return useQuery({
-    queryKey: ['budgetPerDay'],
+    queryKey: queryKeys.budgetPerDay(),
     queryFn: getBudgetPerDay,
   });
 };
 
 export const useDashboardData = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: ['dashboardData', selectedPeriodId],
+    queryKey: queryKeys.dashboardData(selectedPeriodId),
     queryFn: () => fetchDashboardData(selectedPeriodId),
   });
 };

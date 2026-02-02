@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ActionIcon, Button, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { fetchAccount } from '@/api/account';
 import { TransactionList } from '@/components/Transactions';
+import { queryKeys } from '@/hooks/queryKeys';
 import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
 import { AccountCard } from './AccountCard';
 
@@ -13,7 +14,7 @@ export function AccountDetailPage() {
   const deleteTransactionMutation = useDeleteTransaction();
 
   const { data: account, isLoading: isLoadingAccount } = useQuery({
-    queryKey: ['account', id],
+    queryKey: queryKeys.account(id!),
     queryFn: () => fetchAccount(id!),
     enabled: !!id,
   });

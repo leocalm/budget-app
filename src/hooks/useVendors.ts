@@ -1,11 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createVendor, deleteVendor, fetchVendors, updateVendor } from '@/api/vendor';
 import { VendorRequest } from '@/types/vendor';
-
-export const queryKeys = {
-  vendors: () => ['vendors'] as const,
-  vendor: (id: string) => ['vendor', id] as const,
-};
+import { queryKeys } from './queryKeys';
 
 export const useVendors = () => {
   return useQuery({
@@ -20,7 +16,7 @@ export const useCreateVendor = () => {
   return useMutation({
     mutationFn: (data: VendorRequest) => createVendor(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['vendors'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -31,7 +27,7 @@ export const useUpdateVendor = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: VendorRequest }) => updateVendor(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['vendors'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -42,8 +38,8 @@ export const useDeleteVendor = () => {
   return useMutation({
     mutationFn: (id: string) => deleteVendor(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['vendors'] });
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
+import { queryKeys } from '@/hooks/queryKeys';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { DashboardData } from '@/types/dashboard';
@@ -71,9 +72,9 @@ const queryClient = new QueryClient({
 });
 
 // Seed the cache
-queryClient.setQueryData(['accounts'], mockAccounts);
-queryClient.setQueryData(['categories'], mockCategories);
-queryClient.setQueryData(['vendors'], mockVendors);
+queryClient.setQueryData(queryKeys.accounts(), mockAccounts);
+queryClient.setQueryData(queryKeys.categories(), mockCategories);
+queryClient.setQueryData(queryKeys.vendors(), mockVendors);
 
 const meta: Meta<typeof DashboardView> = {
   title: 'Components/Dashboard/DashboardView',

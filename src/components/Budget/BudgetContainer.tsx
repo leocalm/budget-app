@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Grid, Paper, Stack } from '@mantine/core';
 import { PageHeader } from '@/components/Transactions/PageHeader';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
+import { queryKeys } from '@/hooks/queryKeys';
 import { useBudgetedCategories, useUnbudgetedCategories } from '@/hooks/useCategories';
 import { useTransactions } from '@/hooks/useTransactions';
 import { BudgetedCategories } from './BudgetedCategories';
@@ -47,8 +48,8 @@ export function BudgetContainer() {
 
   const handleCategoryAdded = async (newId: string) => {
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['budgetedCategories'] }),
-      queryClient.invalidateQueries({ queryKey: ['unbudgetedCategories'] }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
     ]);
     setEditingId(newId);
   };

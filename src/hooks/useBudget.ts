@@ -7,10 +7,11 @@ import {
   updateBudget,
 } from '@/api/budget';
 import { BudgetPeriodRequest, BudgetResponse } from '@/types/budget';
+import { queryKeys } from './queryKeys';
 
 export const useBudget = () => {
   return useQuery({
-    queryKey: ['budget'],
+    queryKey: queryKeys.budget(),
     queryFn: fetchBudget,
   });
 };
@@ -21,21 +22,21 @@ export const useUpdateBudget = () => {
   return useMutation({
     mutationFn: (payload: BudgetResponse) => updateBudget(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgets() });
     },
   });
 };
 
 export const useCurrentBudgetPeriod = () => {
   return useQuery({
-    queryKey: ['budgetPeriods', 'current'],
+    queryKey: queryKeys.budgetPeriods.current(),
     queryFn: getCurrentBudgetPeriod,
   });
 };
 
 export const useBudgetPeriods = () => {
   return useQuery({
-    queryKey: ['budgetPeriods', 'list'],
+    queryKey: queryKeys.budgetPeriods.list(),
     queryFn: fetchBudgetPeriods,
   });
 };
@@ -46,7 +47,7 @@ export const useCreateBudgetPeriod = () => {
   return useMutation({
     mutationFn: (payload: BudgetPeriodRequest) => createBudgetPeriod(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgetPeriods', 'list'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
     },
   });
 };
