@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper, SimpleGrid, Text } from '@mantine/core';
+import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Accounts.module.css';
 
 interface AccountsSummaryProps {
@@ -16,7 +17,8 @@ export function AccountsSummary({
   accountCount,
 }: AccountsSummaryProps) {
   const formatCurrency = (value: number) => {
-    const abs = Math.abs(value / 100);
+    const displayValue = convertCentsToDisplay(value);
+    const abs = Math.abs(displayValue);
     const formatted = abs.toLocaleString('en-US', { minimumFractionDigits: 2 });
     return value < 0 ? `-€ ${formatted}` : `€ ${formatted}`;
   };

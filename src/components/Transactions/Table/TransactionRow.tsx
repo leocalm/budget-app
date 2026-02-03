@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Group, Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { TransactionResponse } from '@/types/transaction';
+import { convertCentsToDisplay } from '@/utils/currency';
 import { AccountBadge } from './AccountBadge';
 import { ActionButtons } from './ActionButtons';
 import { CategoryBadge } from './CategoryBadge';
@@ -31,8 +32,8 @@ export const TransactionRow = ({
   const isOutgoing = t.category.categoryType === 'Outgoing';
   const amountColor = isTransfer ? '#00d4ff' : isOutgoing ? '#ff6b9d' : '#00ffa3';
 
-  const formattedAmount = `${isOutgoing ? '-' : isTransfer ? '' : '+'}€ ${(
-    t.amount / 100
+  const formattedAmount = `${isOutgoing ? '-' : isTransfer ? '' : '+'}€ ${convertCentsToDisplay(
+    t.amount
   ).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

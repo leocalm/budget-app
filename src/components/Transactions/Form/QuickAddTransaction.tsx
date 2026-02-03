@@ -18,6 +18,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
+import { convertDisplayToCents } from '@/utils/currency';
 
 interface QuickAddTransactionProps {
   onSuccess?: () => void;
@@ -132,7 +133,7 @@ export const QuickAddTransaction = ({
 
     const transactionData: TransactionRequest = {
       description: values.description.trim(),
-      amount: Math.round(Number(values.amount) * 100), // Convert to cents
+      amount: convertDisplayToCents(Number(values.amount)),
       occurredAt: values.occurredAt!.toISOString().split('T')[0],
       categoryId: values.categoryId,
       fromAccountId: values.fromAccountId,

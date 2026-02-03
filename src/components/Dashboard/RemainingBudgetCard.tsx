@@ -1,6 +1,7 @@
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import { Group, Paper, RingProgress, Stack, Text, ThemeIcon } from '@mantine/core';
 import { MonthlyBurnIn } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface RemainingBudgetCardProps {
   data: MonthlyBurnIn | undefined;
@@ -27,7 +28,7 @@ export function RemainingBudgetCard({ data, totalAsset }: RemainingBudgetCardPro
             Total Assets
           </Text>
           <Text size="xl" fw={800} style={{ fontFamily: 'monospace' }}>
-            €{(totalAsset / 100).toLocaleString()}
+            €{convertCentsToDisplay(totalAsset).toLocaleString()}
           </Text>
 
           <Group gap="xs" mt="md">
@@ -39,7 +40,7 @@ export function RemainingBudgetCard({ data, totalAsset }: RemainingBudgetCardPro
                 Remaining Budget
               </Text>
               <Text fw={700} c={isOverBudget ? 'red' : 'green'}>
-                €{((data?.totalBudget - data?.spentBudget) / 100).toLocaleString()}
+                €{convertCentsToDisplay(data?.totalBudget - data?.spentBudget).toLocaleString()}
               </Text>
             </div>
           </Group>

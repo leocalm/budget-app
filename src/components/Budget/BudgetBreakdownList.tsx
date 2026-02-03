@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mantine/core';
+import { formatCurrencyValue } from '@/utils/currency';
 import styles from './Budget.module.css';
 
 interface BudgetBreakdownListProps {
@@ -19,13 +20,6 @@ export function BudgetBreakdownList({
 }: BudgetBreakdownListProps) {
   const { t } = useTranslation();
 
-  const formatCurrency = (cents: number) => {
-    return (cents / 100).toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
   return (
     <Stack gap="sm">
       <div className={styles.breakdownItem}>
@@ -33,7 +27,7 @@ export function BudgetBreakdownList({
           <div className={styles.breakdownDot} style={{ backgroundColor: '#00d4ff' }} />
           <div className={styles.breakdownLabel}>{t('budget.overview.totalBudget')}</div>
         </div>
-        <div className={styles.breakdownValue}>€{formatCurrency(totalBudget)}</div>
+        <div className={styles.breakdownValue}>€{formatCurrencyValue(totalBudget)}</div>
       </div>
 
       <div className={styles.breakdownItem}>
@@ -41,7 +35,7 @@ export function BudgetBreakdownList({
           <div className={styles.breakdownDot} style={{ backgroundColor: '#845ef7' }} />
           <div className={styles.breakdownLabel}>{t('budget.overview.allocated')}</div>
         </div>
-        <div className={styles.breakdownValue}>€{formatCurrency(totalBudget)}</div>
+        <div className={styles.breakdownValue}>€{formatCurrencyValue(totalBudget)}</div>
       </div>
 
       <div className={styles.breakdownItem}>
@@ -49,7 +43,7 @@ export function BudgetBreakdownList({
           <div className={styles.breakdownDot} style={{ backgroundColor: '#ff6b6b' }} />
           <div className={styles.breakdownLabel}>{t('budget.overview.spent')}</div>
         </div>
-        <div className={styles.breakdownValue}>€{formatCurrency(totalSpent)}</div>
+        <div className={styles.breakdownValue}>€{formatCurrencyValue(totalSpent)}</div>
       </div>
 
       <div className={styles.breakdownItem}>
@@ -63,7 +57,7 @@ export function BudgetBreakdownList({
           </div>
         </div>
         <div className={styles.breakdownValue}>
-          €{formatCurrency(remaining >= 0 ? remaining : overBudget)}
+          €{formatCurrencyValue(remaining >= 0 ? remaining : overBudget)}
         </div>
       </div>
 

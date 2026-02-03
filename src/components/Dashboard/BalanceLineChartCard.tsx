@@ -3,6 +3,7 @@ import { AreaChart, AreaChartSeries } from '@mantine/charts';
 import { Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
 import { AccountResponse } from '@/types/account';
 import { BudgetPerDay } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Dashboard.module.css';
 
 type BalanceLineChartCardProps = {
@@ -71,7 +72,7 @@ export function BalanceLineChartCard({ data, accounts, isLoading }: BalanceLineC
     if (!dictData[item.date]) {
       dictData[item.date] = newItem;
     }
-    dictData[item.date][item.accountName] = item.balance / 100;
+    dictData[item.date][item.accountName] = convertCentsToDisplay(item.balance);
   }
   const parsedData = Object.values(dictData);
 

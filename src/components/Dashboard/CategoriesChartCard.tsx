@@ -1,5 +1,6 @@
 import { Grid, Paper, Progress, ScrollArea, Stack, Text, Tooltip } from '@mantine/core';
 import { SpentPerCategory } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 type CategoriesChartCardProps = {
   data: SpentPerCategory[] | undefined;
@@ -13,7 +14,7 @@ export function CategoriesChartCard({ data }: CategoriesChartCardProps) {
   });
 
   const rows = data?.map((item) => {
-    const tooltip = `${formatter.format(item.amountSpent / 100)} / ${formatter.format(item.budgetedValue / 100)}`;
+    const tooltip = `${formatter.format(convertCentsToDisplay(item.amountSpent))} / ${formatter.format(convertCentsToDisplay(item.budgetedValue))}`;
     const percentage = 100 * (item.amountSpent / item.budgetedValue);
     const isOverBudget = percentage > 100;
 

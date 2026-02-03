@@ -37,41 +37,41 @@ const poundCurrency = {
 export const Euro: Story = {
   args: {
     currency: euroCurrency,
-    value: 1500.0,
+    cents: 150000,
   },
 };
 
 export const Dollar: Story = {
   args: {
     currency: dollarCurrency,
-    value: 2500.5,
+    cents: 250050,
   },
 };
 
 export const Pound: Story = {
   args: {
     currency: poundCurrency,
-    value: 999.99,
+    cents: 99999,
   },
 };
 
 export const NoCurrency: Story = {
   args: {
     currency: undefined,
-    value: 1234.56,
+    cents: 123456,
   },
 };
 
 export const ZeroValue: Story = {
   args: {
     currency: euroCurrency,
-    value: 0,
+    cents: 0,
   },
 };
 
 export const NegativeValue: Story = {
   args: {
     currency: dollarCurrency,
-    value: -500.25,
+    cents: -50025,
   },
 };

@@ -14,6 +14,7 @@ import {
   Title,
 } from '@mantine/core';
 import type { AccountResponse } from '@/types/account';
+import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Accounts.module.css';
 
 interface BudgetPerDay {
@@ -56,8 +57,9 @@ export function AccountCard({
   onDelete,
   onViewDetails,
 }: AccountCardProps) {
-  const currentBalance = account.balance / 100;
-  const startBalance = balanceHistory.length > 0 ? balanceHistory[0].balance / 100 : currentBalance;
+  const currentBalance = convertCentsToDisplay(account.balance);
+  const startBalance =
+    balanceHistory.length > 0 ? convertCentsToDisplay(balanceHistory[0].balance) : currentBalance;
   const balanceChange = currentBalance - startBalance;
   const isPositive = balanceChange >= 0;
   const isNegativeBalance = currentBalance < 0;
@@ -98,17 +100,17 @@ export function AccountCard({
     isCreditCard && hasSpendLimit ? 'Credit Limit' : hasSpendLimit ? 'Spend Limit' : 'This Month';
   const stat1Value =
     isCreditCard && hasSpendLimit
-      ? `${account.currency.symbol} ${formatCurrency(account.spendLimit! / 100)}`
+      ? `${account.currency.symbol} ${formatCurrency(convertCentsToDisplay(account.spendLimit!))}`
       : hasSpendLimit
-        ? `${account.currency.symbol} ${formatCurrency(account.spendLimit! / 100)}/mo`
+        ? `${account.currency.symbol} ${formatCurrency(convertCentsToDisplay(account.spendLimit!))}/mo`
         : monthlySpent !== 0
-          ? `-${account.currency.symbol} ${formatCurrency(Math.abs(monthlySpent / 100))}`
+          ? `-${account.currency.symbol} ${formatCurrency(Math.abs(convertCentsToDisplay(monthlySpent)))}`
           : `${account.currency.symbol} 0`;
 
   const stat2Label = isCreditCard && hasSpendLimit ? 'Available' : 'Transactions';
   const stat2Value =
     isCreditCard && hasSpendLimit
-      ? `${account.currency.symbol} ${formatCurrency((account.spendLimit! - Math.abs(account.balance)) / 100)}`
+      ? `${account.currency.symbol} ${formatCurrency(convertCentsToDisplay(account.spendLimit! - Math.abs(account.balance)))}`
       : String(transactionCount);
 
   return (
@@ -165,7 +167,7 @@ export function AccountCard({
         <Sparkline
           data={
             balanceHistory.length > 0
-              ? balanceHistory.map((h) => h.balance / 100)
+              ? balanceHistory.map((h) => convertCentsToDisplay(h.balance))
               : [currentBalance, currentBalance]
           }
           h={80}
