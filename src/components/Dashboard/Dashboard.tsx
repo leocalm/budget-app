@@ -7,6 +7,7 @@ import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCar
 import { RecentTransactionsCard } from '@/components/Dashboard/RecentTransactionsCard';
 import { StatCard } from '@/components/Dashboard/StatCard';
 import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
+import { UI } from '@/constants';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useDashboardData } from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
@@ -59,7 +60,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     if (!dashboardData?.spentPerCategory) {
       return [];
     }
-    return dashboardData.spentPerCategory.slice(0, 5);
+    return dashboardData.spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
   }, [dashboardData?.spentPerCategory]);
 
   return (
