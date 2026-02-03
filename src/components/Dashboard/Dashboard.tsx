@@ -7,11 +7,11 @@ import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCar
 import { RecentTransactionsCard } from '@/components/Dashboard/RecentTransactionsCard';
 import { StatCard } from '@/components/Dashboard/StatCard';
 import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
+import { UI } from '@/constants';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useDashboardData } from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
 import { convertCentsToDisplay } from '@/utils/currency';
-import { UI } from '@/constants';
 import styles from './Dashboard.module.css';
 
 interface DashboardProps {

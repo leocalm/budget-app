@@ -13,13 +13,13 @@ import {
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { UI } from '@/constants';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
-import { UI } from '@/constants';
 
 interface QuickAddTransactionProps {
   onSuccess?: () => void;
