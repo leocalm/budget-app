@@ -19,6 +19,7 @@ import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
+import { UI } from '@/constants';
 
 interface QuickAddTransactionProps {
   onSuccess?: () => void;
@@ -91,7 +92,7 @@ export const QuickAddTransaction = ({
         if (!value || value.trim().length === 0) {
           return t('transactions.quickAddTransaction.error.description.required');
         }
-        if (value.length > 255) {
+        if (value.length > UI.DESCRIPTION_MAX_LENGTH) {
           return t('transactions.quickAddTransaction.error.description.maxLength');
         }
         return null;
@@ -187,7 +188,7 @@ export const QuickAddTransaction = ({
   }, []);
 
   // Get recent vendors for suggestions
-  const recentVendors = vendors.slice(0, 4);
+  const recentVendors = vendors.slice(0, UI.RECENT_VENDORS_LIMIT);
 
   const onCategoryChanged = (value: string | null) => {
     form.setFieldValue('categoryId', value || '');

@@ -11,6 +11,7 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useDashboardData } from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
 import { convertCentsToDisplay } from '@/utils/currency';
+import { UI } from '@/constants';
 import styles from './Dashboard.module.css';
 
 interface DashboardProps {
@@ -59,7 +60,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     if (!dashboardData?.spentPerCategory) {
       return [];
     }
-    return dashboardData.spentPerCategory.slice(0, 5);
+    return dashboardData.spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
   }, [dashboardData?.spentPerCategory]);
 
   return (
