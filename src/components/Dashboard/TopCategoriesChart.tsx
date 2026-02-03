@@ -19,14 +19,19 @@ const CATEGORY_COLORS = [
 
 export function TopCategoriesChart({ data, isLoading }: TopCategoriesChartProps) {
   const maxSpent = useMemo(() => {
-    return Math.max(...data.map((item) => item.amountSpent), 1);
+    // amountSpent comes in cents — convert to display value for calculations
+    return Math.max(...data.map((item) => item.amountSpent / 100), 1);
   }, [data]);
 
-  const formatCurrency = (value: number): string =>
-    new Intl.NumberFormat('en-IE', {
+  const formatCurrency = (valueInCents: number): string => {
+    // valueInCents is in cents — reuse existing currency util
+    // Importing here to keep top-level imports minimal
+    const display = valueInCents / 100;
+    return new Intl.NumberFormat('en-IE', {
       style: 'currency',
       currency: 'EUR',
-    }).format(value);
+    }).format(display);
+  };
 
   if (isLoading) {
     return (
