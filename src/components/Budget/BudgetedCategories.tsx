@@ -4,6 +4,7 @@ import { Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDeleteBudgetCategory, useUpdateBudgetCategory } from '@/hooks/useCategories';
 import { BudgetCategoryResponse } from '@/types/budget';
+import { convertCentsToDisplay, convertDisplayToCents } from '@/utils/currency';
 import { BudgetCategoryItem } from './BudgetCategoryItem';
 
 interface BudgetedCategoriesProps {
@@ -39,7 +40,7 @@ export function BudgetedCategories({
       const category = categories?.find((c) => c.id === editingId);
       if (category) {
         form.setValues({
-          budgetedValue: category.budgetedValue / 100,
+          budgetedValue: convertCentsToDisplay(category.budgetedValue),
         });
       } else {
         form.setValues({ budgetedValue: 0 });
@@ -68,7 +69,7 @@ export function BudgetedCategories({
 
     updateMutation.mutate({
       id: editingId,
-      payload: values.budgetedValue * 100,
+      payload: convertDisplayToCents(values.budgetedValue),
     });
 
     onEditingChange(null);

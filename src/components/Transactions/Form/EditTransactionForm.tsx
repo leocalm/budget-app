@@ -17,6 +17,7 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse, CategoryType } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface EditTransactionFormProps {
   transaction: TransactionResponse;
@@ -69,7 +70,7 @@ export const EditTransactionForm = ({
   const form = useForm<EditFormValues>({
     initialValues: {
       description: transaction.description,
-      amount: transaction.amount / 100, // Convert from cents to display value
+      amount: convertCentsToDisplay(transaction.amount),
       occurredAt: new Date(transaction.occurredAt),
       categoryType: transaction.category.categoryType,
       categoryId: transaction.category.id,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, SimpleGrid, Text } from '@mantine/core';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface TransactionStatsProps {
   income: number;
@@ -16,7 +17,7 @@ interface StatCardProps {
 }
 
 const StatCard = ({ label, value, color, type }: StatCardProps) => {
-  const displayValue = Math.abs(value / 100);
+  const displayValue = Math.abs(convertCentsToDisplay(value));
   const prefix = type === 'net' && value < 0 ? '-' : '';
 
   return (

@@ -13,6 +13,7 @@ import {
 } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest, TransactionResponse } from '@/types/transaction';
+import { convertDisplayToCents } from '@/utils/currency';
 import { EditFormValues, EditTransactionForm, QuickAddTransaction } from './Form';
 import { ExportButton, PageHeader } from './PageHeader';
 import { TransactionStats } from './Stats';
@@ -127,7 +128,7 @@ export function TransactionsContainer() {
 
     const transactionData: TransactionRequest = {
       description: values.description.trim(),
-      amount: Math.round(values.amount * 100), // Convert to cents
+      amount: convertDisplayToCents(values.amount),
       occurredAt: values.occurredAt!.toISOString().split('T')[0],
       categoryId: values.categoryId,
       fromAccountId: values.fromAccountId,

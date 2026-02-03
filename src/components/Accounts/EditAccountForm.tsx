@@ -13,6 +13,7 @@ import {
 import { useForm } from '@mantine/form';
 import { useUpdateAccount } from '@/hooks/useAccounts';
 import { ACCOUNT_TYPES, AccountRequest, AccountResponse, AccountType } from '@/types/account';
+import { convertCentsToDisplay, convertDisplayToCents } from '@/utils/currency';
 
 interface EditAccountFormProps {
   account: AccountResponse;
@@ -28,7 +29,7 @@ export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
     initialValues: {
       name: account.name,
       accountType: account.accountType as string,
-      balance: account.balance / 100,
+      balance: convertCentsToDisplay(account.balance),
       color: account.color,
       icon: account.icon,
       currency: account.currency.currency,
@@ -45,7 +46,7 @@ export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
     const payload: AccountRequest = {
       name: values.name,
       accountType: values.accountType as AccountType,
-      balance: Math.round((values.balance || 0) * 100),
+      balance: convertDisplayToCents(values.balance || 0),
       color: values.color,
       icon: values.icon,
       currency: values.currency,

@@ -1,5 +1,6 @@
 import { DonutChart } from '@mantine/charts';
 import { Center, Stack, Text } from '@mantine/core';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface ChartData {
   name: string;
@@ -30,7 +31,7 @@ export function BudgetAllocationChart({ data, totalBudget }: BudgetAllocationCha
         withTooltip
         tooltipDataSource="segment"
         valueFormatter={(value) =>
-          `€${(value / 100).toLocaleString('de-DE', { minimumFractionDigits: 0 })}`
+          `€${convertCentsToDisplay(value).toLocaleString('de-DE', { minimumFractionDigits: 0 })}`
         }
       />
       <Center style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -39,7 +40,10 @@ export function BudgetAllocationChart({ data, totalBudget }: BudgetAllocationCha
             Total
           </Text>
           <Text fw={700} size="xl">
-            €{(totalBudget / 100).toLocaleString('de-DE', { minimumFractionDigits: 0 })}
+            €
+            {convertCentsToDisplay(totalBudget).toLocaleString('de-DE', {
+              minimumFractionDigits: 0,
+            })}
           </Text>
         </Stack>
       </Center>

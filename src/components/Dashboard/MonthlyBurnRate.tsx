@@ -1,5 +1,6 @@
 import { Group, Paper, Progress, Text } from '@mantine/core';
 import { MonthlyBurnIn } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 type MonthlyBurnRateProps = {
   data: MonthlyBurnIn | undefined;
@@ -22,8 +23,8 @@ export function MonthlyBurnRate({ data }: MonthlyBurnRateProps) {
 
   const currentDay = data.currentDay;
   const daysInPeriod = data.daysInPeriod;
-  const totalBudget = data.totalBudget / 100;
-  const spentBudget = data.spentBudget / 100;
+  const totalBudget = convertCentsToDisplay(data.totalBudget);
+  const spentBudget = convertCentsToDisplay(data.spentBudget);
 
   const dailyBurn = spentBudget / currentDay; // actual burn per day
   const idealDailyBurn = totalBudget / daysInPeriod; // ideal to not overspend

@@ -10,6 +10,7 @@ import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useDashboardData } from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Dashboard.module.css';
 
 interface DashboardProps {
@@ -26,8 +27,8 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     if (!dashboardData?.monthlyBurnIn) {
       return 0;
     }
-    return (
-      (dashboardData.monthlyBurnIn.totalBudget - dashboardData.monthlyBurnIn.spentBudget) / 100
+    return convertCentsToDisplay(
+      dashboardData.monthlyBurnIn.totalBudget - dashboardData.monthlyBurnIn.spentBudget
     );
   }, [dashboardData?.monthlyBurnIn]);
 
@@ -35,13 +36,16 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     if (!dashboardData?.monthlyBurnIn || dashboardData.monthlyBurnIn.currentDay === 0) {
       return 0;
     }
-    return dashboardData.monthlyBurnIn.spentBudget / dashboardData.monthlyBurnIn.currentDay;
+    return (
+      convertCentsToDisplay(dashboardData.monthlyBurnIn.spentBudget) /
+      dashboardData.monthlyBurnIn.currentDay
+    );
   }, [dashboardData?.monthlyBurnIn]);
 
-  const totalAssets = (dashboardData?.totalAsset || 0) / 100;
+  const totalAssets = convertCentsToDisplay(dashboardData?.totalAsset || 0);
   const monthProgress = dashboardData?.monthProgress?.daysPassedPercentage || 0;
   const daysUntilReset = dashboardData?.monthProgress?.remainingDays || 0;
-  const budgetLimit = (dashboardData?.monthlyBurnIn?.totalBudget || 0) / 100;
+  const budgetLimit = convertCentsToDisplay(dashboardData?.monthlyBurnIn?.totalBudget || 0);
 
   // Format currency - € on left side
   const formatCurrency = (value: number): string =>

@@ -16,6 +16,7 @@ import { CategoriesChartCard } from '@/components/Dashboard/CategoriesChartCard'
 import { RecentTransactionsCard } from '@/components/Dashboard/RecentTransactionsCard';
 import { AccountResponse } from '@/types/account';
 import { DashboardData } from '@/types/dashboard';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface DashboardViewProps {
   dashboardData: DashboardData | undefined;
@@ -50,7 +51,7 @@ export const DashboardView = ({ dashboardData, accounts }: DashboardViewProps) =
               ? 'red'
               : 'green'
           }
-          subText={`of €${((dashboardData?.monthlyBurnIn.totalBudget || 0) / 100).toLocaleString()} limit`}
+          subText={`of €${convertCentsToDisplay(dashboardData?.monthlyBurnIn.totalBudget || 0).toLocaleString()} limit`}
         />
 
         {/* Widget 3: Cash Flow (Burn Rate) */}
@@ -118,7 +119,7 @@ function StatWidget({ label, value, icon, color, subText }: any) {
             {label}
           </Text>
           <Text size="xl" fw={800} style={{ fontFamily: 'monospace' }}>
-            €{(value / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            €{convertCentsToDisplay(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </Text>
         </Stack>
         <ThemeIcon variant="light" color={color} size="lg" radius="md">

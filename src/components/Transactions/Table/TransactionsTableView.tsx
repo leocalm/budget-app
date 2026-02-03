@@ -18,6 +18,7 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { Transaction, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
+import { convertCentsToDisplay, convertDisplayToCents } from '@/utils/currency';
 import {
   TransactionFormFields,
   TransactionFormProvider,
@@ -155,7 +156,7 @@ export const TransactionsTableView = ({
       fromAccount: values.fromAccount,
       toAccount: values.toAccount,
       vendor: vendor || undefined,
-      amount: Math.round(values.amount * 100),
+      amount: convertDisplayToCents(values.amount),
     };
 
     try {
@@ -171,7 +172,7 @@ export const TransactionsTableView = ({
   const handleEdit = (t: TransactionResponse) => {
     form.setValues({
       description: t.description,
-      amount: t.amount / 100,
+      amount: convertCentsToDisplay(t.amount),
       occurredAt: t.occurredAt,
       fromAccountName: t.fromAccount.name,
       toAccountName: t.toAccount?.name ?? null,

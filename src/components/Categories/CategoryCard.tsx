@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActionIcon, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import { CategoryResponse } from '@/types/category';
+import { formatCurrencyValue } from '@/utils/currency';
 import styles from './Categories.module.css';
 
 interface CategoryCardProps {
@@ -41,10 +42,6 @@ export function CategoryCard({
   const typeMeta = CATEGORY_TYPE_META[category.categoryType] || {
     icon: '💸',
     label: category.categoryType,
-  };
-
-  const formatCurrency = (value: number) => {
-    return (value / 100).toLocaleString('en-US', { minimumFractionDigits: 2 });
   };
 
   const handleCardClick = () => {
@@ -115,7 +112,7 @@ export function CategoryCard({
       <div className={styles.categoryStats}>
         <Stack gap={4}>
           <Text className={styles.statLabel}>This Month</Text>
-          <Text className={styles.statValue}>€ {formatCurrency(monthlySpent)}</Text>
+          <Text className={styles.statValue}>€ {formatCurrencyValue(monthlySpent)}</Text>
           {trend && (
             <Text
               className={`${styles.trend} ${trend.direction === 'up' ? styles.trendUp : styles.trendDown}`}
