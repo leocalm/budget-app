@@ -1,10 +1,9 @@
-export interface Vendor {
-  id: string | undefined;
+export interface VendorInput {
   name: string;
 }
 
-export interface VendorRequest {
-  name: string;
+export interface Vendor extends VendorInput {
+  id: string;
 }
 
 export interface VendorWithStats extends Vendor {
