@@ -23,7 +23,7 @@ export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, login: authLogin } = useAuth();
+  const { isAuthenticated, refreshUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,13 +52,16 @@ export function LoginPage() {
     setError(null);
 
     try {
-      const response = await login({
+      await login({
         email: values.email,
         password: values.password,
       });
 
-      // Update auth context with user data
-      authLogin(response.user, values.rememberMe);
+      // Hydrate user from cookie-backed endpoint
+      const refreshed = await refreshUser(values.rememberMe, false);
+      if (!refreshed) {
+        throw new Error(t('auth.login.errors.generic'));
+      }
 
       // Navigate to the page user was trying to access, or dashboard
       const from = (location.state as any)?.from?.pathname || '/dashboard';

@@ -61,7 +61,10 @@
         "invalidEmail": "Invalid email"
       }
     },
-    "logout": "Log out"
+    "logout": "Log out",
+    "session": {
+      "refreshFailed": "Could not restore your session. Please log in again."
+    }
   },
   "transactions": {
     "quickAddTransaction": {

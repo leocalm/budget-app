@@ -1,7 +1,9 @@
 {
   "common": {
     "save": "Salvar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "success": "Sucesso",
+    "error": "Erro"
   },
   "auth": {
     "login": {
@@ -28,7 +30,10 @@
         "serverError": "Erro no servidor. Por favor, tente novamente mais tarde."
       }
     },
-    "logout": "Sair"
+    "logout": "Sair",
+    "session": {
+      "refreshFailed": "Nao foi possivel restaurar sua sessao. Por favor, faca login novamente."
+    }
   },
   "transactions": {
     "quickAddTransaction": {

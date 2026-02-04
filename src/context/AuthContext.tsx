@@ -1,10 +1,7 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { notifications } from '@mantine/notifications';
+import { fetchCurrentUser, type User } from '@/api/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -12,6 +9,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (user: User, rememberMe: boolean) => void;
   logout: () => void;
+  refreshUser: (rememberMe?: boolean, showToast?: boolean) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,31 +19,60 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check for stored user on mount
-    const checkAuth = () => {
+  const refreshUser = useCallback(
+    async (rememberMe = false, showToast = false) => {
       try {
-        // Check localStorage first (remember me), then sessionStorage
-        const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const currentUser = await fetchCurrentUser();
+        setUser(currentUser);
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem('user', JSON.stringify(currentUser));
+        return true;
+      } catch (error) {
+        setUser(null);
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        if (showToast) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('auth.session.refreshFailed'),
+            color: 'red',
+          });
+        }
+        return false;
+      }
+    },
+    [setUser, t]
+  );
 
+  useEffect(() => {
+    // Check for stored user on mount for quick hydration, then validate via cookie.
+    const checkAuth = async () => {
+      let rememberMe = false;
+      let hasStoredUser = false;
+      try {
+        const localUser = localStorage.getItem('user');
+        const sessionUser = sessionStorage.getItem('user');
+        const storedUser = localUser || sessionUser;
+        rememberMe = Boolean(localUser);
+        hasStoredUser = Boolean(storedUser);
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        // If stored data is corrupted, clear it silently
-        // User will be treated as logged out (expected behavior)
         localStorage.removeItem('user');
         sessionStorage.removeItem('user');
-      } finally {
-        setIsLoading(false);
       }
+
+      await refreshUser(rememberMe, hasStoredUser);
+      setIsLoading(false);
     };
 
-    checkAuth();
-  }, []);
+    void checkAuth();
+  }, [refreshUser]);
 
   const login = (userData: User, rememberMe: boolean) => {
     setUser(userData);
@@ -67,6 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoading,
         login,
         logout,
+        refreshUser,
       }}
     >
       {children}
