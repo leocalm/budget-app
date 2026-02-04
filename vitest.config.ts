@@ -13,7 +13,12 @@ const dirname =
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   optimizeDeps: {
-    include: ['i18next', 'react-i18next', 'react-dom/client'],
+    include: [
+      'i18next',
+      'react-i18next',
+      'react-dom/client',
+      'recharts/es6/component/responsiveContainerUtils',
+    ],
   },
   resolve: {
     alias: {

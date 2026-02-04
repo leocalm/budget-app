@@ -20,6 +20,7 @@ import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
+import styles from './QuickAddTransaction.module.css';
 
 interface QuickAddTransactionProps {
   onSuccess?: () => void;
@@ -36,26 +37,7 @@ interface FormValues {
   vendorName: string;
 }
 
-const inputStyles = {
-  input: {
-    padding: '12px 14px',
-    background: '#1e2433',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '12px',
-    color: '#ffffff',
-    fontSize: '14px',
-    fontFamily: "'Sora', sans-serif",
-    transition: 'all 0.2s ease',
-    '&:focus': {
-      borderColor: '#00d4ff',
-      boxShadow: '0 0 0 3px rgba(0, 212, 255, 0.1)',
-      background: '#151b26',
-    },
-    '&::placeholder': {
-      color: '#5a6272',
-    },
-  },
-};
+const inputClassNames = { input: styles.input };
 
 export const QuickAddTransaction = ({
   onSuccess,
@@ -199,32 +181,16 @@ export const QuickAddTransaction = ({
   };
 
   return (
-    <Box
-      style={{
-        background: '#151b26',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '16px',
-        padding: '24px',
-        marginBottom: '32px',
-        boxShadow: '0 4px 16px rgba(0, 212, 255, 0.08)',
-      }}
-    >
+    <Box className={styles.container}>
       {/* Header */}
       <Group justify="space-between" mb="md">
         <Group gap="sm">
-          <Text style={{ fontSize: '20px' }}>⚡</Text>
-          <Text fw={700} size="md" style={{ color: '#ffffff' }}>
+          <Text className={styles.headerIcon}>⚡</Text>
+          <Text fw={700} size="md" className={styles.headerTitle}>
             {t('transactions.quickAddTransaction.title')}
           </Text>
         </Group>
-        <Text
-          size="xs"
-          style={{
-            color: '#5a6272',
-            fontFamily: "'JetBrains Mono', monospace",
-          }}
-          className="quick-add-hint"
-        >
+        <Text size="xs" className={styles.hint}>
           {t('transactions.quickAddTransaction.hint')}
         </Text>
       </Group>
@@ -232,15 +198,7 @@ export const QuickAddTransaction = ({
       {/* Form */}
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-        <Box
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '140px 2fr 120px 1fr 1fr 1fr 48px',
-            gap: '8px',
-            alignItems: 'flex-start',
-          }}
-          className="form-row"
-        >
+        <Box className={styles.formGrid}>
           {/* Date */}
           <DateInput
             placeholder={t('transactions.quickAddTransaction.date.placeholder')}
@@ -248,7 +206,7 @@ export const QuickAddTransaction = ({
             onChange={(value) => form.setFieldValue('occurredAt', value as Date | null)}
             error={form.errors.occurredAt}
             valueFormat="YYYY-MM-DD"
-            styles={inputStyles}
+            classNames={inputClassNames}
           />
 
           {/* Description */}
@@ -258,7 +216,7 @@ export const QuickAddTransaction = ({
             value={form.values.description}
             onChange={(e) => form.setFieldValue('description', e.currentTarget.value)}
             error={form.errors.description}
-            styles={inputStyles}
+            classNames={inputClassNames}
           />
 
           {/* Amount */}
@@ -270,7 +228,7 @@ export const QuickAddTransaction = ({
             decimalScale={2}
             fixedDecimalScale
             hideControls
-            styles={inputStyles}
+            classNames={inputClassNames}
           />
 
           {/* From Account */}
@@ -284,7 +242,7 @@ export const QuickAddTransaction = ({
             }))}
             error={form.errors.fromAccountId}
             searchable
-            styles={inputStyles}
+            classNames={inputClassNames}
           />
 
           {/* To Account */}
@@ -299,7 +257,7 @@ export const QuickAddTransaction = ({
               }))}
               error={form.errors.toAccountId}
               searchable
-              styles={inputStyles}
+              classNames={inputClassNames}
             />
           )}
 
@@ -314,7 +272,7 @@ export const QuickAddTransaction = ({
             }))}
             error={form.errors.categoryId}
             searchable
-            styles={inputStyles}
+            classNames={inputClassNames}
           />
 
           {/* Vendor */}
@@ -324,7 +282,7 @@ export const QuickAddTransaction = ({
               value={form.values.vendorName}
               data={(vendors || []).map((v) => v.name)}
               onChange={(value) => form.setFieldValue('vendorName', value)}
-              styles={inputStyles}
+              classNames={inputClassNames}
             />
           )}
 
@@ -333,31 +291,7 @@ export const QuickAddTransaction = ({
             type="submit"
             disabled={isPending}
             aria-label="plus"
-            style={{
-              width: '48px',
-              height: '48px',
-              background: 'linear-gradient(135deg, #00d4ff 0%, #b47aff 100%)',
-              border: 'none',
-              borderRadius: '12px',
-              color: 'white',
-              fontSize: '24px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(0, 212, 255, 0.3)',
-              opacity: isPending ? 0.7 : 1,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 212, 255, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 212, 255, 0.3)';
-            }}
+            className={styles.submitButton}
           >
             <span>+</span>
           </UnstyledButton>
@@ -366,17 +300,9 @@ export const QuickAddTransaction = ({
 
       {/* Suggestion Chips */}
       {recentVendors.length > 0 && (
-        <Box mt="md" pt="md" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <Box mt="md" pt="md" className={styles.suggestionSection}>
           <Group gap="sm" wrap="wrap">
-            <Text
-              size="xs"
-              fw={600}
-              tt="uppercase"
-              style={{
-                color: '#5a6272',
-                letterSpacing: '0.05em',
-              }}
-            >
+            <Text size="xs" fw={600} tt="uppercase" className={styles.suggestionLabel}>
               {t('transactions.quickAddTransaction.recent')}:
             </Text>
 
@@ -384,31 +310,7 @@ export const QuickAddTransaction = ({
               <UnstyledButton
                 key={vendor.id}
                 onClick={() => handleSuggestionClick(vendor.name)}
-                style={{
-                  padding: '6px 12px',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  color: '#8892a6',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(0, 212, 255, 0.1)';
-                  e.currentTarget.style.borderColor = '#00d4ff';
-                  e.currentTarget.style.color = '#00d4ff';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                  e.currentTarget.style.color = '#8892a6';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
+                className={styles.suggestionChip}
               >
                 {vendor.name}
               </UnstyledButton>
