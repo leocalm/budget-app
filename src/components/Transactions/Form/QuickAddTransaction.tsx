@@ -190,10 +190,7 @@ export const QuickAddTransaction = ({
             {t('transactions.quickAddTransaction.title')}
           </Text>
         </Group>
-        <Text
-          size="xs"
-          className={styles.hint}
-        >
+        <Text size="xs" className={styles.hint}>
           {t('transactions.quickAddTransaction.hint')}
         </Text>
       </Group>
@@ -305,12 +302,7 @@ export const QuickAddTransaction = ({
       {recentVendors.length > 0 && (
         <Box mt="md" pt="md" className={styles.suggestionSection}>
           <Group gap="sm" wrap="wrap">
-            <Text
-              size="xs"
-              fw={600}
-              tt="uppercase"
-              className={styles.suggestionLabel}
-            >
+            <Text size="xs" fw={600} tt="uppercase" className={styles.suggestionLabel}>
               {t('transactions.quickAddTransaction.recent')}:
             </Text>
 
