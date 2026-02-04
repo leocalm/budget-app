@@ -17,7 +17,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { Transaction, TransactionResponse } from '@/types/transaction';
-import { Vendor } from '@/types/vendor';
+import { Vendor, VendorInput } from '@/types/vendor';
 import { convertCentsToDisplay, convertDisplayToCents } from '@/utils/currency';
 import {
   TransactionFormFields,
@@ -39,7 +39,7 @@ export interface TransactionsTableViewProps {
 
   createTransaction: (payload: Transaction) => Promise<unknown>;
   deleteTransaction: (id: string) => Promise<unknown>;
-  createVendor: (payload: Pick<Vendor, 'name'>) => Promise<Vendor>;
+  createVendor: (payload: VendorInput) => Promise<Vendor>;
 }
 
 export const TransactionsTableView = ({

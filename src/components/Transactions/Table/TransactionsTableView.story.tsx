@@ -8,7 +8,7 @@ import {
   mockCategories,
 } from '@/mocks/budgetData';
 import type { Transaction, TransactionResponse } from '@/types/transaction';
-import type { Vendor } from '@/types/vendor';
+import type { Vendor, VendorInput } from '@/types/vendor';
 import { TransactionsTableView } from './TransactionsTableView';
 
 const meta: Meta<typeof TransactionsTableView> = {
@@ -46,7 +46,7 @@ const InteractiveTransactionsWrapper = () => {
 
   const vendorsByName = useMemo(() => new Map(vendors.map((v) => [v.name, v])), [vendors]);
 
-  const createVendor = async (payload: Pick<Vendor, 'name'>): Promise<Vendor> => {
+  const createVendor = async (payload: VendorInput): Promise<Vendor> => {
     await delay(250);
 
     const name = payload.name.trim();
