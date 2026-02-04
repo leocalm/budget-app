@@ -12,7 +12,7 @@ export async function fetchBudget(): Promise<BudgetResponse[]> {
   return apiGet<BudgetResponse[]>('/api/budgets');
 }
 
-export async function createCategory(payload: BudgetRequest): Promise<BudgetResponse> {
+export async function createBudget(payload: BudgetRequest): Promise<BudgetResponse> {
   return apiPost<BudgetResponse, BudgetRequest>('/api/budgets', payload);
 }
 

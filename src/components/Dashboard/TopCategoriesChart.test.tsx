@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TopCategoriesChart } from './TopCategoriesChart';
 import { SpentPerCategory } from '@/types/dashboard';
+import { TopCategoriesChart } from './TopCategoriesChart';
 
 describe('TopCategoriesChart', () => {
   it('renders category amounts converted from cents to display values', () => {
