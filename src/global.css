@@ -84,12 +84,6 @@ body {
     .vendor-column {
         display: none;
     }
-
-    /* Quick Add Form - adjust grid */
-    .form-row {
-        grid-template-columns: 1fr 1fr 1fr 48px !important;
-        gap: 8px !important;
-    }
 }
 
 @media (max-width: 768px) {
@@ -97,20 +91,6 @@ body {
     .header-top {
         flex-direction: column !important;
         gap: 24px !important;
-    }
-
-    /* Quick Add Form - single column */
-    .form-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    .form-row > * {
-        width: 100% !important;
-    }
-
-    /* Hide keyboard hint on mobile */
-    .quick-add-hint {
-        display: none !important;
     }
 
     /* Transaction Rows - responsive handling is done in component */
