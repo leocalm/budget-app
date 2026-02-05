@@ -24,8 +24,9 @@ yarn build
 **Testing:**
 
 ```bash
-yarn vitest              # Run tests once
-yarn vitest:watch        # Run tests in watch mode
+yarn vitest              # Run unit tests once
+yarn vitest:watch        # Run unit tests in watch mode
+yarn vitest:storybook    # Run Storybook tests (browser-based)
 yarn test                # Full test suite (typecheck + prettier + lint + vitest + build)
 ```
 
