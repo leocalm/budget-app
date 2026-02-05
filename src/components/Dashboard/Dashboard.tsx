@@ -27,10 +27,7 @@ interface DashboardProps {
 export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { t } = useTranslation();
   const { data: accounts } = useAccounts();
-
-  if (selectedPeriodId === null) {
-    return <Text size="sm">{t('budget.unbudgetedCategories.loading')}</Text>;
-  }
+  const isPeriodMissing = selectedPeriodId === null;
 
   const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
     useSpentPerCategory(selectedPeriodId);
@@ -79,6 +76,10 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     }
     return spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
   }, [spentPerCategory]);
+
+  if (isPeriodMissing) {
+    return <Text size="sm">{t('budget.unbudgetedCategories.loading')}</Text>;
+  }
 
   return (
     <Box

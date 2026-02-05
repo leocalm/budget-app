@@ -8,37 +8,42 @@ import {
 } from '@/api/dashboard';
 import { queryKeys } from './queryKeys';
 
-export const useSpentPerCategory = (selectedPeriodId: string) => {
+export const useSpentPerCategory = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.spentPerCategory(selectedPeriodId),
-    queryFn: () => getSpentByCategory(selectedPeriodId),
+    queryFn: () => getSpentByCategory(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
 
-export const useMonthlyBurnIn = (selectedPeriodId: string) => {
+export const useMonthlyBurnIn = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.monthlyBurnIn(selectedPeriodId),
-    queryFn: () => getMonthlyBurnIn(selectedPeriodId),
+    queryFn: () => getMonthlyBurnIn(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
 
-export const useMonthProgress = (selectedPeriodId: string) => {
+export const useMonthProgress = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.monthProgress(selectedPeriodId),
-    queryFn: () => getMonthProgress(selectedPeriodId),
+    queryFn: () => getMonthProgress(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
 
-export const useBudgetPerDay = (selectedPeriodId: string) => {
+export const useBudgetPerDay = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.budgetPerDay(selectedPeriodId),
-    queryFn: () => getBudgetPerDay(selectedPeriodId),
+    queryFn: () => getBudgetPerDay(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
 
-export const useRecentTransactions = (selectedPeriodId: string) => {
+export const useRecentTransactions = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.recentTransactions(selectedPeriodId),
-    queryFn: () => fetchRecentTransactions(selectedPeriodId),
+    queryFn: () => fetchRecentTransactions(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
