@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { apiGet, navigation } from './client';
+import { apiGet, navigation, toCamelCase, toSnakeCase } from './client';
 import { ApiError } from './errors';
 
 const fetchMock = vi.fn();
@@ -102,5 +102,78 @@ describe('api client error handling', () => {
     await expect(apiGet('/api/users/login')).rejects.toBeInstanceOf(ApiError);
 
     expect(assignSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('api client case transformations', () => {
+  it('converts nested snake_case data to camelCase', () => {
+    const input = {
+      user_id: 'user-1',
+      account_balance: 500,
+      nested_value: {
+        account_id: 'account-1',
+        tags: [{ tag_id: 'tag-1' }, { tag_id: 'tag-2' }],
+      },
+      alreadyCamel: 'kept',
+      nullable_value: null,
+    };
+
+    const result = toCamelCase<typeof input>(input);
+
+    expect(result).toEqual({
+      userId: 'user-1',
+      accountBalance: 500,
+      nestedValue: {
+        accountId: 'account-1',
+        tags: [{ tagId: 'tag-1' }, { tagId: 'tag-2' }],
+      },
+      alreadyCamel: 'kept',
+      nullableValue: null,
+    });
+  });
+
+  it('converts nested camelCase data to snake_case', () => {
+    const input = {
+      userId: 'user-1',
+      accountBalance: 500,
+      nestedValue: {
+        accountId: 'account-1',
+        tags: [{ tagId: 'tag-1' }, { tagId: 'tag-2' }],
+      },
+      already_snake: 'kept',
+      nullableValue: null,
+    };
+
+    const result = toSnakeCase<typeof input>(input);
+
+    expect(result).toEqual({
+      user_id: 'user-1',
+      account_balance: 500,
+      nested_value: {
+        account_id: 'account-1',
+        tags: [{ tag_id: 'tag-1' }, { tag_id: 'tag-2' }],
+      },
+      already_snake: 'kept',
+      nullable_value: null,
+    });
+  });
+
+  it('handles top-level arrays', () => {
+    const input = [{ user_id: '1' }, { user_id: '2' }];
+    const result = toCamelCase<typeof input>(input);
+
+    expect(result).toEqual([{ userId: '1' }, { userId: '2' }]);
+  });
+
+  it('returns primitives and nullish values unchanged', () => {
+    expect(toCamelCase<string>('plain')).toBe('plain');
+    expect(toCamelCase<number>(42)).toBe(42);
+    expect(toCamelCase<null>(null)).toBeNull();
+    expect(toCamelCase<undefined>(undefined)).toBeUndefined();
+
+    expect(toSnakeCase<string>('plain')).toBe('plain');
+    expect(toSnakeCase<number>(42)).toBe(42);
+    expect(toSnakeCase<null>(null)).toBeNull();
+    expect(toSnakeCase<undefined>(undefined)).toBeUndefined();
   });
 });

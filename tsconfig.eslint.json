@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.json",
+  "files": ["vitest.storybook.config.ts"],
   "include": [
     "src",
     "test-utils",
     "vitest.config.ts",
+    "vitest.storybook.config.ts",
     "vitest.setup.ts",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx"

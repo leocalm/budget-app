@@ -22,5 +22,12 @@
     },
     "baseUrl": "."
   },
-  "include": ["src", "test-utils", ".storybook/main.ts", ".storybook/preview.tsx"]
+  "include": [
+    "src",
+    "test-utils",
+    ".storybook/main.ts",
+    ".storybook/preview.tsx",
+    "vitest.config.ts",
+    "vitest.storybook.config.ts"
+  ]
 }
