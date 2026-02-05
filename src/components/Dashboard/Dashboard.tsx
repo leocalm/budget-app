@@ -9,7 +9,13 @@ import { StatCard } from '@/components/Dashboard/StatCard';
 import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
 import { UI } from '@/constants';
 import { useAccounts } from '@/hooks/useAccounts';
-import { useDashboardData } from '@/hooks/useDashboard';
+import {
+  useBudgetPerDay,
+  useMonthlyBurnIn,
+  useMonthProgress,
+  useRecentTransactions,
+  useSpentPerCategory,
+} from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
 import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Dashboard.module.css';
@@ -20,33 +26,44 @@ interface DashboardProps {
 
 export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { t } = useTranslation();
-  const { data: dashboardData, isLoading } = useDashboardData(selectedPeriodId);
   const { data: accounts } = useAccounts();
+
+  if (selectedPeriodId === null) {
+    return <Text size="sm">{t('budget.unbudgetedCategories.loading')}</Text>;
+  }
+
+  const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
+    useSpentPerCategory(selectedPeriodId);
+  const { data: monthlyBurnIn, isLoading: isMonthlyBurnInLoading } =
+    useMonthlyBurnIn(selectedPeriodId);
+  const { data: monthProgress, isLoading: isMonthProgressLoading } =
+    useMonthProgress(selectedPeriodId);
+  const { data: budgetPerDay, isLoading: isBudgetPerDayLoading } =
+    useBudgetPerDay(selectedPeriodId);
+  const { data: recentTransactions } = useRecentTransactions(selectedPeriodId);
+
+  const totalAsset = 0;
+  const isTotalAssetLoading = false;
 
   // Calculate derived values from dashboard data
   const remainingBudget = useMemo(() => {
-    if (!dashboardData?.monthlyBurnIn) {
+    if (!monthlyBurnIn) {
       return 0;
     }
-    return convertCentsToDisplay(
-      dashboardData.monthlyBurnIn.totalBudget - dashboardData.monthlyBurnIn.spentBudget
-    );
-  }, [dashboardData?.monthlyBurnIn]);
+    return convertCentsToDisplay(monthlyBurnIn.totalBudget - monthlyBurnIn.spentBudget);
+  }, [monthlyBurnIn]);
 
   const avgDailySpend = useMemo(() => {
-    if (!dashboardData?.monthlyBurnIn || dashboardData.monthlyBurnIn.currentDay === 0) {
+    if (!monthlyBurnIn || monthlyBurnIn.currentDay === 0) {
       return 0;
     }
-    return (
-      convertCentsToDisplay(dashboardData.monthlyBurnIn.spentBudget) /
-      dashboardData.monthlyBurnIn.currentDay
-    );
-  }, [dashboardData?.monthlyBurnIn]);
+    return convertCentsToDisplay(monthlyBurnIn.spentBudget) / monthlyBurnIn.currentDay;
+  }, [monthlyBurnIn]);
 
-  const totalAssets = convertCentsToDisplay(dashboardData?.totalAsset || 0);
-  const monthProgress = dashboardData?.monthProgress?.daysPassedPercentage || 0;
-  const daysUntilReset = dashboardData?.monthProgress?.remainingDays || 0;
-  const budgetLimit = convertCentsToDisplay(dashboardData?.monthlyBurnIn?.totalBudget || 0);
+  const totalAssets = convertCentsToDisplay(totalAsset || 0);
+  const daysPassedPercentage = monthProgress?.daysPassedPercentage || 0;
+  const daysUntilReset = monthProgress?.remainingDays || 0;
+  const budgetLimit = convertCentsToDisplay(monthlyBurnIn?.totalBudget || 0);
 
   // Format currency - € on left side
   const formatCurrency = (value: number): string =>
@@ -57,11 +74,11 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
 
   // Get top 5 categories
   const topCategories: SpentPerCategory[] = useMemo(() => {
-    if (!dashboardData?.spentPerCategory) {
+    if (!spentPerCategory) {
       return [];
     }
-    return dashboardData.spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
-  }, [dashboardData?.spentPerCategory]);
+    return spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
+  }, [spentPerCategory]);
 
   return (
     <Box
@@ -89,7 +106,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             meta={t('dashboard.stats.remainingBudget.meta', { limit: formatCurrency(budgetLimit) })}
             trend={{ direction: 'down', value: '12%', positive: false }}
             featured
-            loading={isLoading}
+            loading={isMonthlyBurnInLoading}
           />
 
           {/* Total Assets */}
@@ -98,7 +115,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             label={t('dashboard.stats.totalAssets.label')}
             value={formatCurrency(totalAssets)}
             trend={{ direction: 'up', value: '8%', positive: true }}
-            loading={isLoading}
+            loading={isTotalAssetLoading}
           />
 
           {/* Avg Daily Spend */}
@@ -107,20 +124,20 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             label={t('dashboard.stats.avgDailySpend.label')}
             value={formatCurrency(avgDailySpend)}
             meta={t('dashboard.stats.avgDailySpend.meta')}
-            loading={isLoading}
+            loading={isMonthlyBurnInLoading}
           />
 
           {/* Month Progress */}
           <StatCard
             icon={() => <span style={{ fontSize: 18 }}>📈</span>}
             label={t('dashboard.stats.monthProgress.label')}
-            value={`${Math.round(monthProgress)}%`}
+            value={`${Math.round(daysPassedPercentage)}%`}
             meta={
               daysUntilReset === 1
                 ? t('dashboard.stats.monthProgress.metaSingular', { days: daysUntilReset })
                 : t('dashboard.stats.monthProgress.meta', { days: daysUntilReset })
             }
-            loading={isLoading}
+            loading={isMonthProgressLoading}
           />
         </div>
 
@@ -128,9 +145,9 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
         <div className={styles.chartsSection}>
           {/* Balance Line Chart */}
           <BalanceLineChartCard
-            data={dashboardData?.budgetPerDay || []}
+            data={budgetPerDay || []}
             accounts={accounts || []}
-            isLoading={isLoading}
+            isLoading={isBudgetPerDayLoading}
           />
 
           {/* Top Categories Chart */}
@@ -151,7 +168,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
               </Text>
             </Group>
 
-            <TopCategoriesChart data={topCategories} isLoading={isLoading} />
+            <TopCategoriesChart data={topCategories} isLoading={isSpentPerCategoryLoading} />
           </Paper>
         </div>
 
@@ -182,7 +199,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             </Button>
           </Group>
 
-          <RecentTransactionsCard data={dashboardData?.recentTransactions || []} />
+          <RecentTransactionsCard data={recentTransactions || []} />
         </Paper>
       </Stack>
     </Box>

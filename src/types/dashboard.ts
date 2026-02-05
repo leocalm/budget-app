@@ -1,5 +1,3 @@
-import { TransactionResponse } from '@/types/transaction';
-
 export interface SpentPerCategory {
   categoryName: string;
   budgetedValue: number;
@@ -25,13 +23,4 @@ export interface BudgetPerDay {
   accountName: string;
   date: string;
   balance: number;
-}
-
-export interface DashboardData {
-  spentPerCategory: SpentPerCategory[];
-  monthlyBurnIn: MonthlyBurnIn;
-  monthProgress: MonthProgress;
-  budgetPerDay: BudgetPerDay[];
-  recentTransactions: TransactionResponse[];
-  totalAsset: number;
 }

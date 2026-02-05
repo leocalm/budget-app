@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import {
-  fetchDashboardData,
+  fetchRecentTransactions,
   getBudgetPerDay,
   getMonthlyBurnIn,
   getMonthProgress,
@@ -8,37 +8,37 @@ import {
 } from '@/api/dashboard';
 import { queryKeys } from './queryKeys';
 
-export const useSpentPerCategory = () => {
+export const useSpentPerCategory = (selectedPeriodId: string) => {
   return useQuery({
-    queryKey: queryKeys.spentPerCategory(),
-    queryFn: getSpentByCategory,
+    queryKey: queryKeys.spentPerCategory(selectedPeriodId),
+    queryFn: () => getSpentByCategory(selectedPeriodId),
   });
 };
 
-export const useMonthlyBurnIn = () => {
+export const useMonthlyBurnIn = (selectedPeriodId: string) => {
   return useQuery({
-    queryKey: queryKeys.monthlyBurnIn(),
-    queryFn: getMonthlyBurnIn,
+    queryKey: queryKeys.monthlyBurnIn(selectedPeriodId),
+    queryFn: () => getMonthlyBurnIn(selectedPeriodId),
   });
 };
 
-export const useMonthProgress = () => {
+export const useMonthProgress = (selectedPeriodId: string) => {
   return useQuery({
-    queryKey: queryKeys.monthProgress(),
-    queryFn: getMonthProgress,
+    queryKey: queryKeys.monthProgress(selectedPeriodId),
+    queryFn: () => getMonthProgress(selectedPeriodId),
   });
 };
 
-export const useBudgetPerDay = () => {
+export const useBudgetPerDay = (selectedPeriodId: string) => {
   return useQuery({
-    queryKey: queryKeys.budgetPerDay(),
-    queryFn: getBudgetPerDay,
+    queryKey: queryKeys.budgetPerDay(selectedPeriodId),
+    queryFn: () => getBudgetPerDay(selectedPeriodId),
   });
 };
 
-export const useDashboardData = (selectedPeriodId: string | null) => {
+export const useRecentTransactions = (selectedPeriodId: string) => {
   return useQuery({
-    queryKey: queryKeys.dashboardData(selectedPeriodId),
-    queryFn: () => fetchDashboardData(selectedPeriodId),
+    queryKey: queryKeys.recentTransactions(selectedPeriodId),
+    queryFn: () => fetchRecentTransactions(selectedPeriodId),
   });
 };

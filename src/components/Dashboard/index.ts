@@ -2,7 +2,6 @@
 export { Dashboard } from './Dashboard';
 export { DashboardContainer } from './DashboardContainer';
 export { DashboardPage } from './DashboardPage';
-export { DashboardView } from './DashboardView';
 
 // Chart components
 export { BalanceLineChartCard } from './BalanceLineChartCard';
