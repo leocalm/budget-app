@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { act, useEffect } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthProvider, useAuth } from './AuthContext';
-import { fetchCurrentUser, type User } from '@/api/auth';
+import type { User } from '@/api/auth';
 
-const mockShow = vi.fn();
+const mockShow = vi.hoisted(() => vi.fn());
+const mockFetchCurrentUser = vi.hoisted(() => vi.fn());
 
 vi.mock('@mantine/notifications', () => ({
   notifications: {
@@ -14,10 +14,8 @@ vi.mock('@mantine/notifications', () => ({
 }));
 
 vi.mock('@/api/auth', () => ({
-  fetchCurrentUser: vi.fn(),
+  fetchCurrentUser: mockFetchCurrentUser,
 }));
-
-const mockFetchCurrentUser = vi.mocked(fetchCurrentUser);
 
 const TestConsumer = ({ onReady }: { onReady?: (auth: ReturnType<typeof useAuth>) => void }) => {
   const auth = useAuth();

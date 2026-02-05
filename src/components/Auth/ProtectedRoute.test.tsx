@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MantineProvider } from '@mantine/core';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useAuth } from '@/context/AuthContext';
 
@@ -12,19 +13,21 @@ const mockUseAuth = vi.mocked(useAuth);
 
 const renderWithRoutes = (initialEntry = '/private') => {
   return render(
-    <MemoryRouter initialEntries={[initialEntry]}>
-      <Routes>
-        <Route
-          path="/private"
-          element={
-            <ProtectedRoute>
-              <div>Secret Content</div>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/auth/login" element={<div>Login Screen</div>} />
-      </Routes>
-    </MemoryRouter>
+    <MantineProvider>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route
+            path="/private"
+            element={
+              <ProtectedRoute>
+                <div>Secret Content</div>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/auth/login" element={<div>Login Screen</div>} />
+        </Routes>
+      </MemoryRouter>
+    </MantineProvider>
   );
 };
 
