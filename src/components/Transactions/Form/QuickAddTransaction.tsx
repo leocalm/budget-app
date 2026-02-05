@@ -152,7 +152,7 @@ export const QuickAddTransaction = ({
   };
 
   // Handle keyboard shortcuts
-  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       handleSubmit();
@@ -181,7 +181,7 @@ export const QuickAddTransaction = ({
   };
 
   return (
-    <Box className={styles.container}>
+    <Box className={styles.container} onKeyDown={handleKeyDown}>
       {/* Header */}
       <Group justify="space-between" mb="md">
         <Group gap="sm">
@@ -196,8 +196,7 @@ export const QuickAddTransaction = ({
       </Group>
 
       {/* Form */}
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+      <form onSubmit={handleSubmit} aria-label="Quick add transaction form">
         <Box className={styles.formGrid}>
           {/* Date */}
           <DateInput
