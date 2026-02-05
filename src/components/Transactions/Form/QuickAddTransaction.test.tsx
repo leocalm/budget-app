@@ -54,16 +54,16 @@ vi.mock('@/hooks/useCategories', () => ({
         name: 'Comida',
         icon: '🍔',
         color: '#b47aff',
-        parent_id: null,
-        category_type: 'Outgoing',
+        parentId: null,
+        categoryType: 'Outgoing',
       },
       {
         id: '2',
         name: 'Transfer',
         icon: '🔄',
         color: '#00a8ff',
-        parent_id: null,
-        category_type: 'Transfer',
+        parentId: null,
+        categoryType: 'Transfer',
       },
     ],
     isLoading: false,
@@ -320,6 +320,11 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🔄 Transfer'));
 
+    // Wait for toAccount field to appear
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('To Account...')).toBeInTheDocument();
+    });
+
     // Submit without selecting toAccountId
     const submitButton = screen.getByRole('button', { name: /plus/i });
     await user.click(submitButton);
@@ -342,7 +347,8 @@ describe('QuickAddTransaction', () => {
     await user.type(screen.getByPlaceholderText(/description/i), 'Transfer to Savings');
     await user.type(screen.getByPlaceholderText('0.00'), '100.00');
     await user.click(screen.getByPlaceholderText('Account...'));
-    await user.click(screen.getByText('💳 ING'));
+    const allING = screen.getAllByText('💳 ING');
+    await user.click(allING[0]); // Click first occurrence
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🔄 Transfer'));
 
@@ -351,7 +357,8 @@ describe('QuickAddTransaction', () => {
       expect(screen.getByPlaceholderText('To Account...')).toBeInTheDocument();
     });
     await user.click(screen.getByPlaceholderText('To Account...'));
-    await user.click(screen.getByText('💰 Savings'));
+    const allSavings = screen.getAllByText('💰 Savings');
+    await user.click(allSavings[allSavings.length - 1]); // Click last occurrence (from toAccount dropdown)
 
     // Submit
     const submitButton = screen.getByRole('button', { name: /plus/i });
