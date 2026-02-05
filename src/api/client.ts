@@ -10,6 +10,66 @@ type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
+const DEFAULT_API_VERSION = 'v1';
+const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:\/|$)/;
+const LOGIN_PATH_PATTERN = /\/api(?:\/v\d+)?\/users\/login\b/;
+
+function normalizeApiVersion(version: string): string {
+  const trimmed = version.trim();
+  if (!trimmed) {
+    return DEFAULT_API_VERSION;
+  }
+  return trimmed.startsWith('v') ? trimmed : `v${trimmed}`;
+}
+
+function normalizeBasePath(basePath: string): string {
+  const trimmed = basePath.trim();
+  if (!trimmed) {
+    return `/api/${DEFAULT_API_VERSION}`;
+  }
+  const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
+}
+
+// Allow configuration via env: VITE_API_BASE_PATH (full path) or VITE_API_VERSION (e.g. "v1" or "1").
+function resolveApiBasePath(): string {
+  const env = import.meta.env;
+  const explicitBasePath = env?.VITE_API_BASE_PATH;
+  if (explicitBasePath) {
+    return normalizeBasePath(explicitBasePath);
+  }
+
+  const version = env?.VITE_API_VERSION;
+  const normalizedVersion = version ? normalizeApiVersion(version) : DEFAULT_API_VERSION;
+  return normalizeBasePath(`/api/${normalizedVersion}`);
+}
+
+const API_BASE_PATH = resolveApiBasePath();
+
+function isAbsoluteUrl(url: string): boolean {
+  return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+}
+
+function resolveApiUrl(url: string): string {
+  if (isAbsoluteUrl(url) || !url.startsWith('/api')) {
+    return url;
+  }
+
+  if (VERSIONED_API_PREFIX.test(url)) {
+    return url;
+  }
+
+  if (url === '/api') {
+    return API_BASE_PATH;
+  }
+
+  if (url.startsWith('/api/')) {
+    return `${API_BASE_PATH}${url.slice('/api'.length)}`;
+  }
+
+  return url;
+}
+
 /**
  * Converts a snake_case string to camelCase
  */
@@ -83,7 +143,7 @@ function isAuthRoute(): boolean {
 }
 
 function isLoginRequest(url: string): boolean {
-  return url.includes('/api/users/login');
+  return LOGIN_PATH_PATTERN.test(url);
 }
 
 async function parseErrorBody(res: Response): Promise<unknown> {
@@ -165,7 +225,7 @@ export function toSnakeCase<T>(obj: unknown): T {
  * Base fetch wrapper with error handling
  */
 async function baseFetch(url: string, options?: RequestInit): Promise<Response> {
-  const res = await fetch(url, {
+  const res = await fetch(resolveApiUrl(url), {
     ...options,
     credentials: 'include',
   });
