@@ -37,6 +37,7 @@ export const queryKeys = {
   monthProgress: (periodId?: string | null) => ['monthProgress', periodId] as const,
   budgetPerDay: (periodId?: string | null) => ['budgetPerDay', periodId] as const,
   recentTransactions: (periodId?: string | null) => ['recentTransactions', periodId] as const,
+  totalAssets: () => ['totalAssets'] as const,
 };
 
 export type QueryKey = readonly (string | number | undefined | null)[];

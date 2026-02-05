@@ -24,3 +24,7 @@ export interface BudgetPerDay {
   date: string;
   balance: number;
 }
+
+export interface TotalAssets {
+  totalAssets: number;
+}

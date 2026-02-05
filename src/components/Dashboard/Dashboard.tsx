@@ -15,6 +15,7 @@ import {
   useMonthProgress,
   useRecentTransactions,
   useSpentPerCategory,
+  useTotalAssets,
 } from '@/hooks/useDashboard';
 import { SpentPerCategory } from '@/types/dashboard';
 import { convertCentsToDisplay } from '@/utils/currency';
@@ -38,9 +39,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { data: budgetPerDay, isLoading: isBudgetPerDayLoading } =
     useBudgetPerDay(selectedPeriodId);
   const { data: recentTransactions } = useRecentTransactions(selectedPeriodId);
-
-  const totalAsset = 0;
-  const isTotalAssetLoading = false;
+  const { data: totalAsset, isLoading: isTotalAssetLoading } = useTotalAssets();
 
   // Calculate derived values from dashboard data
   const remainingBudget = useMemo(() => {
@@ -57,7 +56,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     return convertCentsToDisplay(monthlyBurnIn.spentBudget) / monthlyBurnIn.currentDay;
   }, [monthlyBurnIn]);
 
-  const totalAssets = convertCentsToDisplay(totalAsset || 0);
+  const totalAssets = convertCentsToDisplay(totalAsset?.totalAssets || 0);
   const daysPassedPercentage = monthProgress?.daysPassedPercentage || 0;
   const daysUntilReset = monthProgress?.remainingDays || 0;
   const budgetLimit = convertCentsToDisplay(monthlyBurnIn?.totalBudget || 0);

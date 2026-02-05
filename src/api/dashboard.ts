@@ -1,4 +1,10 @@
-import { BudgetPerDay, MonthlyBurnIn, MonthProgress, SpentPerCategory } from '@/types/dashboard';
+import {
+  BudgetPerDay,
+  MonthlyBurnIn,
+  MonthProgress,
+  SpentPerCategory,
+  TotalAssets,
+} from '@/types/dashboard';
 import { TransactionResponse } from '@/types/transaction';
 import { apiGet } from './client';
 
@@ -34,4 +40,8 @@ export async function fetchRecentTransactions(
   return apiGet<TransactionResponse[]>(
     `/api/dashboard/recent-transactions?period_id=${selectedPeriodId}`
   );
+}
+
+export async function fetchTotalAssets(): Promise<TotalAssets> {
+  return apiGet<TotalAssets>('/api/dashboard/total-assets');
 }

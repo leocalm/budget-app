@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchRecentTransactions,
+  fetchTotalAssets,
   getBudgetPerDay,
   getMonthlyBurnIn,
   getMonthProgress,
@@ -45,5 +46,12 @@ export const useRecentTransactions = (selectedPeriodId: string | null) => {
     queryKey: queryKeys.recentTransactions(selectedPeriodId),
     queryFn: () => fetchRecentTransactions(selectedPeriodId!),
     enabled: Boolean(selectedPeriodId),
+  });
+};
+
+export const useTotalAssets = () => {
+  return useQuery({
+    queryKey: queryKeys.totalAssets(),
+    queryFn: fetchTotalAssets,
   });
 };
