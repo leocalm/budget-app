@@ -1,12 +1,18 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+// Use UTC for API-oriented formatting to avoid local timezone shifts when
+// converting Date objects that originated from date-only strings (YYYY-MM-DD).
+dayjs.extend(utc);
 
 /**
  * Formats a date for API submission.
+ * Uses UTC to preserve the original date when input originated as a date-only string.
  * @param date - The date to format (Date object, string, or dayjs instance)
  * @returns Date string in YYYY-MM-DD format
  */
 export const formatDateForApi = (date: Date | string | dayjs.Dayjs | null): string => {
-  return dayjs(date).format('YYYY-MM-DD');
+  return dayjs(date).utc().format('YYYY-MM-DD');
 };
 
 /**
@@ -23,7 +29,7 @@ export const formatDisplayDate = (date: Date | string | dayjs.Dayjs): string => 
  * @returns Current date string in YYYY-MM-DD format
  */
 export const getCurrentDateForApi = (): string => {
-  return dayjs().format('YYYY-MM-DD');
+  return dayjs().utc().format('YYYY-MM-DD');
 };
 
 /**
