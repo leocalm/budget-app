@@ -32,10 +32,11 @@ export const queryKeys = {
 
   // Dashboard
   dashboardData: (periodId?: string | null) => ['dashboardData', periodId] as const,
-  spentPerCategory: () => ['spentPerCategory'] as const,
-  monthlyBurnIn: () => ['monthlyBurnIn'] as const,
-  monthProgress: () => ['monthProgress'] as const,
-  budgetPerDay: () => ['budgetPerDay'] as const,
+  spentPerCategory: (periodId?: string | null) => ['spentPerCategory', periodId] as const,
+  monthlyBurnIn: (periodId?: string | null) => ['monthlyBurnIn', periodId] as const,
+  monthProgress: (periodId?: string | null) => ['monthProgress', periodId] as const,
+  budgetPerDay: (periodId?: string | null) => ['budgetPerDay', periodId] as const,
+  recentTransactions: (periodId?: string | null) => ['recentTransactions', periodId] as const,
 };
 
 export type QueryKey = readonly (string | number | undefined | null)[];
