@@ -1,34 +1,37 @@
-import {
-  BudgetPerDay,
-  DashboardData,
-  MonthlyBurnIn,
-  MonthProgress,
-  SpentPerCategory,
-} from '@/types/dashboard';
+import { BudgetPerDay, MonthlyBurnIn, MonthProgress, SpentPerCategory } from '@/types/dashboard';
 import { TransactionResponse } from '@/types/transaction';
 import { apiGet } from './client';
 
-export async function getSpentByCategory(): Promise<SpentPerCategory[]> {
-  return apiGet<SpentPerCategory[]>('/api/dashboard/spent-per-category');
+export async function getSpentByCategory(selectedPeriodId: string): Promise<SpentPerCategory[]> {
+  return apiGet<SpentPerCategory[]>(
+    `/api/dashboard/spent-per-category?period_id=${selectedPeriodId}`
+  );
 }
 
-export async function getMonthlyBurnIn(): Promise<MonthlyBurnIn> {
-  return apiGet<MonthlyBurnIn>('/api/dashboard/monthly-burn-in');
+export async function getMonthlyBurnIn(selectedPeriodId: string): Promise<MonthlyBurnIn> {
+  return apiGet<MonthlyBurnIn>(`/api/dashboard/monthly-burn-in?period_id=${selectedPeriodId}`);
 }
 
-export async function getMonthProgress(): Promise<MonthProgress> {
-  return apiGet<MonthProgress>('/api/dashboard/month-progress');
+export async function getMonthProgress(selectedPeriodId: string): Promise<MonthProgress> {
+  return apiGet<MonthProgress>(`/api/dashboard/month-progress?period_id=${selectedPeriodId}`);
 }
 
-export async function getRecentTransactions(): Promise<TransactionResponse[]> {
-  return apiGet<TransactionResponse[]>('/api/dashboard/recent-transactions');
+export async function getRecentTransactions(
+  selectedPeriodId: string
+): Promise<TransactionResponse[]> {
+  return apiGet<TransactionResponse[]>(
+    `/api/dashboard/recent-transactions?period_id=${selectedPeriodId}`
+  );
 }
 
-export async function getBudgetPerDay(): Promise<BudgetPerDay[]> {
-  return apiGet<BudgetPerDay[]>('/api/dashboard/budget-per-day');
+export async function getBudgetPerDay(selectedPeriodId: string): Promise<BudgetPerDay[]> {
+  return apiGet<BudgetPerDay[]>(`/api/dashboard/budget-per-day?period_id=${selectedPeriodId}`);
 }
 
-export async function fetchDashboardData(selectedPeriodId: string | null): Promise<DashboardData> {
-  const query = selectedPeriodId ? `?period_id=${selectedPeriodId}` : '';
-  return apiGet<DashboardData>(`/api/dashboard/dashboard${query}`);
+export async function fetchRecentTransactions(
+  selectedPeriodId: string
+): Promise<TransactionResponse[]> {
+  return apiGet<TransactionResponse[]>(
+    `/api/dashboard/recent-transactions?period_id=${selectedPeriodId}`
+  );
 }
