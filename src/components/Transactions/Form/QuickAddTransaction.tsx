@@ -20,6 +20,7 @@ import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
+import { formatDateForApi } from '@/utils/date';
 import styles from './QuickAddTransaction.module.css';
 
 interface QuickAddTransactionProps {
@@ -117,7 +118,7 @@ export const QuickAddTransaction = ({
     const transactionData: TransactionRequest = {
       description: values.description.trim(),
       amount: convertDisplayToCents(Number(values.amount)),
-      occurredAt: values.occurredAt!.toISOString().split('T')[0],
+      occurredAt: formatDateForApi(values.occurredAt!),
       categoryId: values.categoryId,
       fromAccountId: values.fromAccountId,
       toAccountId: values.toAccountId,

@@ -14,6 +14,7 @@ import {
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
+import { formatDateForApi } from '@/utils/date';
 import { EditFormValues, EditTransactionForm, QuickAddTransaction } from './Form';
 import { ExportButton, PageHeader } from './PageHeader';
 import { TransactionStats } from './Stats';
@@ -129,7 +130,7 @@ export function TransactionsContainer() {
     const transactionData: TransactionRequest = {
       description: values.description.trim(),
       amount: convertDisplayToCents(values.amount),
-      occurredAt: values.occurredAt!.toISOString().split('T')[0],
+      occurredAt: formatDateForApi(values.occurredAt!),
       categoryId: values.categoryId,
       fromAccountId: values.fromAccountId,
       toAccountId: values.categoryType === 'Transfer' ? values.toAccountId : undefined,
