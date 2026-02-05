@@ -97,9 +97,7 @@ describe('useCategories', () => {
     mockCreateBudgetCategory.mockResolvedValue({
       id: 'budget-category-1',
       categoryId: 'category-1',
-      budgeted: 5000,
-      spent: 0,
-      available: 5000,
+      budgetedValue: 5000,
       category: {
         id: 'category-1',
         name: 'Food',
@@ -114,7 +112,7 @@ describe('useCategories', () => {
 
     const payload: BudgetCategoryRequest = {
       categoryId: 'category-1',
-      budgeted: 5000,
+      budgetedValue: 5000,
     };
 
     await result.current.mutateAsync(payload);
