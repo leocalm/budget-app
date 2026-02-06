@@ -1,8 +1,11 @@
 import { CategoryRequest, CategoryResponse, CategoryWithStats } from '@/types/category';
 import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
-export async function fetchCategories(): Promise<CategoryWithStats[]> {
-  return apiGet<CategoryWithStats[]>('/api/categories');
+export async function fetchCategories(
+  selectedPeriodId: string | null
+): Promise<CategoryWithStats[]> {
+  const query = selectedPeriodId ? `?period_id=${selectedPeriodId}` : '';
+  return apiGet<CategoryWithStats[]>(`/api/categories${query}`);
 }
 
 export async function fetchUnbudgetedCategories(): Promise<CategoryResponse[]> {

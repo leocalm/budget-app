@@ -1,9 +1,9 @@
 import React from 'react';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransaction, useDeleteTransaction } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendor';
-import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionsTableView } from './TransactionsTableView';
 
@@ -20,16 +20,25 @@ export const TransactionsTableContainer = ({
   isError,
   insertEnabled,
 }: TransactionsTableProps) => {
-  const { data: accounts, isLoading: accountsLoading, isError: accountsError } = useAccounts();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
 
   const {
     data: categories,
     isLoading: categoriesLoading,
     isError: categoriesError,
-  } = useCategories();
+  } = useCategories(selectedPeriodId);
 
-  const { selectedPeriodId } = useBudgetPeriodSelection();
-  const { data: vendors, isLoading: vendorsLoading, isError: vendorsError } = useVendors(selectedPeriodId);
+  const {
+    data: vendors,
+    isLoading: vendorsLoading,
+    isError: vendorsError,
+  } = useVendors(selectedPeriodId);
+
+  const {
+    data: accounts,
+    isLoading: accountsLoading,
+    isError: accountsError,
+  } = useAccounts(selectedPeriodId);
 
   const deleteMutation = useDeleteTransaction();
   const createMutation = useCreateTransaction();

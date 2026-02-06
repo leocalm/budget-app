@@ -89,7 +89,7 @@ describe('useCategories', () => {
     const { wrapper } = createWrapper();
     mockFetchCategories.mockResolvedValue([]);
 
-    const { result } = renderHook(() => useCategories(), { wrapper });
+    const { result } = renderHook(() => useCategories(null), { wrapper });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

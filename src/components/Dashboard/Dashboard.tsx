@@ -27,7 +27,7 @@ interface DashboardProps {
 
 export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { t } = useTranslation();
-  const { data: accounts } = useAccounts();
+
   const isPeriodMissing = selectedPeriodId === null;
 
   const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
@@ -40,6 +40,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     useBudgetPerDay(selectedPeriodId);
   const { data: recentTransactions } = useRecentTransactions(selectedPeriodId);
   const { data: totalAsset, isLoading: isTotalAssetLoading } = useTotalAssets();
+  const { data: accounts } = useAccounts(selectedPeriodId);
 
   // Calculate derived values from dashboard data
   const remainingBudget = useMemo(() => {

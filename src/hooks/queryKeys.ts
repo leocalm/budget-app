@@ -13,7 +13,7 @@ export const queryKeys = {
   transaction: (id: string) => ['transaction', id] as const,
 
   // Categories
-  categories: () => ['categories'] as const,
+  categories: (periodId?: string | null) => ['categories', periodId] as const,
   category: (id: string) => ['category', id] as const,
   budgetedCategories: () => ['budgetedCategories'] as const,
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,

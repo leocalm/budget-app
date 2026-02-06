@@ -1,8 +1,9 @@
 import { AccountRequest, AccountResponse } from '@/types/account';
 import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
-export async function fetchAccounts(): Promise<AccountResponse[]> {
-  return apiGet<AccountResponse[]>('/api/accounts');
+export async function fetchAccounts(selectedPeriodId: string | null): Promise<AccountResponse[]> {
+  const query = selectedPeriodId ? `?period_id=${selectedPeriodId}` : '';
+  return apiGet<AccountResponse[]>(`/api/accounts${query}`);
 }
 
 export async function fetchAccount(id: string): Promise<AccountResponse> {

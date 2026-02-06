@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
 import { PageHeader } from '../Transactions/PageHeader';
 import { AccountsSummary } from './AccountsSummary';
@@ -11,7 +12,8 @@ import styles from './Accounts.module.css';
 
 export function AccountsContainer() {
   const navigate = useNavigate();
-  const { data: accounts, isLoading } = useAccounts();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+  const { data: accounts, isLoading } = useAccounts(selectedPeriodId);
   const deleteMutation = useDeleteAccount();
   const [createOpened, { toggle: toggleCreate, close: closeCreate }] = useDisclosure(false);
 

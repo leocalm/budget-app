@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, SimpleGrid, Stack, Tabs } from '@mantine/core';
 import { EmptyState } from '@/components/Utils';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
 import { CategoryType } from '@/types/category';
 import { PageHeader } from '../Transactions/PageHeader';
@@ -12,7 +13,11 @@ type CategoryTypeFilter = 'all' | CategoryType;
 
 export function CategoriesContainer() {
   const { t } = useTranslation();
-  const { data: categories } = useCategories();
+
+  // Get selected budget period from context
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+
+  const { data: categories } = useCategories(selectedPeriodId);
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const deleteMutation = useDeleteCategory();
 

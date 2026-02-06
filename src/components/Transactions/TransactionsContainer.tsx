@@ -36,8 +36,8 @@ export function TransactionsContainer() {
   // Data Fetching
   const { data: transactions } = useTransactions(selectedPeriodId);
   const { data: periods } = useBudgetPeriods();
-  const { data: accounts = [] } = useAccounts();
-  const { data: categories = [] } = useCategories();
+  const { data: accounts = [] } = useAccounts(selectedPeriodId);
+  const { data: categories = [] } = useCategories(selectedPeriodId);
   const { data: vendors = [] } = useVendors(selectedPeriodId);
 
   // Find the selected period from periods list
