@@ -20,7 +20,7 @@ export const useCategories = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.categories(selectedPeriodId),
     queryFn: () => fetchCategories(selectedPeriodId),
-    enabled: true,
+    enabled: selectedPeriodId !== null,
   });
 };
 

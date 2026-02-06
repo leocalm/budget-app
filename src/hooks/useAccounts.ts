@@ -7,7 +7,7 @@ export const useAccounts = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.accounts(),
     queryFn: () => fetchAccounts(selectedPeriodId),
-    enabled: true,
+    enabled: selectedPeriodId !== null,
   });
 };
 

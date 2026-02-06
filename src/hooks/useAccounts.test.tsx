@@ -45,7 +45,7 @@ describe('useAccounts', () => {
     const { wrapper } = createWrapper();
     mockFetchAccounts.mockResolvedValue([]);
 
-    const { result } = renderHook(() => useAccounts(null), { wrapper });
+    const { result } = renderHook(() => useAccounts('period-1'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

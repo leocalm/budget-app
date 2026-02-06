@@ -7,7 +7,7 @@ export const useVendors = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.vendors(selectedPeriodId),
     queryFn: () => fetchVendors(selectedPeriodId),
-    enabled: selectedPeriodId === undefined || selectedPeriodId !== null,
+    enabled: selectedPeriodId !== null,
   });
 };
 
