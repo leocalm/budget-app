@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard with Budget Periods & Overlays</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color System */
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-tertiary: #1a1f2e;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            
+            /* Accent Colors */
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            
+            /* Borders */
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+            --shadow-glow: 0 0 32px rgba(0, 212, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-subtle);
+            padding: var(--space-lg);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+            padding: 0 var(--space-md);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 212, 255, 0.12);
+            color: var(--accent-primary);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent-danger);
+            color: var(--text-primary);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: var(--space-xl);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Period Chip */
+        .period-chip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: var(--bg-card);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-medium);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .period-chip:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .period-chip.has-warning {
+            border-color: var(--accent-warning);
+        }
+
+        .period-icon {
+            font-size: 16px;
+        }
+
+        .period-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .period-range {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .period-days {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .period-dropdown-icon {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s ease;
+        }
+
+        .period-chip.open .period-dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .period-warning-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-warning);
+            border: 2px solid var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Period Picker Dropdown */
+        .period-picker {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 400px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-lg);
+            z-index: 1000;
+            display: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .period-picker.open {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .period-picker-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .period-picker-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .period-picker-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-list-item {
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .period-list-item:hover {
+            border-color: var(--border-medium);
+            transform: translateX(4px);
+        }
+
+        .period-list-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border-color: var(--accent-primary);
+        }
+
+        .period-list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xs);
+        }
+
+        .period-list-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .period-list-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .period-list-dates {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .period-list-meta {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .period-warning-card {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-warning-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .period-warning-icon {
+            font-size: 18px;
+            color: var(--accent-warning);
+        }
+
+        .period-warning-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-warning);
+        }
+
+        .period-warning-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-warning-button {
+            background: var(--accent-warning);
+            color: var(--bg-primary);
+            border: none;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .period-warning-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 169, 64, 0.3);
+        }
+
+        .period-picker-action {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .period-picker-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Overlay Banner */
+        .overlay-banner {
+            background: linear-gradient(135deg, rgba(180, 122, 255, 0.12) 0%, rgba(0, 212, 255, 0.12) 100%);
+            border: 1px solid rgba(180, 122, 255, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overlay-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+        }
+
+        .overlay-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(180, 122, 255, 0.2);
+            border-color: var(--accent-purple);
+        }
+
+        .overlay-banner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .overlay-banner-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .overlay-icon {
+            font-size: 20px;
+        }
+
+        .overlay-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .overlay-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .overlay-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .overlay-stats {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .overlay-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .overlay-days {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .overlay-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .overlay-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-warning), var(--accent-danger));
+        }
+
+        .warning-banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-lg);
+        }
+
+        .warning-banner-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .warning-banner-icon {
+            font-size: 24px;
+            color: var(--accent-warning);
+        }
+
+        .warning-banner-text {
+            flex: 1;
+        }
+
+        .warning-banner-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .warning-banner-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .warning-banner-button {
+            background: var(--accent-warning);
+            color: var(--bg-primary);
+            border: none;
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .warning-banner-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 169, 64, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-medium);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card.featured {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .stat-card.featured::before {
+            opacity: 1;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-sm);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card.featured .stat-value {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .stat-trend.negative {
+            color: var(--accent-danger);
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .period-picker {
+                width: calc(100vw - 32px);
+                left: 16px;
+                right: 16px;
+            }
+
+            .overlay-stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+
+            .warning-banner-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .warning-banner-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">💰</div>
+                <div class="logo-text">BudgetApp</div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a href="#" class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        Dashboard
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        Transactions
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🏦</span>
+                        Accounts
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📁</span>
+                        Categories
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🏪</span>
+                        Vendors
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        Budget Periods
+                        <span class="nav-badge">!</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🎯</span>
+                        Overlays
+                        <span class="nav-badge">1</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📈</span>
+                        Budget Plan
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Insights</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📑</span>
+                        Reports
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🎯</span>
+                        Goals
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🔄</span>
+                        Recurring
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="page-title">Financial Dashboard</h1>
+                
+                <!-- Period Chip with Dropdown -->
+                <div style="position: relative;">
+                    <div class="period-chip has-warning" onclick="togglePeriodPicker()">
+                        <span class="period-icon">📅</span>
+                        <div class="period-info">
+                            <div class="period-range">Feb 1 → Feb 29</div>
+                            <div class="period-days">21 days left</div>
+                        </div>
+                        <span class="period-dropdown-icon">▼</span>
+                        <div class="period-warning-badge">!</div>
+                    </div>
+
+                    <!-- Period Picker Dropdown -->
+                    <div class="period-picker" id="periodPicker">
+                        <!-- Warning Card -->
+                        <div class="period-warning-card">
+                            <div class="period-warning-header">
+                                <span class="period-warning-icon">⚠️</span>
+                                <span class="period-warning-title">Gap Detected</span>
+                            </div>
+                            <p class="period-warning-text">
+                                You're in a gap. 3 transactions aren't in any period.
+                            </p>
+                            <button class="period-warning-button">Fix This</button>
+                        </div>
+
+                        <!-- Current Period -->
+                        <div class="period-picker-section">
+                            <div class="period-picker-title">Current Period</div>
+                            <div class="period-list-item active">
+                                <div class="period-list-item-header">
+                                    <span class="period-list-name">February 2026</span>
+                                    <span class="period-list-badge">Current</span>
+                                </div>
+                                <div class="period-list-dates">Feb 1 → Feb 29 (28 days)</div>
+                                <div class="period-list-meta">21 days remaining • 12 transactions</div>
+                            </div>
+                        </div>
+
+                        <!-- Next Period -->
+                        <div class="period-picker-section">
+                            <div class="period-picker-title">Next Period</div>
+                            <div class="period-list-item">
+                                <div class="period-list-item-header">
+                                    <span class="period-list-name">March 2026</span>
+                                    <span class="period-list-badge">Auto</span>
+                                </div>
+                                <div class="period-list-dates">Mar 1 → Mar 31 (31 days)</div>
+                                <div class="period-list-meta">Starts in 21 days</div>
+                            </div>
+                        </div>
+
+                        <!-- Previous Periods -->
+                        <div class="period-picker-section">
+                            <div class="period-picker-title">Previous Periods</div>
+                            <div class="period-list-item">
+                                <div class="period-list-item-header">
+                                    <span class="period-list-name">January 2026</span>
+                                </div>
+                                <div class="period-list-dates">Jan 1 → Jan 31 (31 days)</div>
+                                <div class="period-list-meta">45 transactions</div>
+                            </div>
+                            <div class="period-list-item">
+                                <div class="period-list-item-header">
+                                    <span class="period-list-name">December 2025</span>
+                                </div>
+                                <div class="period-list-dates">Dec 1 → Dec 31 (31 days)</div>
+                                <div class="period-list-meta">38 transactions</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="period-picker-action">
+                            <span>⚙️</span>
+                            Manage Periods
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Banner for No Period -->
+            <div class="warning-banner" style="display: none;">
+                <div class="warning-banner-content">
+                    <div class="warning-banner-left">
+                        <div class="warning-banner-icon">⚠️</div>
+                        <div class="warning-banner-text">
+                            <div class="warning-banner-title">You're in a gap</div>
+                            <div class="warning-banner-subtitle">3 transactions aren't in any period</div>
+                        </div>
+                    </div>
+                    <button class="warning-banner-button">Fix This</button>
+                </div>
+            </div>
+
+            <!-- Overlay Banner -->
+            <div class="overlay-banner">
+                <div class="overlay-banner-header">
+                    <div class="overlay-banner-title">
+                        <span class="overlay-icon">🏖️</span>
+                        <span class="overlay-name">Italy Trip</span>
+                    </div>
+                    <button class="overlay-close">✕</button>
+                </div>
+                <div class="overlay-stats">
+                    <div class="overlay-amount">€120 left</div>
+                    <div class="overlay-days">3 days remaining</div>
+                </div>
+                <div class="overlay-progress-bar">
+                    <div class="overlay-progress-fill" style="width: 65%"></div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card featured">
+                    <div class="stat-label">
+                        <span class="stat-icon">💰</span>
+                        Remaining Budget
+                    </div>
+                    <div class="stat-value">€276.55</div>
+                    <div class="stat-meta">
+                        <span class="stat-trend negative">12% ▼</span>
+                        <span>• €400.00 limit</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <span class="stat-icon">🏦</span>
+                        Total Assets
+                    </div>
+                    <div class="stat-value">€876.55</div>
+                    <div class="stat-meta">
+                        <span>8% ↑</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <span class="stat-icon">📊</span>
+                        Avg. Daily Spend
+                    </div>
+                    <div class="stat-value">€13.72</div>
+                    <div class="stat-meta">
+                        <span>Past 7 days</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <span class="stat-icon">📈</span>
+                        Period Progress
+                    </div>
+                    <div class="stat-value">30%</div>
+                    <div class="stat-meta">
+                        <span>21 days until reset</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function togglePeriodPicker() {
+            const picker = document.getElementById('periodPicker');
+            const chip = document.querySelector('.period-chip');
+            
+            if (picker.classList.contains('open')) {
+                picker.classList.remove('open');
+                chip.classList.remove('open');
+            } else {
+                picker.classList.add('open');
+                chip.classList.add('open');
+            }
+        }
+
+        // Close period picker when clicking outside
+        document.addEventListener('click', function(event) {
+            const picker = document.getElementById('periodPicker');
+            const chip = document.querySelector('.period-chip');
+            
+            if (!chip.contains(event.target) && !picker.contains(event.target)) {
+                picker.classList.remove('open');
+                chip.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

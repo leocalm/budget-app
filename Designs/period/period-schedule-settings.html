@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Period Schedule Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Mode Selection */
+        .mode-selection {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .mode-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        .mode-option {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mode-option:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .mode-option.active {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+        }
+
+        .mode-option.active::before {
+            content: '✓';
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 24px;
+            height: 24px;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .mode-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-md);
+        }
+
+        .mode-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .mode-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Schedule Configuration */
+        .schedule-config {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            display: none;
+        }
+
+        .schedule-config.visible {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section {
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-md);
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-top: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .warning-icon {
+            font-size: 16px;
+            color: var(--accent-warning);
+            flex-shrink: 0;
+        }
+
+        .warning-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Preview Card */
+        .preview-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .preview-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            font-size: 13px;
+        }
+
+        .preview-label {
+            color: var(--text-secondary);
+        }
+
+        .preview-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+            margin-top: var(--space-xl);
+        }
+
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .info-box-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .info-box-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mode-options {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Period Schedule Settings</h1>
+            <p class="header-subtitle">
+                Choose how budget periods are created. You can create them manually as needed or set up automatic creation on a recurring schedule.
+            </p>
+        </div>
+
+        <!-- Mode Selection -->
+        <div class="mode-selection">
+            <h2 class="section-title">Period Creation Mode</h2>
+            <div class="mode-options">
+                <div class="mode-option active" onclick="selectMode('manual')">
+                    <div class="mode-icon">✋</div>
+                    <div class="mode-title">Manual</div>
+                    <div class="mode-description">
+                        Create periods yourself whenever you need them. Maximum flexibility and control.
+                    </div>
+                </div>
+                <div class="mode-option" onclick="selectMode('automatic')">
+                    <div class="mode-icon">🔄</div>
+                    <div class="mode-title">Automatic</div>
+                    <div class="mode-description">
+                        Periods are created automatically on a recurring schedule. No manual work needed.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Configuration (Only visible when Automatic is selected) -->
+        <div class="schedule-config" id="scheduleConfig">
+            <h2 class="section-title">Schedule Configuration</h2>
+
+            <div class="info-box">
+                <div class="info-box-title">
+                    <span>ℹ️</span>
+                    <span>How Automatic Periods Work</span>
+                </div>
+                <div class="info-box-text">
+                    Once enabled, the system will automatically create future periods based on your schedule. 
+                    These periods are read-only and cannot be edited manually. You can always disable the schedule 
+                    and switch back to manual creation.
+                </div>
+            </div>
+
+            <!-- Basic Settings -->
+            <div class="form-section">
+                <div class="form-section-title">Basic Settings</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Start Day of Month</label>
+                    <input 
+                        type="number" 
+                        class="form-input" 
+                        id="startDay"
+                        value="1"
+                        min="1"
+                        max="31"
+                        placeholder="1"
+                    >
+                    <div class="form-help">
+                        The day of the month when each period starts (1-31)
+                    </div>
+                    <div class="warning-box" id="dayWarning" style="display: none;">
+                        <span class="warning-icon">⚠️</span>
+                        <span class="warning-text">
+                            Days 29-31 may not exist in all months. The period will start on the last day of the month as a fallback.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Period Duration</label>
+                    <div class="input-group">
+                        <input 
+                            type="number" 
+                            class="form-input" 
+                            id="durationValue"
+                            value="1"
+                            min="1"
+                            placeholder="1"
+                        >
+                        <select class="form-select" id="durationUnit">
+                            <option value="days">Days</option>
+                            <option value="weeks">Weeks</option>
+                            <option value="months" selected>Months</option>
+                        </select>
+                    </div>
+                    <div class="form-help">
+                        How long each period lasts. For months, "same day next month" with fallback to last day.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekend Adjustments -->
+            <div class="form-section">
+                <div class="form-section-title">Weekend Adjustments</div>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Choose what happens when the start day falls on a weekend
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">If start day is Saturday</label>
+                    <select class="form-select" id="saturdayAdjustment">
+                        <option value="keep">Keep on Saturday</option>
+                        <option value="friday">Move to Friday</option>
+                        <option value="monday">Move to Monday</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">If start day is Sunday</label>
+                    <select class="form-select" id="sundayAdjustment">
+                        <option value="keep">Keep on Sunday</option>
+                        <option value="friday">Move to Friday</option>
+                        <option value="monday">Move to Monday</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Naming Pattern -->
+            <div class="form-section">
+                <div class="form-section-title">Naming</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Name Pattern</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="namePattern"
+                        value="{MONTH} {YEAR}"
+                        placeholder="e.g., {MONTH} {YEAR}"
+                    >
+                    <div class="form-help">
+                        Use {MONTH}, {YEAR}, {DAY} as placeholders. Example: "February 2026"
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div class="form-section">
+                <div class="form-section-title">Advanced</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Generate Ahead</label>
+                    <input 
+                        type="number" 
+                        class="form-input" 
+                        id="generateAhead"
+                        value="6"
+                        min="1"
+                        max="12"
+                    >
+                    <div class="form-help">
+                        Number of future periods to generate automatically (1-12). Default is 6.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-card">
+                <div class="preview-title">Schedule Preview</div>
+                <div class="preview-item">
+                    <span class="preview-label">Start Day:</span>
+                    <span class="preview-value" id="previewStartDay">1st of month</span>
+                </div>
+                <div class="preview-item">
+                    <span class="preview-label">Duration:</span>
+                    <span class="preview-value" id="previewDuration">1 month</span>
+                </div>
+                <div class="preview-item">
+                    <span class="preview-label">Saturday:</span>
+                    <span class="preview-value" id="previewSaturday">Keep on Saturday</span>
+                </div>
+                <div class="preview-item">
+                    <span class="preview-label">Sunday:</span>
+                    <span class="preview-value" id="previewSunday">Keep on Sunday</span>
+                </div>
+                <div class="preview-item">
+                    <span class="preview-label">Example Name:</span>
+                    <span class="preview-value" id="previewName">February 2026</span>
+                </div>
+                <div class="preview-item">
+                    <span class="preview-label">Future Periods:</span>
+                    <span class="preview-value" id="previewGenerate">6 periods ahead</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="btn btn-secondary">
+                Cancel
+            </button>
+            <button class="btn btn-primary" id="saveButton">
+                <span>💾</span>
+                <span id="saveButtonText">Save Settings</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'manual';
+
+        function selectMode(mode) {
+            currentMode = mode;
+            
+            // Update mode option styling
+            document.querySelectorAll('.mode-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show/hide schedule config
+            const scheduleConfig = document.getElementById('scheduleConfig');
+            if (mode === 'automatic') {
+                scheduleConfig.classList.add('visible');
+                document.getElementById('saveButtonText').textContent = 'Enable Schedule';
+            } else {
+                scheduleConfig.classList.remove('visible');
+                document.getElementById('saveButtonText').textContent = 'Save Settings';
+            }
+        }
+
+        // Update day warning
+        function updateDayWarning() {
+            const day = parseInt(document.getElementById('startDay').value);
+            const warning = document.getElementById('dayWarning');
+            
+            if (day >= 29 && day <= 31) {
+                warning.style.display = 'flex';
+            } else {
+                warning.style.display = 'none';
+            }
+            
+            updatePreview();
+        }
+
+        // Update preview
+        function updatePreview() {
+            const startDay = document.getElementById('startDay').value;
+            const durationValue = document.getElementById('durationValue').value;
+            const durationUnit = document.getElementById('durationUnit').value;
+            const saturdayAdj = document.getElementById('saturdayAdjustment').value;
+            const sundayAdj = document.getElementById('sundayAdjustment').value;
+            const namePattern = document.getElementById('namePattern').value;
+            const generateAhead = document.getElementById('generateAhead').value;
+            
+            // Get ordinal suffix
+            const getOrdinal = (n) => {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return n + (s[(v - 20) % 10] || s[v] || s[0]);
+            };
+            
+            // Update preview values
+            document.getElementById('previewStartDay').textContent = getOrdinal(startDay) + ' of month';
+            document.getElementById('previewDuration').textContent = durationValue + ' ' + durationUnit;
+            
+            const adjMap = {
+                'keep': 'Keep on ',
+                'friday': 'Move to Friday',
+                'monday': 'Move to Monday'
+            };
+            
+            document.getElementById('previewSaturday').textContent = 
+                saturdayAdj === 'keep' ? 'Keep on Saturday' : adjMap[saturdayAdj];
+            document.getElementById('previewSunday').textContent = 
+                sundayAdj === 'keep' ? 'Keep on Sunday' : adjMap[sundayAdj];
+            
+            // Example name
+            const now = new Date();
+            const exampleName = namePattern
+                .replace('{MONTH}', now.toLocaleDateString('en-US', { month: 'long' }))
+                .replace('{YEAR}', now.getFullYear())
+                .replace('{DAY}', startDay);
+            document.getElementById('previewName').textContent = exampleName;
+            
+            document.getElementById('previewGenerate').textContent = generateAhead + ' periods ahead';
+        }
+
+        // Add event listeners
+        document.getElementById('startDay').addEventListener('input', updateDayWarning);
+        document.getElementById('durationValue').addEventListener('input', updatePreview);
+        document.getElementById('durationUnit').addEventListener('change', updatePreview);
+        document.getElementById('saturdayAdjustment').addEventListener('change', updatePreview);
+        document.getElementById('sundayAdjustment').addEventListener('change', updatePreview);
+        document.getElementById('namePattern').addEventListener('input', updatePreview);
+        document.getElementById('generateAhead').addEventListener('input', updatePreview);
+
+        // Initialize
+        updatePreview();
+    </script>
+</body>
+</html>

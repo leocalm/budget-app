@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Budget Overlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: var(--space-xl);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: var(--space-lg);
+        }
+
+        .modal {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .modal-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-medium);
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+            transition: width 0.3s ease;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .progress-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active .progress-circle {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-primary));
+            border-color: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        .progress-step.completed .progress-circle {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+            color: var(--bg-primary);
+        }
+
+        .progress-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .progress-step.active .progress-label {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Modal Body */
+        .modal-body {
+            padding: var(--space-xl);
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .form-label-required::after {
+            content: '*';
+            color: var(--accent-danger);
+            margin-left: 4px;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(180, 122, 255, 0.1);
+        }
+
+        .date-range-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        /* Radio Cards */
+        .radio-cards {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .radio-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .radio-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+
+        .radio-card.selected {
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, rgba(180, 122, 255, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+        }
+
+        .radio-card.selected::before {
+            content: '✓';
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 24px;
+            height: 24px;
+            background: var(--accent-purple);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .radio-card.recommended::after {
+            content: 'Recommended';
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: var(--accent-success);
+            color: var(--bg-primary);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .radio-card.selected.recommended::after {
+            right: 48px;
+        }
+
+        .radio-card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-sm);
+        }
+
+        .radio-icon {
+            font-size: 24px;
+        }
+
+        .radio-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .radio-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-left: 40px;
+        }
+
+        /* Rules Builder */
+        .rule-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .rule-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rule-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-purple);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(18px);
+        }
+
+        .rule-content {
+            display: none;
+        }
+
+        .rule-content.visible {
+            display: block;
+        }
+
+        /* Chips */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px 12px;
+            background: rgba(180, 122, 255, 0.15);
+            border: 1px solid rgba(180, 122, 255, 0.3);
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--accent-purple);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chip:hover {
+            background: rgba(180, 122, 255, 0.25);
+        }
+
+        .chip.selected {
+            background: var(--accent-purple);
+            color: var(--bg-primary);
+            border-color: var(--accent-purple);
+        }
+
+        .chip-remove {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Cap Input */
+        .cap-group {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .cap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .cap-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cap-icon {
+            font-size: 18px;
+        }
+
+        .cap-input-group {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .currency-symbol {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Category Cap Item */
+        .category-cap-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--bg-elevated);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .category-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .category-cap-input {
+            width: 120px;
+            padding: var(--space-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        /* Review Summary */
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .summary-section {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .summary-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .summary-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            font-size: 13px;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .summary-value.highlight {
+            color: var(--accent-purple);
+        }
+
+        .summary-badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .summary-badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(180, 122, 255, 0.15);
+            color: var(--accent-purple);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .info-icon {
+            font-size: 16px;
+            color: var(--accent-primary);
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: var(--space-xl);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            gap: var(--space-md);
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-primary));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(180, 122, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(180, 122, 255, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal {
+                max-width: 100%;
+                border-radius: var(--radius-lg);
+            }
+
+            .date-range-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .progress-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <h2 class="modal-title">Create Budget Overlay</h2>
+                    <button class="modal-close">✕</button>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-line">
+                        <div class="progress-line-fill" id="progressFill" style="width: 20%"></div>
+                    </div>
+                    <div class="progress-step active" data-step="1">
+                        <div class="progress-circle">1</div>
+                        <div class="progress-label">Basic Info</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="progress-circle">2</div>
+                        <div class="progress-label">Inclusion</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="progress-circle">3</div>
+                        <div class="progress-label">Rules</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="progress-circle">4</div>
+                        <div class="progress-label">Caps</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="progress-circle">5</div>
+                        <div class="progress-label">Review</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Step 1: Basic Info -->
+                <div class="step-content active" data-step="1">
+                    <p class="step-description">
+                        Give your overlay a name and set the date range when it will be active.
+                    </p>
+
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Overlay Name</label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="overlayName"
+                            placeholder="e.g., Italy Trip, Christmas Shopping"
+                        >
+                        <div class="form-help">
+                            Choose a descriptive name that helps you identify this overlay
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Date Range</label>
+                        <div class="date-range-grid">
+                            <div>
+                                <input 
+                                    type="date" 
+                                    class="form-input" 
+                                    id="startDate"
+                                    placeholder="Start date"
+                                >
+                            </div>
+                            <div>
+                                <input 
+                                    type="date" 
+                                    class="form-input" 
+                                    id="endDate"
+                                    placeholder="End date"
+                                >
+                            </div>
+                        </div>
+                        <div class="form-help">
+                            Overlays must have both start and end dates
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>
+                        <span class="info-text">
+                            Overlays run in parallel with your regular budget periods. They won't affect your normal period budgeting.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 2: Inclusion Mode -->
+                <div class="step-content" data-step="2">
+                    <p class="step-description">
+                        Choose how transactions will be included in this overlay.
+                    </p>
+
+                    <div class="radio-cards">
+                        <div class="radio-card recommended selected" data-mode="manual">
+                            <div class="radio-card-header">
+                                <span class="radio-icon">✋</span>
+                                <span class="radio-title">Manual</span>
+                            </div>
+                            <div class="radio-description">
+                                You choose which transactions to include. Nothing is added automatically. Best for precise control.
+                            </div>
+                        </div>
+
+                        <div class="radio-card" data-mode="rules">
+                            <div class="radio-card-header">
+                                <span class="radio-icon">🎯</span>
+                                <span class="radio-title">Rules-Based</span>
+                            </div>
+                            <div class="radio-description">
+                                Automatically include transactions that match your rules (categories, vendors, or accounts). You can still exclude individual transactions.
+                            </div>
+                        </div>
+
+                        <div class="radio-card" data-mode="all">
+                            <div class="radio-card-header">
+                                <span class="radio-icon">📦</span>
+                                <span class="radio-title">Include Everything</span>
+                            </div>
+                            <div class="radio-description">
+                                All transactions in the date range are included automatically. You can exclude specific transactions if needed.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Rules Builder -->
+                <div class="step-content" data-step="3">
+                    <p class="step-description">
+                        Set up rules to automatically include transactions. Any transaction matching at least one rule will be included.
+                    </p>
+
+                    <div class="info-box">
+                        <span class="info-icon">ℹ️</span>
+                        <span class="info-text">
+                            Rules use OR logic: transactions matching ANY of your rules will be included. You can enable multiple rule types.
+                        </span>
+                    </div>
+
+                    <!-- Categories Rule -->
+                    <div class="rule-section">
+                        <div class="rule-header">
+                            <div class="rule-title">📁 Categories</div>
+                            <div class="rule-toggle">
+                                <span>Enable</span>
+                                <div class="toggle-switch active" onclick="toggleRule(this)">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-content visible">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Select categories to include
+                            </p>
+                            <div class="chips-container">
+                                <div class="chip" onclick="toggleChip(this)">🍔 Groceries</div>
+                                <div class="chip selected" onclick="toggleChip(this)">✈️ Travel</div>
+                                <div class="chip selected" onclick="toggleChip(this)">🏨 Hotels</div>
+                                <div class="chip" onclick="toggleChip(this)">🍽️ Restaurants</div>
+                                <div class="chip selected" onclick="toggleChip(this)">🚗 Transportation</div>
+                                <div class="chip" onclick="toggleChip(this)">🎭 Entertainment</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vendors Rule -->
+                    <div class="rule-section">
+                        <div class="rule-header">
+                            <div class="rule-title">🏪 Vendors</div>
+                            <div class="rule-toggle">
+                                <span>Enable</span>
+                                <div class="toggle-switch" onclick="toggleRule(this)">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-content">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Select vendors to include
+                            </p>
+                            <div class="chips-container">
+                                <div class="chip" onclick="toggleChip(this)">Fancy Supermarket</div>
+                                <div class="chip" onclick="toggleChip(this)">Coffee Shop</div>
+                                <div class="chip" onclick="toggleChip(this)">Airline Company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accounts Rule -->
+                    <div class="rule-section">
+                        <div class="rule-header">
+                            <div class="rule-title">🏦 Accounts</div>
+                            <div class="rule-toggle">
+                                <span>Enable</span>
+                                <div class="toggle-switch" onclick="toggleRule(this)">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-content">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Select accounts to include
+                            </p>
+                            <div class="chips-container">
+                                <div class="chip" onclick="toggleChip(this)">💳 Main Checking</div>
+                                <div class="chip" onclick="toggleChip(this)">💳 Credit Card</div>
+                                <div class="chip" onclick="toggleChip(this)">💰 Savings</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">🔍</span>
+                        <span class="info-text">
+                            Based on current rules, approximately <strong>23 transactions</strong> will be automatically included in this overlay.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 4: Caps -->
+                <div class="step-content" data-step="4">
+                    <p class="step-description">
+                        Set spending limits for this overlay. You can set a total cap, category-specific caps, or both.
+                    </p>
+
+                    <!-- Total Cap -->
+                    <div class="cap-group">
+                        <div class="cap-header">
+                            <div class="cap-title">
+                                <span class="cap-icon">💰</span>
+                                <span>Total Cap</span>
+                            </div>
+                            <div class="rule-toggle">
+                                <span>Enable</span>
+                                <div class="toggle-switch active" onclick="toggleRule(this)">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-content visible">
+                            <div class="cap-input-group">
+                                <span class="currency-symbol">€</span>
+                                <input 
+                                    type="number" 
+                                    class="form-input" 
+                                    id="totalCap"
+                                    placeholder="0.00"
+                                    value="800"
+                                    step="0.01"
+                                >
+                            </div>
+                            <div class="form-help">
+                                Maximum total spending across all categories
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Caps -->
+                    <div class="cap-group">
+                        <div class="cap-header">
+                            <div class="cap-title">
+                                <span class="cap-icon">📁</span>
+                                <span>Category Caps</span>
+                            </div>
+                            <div class="rule-toggle">
+                                <span>Enable</span>
+                                <div class="toggle-switch active" onclick="toggleRule(this)">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-content visible">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Set individual limits for each category
+                            </p>
+                            
+                            <div class="category-cap-item">
+                                <div class="category-icon">✈️</div>
+                                <div class="category-name">Travel</div>
+                                <input type="number" class="category-cap-input" placeholder="0.00" value="300.00" step="0.01">
+                            </div>
+
+                            <div class="category-cap-item">
+                                <div class="category-icon">🏨</div>
+                                <div class="category-name">Hotels</div>
+                                <input type="number" class="category-cap-input" placeholder="0.00" value="400.00" step="0.01">
+                            </div>
+
+                            <div class="category-cap-item">
+                                <div class="category-icon">🍽️</div>
+                                <div class="category-name">Restaurants</div>
+                                <input type="number" class="category-cap-input" placeholder="0.00" value="100.00" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review -->
+                <div class="step-content" data-step="5">
+                    <p class="step-description">
+                        Review your overlay configuration before creating it.
+                    </p>
+
+                    <div class="summary-card">
+                        <!-- Basic Info -->
+                        <div class="summary-section">
+                            <div class="summary-title">Basic Information</div>
+                            <div class="summary-item">
+                                <span class="summary-label">Name:</span>
+                                <span class="summary-value highlight">Italy Trip</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Date Range:</span>
+                                <span class="summary-value">Aug 10, 2026 → Aug 20, 2026</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Duration:</span>
+                                <span class="summary-value">10 days</span>
+                            </div>
+                        </div>
+
+                        <!-- Inclusion Mode -->
+                        <div class="summary-section">
+                            <div class="summary-title">Inclusion Mode</div>
+                            <div class="summary-item">
+                                <span class="summary-label">Mode:</span>
+                                <div class="summary-badges">
+                                    <span class="summary-badge">Rules-Based</span>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Active Rules:</span>
+                                <span class="summary-value">Categories (3 selected)</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Estimated Transactions:</span>
+                                <span class="summary-value">23</span>
+                            </div>
+                        </div>
+
+                        <!-- Caps -->
+                        <div class="summary-section">
+                            <div class="summary-title">Budget Caps</div>
+                            <div class="summary-item">
+                                <span class="summary-label">Total Cap:</span>
+                                <span class="summary-value highlight">€800.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Category Caps:</span>
+                                <span class="summary-value">3 categories</span>
+                            </div>
+                            <div style="margin-top: var(--space-md); padding-left: var(--space-md); border-left: 2px solid var(--border-subtle);">
+                                <div class="summary-item">
+                                    <span class="summary-label">Travel:</span>
+                                    <span class="summary-value">€300.00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Hotels:</span>
+                                    <span class="summary-value">€400.00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Restaurants:</span>
+                                    <span class="summary-value">€100.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">✓</span>
+                        <span class="info-text">
+                            Your overlay is ready to be created. It will become active on <strong>August 10, 2026</strong> and you can start tracking spending immediately.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="backBtn" style="display: none;">
+                    <span>←</span>
+                    Back
+                </button>
+                <button class="btn btn-primary" id="nextBtn">
+                    <span>Next</span>
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        let inclusionMode = 'manual';
+
+        function updateProgress() {
+            // Update progress bar
+            const progressPercent = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+
+            // Update step indicators
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                    step.querySelector('.progress-circle').textContent = '✓';
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                    step.querySelector('.progress-circle').textContent = stepNum;
+                } else {
+                    step.querySelector('.progress-circle').textContent = stepNum;
+                }
+            });
+
+            // Update step content
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.add('active');
+
+            // Update buttons
+            const backBtn = document.getElementById('backBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            backBtn.style.display = currentStep === 1 ? 'none' : 'flex';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = '<span>✓</span><span>Create Overlay</span>';
+            } else {
+                nextBtn.innerHTML = '<span>Next</span><span>→</span>';
+            }
+
+            // Skip step 3 if not in rules mode
+            if (currentStep === 3 && inclusionMode !== 'rules') {
+                currentStep++;
+                updateProgress();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateProgress();
+            } else {
+                // Submit form
+                alert('Overlay created successfully!');
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                // Skip step 3 if going back and not in rules mode
+                if (currentStep === 3 && inclusionMode !== 'rules') {
+                    currentStep--;
+                }
+                updateProgress();
+            }
+        }
+
+        function toggleRule(element) {
+            element.classList.toggle('active');
+            const content = element.closest('.rule-section, .cap-group').querySelector('.rule-content');
+            if (content) {
+                content.classList.toggle('visible');
+            }
+        }
+
+        function toggleChip(element) {
+            element.classList.toggle('selected');
+        }
+
+        // Radio card selection
+        document.querySelectorAll('.radio-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                inclusionMode = this.dataset.mode;
+            });
+        });
+
+        // Button events
+        document.getElementById('nextBtn').addEventListener('click', nextStep);
+        document.getElementById('backBtn').addEventListener('click', previousStep);
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

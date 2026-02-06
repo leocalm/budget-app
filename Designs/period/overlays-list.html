@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Overlays</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl) var(--space-xl);
+            background: var(--bg-card);
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-xl);
+            margin: var(--space-2xl) auto;
+            max-width: 600px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+            opacity: 0.6;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+        }
+
+        .empty-example {
+            background: rgba(180, 122, 255, 0.08);
+            border: 1px solid rgba(180, 122, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin: var(--space-lg) 0;
+            text-align: left;
+        }
+
+        .empty-example-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-purple);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-example-item {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: var(--space-xs) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Section */
+        .overlay-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .section-count {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* Overlay Card */
+        .overlay-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .overlay-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .overlay-card:hover::before {
+            opacity: 1;
+        }
+
+        .overlay-card.active {
+            background: linear-gradient(135deg, rgba(180, 122, 255, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+            border-color: var(--accent-purple);
+        }
+
+        .overlay-card.active::before {
+            opacity: 1;
+        }
+
+        .overlay-card.overspent {
+            border-color: var(--accent-danger);
+        }
+
+        .overlay-card.overspent::before {
+            background: linear-gradient(90deg, var(--accent-danger), var(--accent-warning));
+            opacity: 1;
+        }
+
+        .overlay-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-lg);
+        }
+
+        .overlay-info {
+            flex: 1;
+        }
+
+        .overlay-title-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xs);
+        }
+
+        .overlay-icon {
+            font-size: 24px;
+        }
+
+        .overlay-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .overlay-dates {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .overlay-badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .overlay-badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .overlay-badge.active {
+            background: rgba(0, 255, 163, 0.15);
+            color: var(--accent-success);
+        }
+
+        .overlay-badge.upcoming {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .overlay-badge.manual {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+        }
+
+        .overlay-badge.rules {
+            background: rgba(180, 122, 255, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .overlay-badge.all {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .overlay-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Progress Section */
+        .overlay-progress {
+            margin-bottom: var(--space-lg);
+        }
+
+        .overlay-amounts {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: var(--space-sm);
+        }
+
+        .overlay-spent {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .overlay-cap {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .overlay-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--space-sm);
+        }
+
+        .overlay-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .overlay-bar-fill.overspent {
+            background: linear-gradient(90deg, var(--accent-danger), var(--accent-warning));
+        }
+
+        .overlay-remaining {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .overlay-remaining.overspent {
+            color: var(--accent-danger);
+        }
+
+        /* Stats Grid */
+        .overlay-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .overlay-stat {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .overlay-stat-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .overlay-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-primary));
+            border: none;
+            color: var(--bg-primary);
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(180, 122, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(180, 122, 255, 0.6);
+        }
+
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-primary));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(180, 122, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(180, 122, 255, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .overlay-stats {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            .fab {
+                bottom: var(--space-lg);
+                right: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1 class="page-title">Budget Overlays</h1>
+            </div>
+            <p class="header-subtitle">
+                Create temporary budgets that run alongside your regular periods. Perfect for vacations, events, or spending challenges.
+            </p>
+        </div>
+
+        <!-- Empty State (Show when no overlays exist) -->
+        <div class="empty-state" style="display: none;">
+            <div class="empty-icon">🎯</div>
+            <div class="empty-title">No Overlays Yet</div>
+            <p class="empty-text">
+                Overlays are temporary budgets that run in parallel with your regular periods. 
+                They're perfect for tracking special events or goals without disrupting your normal budgeting.
+            </p>
+            
+            <div class="empty-example">
+                <div class="empty-example-title">Perfect For:</div>
+                <div class="empty-example-item">🏖️ Vacation spending limits</div>
+                <div class="empty-example-item">🎄 Holiday shopping budgets</div>
+                <div class="empty-example-item">💪 No-spend challenges</div>
+                <div class="empty-example-item">🎉 Event budgets (weddings, parties)</div>
+            </div>
+
+            <button class="btn btn-primary">
+                <span>+</span>
+                Create Your First Overlay
+            </button>
+        </div>
+
+        <!-- Active Overlays -->
+        <div class="overlay-section">
+            <div class="section-header">
+                <div class="section-title">Active Overlays</div>
+                <div class="section-count">1 overlay</div>
+            </div>
+
+            <div class="overlay-card active overspent">
+                <div class="overlay-card-header">
+                    <div class="overlay-info">
+                        <div class="overlay-title-row">
+                            <span class="overlay-icon">🏖️</span>
+                            <span class="overlay-name">Italy Trip</span>
+                        </div>
+                        <div class="overlay-dates">Aug 10 → Aug 20 (10 days)</div>
+                        <div class="overlay-badges">
+                            <span class="overlay-badge active">Active</span>
+                            <span class="overlay-badge rules">Rules</span>
+                        </div>
+                    </div>
+                    <div class="overlay-actions">
+                        <button class="icon-btn" title="View Details">👁️</button>
+                        <button class="icon-btn" title="Edit">✏️</button>
+                        <button class="icon-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="overlay-progress">
+                    <div class="overlay-amounts">
+                        <div class="overlay-spent">€680</div>
+                        <div class="overlay-cap">of €800</div>
+                    </div>
+                    <div class="overlay-bar">
+                        <div class="overlay-bar-fill overspent" style="width: 85%"></div>
+                    </div>
+                    <div class="overlay-remaining overspent">
+                        €120 over budget • 3 days remaining
+                    </div>
+                </div>
+
+                <div class="overlay-stats">
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Transactions</div>
+                        <div class="overlay-stat-value">23</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Daily Avg</div>
+                        <div class="overlay-stat-value">€97.14</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Categories</div>
+                        <div class="overlay-stat-value">5 capped</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Overlays -->
+        <div class="overlay-section">
+            <div class="section-header">
+                <div class="section-title">Upcoming Overlays</div>
+                <div class="section-count">2 overlays</div>
+            </div>
+
+            <div class="overlay-card">
+                <div class="overlay-card-header">
+                    <div class="overlay-info">
+                        <div class="overlay-title-row">
+                            <span class="overlay-icon">🎄</span>
+                            <span class="overlay-name">Christmas Shopping</span>
+                        </div>
+                        <div class="overlay-dates">Dec 1 → Dec 25 (25 days)</div>
+                        <div class="overlay-badges">
+                            <span class="overlay-badge upcoming">Upcoming</span>
+                            <span class="overlay-badge manual">Manual</span>
+                        </div>
+                    </div>
+                    <div class="overlay-actions">
+                        <button class="icon-btn" title="View Details">👁️</button>
+                        <button class="icon-btn" title="Edit">✏️</button>
+                        <button class="icon-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="overlay-progress">
+                    <div class="overlay-amounts">
+                        <div class="overlay-spent">€0</div>
+                        <div class="overlay-cap">of €500</div>
+                    </div>
+                    <div class="overlay-bar">
+                        <div class="overlay-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="overlay-remaining">
+                        €500 remaining • Starts in 3 months
+                    </div>
+                </div>
+
+                <div class="overlay-stats">
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Transactions</div>
+                        <div class="overlay-stat-value">0</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Daily Avg</div>
+                        <div class="overlay-stat-value">—</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Categories</div>
+                        <div class="overlay-stat-value">None</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay-card">
+                <div class="overlay-card-header">
+                    <div class="overlay-info">
+                        <div class="overlay-title-row">
+                            <span class="overlay-icon">💪</span>
+                            <span class="overlay-name">No-Spend Challenge</span>
+                        </div>
+                        <div class="overlay-dates">Sep 1 → Sep 30 (30 days)</div>
+                        <div class="overlay-badges">
+                            <span class="overlay-badge upcoming">Upcoming</span>
+                            <span class="overlay-badge all">Include All</span>
+                        </div>
+                    </div>
+                    <div class="overlay-actions">
+                        <button class="icon-btn" title="View Details">👁️</button>
+                        <button class="icon-btn" title="Edit">✏️</button>
+                        <button class="icon-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="overlay-progress">
+                    <div class="overlay-amounts">
+                        <div class="overlay-spent">€0</div>
+                        <div class="overlay-cap">of €200</div>
+                    </div>
+                    <div class="overlay-bar">
+                        <div class="overlay-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="overlay-remaining">
+                        €200 remaining • Starts in 1 week
+                    </div>
+                </div>
+
+                <div class="overlay-stats">
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Transactions</div>
+                        <div class="overlay-stat-value">0</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Daily Avg</div>
+                        <div class="overlay-stat-value">—</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Categories</div>
+                        <div class="overlay-stat-value">3 capped</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Past Overlays -->
+        <div class="overlay-section">
+            <div class="section-header">
+                <div class="section-title">Past Overlays</div>
+                <div class="section-count">3 overlays</div>
+            </div>
+
+            <div class="overlay-card" style="opacity: 0.7;">
+                <div class="overlay-card-header">
+                    <div class="overlay-info">
+                        <div class="overlay-title-row">
+                            <span class="overlay-icon">🎉</span>
+                            <span class="overlay-name">Birthday Week</span>
+                        </div>
+                        <div class="overlay-dates">Jul 15 → Jul 22 (7 days)</div>
+                        <div class="overlay-badges">
+                            <span class="overlay-badge manual">Manual</span>
+                        </div>
+                    </div>
+                    <div class="overlay-actions">
+                        <button class="icon-btn" title="View Details">👁️</button>
+                    </div>
+                </div>
+
+                <div class="overlay-progress">
+                    <div class="overlay-amounts">
+                        <div class="overlay-spent">€180</div>
+                        <div class="overlay-cap">of €200</div>
+                    </div>
+                    <div class="overlay-bar">
+                        <div class="overlay-bar-fill" style="width: 90%"></div>
+                    </div>
+                    <div class="overlay-remaining">
+                        €20 under budget • Ended 3 weeks ago
+                    </div>
+                </div>
+
+                <div class="overlay-stats">
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Transactions</div>
+                        <div class="overlay-stat-value">8</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Daily Avg</div>
+                        <div class="overlay-stat-value">€25.71</div>
+                    </div>
+                    <div class="overlay-stat">
+                        <div class="overlay-stat-label">Categories</div>
+                        <div class="overlay-stat-value">None</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" title="Create New Overlay">+</button>
+    </div>
+</body>
+</html>

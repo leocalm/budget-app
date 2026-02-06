@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error States - BudgetApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .demo-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .demo-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Error Container */
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+        }
+
+        /* Full Page Error */
+        .error-page {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .error-illustration {
+            font-size: 120px;
+            margin-bottom: var(--space-xl);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .error-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-danger) 0%, var(--accent-warning) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+
+        .error-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .error-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Inline Error */
+        .error-inline {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.12) 0%, rgba(255, 169, 64, 0.12) 100%);
+            border: 1px solid var(--accent-danger);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .error-content {
+            flex: 1;
+        }
+
+        .error-inline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-danger);
+            margin-bottom: var(--space-xs);
+        }
+
+        .error-inline-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .error-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .error-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Error Card */
+        .error-card {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-danger);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .error-card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 107, 157, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto var(--space-lg);
+        }
+
+        .error-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .error-card-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+        }
+
+        .error-details {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-top: var(--space-lg);
+            text-align: left;
+        }
+
+        .error-details-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .error-details-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            word-break: break-all;
+        }
+
+        /* Field Error */
+        .field-error {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 12px;
+            color: var(--accent-danger);
+            margin-top: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input.error {
+            border-color: var(--accent-danger);
+        }
+
+        .form-input.error:focus {
+            outline: none;
+            border-color: var(--accent-danger);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        /* Toast Error */
+        .toast-container {
+            position: fixed;
+            top: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .toast {
+            background: var(--bg-elevated);
+            border: 1px solid var(--accent-danger);
+            border-left: 4px solid var(--accent-danger);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            animation: toastSlideIn 0.3s ease;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .toast-message {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Network Error */
+        .network-error {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .network-icon {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+            opacity: 0.5;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .network-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .network-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            color: var(--bg-primary);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-small {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 48px;
+            }
+
+            .error-title {
+                font-size: 24px;
+            }
+
+            .error-illustration {
+                font-size: 80px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .toast-container {
+                left: var(--space-md);
+                right: var(--space-md);
+            }
+
+            .toast {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: var(--space-2xl); background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-danger) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            Error States
+        </h1>
+
+        <!-- Full Page Errors -->
+        <div class="demo-section">
+            <h2 class="demo-title">Full Page Errors</h2>
+
+            <!-- 404 Error -->
+            <div class="error-container" style="min-height: auto; margin-bottom: var(--space-2xl);">
+                <div class="error-page">
+                    <div class="error-illustration">🔍</div>
+                    <div class="error-code">404</div>
+                    <h1 class="error-title">Page Not Found</h1>
+                    <p class="error-message">
+                        The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+                    </p>
+                    <div class="error-actions">
+                        <button class="btn btn-primary">
+                            <span>🏠</span>
+                            Go to Dashboard
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span>←</span>
+                            Go Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 500 Error -->
+            <div class="error-container" style="min-height: auto; margin-bottom: var(--space-2xl);">
+                <div class="error-page">
+                    <div class="error-illustration">⚠️</div>
+                    <div class="error-code">500</div>
+                    <h1 class="error-title">Something Went Wrong</h1>
+                    <p class="error-message">
+                        We're experiencing technical difficulties. Our team has been notified and is working on a fix. Please try again later.
+                    </p>
+                    <div class="error-actions">
+                        <button class="btn btn-primary">
+                            <span>🔄</span>
+                            Refresh Page
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span>💬</span>
+                            Contact Support
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 403 Error -->
+            <div class="error-container" style="min-height: auto;">
+                <div class="error-page">
+                    <div class="error-illustration">🔒</div>
+                    <div class="error-code">403</div>
+                    <h1 class="error-title">Access Denied</h1>
+                    <p class="error-message">
+                        You don't have permission to access this resource. If you believe this is a mistake, please contact your administrator.
+                    </p>
+                    <div class="error-actions">
+                        <button class="btn btn-primary">
+                            <span>🏠</span>
+                            Go to Dashboard
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span>📧</span>
+                            Request Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inline Errors -->
+        <div class="demo-section">
+            <h2 class="demo-title">Inline Errors</h2>
+
+            <div class="error-inline" style="margin-bottom: var(--space-md);">
+                <div class="error-icon">⚠️</div>
+                <div class="error-content">
+                    <div class="error-inline-title">Unable to Save Changes</div>
+                    <div class="error-inline-message">
+                        There was a problem saving your budget period. Please check your internet connection and try again.
+                    </div>
+                    <button class="btn btn-danger btn-small">
+                        <span>🔄</span>
+                        Retry
+                    </button>
+                </div>
+                <button class="error-close">✕</button>
+            </div>
+
+            <div class="error-inline">
+                <div class="error-icon">🚫</div>
+                <div class="error-content">
+                    <div class="error-inline-title">Period Overlap Detected</div>
+                    <div class="error-inline-message">
+                        This period overlaps with "January 2026" (Jan 1 → Jan 31). Budget periods cannot overlap. Please adjust the dates.
+                    </div>
+                </div>
+                <button class="error-close">✕</button>
+            </div>
+        </div>
+
+        <!-- Error Cards -->
+        <div class="demo-section">
+            <h2 class="demo-title">Error Cards</h2>
+
+            <div class="error-card">
+                <div class="error-card-icon">💥</div>
+                <h3 class="error-card-title">Failed to Load Data</h3>
+                <p class="error-card-message">
+                    We couldn't load your transactions. This might be a temporary issue with our servers.
+                </p>
+                <div class="error-actions">
+                    <button class="btn btn-primary">
+                        <span>🔄</span>
+                        Try Again
+                    </button>
+                    <button class="btn btn-secondary">
+                        <span>💬</span>
+                        Report Issue
+                    </button>
+                </div>
+
+                <div class="error-details">
+                    <div class="error-details-title">Error Details</div>
+                    <div class="error-details-content">
+                        Error Code: ERR_NETWORK_TIMEOUT<br>
+                        Request ID: a7b3c4d5-e6f7-8901-2345-6789abcdef01<br>
+                        Timestamp: 2026-02-05 14:32:17 UTC
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field Errors -->
+        <div class="demo-section">
+            <h2 class="demo-title">Form Field Errors</h2>
+
+            <div style="max-width: 500px;">
+                <div style="margin-bottom: var(--space-lg);">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                        Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        class="form-input error" 
+                        value="invalid-email"
+                        placeholder="Enter your email"
+                    >
+                    <div class="field-error">
+                        <span>⚠️</span>
+                        <span>Please enter a valid email address</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: var(--space-lg);">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                        Budget Amount
+                    </label>
+                    <input 
+                        type="number" 
+                        class="form-input error" 
+                        value="-100"
+                        placeholder="0.00"
+                    >
+                    <div class="field-error">
+                        <span>⚠️</span>
+                        <span>Amount must be greater than zero</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                        Period Name
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-input error" 
+                        value=""
+                        placeholder="Enter period name"
+                    >
+                    <div class="field-error">
+                        <span>⚠️</span>
+                        <span>Period name is required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Error -->
+        <div class="demo-section">
+            <h2 class="demo-title">Network Errors</h2>
+
+            <div class="network-error">
+                <div class="network-icon">📡</div>
+                <h3 class="network-title">No Internet Connection</h3>
+                <p class="network-message">
+                    Please check your internet connection and try again. Some features may not work without an active connection.
+                </p>
+                <button class="btn btn-primary">
+                    <span>🔄</span>
+                    Retry Connection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container">
+        <div class="toast">
+            <div class="toast-icon">❌</div>
+            <div class="toast-content">
+                <div class="toast-title">Transaction Failed</div>
+                <div class="toast-message">Unable to create transaction. Please try again.</div>
+            </div>
+            <button class="toast-close">✕</button>
+        </div>
+
+        <div class="toast">
+            <div class="toast-icon">⚠️</div>
+            <div class="toast-content">
+                <div class="toast-title">Budget Limit Exceeded</div>
+                <div class="toast-message">You've exceeded your budget for Groceries by €45.20</div>
+            </div>
+            <button class="toast-close">✕</button>
+        </div>
+    </div>
+</body>
+</html>

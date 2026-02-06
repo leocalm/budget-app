@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empty States - BudgetApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .demo-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .demo-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Empty State Container */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            background: var(--bg-card);
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-xl);
+        }
+
+        .empty-state-solid {
+            border-style: solid;
+            border-color: var(--border-subtle);
+        }
+
+        /* Illustration */
+        .empty-illustration {
+            font-size: 80px;
+            margin-bottom: var(--space-xl);
+            opacity: 0.7;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .empty-illustration-small {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Content */
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Actions */
+        .empty-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Quick Tips */
+        .empty-tips {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-top: var(--space-xl);
+            text-align: left;
+        }
+
+        .empty-tips-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .empty-tip {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: var(--space-sm) 0;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .empty-tip::before {
+            content: '•';
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        /* Example Cards */
+        .empty-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+
+        .empty-example-card {
+            background: rgba(180, 122, 255, 0.08);
+            border: 1px solid rgba(180, 122, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .empty-example-card:hover {
+            background: rgba(180, 122, 255, 0.12);
+            border-color: rgba(180, 122, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .empty-example-icon {
+            font-size: 24px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-example-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .empty-example-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Search Empty State */
+        .search-empty {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+        }
+
+        .search-query {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Filter Empty State */
+        .filter-tags {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: var(--space-lg) 0;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px 12px;
+            background: rgba(180, 122, 255, 0.15);
+            border: 1px solid rgba(180, 122, 255, 0.3);
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--accent-purple);
+        }
+
+        .filter-remove {
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* Inline Empty State */
+        .empty-inline {
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .empty-inline .empty-illustration {
+            font-size: 48px;
+            margin-bottom: var(--space-md);
+        }
+
+        .empty-inline .empty-title {
+            font-size: 16px;
+            margin-bottom: var(--space-xs);
+        }
+
+        .empty-inline .empty-message {
+            font-size: 13px;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Onboarding Empty State */
+        .onboarding-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+            text-align: left;
+        }
+
+        .onboarding-step {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+        }
+
+        .onboarding-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .onboarding-content {
+            flex: 1;
+        }
+
+        .onboarding-step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .onboarding-step-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Compact Empty State */
+        .empty-compact {
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
+        }
+
+        .empty-compact .empty-illustration {
+            font-size: 40px;
+            margin-bottom: var(--space-md);
+        }
+
+        .empty-compact .empty-title {
+            font-size: 14px;
+            margin-bottom: var(--space-xs);
+        }
+
+        .empty-compact .empty-message {
+            font-size: 12px;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .empty-illustration {
+                font-size: 64px;
+            }
+
+            .empty-examples {
+                grid-template-columns: 1fr;
+            }
+
+            .empty-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: var(--space-2xl); background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            Empty States
+        </h1>
+
+        <!-- First Time User / Onboarding -->
+        <div class="demo-section">
+            <h2 class="demo-title">First Time User - Onboarding</h2>
+            
+            <div class="empty-state empty-state-solid">
+                <div class="empty-illustration">🎯</div>
+                <h3 class="empty-title">Welcome to Your Budget Journey!</h3>
+                <p class="empty-message">
+                    Let's get you started with tracking your finances. Follow these simple steps to set up your first budget period.
+                </p>
+
+                <div class="onboarding-steps">
+                    <div class="onboarding-step">
+                        <div class="onboarding-number">1</div>
+                        <div class="onboarding-content">
+                            <div class="onboarding-step-title">Create Your First Period</div>
+                            <div class="onboarding-step-description">
+                                Set up a budget period to start tracking your spending
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step">
+                        <div class="onboarding-number">2</div>
+                        <div class="onboarding-content">
+                            <div class="onboarding-step-title">Add Your Accounts</div>
+                            <div class="onboarding-step-description">
+                                Connect your bank accounts or credit cards
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step">
+                        <div class="onboarding-number">3</div>
+                        <div class="onboarding-content">
+                            <div class="onboarding-step-title">Start Tracking Transactions</div>
+                            <div class="onboarding-step-description">
+                                Manually add transactions to build awareness of your spending
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-actions" style="margin-top: var(--space-xl);">
+                    <button class="btn btn-primary">
+                        <span>🚀</span>
+                        Get Started
+                    </button>
+                    <button class="btn btn-secondary">
+                        <span>📖</span>
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Transactions -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Transactions</h2>
+            
+            <div class="empty-state">
+                <div class="empty-illustration">💳</div>
+                <h3 class="empty-title">No Transactions Yet</h3>
+                <p class="empty-message">
+                    Start tracking your spending by adding your first transaction. Manual entry helps you stay aware of where your money goes.
+                </p>
+                <div class="empty-actions">
+                    <button class="btn btn-primary">
+                        <span>+</span>
+                        Add Transaction
+                    </button>
+                </div>
+
+                <div class="empty-tips">
+                    <div class="empty-tips-title">
+                        <span>💡</span>
+                        <span>Quick Tips</span>
+                    </div>
+                    <div class="empty-tip">Add transactions as soon as you spend to build the habit</div>
+                    <div class="empty-tip">Include the date, amount, category, and vendor</div>
+                    <div class="empty-tip">Use the Quick Add feature for faster entry</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Periods -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Periods</h2>
+            
+            <div class="empty-state">
+                <div class="empty-illustration">📅</div>
+                <h3 class="empty-title">No Budget Periods</h3>
+                <p class="empty-message">
+                    Budget periods define your budgeting time windows. Create your first period to start tracking your spending.
+                </p>
+                
+                <div class="empty-examples">
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">🗓️</div>
+                        <div class="empty-example-title">Monthly</div>
+                        <div class="empty-example-description">
+                            Budget by calendar month (e.g., Feb 1-28)
+                        </div>
+                    </div>
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">💰</div>
+                        <div class="empty-example-title">Bi-Weekly</div>
+                        <div class="empty-example-description">
+                            Match your paycheck schedule
+                        </div>
+                    </div>
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">✨</div>
+                        <div class="empty-example-title">Custom</div>
+                        <div class="empty-example-description">
+                            Choose any date range that works for you
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-actions" style="margin-top: var(--space-xl);">
+                    <button class="btn btn-primary">
+                        <span>+</span>
+                        Create Period
+                    </button>
+                    <button class="btn btn-secondary">
+                        <span>🔄</span>
+                        Enable Auto-Creation
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Overlays -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Overlays</h2>
+            
+            <div class="empty-state">
+                <div class="empty-illustration-small">🎯</div>
+                <h3 class="empty-title">No Budget Overlays</h3>
+                <p class="empty-message">
+                    Overlays are temporary budgets that run alongside your regular periods. Perfect for vacations, events, or spending challenges.
+                </p>
+                
+                <div class="empty-examples">
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">🏖️</div>
+                        <div class="empty-example-title">Vacation</div>
+                        <div class="empty-example-description">
+                            Track holiday spending separately
+                        </div>
+                    </div>
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">🎄</div>
+                        <div class="empty-example-title">Holiday Shopping</div>
+                        <div class="empty-example-description">
+                            Set limits for gift purchases
+                        </div>
+                    </div>
+                    <div class="empty-example-card">
+                        <div class="empty-example-icon">💪</div>
+                        <div class="empty-example-title">No-Spend Challenge</div>
+                        <div class="empty-example-description">
+                            Create a spending freeze goal
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-actions" style="margin-top: var(--space-xl);">
+                    <button class="btn btn-primary">
+                        <span>+</span>
+                        Create Overlay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Search Results</h2>
+            
+            <div class="search-empty">
+                <div class="empty-illustration-small">🔍</div>
+                <h3 class="empty-title">No Results Found</h3>
+                <p class="empty-message">
+                    We couldn't find any transactions matching <span class="search-query">"coffee shop"</span>
+                </p>
+                <div class="empty-tips" style="max-width: 400px; margin: var(--space-xl) auto 0;">
+                    <div class="empty-tips-title">
+                        <span>💡</span>
+                        <span>Try These</span>
+                    </div>
+                    <div class="empty-tip">Check your spelling</div>
+                    <div class="empty-tip">Use fewer or different keywords</div>
+                    <div class="empty-tip">Try searching by category instead</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtered Results -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Filtered Results</h2>
+            
+            <div class="search-empty">
+                <div class="empty-illustration-small">🎯</div>
+                <h3 class="empty-title">No Transactions Match Filters</h3>
+                <p class="empty-message">
+                    Try adjusting your filters to see more results
+                </p>
+                
+                <div class="filter-tags">
+                    <div class="filter-tag">
+                        <span>Category: Groceries</span>
+                        <span class="filter-remove">✕</span>
+                    </div>
+                    <div class="filter-tag">
+                        <span>Account: Checking</span>
+                        <span class="filter-remove">✕</span>
+                    </div>
+                    <div class="filter-tag">
+                        <span>Amount: €50-€100</span>
+                        <span class="filter-remove">✕</span>
+                    </div>
+                </div>
+
+                <div class="empty-actions">
+                    <button class="btn btn-secondary">
+                        <span>🔄</span>
+                        Clear All Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Categories -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Categories (Inline)</h2>
+            
+            <div class="empty-inline">
+                <div class="empty-illustration">📁</div>
+                <h3 class="empty-title">No Categories Yet</h3>
+                <p class="empty-message">
+                    Create categories to organize your transactions
+                </p>
+                <button class="btn btn-primary">
+                    <span>+</span>
+                    Add Category
+                </button>
+            </div>
+        </div>
+
+        <!-- No Accounts -->
+        <div class="demo-section">
+            <h2 class="demo-title">No Accounts (Inline)</h2>
+            
+            <div class="empty-inline">
+                <div class="empty-illustration">🏦</div>
+                <h3 class="empty-title">No Accounts</h3>
+                <p class="empty-message">
+                    Add your bank accounts and credit cards to start tracking
+                </p>
+                <button class="btn btn-primary">
+                    <span>+</span>
+                    Add Account
+                </button>
+            </div>
+        </div>
+
+        <!-- Compact Empty States -->
+        <div class="demo-section">
+            <h2 class="demo-title">Compact Empty States</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+                <div class="empty-compact">
+                    <div class="empty-illustration">📊</div>
+                    <h4 class="empty-title">No Data Available</h4>
+                    <p class="empty-message">
+                        Add transactions to see your spending trends
+                    </p>
+                </div>
+
+                <div class="empty-compact">
+                    <div class="empty-illustration">🎯</div>
+                    <h4 class="empty-title">No Goals Set</h4>
+                    <p class="empty-message">
+                        Create financial goals to track your progress
+                    </p>
+                    <button class="btn btn-primary" style="font-size: 12px; padding: var(--space-sm) var(--space-md);">
+                        <span>+</span>
+                        Add Goal
+                    </button>
+                </div>
+
+                <div class="empty-compact">
+                    <div class="empty-illustration">🔔</div>
+                    <h4 class="empty-title">No Notifications</h4>
+                    <p class="empty-message">
+                        You're all caught up!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

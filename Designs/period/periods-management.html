@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Periods Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Schedule Status Card */
+        .schedule-status {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+        }
+
+        .schedule-status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .schedule-status-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .schedule-icon {
+            font-size: 20px;
+        }
+
+        .schedule-badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .schedule-status-details {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .schedule-status-actions {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .btn {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 157, 0.15);
+            color: var(--accent-danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 107, 157, 0.25);
+        }
+
+        /* No Period Warning */
+        .no-period-warning {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .no-period-warning::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-warning), var(--accent-danger));
+        }
+
+        .no-period-warning-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .warning-icon {
+            font-size: 32px;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .warning-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .warning-transactions {
+            background: rgba(0, 0, 0, 0.2);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .warning-tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            font-size: 13px;
+        }
+
+        .warning-tx-date {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+        }
+
+        .warning-tx-desc {
+            flex: 1;
+            padding: 0 var(--space-md);
+            color: var(--text-primary);
+        }
+
+        .warning-tx-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-danger);
+        }
+
+        .btn-warning {
+            background: var(--accent-warning);
+            color: var(--bg-primary);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 169, 64, 0.3);
+        }
+
+        /* Period Sections */
+        .period-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .section-count {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* Period Card */
+        .period-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .period-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .period-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .period-card:hover::before {
+            opacity: 1;
+        }
+
+        .period-card.current {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border-color: var(--accent-primary);
+        }
+
+        .period-card.current::before {
+            opacity: 1;
+        }
+
+        .period-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
+        }
+
+        .period-info {
+            flex: 1;
+        }
+
+        .period-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .period-dates {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .period-badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .period-badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .period-badge.current {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .period-badge.auto {
+            background: rgba(180, 122, 255, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .period-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .icon-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .period-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .period-stat {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .period-stat-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .period-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .period-stat-value.highlight {
+            color: var(--accent-primary);
+        }
+
+        /* Collapsible Section */
+        .collapsible-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+
+        .collapsible-header {
+            padding: var(--space-lg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .collapsible-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .collapsible-icon {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.open {
+            max-height: 2000px;
+        }
+
+        .collapsible-inner {
+            padding: 0 var(--space-lg) var(--space-lg);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            background: var(--bg-card);
+            border: 1px dashed var(--border-medium);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-md);
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            border: none;
+            color: var(--bg-primary);
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .period-stats {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            .schedule-status-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .fab {
+                bottom: var(--space-lg);
+                right: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1 class="page-title">Budget Periods</h1>
+            </div>
+            <p class="header-subtitle">
+                Manage your budget time windows. Create custom periods or enable auto-creation for a repeating schedule.
+            </p>
+        </div>
+
+        <!-- Schedule Status (when enabled) -->
+        <div class="schedule-status">
+            <div class="schedule-status-header">
+                <div class="schedule-status-title">
+                    <span class="schedule-icon">🔄</span>
+                    <span>Auto-Creation Enabled</span>
+                </div>
+                <div class="schedule-badge">Active</div>
+            </div>
+            <div class="schedule-status-details">
+                Monthly periods starting on the 1st of each month • 6 periods generated ahead • Saturday → Friday, Sunday → Monday
+            </div>
+            <div class="schedule-status-actions">
+                <button class="btn btn-secondary">
+                    <span>⚙️</span>
+                    Edit Schedule
+                </button>
+                <button class="btn btn-danger">
+                    <span>⏸️</span>
+                    Disable Schedule
+                </button>
+            </div>
+        </div>
+
+        <!-- No Period Warning -->
+        <div class="no-period-warning">
+            <div class="no-period-warning-header">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-content">
+                    <div class="warning-title">Gap Detected: 3 Transactions Not in Any Period</div>
+                    <div class="warning-subtitle">These transactions need to be assigned to a period for accurate budgeting</div>
+                </div>
+            </div>
+            <div class="warning-transactions">
+                <div class="warning-tx-item">
+                    <div class="warning-tx-date">Dec 31</div>
+                    <div class="warning-tx-desc">Groceries at Fancy Supermarket</div>
+                    <div class="warning-tx-amount">-€ 45.20</div>
+                </div>
+                <div class="warning-tx-item">
+                    <div class="warning-tx-date">Dec 31</div>
+                    <div class="warning-tx-desc">Coffee Shop</div>
+                    <div class="warning-tx-amount">-€ 4.50</div>
+                </div>
+                <div class="warning-tx-item">
+                    <div class="warning-tx-date">Dec 30</div>
+                    <div class="warning-tx-desc">Gas Station</div>
+                    <div class="warning-tx-amount">-€ 55.00</div>
+                </div>
+            </div>
+            <button class="btn btn-warning">
+                <span>🔧</span>
+                Create Period to Cover These
+            </button>
+        </div>
+
+        <!-- Current Period -->
+        <div class="period-section">
+            <div class="section-header">
+                <div class="section-title">Current Period</div>
+            </div>
+
+            <div class="period-card current">
+                <div class="period-card-header">
+                    <div class="period-info">
+                        <div class="period-name">February 2026</div>
+                        <div class="period-dates">Feb 1 → Feb 29 (28 days)</div>
+                        <div class="period-badges">
+                            <span class="period-badge current">Current</span>
+                        </div>
+                    </div>
+                    <div class="period-actions">
+                        <button class="icon-btn">📊</button>
+                        <button class="icon-btn">✏️</button>
+                        <button class="icon-btn">🗑️</button>
+                    </div>
+                </div>
+                <div class="period-stats">
+                    <div class="period-stat">
+                        <div class="period-stat-label">Time Remaining</div>
+                        <div class="period-stat-value highlight">21 days</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Transactions</div>
+                        <div class="period-stat-value">12</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Budget Used</div>
+                        <div class="period-stat-value">31%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Periods -->
+        <div class="period-section">
+            <div class="section-header">
+                <div class="section-title">Upcoming Periods</div>
+                <div class="section-count">2 periods</div>
+            </div>
+
+            <div class="period-card">
+                <div class="period-card-header">
+                    <div class="period-info">
+                        <div class="period-name">March 2026</div>
+                        <div class="period-dates">Mar 1 → Mar 31 (31 days)</div>
+                        <div class="period-badges">
+                            <span class="period-badge auto">Auto</span>
+                        </div>
+                    </div>
+                    <div class="period-actions">
+                        <button class="icon-btn disabled">📊</button>
+                        <button class="icon-btn disabled">✏️</button>
+                        <button class="icon-btn disabled">🗑️</button>
+                    </div>
+                </div>
+                <div class="period-stats">
+                    <div class="period-stat">
+                        <div class="period-stat-label">Starts In</div>
+                        <div class="period-stat-value">21 days</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Transactions</div>
+                        <div class="period-stat-value">—</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Status</div>
+                        <div class="period-stat-value">Ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="period-card">
+                <div class="period-card-header">
+                    <div class="period-info">
+                        <div class="period-name">April 2026</div>
+                        <div class="period-dates">Apr 1 → Apr 30 (30 days)</div>
+                        <div class="period-badges">
+                            <span class="period-badge auto">Auto</span>
+                        </div>
+                    </div>
+                    <div class="period-actions">
+                        <button class="icon-btn disabled">📊</button>
+                        <button class="icon-btn disabled">✏️</button>
+                        <button class="icon-btn disabled">🗑️</button>
+                    </div>
+                </div>
+                <div class="period-stats">
+                    <div class="period-stat">
+                        <div class="period-stat-label">Starts In</div>
+                        <div class="period-stat-value">52 days</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Transactions</div>
+                        <div class="period-stat-value">—</div>
+                    </div>
+                    <div class="period-stat">
+                        <div class="period-stat-label">Status</div>
+                        <div class="period-stat-value">Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Past Periods (Collapsible) -->
+        <div class="period-section">
+            <div class="section-header">
+                <div class="section-title">Past Periods</div>
+                <div class="section-count">12 periods</div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <div class="collapsible-title">View Past Periods</div>
+                    <div class="collapsible-icon">▼</div>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="period-card">
+                            <div class="period-card-header">
+                                <div class="period-info">
+                                    <div class="period-name">January 2026</div>
+                                    <div class="period-dates">Jan 1 → Jan 31 (31 days)</div>
+                                </div>
+                                <div class="period-actions">
+                                    <button class="icon-btn">📊</button>
+                                    <button class="icon-btn">✏️</button>
+                                    <button class="icon-btn">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="period-stats">
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Ended</div>
+                                    <div class="period-stat-value">7 days ago</div>
+                                </div>
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Transactions</div>
+                                    <div class="period-stat-value">45</div>
+                                </div>
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Budget Used</div>
+                                    <div class="period-stat-value">98%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="period-card">
+                            <div class="period-card-header">
+                                <div class="period-info">
+                                    <div class="period-name">December 2025</div>
+                                    <div class="period-dates">Dec 1 → Dec 31 (31 days)</div>
+                                </div>
+                                <div class="period-actions">
+                                    <button class="icon-btn">📊</button>
+                                    <button class="icon-btn">✏️</button>
+                                    <button class="icon-btn">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="period-stats">
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Ended</div>
+                                    <div class="period-stat-value">38 days ago</div>
+                                </div>
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Transactions</div>
+                                    <div class="period-stat-value">38</div>
+                                </div>
+                                <div class="period-stat">
+                                    <div class="period-stat-label">Budget Used</div>
+                                    <div class="period-stat-value">87%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" title="Create New Period">+</button>
+    </div>
+
+    <script>
+        function toggleCollapsible(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.collapsible-icon');
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+</html>

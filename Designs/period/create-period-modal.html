@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Budget Period</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: var(--space-xl);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: var(--space-lg);
+        }
+
+        /* Modal */
+        .modal {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 20px;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: var(--space-xl);
+        }
+
+        /* Warning Banner (for edit mode) */
+        .warning-banner {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .warning-icon {
+            font-size: 24px;
+        }
+
+        .warning-text {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-warning);
+            margin-bottom: var(--space-xs);
+        }
+
+        .warning-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .form-label-required::after {
+            content: '*';
+            color: var(--accent-danger);
+            margin-left: 4px;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--accent-danger);
+        }
+
+        .form-error {
+            font-size: 12px;
+            color: var(--accent-danger);
+            margin-top: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        /* Duration Input Group */
+        .duration-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-md);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        /* Preview Card */
+        .preview-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-top: var(--space-md);
+        }
+
+        .preview-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .preview-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        /* End Date Tabs */
+        .end-date-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .end-date-tab {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .end-date-tab:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .end-date-tab.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.12) 100%);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .end-date-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: var(--space-xl);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Error Banner */
+        .error-banner {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.12) 0%, rgba(255, 169, 64, 0.12) 100%);
+            border: 1px solid var(--accent-danger);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .error-banner-icon {
+            font-size: 24px;
+        }
+
+        .error-banner-text {
+            flex: 1;
+        }
+
+        .error-banner-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-danger);
+            margin-bottom: var(--space-xs);
+        }
+
+        .error-banner-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal {
+                max-width: 100%;
+                border-radius: var(--radius-lg);
+            }
+
+            .duration-group {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Budget Period</h2>
+                <button class="modal-close">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Edit Mode Warning (hidden by default) -->
+                <div class="warning-banner" style="display: none;">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-text">
+                        <div class="warning-title">Date Change Warning</div>
+                        <div class="warning-subtitle">
+                            Changing dates will change which transactions appear in this period.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overlap Error (hidden by default) -->
+                <div class="error-banner" style="display: none;" id="overlapError">
+                    <div class="error-banner-icon">🚫</div>
+                    <div class="error-banner-text">
+                        <div class="error-banner-title">Period Overlap Detected</div>
+                        <div class="error-banner-subtitle">
+                            This period overlaps with "January 2026" (Jan 1 → Jan 31). Periods cannot overlap.
+                        </div>
+                    </div>
+                </div>
+
+                <form id="periodForm">
+                    <!-- Start Date -->
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Start Date</label>
+                        <input 
+                            type="date" 
+                            class="form-input" 
+                            id="startDate"
+                            value="2026-02-01"
+                            required
+                        >
+                        <div class="form-error" style="display: none;">
+                            <span>⚠️</span>
+                            <span>Start date is required</span>
+                        </div>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Duration</label>
+                        <div class="duration-group">
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                id="durationValue"
+                                value="1"
+                                min="1"
+                                required
+                                placeholder="Enter duration"
+                            >
+                            <select class="form-select" id="durationUnit">
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months" selected>Months</option>
+                            </select>
+                        </div>
+                        <div class="form-help">
+                            Months will use the same day next month (e.g., Jan 15 → Feb 15)
+                        </div>
+                    </div>
+
+                    <!-- End Date Options -->
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <div class="end-date-tabs">
+                            <button class="end-date-tab active" data-mode="duration" onclick="switchEndDateMode('duration')">
+                                By Duration
+                            </button>
+                            <button class="end-date-tab" data-mode="manual" onclick="switchEndDateMode('manual')">
+                                Set Manually
+                            </button>
+                        </div>
+
+                        <!-- Duration Mode (default) -->
+                        <div id="durationMode" class="end-date-content">
+                            <div class="preview-card">
+                                <div class="preview-label">Calculated End Date</div>
+                                <div class="preview-value" id="endDatePreview">Mar 1, 2026</div>
+                            </div>
+                        </div>
+
+                        <!-- Manual Mode -->
+                        <div id="manualMode" class="end-date-content" style="display: none;">
+                            <input 
+                                type="date" 
+                                class="form-input" 
+                                id="endDateManual"
+                                style="margin-top: var(--space-md);"
+                            >
+                            <div class="form-help">
+                                End date must be after start date
+                            </div>
+                            <div class="form-error" style="display: none;">
+                                <span>⚠️</span>
+                                <span>End date must be after start date</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Period Name (Optional) -->
+                    <div class="form-group">
+                        <label class="form-label">Period Name (Optional)</label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="periodName"
+                            placeholder="e.g., February 2026, Payday Period"
+                        >
+                        <div class="form-help">
+                            Display name for this period. Names don't need to be unique. Your category budgets will be copied from the previous period by default.
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary">
+                    Cancel
+                </button>
+                <button class="btn btn-primary">
+                    <span>✓</span>
+                    Create Period
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Switch between duration and manual end date modes
+        function switchEndDateMode(mode) {
+            // Update tabs
+            document.querySelectorAll('.end-date-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            
+            // Update content
+            if (mode === 'duration') {
+                document.getElementById('durationMode').style.display = 'block';
+                document.getElementById('manualMode').style.display = 'none';
+            } else {
+                document.getElementById('durationMode').style.display = 'none';
+                document.getElementById('manualMode').style.display = 'block';
+            }
+        }
+
+        // Calculate end date preview
+        function updateEndDatePreview() {
+            const startDate = document.getElementById('startDate').value;
+            const durationValue = parseInt(document.getElementById('durationValue').value);
+            const durationUnit = document.getElementById('durationUnit').value;
+            
+            if (!startDate || !durationValue) return;
+            
+            const start = new Date(startDate);
+            let end = new Date(start);
+            
+            switch(durationUnit) {
+                case 'days':
+                    end.setDate(end.getDate() + durationValue);
+                    break;
+                case 'weeks':
+                    end.setDate(end.getDate() + (durationValue * 7));
+                    break;
+                case 'months':
+                    end.setMonth(end.getMonth() + durationValue);
+                    break;
+            }
+            
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('endDatePreview').textContent = 
+                end.toLocaleDateString('en-US', options);
+        }
+
+        // Add event listeners
+        document.getElementById('startDate').addEventListener('change', updateEndDatePreview);
+        document.getElementById('durationValue').addEventListener('input', updateEndDatePreview);
+        document.getElementById('durationUnit').addEventListener('change', updateEndDatePreview);
+
+        // Initialize
+        updateEndDatePreview();
+    </script>
+</body>
+</html>

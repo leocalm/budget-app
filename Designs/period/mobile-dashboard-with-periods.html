@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget App - Mobile Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #121720;
+            --bg-card: #151b26;
+            --bg-elevated: #1e2433;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ffa3;
+            --accent-warning: #ffa940;
+            --accent-danger: #ff6b9d;
+            --accent-purple: #b47aff;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a6;
+            --text-tertiary: #5a6272;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--space-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-menu-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .mobile-period-chip {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--bg-card);
+            padding: 6px var(--space-sm);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-medium);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .mobile-period-chip.has-warning {
+            border-color: var(--accent-warning);
+        }
+
+        .period-warning-dot {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-warning);
+            border: 2px solid var(--bg-secondary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Content */
+        .content {
+            padding: var(--space-md);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-warning), var(--accent-danger));
+        }
+
+        .warning-content {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .warning-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .warning-text {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .warning-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .warning-button {
+            width: 100%;
+            padding: var(--space-sm);
+            background: var(--accent-warning);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Overlay Banner */
+        .overlay-banner {
+            background: linear-gradient(135deg, rgba(180, 122, 255, 0.12) 0%, rgba(0, 212, 255, 0.12) 100%);
+            border: 1px solid rgba(180, 122, 255, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .overlay-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .overlay-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .overlay-icon {
+            font-size: 18px;
+        }
+
+        .overlay-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .overlay-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .overlay-info {
+            margin-bottom: var(--space-md);
+        }
+
+        .overlay-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-xs);
+        }
+
+        .overlay-days {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .overlay-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .overlay-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary));
+            border-radius: 3px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+            opacity: 0;
+        }
+
+        .stat-card.featured {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-card.featured::before {
+            opacity: 1;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-sm);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card.featured .stat-value {
+            font-size: 36px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .stat-trend.negative {
+            color: var(--accent-danger);
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            padding: var(--space-sm) 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: var(--space-xs) var(--space-md);
+            color: var(--text-tertiary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -2px;
+            right: 2px;
+            background: var(--accent-danger);
+            color: var(--text-primary);
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 8px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        /* Bottom Sheet */
+        .bottom-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+        }
+
+        .bottom-sheet-overlay.open {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            max-height: 75vh;
+            overflow-y: auto;
+            z-index: 201;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+
+        .bottom-sheet-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-medium);
+            border-radius: 2px;
+            margin: var(--space-md) auto;
+        }
+
+        .bottom-sheet-content {
+            padding: 0 var(--space-md) var(--space-xl);
+        }
+
+        .period-picker-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .period-picker-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-list-item {
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: var(--space-sm);
+            cursor: pointer;
+        }
+
+        .period-list-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.08) 100%);
+            border-color: var(--accent-primary);
+        }
+
+        .period-list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xs);
+        }
+
+        .period-list-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .period-list-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .period-list-dates {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .period-list-meta {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .period-warning-card {
+            background: linear-gradient(135deg, rgba(255, 169, 64, 0.12) 0%, rgba(255, 107, 157, 0.12) 100%);
+            border: 1px solid var(--accent-warning);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-warning-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .period-warning-icon {
+            font-size: 16px;
+            color: var(--accent-warning);
+        }
+
+        .period-warning-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-warning);
+        }
+
+        .period-warning-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-warning-button {
+            width: 100%;
+            background: var(--accent-warning);
+            color: var(--bg-primary);
+            border: none;
+            padding: var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .period-picker-action {
+            width: 100%;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <button class="mobile-menu-btn">☰</button>
+        <div class="mobile-logo">
+            <div class="logo-icon">💰</div>
+            <div class="logo-text">BudgetApp</div>
+        </div>
+        <div class="mobile-period-chip has-warning" onclick="openPeriodPicker()">
+            <span>Feb 1-29</span>
+            <span>▼</span>
+            <div class="period-warning-dot"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1 class="page-title">Financial Dashboard</h1>
+
+        <!-- Warning Banner -->
+        <div class="warning-banner" style="display: none;">
+            <div class="warning-content">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-text">
+                    <div class="warning-title">You're in a gap</div>
+                    <div class="warning-subtitle">3 transactions aren't in any period</div>
+                </div>
+            </div>
+            <button class="warning-button">Fix This</button>
+        </div>
+
+        <!-- Overlay Banner -->
+        <div class="overlay-banner">
+            <div class="overlay-header">
+                <div class="overlay-title">
+                    <span class="overlay-icon">🏖️</span>
+                    <span class="overlay-name">Italy Trip</span>
+                </div>
+                <button class="overlay-close">✕</button>
+            </div>
+            <div class="overlay-info">
+                <div class="overlay-amount">€120 left</div>
+                <div class="overlay-days">3 days remaining</div>
+            </div>
+            <div class="overlay-progress-bar">
+                <div class="overlay-progress-fill" style="width: 65%"></div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card featured">
+                <div class="stat-label">
+                    <span class="stat-icon">💰</span>
+                    Remaining Budget
+                </div>
+                <div class="stat-value">€276.55</div>
+                <div class="stat-meta">
+                    <span class="stat-trend negative">12% ▼</span>
+                    <span>• €400.00 limit</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span class="stat-icon">🏦</span>
+                    Total Assets
+                </div>
+                <div class="stat-value">€876.55</div>
+                <div class="stat-meta">
+                    <span>8% ↑</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span class="stat-icon">📊</span>
+                    Avg. Daily Spend
+                </div>
+                <div class="stat-value">€13.72</div>
+                <div class="stat-meta">
+                    <span>Past 7 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">💳</span>
+            <span class="nav-label">Transactions</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Budget</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🏦</span>
+            <span class="nav-label">Accounts</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">⋯</span>
+            <span class="nav-label">More</span>
+            <span class="nav-badge">2</span>
+        </a>
+    </nav>
+
+    <!-- Bottom Sheet Overlay -->
+    <div class="bottom-sheet-overlay" id="bottomSheetOverlay" onclick="closePeriodPicker()"></div>
+
+    <!-- Period Picker Bottom Sheet -->
+    <div class="bottom-sheet" id="periodPicker">
+        <div class="bottom-sheet-handle"></div>
+        <div class="bottom-sheet-content">
+            <!-- Warning Card -->
+            <div class="period-warning-card">
+                <div class="period-warning-header">
+                    <span class="period-warning-icon">⚠️</span>
+                    <span class="period-warning-title">Gap Detected</span>
+                </div>
+                <p class="period-warning-text">
+                    You're in a gap. 3 transactions aren't in any period.
+                </p>
+                <button class="period-warning-button">Fix This</button>
+            </div>
+
+            <!-- Current Period -->
+            <div class="period-picker-section">
+                <div class="period-picker-title">Current Period</div>
+                <div class="period-list-item active">
+                    <div class="period-list-item-header">
+                        <span class="period-list-name">February 2026</span>
+                        <span class="period-list-badge">Current</span>
+                    </div>
+                    <div class="period-list-dates">Feb 1 → Feb 29 (28 days)</div>
+                    <div class="period-list-meta">21 days remaining • 12 transactions</div>
+                </div>
+            </div>
+
+            <!-- Next Period -->
+            <div class="period-picker-section">
+                <div class="period-picker-title">Next Period</div>
+                <div class="period-list-item">
+                    <div class="period-list-item-header">
+                        <span class="period-list-name">March 2026</span>
+                        <span class="period-list-badge">Auto</span>
+                    </div>
+                    <div class="period-list-dates">Mar 1 → Mar 31 (31 days)</div>
+                    <div class="period-list-meta">Starts in 21 days</div>
+                </div>
+            </div>
+
+            <!-- Previous Periods -->
+            <div class="period-picker-section">
+                <div class="period-picker-title">Previous Periods</div>
+                <div class="period-list-item">
+                    <div class="period-list-item-header">
+                        <span class="period-list-name">January 2026</span>
+                    </div>
+                    <div class="period-list-dates">Jan 1 → Jan 31 (31 days)</div>
+                    <div class="period-list-meta">45 transactions</div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button class="period-picker-action">
+                <span>⚙️</span>
+                Manage Periods
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function openPeriodPicker() {
+            document.getElementById('bottomSheetOverlay').classList.add('open');
+            document.getElementById('periodPicker').classList.add('open');
+        }
+
+        function closePeriodPicker() {
+            document.getElementById('bottomSheetOverlay').classList.remove('open');
+            document.getElementById('periodPicker').classList.remove('open');
+        }
+    </script>
+</body>
+</html>
