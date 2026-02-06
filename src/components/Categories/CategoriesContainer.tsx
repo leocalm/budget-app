@@ -3,42 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, SimpleGrid, Stack, Tabs } from '@mantine/core';
 import { EmptyState } from '@/components/Utils';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
+import { CategoryType } from '@/types/category';
 import { PageHeader } from '../Transactions/PageHeader';
 import { CategoryCard } from './CategoryCard';
 import styles from './Categories.module.css';
 
-type CategoryTypeFilter = 'all' | 'Incoming' | 'Outgoing' | 'Transfer';
+type CategoryTypeFilter = 'all' | CategoryType;
 
 export function CategoriesContainer() {
   const { t } = useTranslation();
   const { data: categories } = useCategories();
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const deleteMutation = useDeleteCategory();
-
-  // In a real app, we would fetch these stats or derive them from transactions
-  // For now, we'll generate some mock stats based on the category ID to be consistent
-  const getCategoryStats = (categoryId: string) => {
-    // Deterministic pseudo-random based on ID
-    const hash = categoryId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const monthlySpent = (hash % 500) * 100; // 0 - 500.00
-    const prevMonthSpent = ((hash + 1) % 450) * 100;
-
-    // Calculate trend
-    const diff = monthlySpent - prevMonthSpent;
-    const trend =
-      diff !== 0
-        ? {
-            direction: diff > 0 ? ('up' as const) : ('down' as const),
-            percentage: Math.abs(Math.round((diff / Math.max(prevMonthSpent, 1)) * 100)),
-          }
-        : undefined;
-
-    return {
-      monthlySpent,
-      transactionCount: hash % 20,
-      trend,
-    };
-  };
 
   const filteredCategories = useMemo(() => {
     if (!categories) {
@@ -128,14 +104,26 @@ export function CategoriesContainer() {
         ) : (
           <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
             {filteredCategories.map((category) => {
-              const stats = getCategoryStats(category.id);
+              // Calculate trend from differenceVsAveragePercentage
+              const trendPercentage = Math.abs(category.differenceVsAveragePercentage);
+              const trend =
+                trendPercentage > 0
+                  ? {
+                      direction:
+                        category.differenceVsAveragePercentage > 0
+                          ? ('up' as const)
+                          : ('down' as const),
+                      percentage: trendPercentage,
+                    }
+                  : undefined;
+
               return (
                 <CategoryCard
                   key={category.id}
                   category={category}
-                  monthlySpent={stats.monthlySpent}
-                  transactionCount={stats.transactionCount}
-                  trend={stats.trend}
+                  monthlySpent={category.usedInPeriod}
+                  transactionCount={category.transactionCount}
+                  trend={trend}
                   onEdit={() => {}} // Connect to edit modal
                   onDelete={onDeleteCategory}
                 />

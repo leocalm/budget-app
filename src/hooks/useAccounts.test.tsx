@@ -77,6 +77,9 @@ describe('useAccounts', () => {
       icon: '🏦',
       accountType: 'Checking',
       balance: 1200,
+    balancePerDay: [],
+    balanceChangeThisPeriod: 0,
+    transactionCount: 0,
       currency: {
         id: 'currency-1',
         name: 'USD',

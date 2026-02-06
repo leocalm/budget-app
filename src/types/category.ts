@@ -10,6 +10,18 @@ export interface CategoryResponse {
   categoryType: CategoryType;
 }
 
+export interface CategoryStats {
+  usedInPeriod: number;
+  differenceVsAveragePercentage: number;
+  transactionCount: number;
+}
+
+export interface CategoryWithStats extends CategoryResponse {
+  usedInPeriod: number;
+  differenceVsAveragePercentage: number;
+  transactionCount: number;
+}
+
 export interface CategoryRequest {
   name: string;
   color: string;

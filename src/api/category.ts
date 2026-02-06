@@ -1,8 +1,8 @@
-import { CategoryRequest, CategoryResponse } from '@/types/category';
+import { CategoryRequest, CategoryResponse, CategoryWithStats } from '@/types/category';
 import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
-export async function fetchCategories(): Promise<CategoryResponse[]> {
-  return apiGet<CategoryResponse[]>('/api/categories');
+export async function fetchCategories(): Promise<CategoryWithStats[]> {
+  return apiGet<CategoryWithStats[]>('/api/categories');
 }
 
 export async function fetchUnbudgetedCategories(): Promise<CategoryResponse[]> {

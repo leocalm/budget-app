@@ -36,6 +36,9 @@ const mockAccount: AccountResponse = {
   accountType: 'Checking',
   currency: mockCurrency,
   balance: 150000,
+    balancePerDay: [],
+    balanceChangeThisPeriod: 0,
+    transactionCount: 0,
 };
 
 const mockTransactions: TransactionResponse[] = [
@@ -128,6 +131,9 @@ const mockTransactions: TransactionResponse[] = [
       accountType: 'Savings',
       currency: mockCurrency,
       balance: 500000,
+    balancePerDay: [],
+    balanceChangeThisPeriod: 0,
+    transactionCount: 0,
     },
     toAccount: mockAccount,
     vendor: null,
