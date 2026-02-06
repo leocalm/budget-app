@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ActionIcon, Group, Loader, Paper, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { TransactionList } from '@/components/Transactions';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategories } from '@/hooks/useCategories';
 import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
 import { getIcon } from '@/utils/IconMap';
@@ -11,7 +12,9 @@ export function CategoryDetailPage() {
   const navigate = useNavigate();
   const deleteTransactionMutation = useDeleteTransaction();
 
-  const { data: categories, isLoading: isLoadingCategories } = useCategories();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+
+  const { data: categories, isLoading: isLoadingCategories } = useCategories(selectedPeriodId);
   const { data: transactions } = useTransactions(null);
 
   const category = useMemo(() => categories?.find((c) => c.id === id), [categories, id]);

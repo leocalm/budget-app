@@ -3,10 +3,11 @@ import { deleteAccount, fetchAccounts, updateAccount } from '@/api/account';
 import { AccountRequest } from '@/types/account';
 import { queryKeys } from './queryKeys';
 
-export const useAccounts = () => {
+export const useAccounts = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.accounts(),
-    queryFn: fetchAccounts,
+    queryFn: () => fetchAccounts(selectedPeriodId),
+    enabled: selectedPeriodId !== null,
   });
 };
 

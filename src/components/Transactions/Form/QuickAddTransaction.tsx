@@ -14,6 +14,7 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { UI } from '@/constants';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
@@ -48,10 +49,12 @@ export const QuickAddTransaction = ({
 
   const descriptionRef = useRef<HTMLInputElement>(null);
 
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+
   // Data fetching
-  const { data: accounts = [] } = useAccounts();
-  const { data: categories = [] } = useCategories();
-  const { data: vendors = [] } = useVendors();
+  const { data: accounts = [] } = useAccounts(selectedPeriodId);
+  const { data: categories = [] } = useCategories(selectedPeriodId);
+  const { data: vendors = [] } = useVendors(selectedPeriodId);
 
   // Mutations
   const { mutate: createTransaction, isPending } = useCreateTransactionFromRequest();

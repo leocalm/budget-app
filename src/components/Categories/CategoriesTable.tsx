@@ -14,6 +14,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { EmptyState, LoadingState } from '@/components/Utils';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
 import type { CategoryResponse } from '@/types/category';
 import { CategoryNameIcon } from './CategoryNameIcon';
@@ -21,7 +22,8 @@ import { EditCategoryForm } from './EditCategoryForm';
 
 export function CategoriesTable() {
   const { t } = useTranslation();
-  const { data: categories, isLoading } = useCategories();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+  const { data: categories, isLoading } = useCategories(selectedPeriodId);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const deleteMutation = useDeleteCategory();

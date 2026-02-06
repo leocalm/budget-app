@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Group, SimpleGrid, Stack, TextInput } from '@mantine/core';
 import { EmptyState, LoadingState } from '@/components/Utils';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useDeleteVendor, useVendors } from '@/hooks/useVendors';
 import { VendorWithStats } from '@/types/vendor';
 import { PageHeader } from '../Transactions/PageHeader';
@@ -15,7 +16,8 @@ type SortOrder = 'name' | 'usage' | 'recent';
 
 export function VendorsContainer() {
   const { t } = useTranslation();
-  const { data: vendors, isLoading } = useVendors();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+  const { data: vendors, isLoading } = useVendors(selectedPeriodId);
   const deleteMutation = useDeleteVendor();
   const navigate = useNavigate();
 
