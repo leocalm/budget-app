@@ -5,7 +5,7 @@
 
 export const queryKeys = {
   // Vendors
-  vendors: () => ['vendors'] as const,
+  vendors: (periodId?: string | null) => ['vendors', periodId] as const,
   vendor: (id: string) => ['vendor', id] as const,
 
   // Transactions
@@ -13,7 +13,7 @@ export const queryKeys = {
   transaction: (id: string) => ['transaction', id] as const,
 
   // Categories
-  categories: () => ['categories'] as const,
+  categories: (periodId?: string | null) => ['categories', periodId] as const,
   category: (id: string) => ['category', id] as const,
   budgetedCategories: () => ['budgetedCategories'] as const,
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,

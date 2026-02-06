@@ -1,9 +1,11 @@
 import React from 'react';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
 import { AccountsTableView } from './AccountsTableView';
 
 export function AccountsTable() {
-  const { data: accounts, isLoading } = useAccounts();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+  const { data: accounts, isLoading } = useAccounts(selectedPeriodId);
   const deleteMutation = useDeleteAccount();
 
   return (

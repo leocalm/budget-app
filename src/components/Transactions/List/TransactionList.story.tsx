@@ -24,6 +24,9 @@ const mockAccount: AccountResponse = {
   accountType: 'Checking',
   currency: { id: '1', name: 'Euro', symbol: '€', currency: 'EUR', decimalPlaces: 2 },
   balance: 150000,
+  balancePerDay: [],
+  balanceChangeThisPeriod: 0,
+  transactionCount: 0,
 };
 
 const mockCategory: CategoryResponse = {

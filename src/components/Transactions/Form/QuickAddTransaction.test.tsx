@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
+import { BudgetProvider } from '@/context/BudgetContext';
 import { QuickAddTransaction } from './QuickAddTransaction'; // Mock hooks
 
 // Mock hooks
@@ -101,7 +102,9 @@ const renderComponent = (props = {}) => {
   return render(
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
-        <QuickAddTransaction {...props} />
+        <BudgetProvider>
+          <QuickAddTransaction {...props} />
+        </BudgetProvider>
       </MantineProvider>
     </QueryClientProvider>
   );

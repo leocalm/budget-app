@@ -12,9 +12,10 @@ export const useCreateVendor = () => {
   });
 };
 
-export const useVendors = () => {
+export const useVendors = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: queryKeys.vendors(),
-    queryFn: fetchVendors,
+    queryKey: queryKeys.vendors(selectedPeriodId),
+    queryFn: () => fetchVendors(selectedPeriodId),
+    enabled: selectedPeriodId !== null,
   });
 };

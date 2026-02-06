@@ -7,18 +7,11 @@ import type { AccountResponse } from '@/types/account';
 import { AccountCard } from './AccountCard';
 import { EditAccountForm } from './EditAccountForm';
 
-export interface AccountStats {
-  balanceHistory: { date: string; balance: number }[];
-  monthlySpent: number;
-  transactionCount: number;
-}
-
 interface AccountsTableViewProps {
   accounts: AccountResponse[] | undefined;
   isLoading: boolean;
   onDelete: (id: string) => void;
   onAccountUpdated: () => void;
-  accountStats?: Record<string, AccountStats>;
   onViewDetails?: (account: AccountResponse) => void;
   onAddAccount?: () => void;
 }
@@ -28,7 +21,6 @@ export function AccountsTableView({
   isLoading,
   onDelete,
   onAccountUpdated,
-  accountStats = {},
   onViewDetails,
   onAddAccount,
 }: AccountsTableViewProps) {
@@ -64,28 +56,21 @@ export function AccountsTableView({
   return (
     <>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
-        {accounts?.map((account) => {
-          const stats = accountStats[account.id] || {
-            balanceHistory: [],
-            monthlySpent: 0,
-            transactionCount: 0,
-          };
-          return (
-            <AccountCard
-              key={account.id}
-              account={account}
-              balanceHistory={stats.balanceHistory}
-              monthlySpent={stats.monthlySpent}
-              transactionCount={stats.transactionCount}
-              onEdit={(acc) => {
-                setSelected(acc);
-                openEdit();
-              }}
-              onDelete={() => onDelete(account.id)}
-              onViewDetails={() => onViewDetails?.(account)}
-            />
-          );
-        })}
+        {accounts?.map((account) => (
+          <AccountCard
+            key={account.id}
+            account={account}
+            balanceHistory={account.balancePerDay}
+            monthlySpent={account.balanceChangeThisPeriod}
+            transactionCount={account.transactionCount}
+            onEdit={(acc) => {
+              setSelected(acc);
+              openEdit();
+            }}
+            onDelete={() => onDelete(account.id)}
+            onViewDetails={() => onViewDetails?.(account)}
+          />
+        ))}
       </SimpleGrid>
       {isMobile ? (
         <Drawer opened={editOpened} onClose={closeEdit} title="Edit Account" position="bottom">

@@ -9,6 +9,9 @@ export const mockAccounts: AccountResponse[] = [
     name: 'Checking',
     accountType: 'Checking',
     balance: 0,
+    balancePerDay: [],
+    balanceChangeThisPeriod: 0,
+    transactionCount: 0,
     color: 'blue',
     icon: 'wallet',
     currency: {
@@ -25,6 +28,9 @@ export const mockAccounts: AccountResponse[] = [
     name: 'Savings',
     accountType: 'Savings',
     balance: 0,
+    balancePerDay: [],
+    balanceChangeThisPeriod: 0,
+    transactionCount: 0,
     color: 'teal',
     icon: 'pig',
     currency: {

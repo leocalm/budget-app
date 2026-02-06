@@ -45,7 +45,7 @@ describe('useAccounts', () => {
     const { wrapper } = createWrapper();
     mockFetchAccounts.mockResolvedValue([]);
 
-    const { result } = renderHook(() => useAccounts(), { wrapper });
+    const { result } = renderHook(() => useAccounts('period-1'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -77,6 +77,9 @@ describe('useAccounts', () => {
       icon: '🏦',
       accountType: 'Checking',
       balance: 1200,
+      balancePerDay: [],
+      balanceChangeThisPeriod: 0,
+      transactionCount: 0,
       currency: {
         id: 'currency-1',
         name: 'USD',

@@ -2,16 +2,18 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
 import { PageHeader } from '../Transactions/PageHeader';
 import { AccountsSummary } from './AccountsSummary';
-import { AccountsTableView, AccountStats } from './AccountsTableView';
+import { AccountsTableView } from './AccountsTableView';
 import { CreateAccountForm } from './CreateAccountForm';
 import styles from './Accounts.module.css';
 
 export function AccountsContainer() {
   const navigate = useNavigate();
-  const { data: accounts, isLoading } = useAccounts();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
+  const { data: accounts, isLoading } = useAccounts(selectedPeriodId);
   const deleteMutation = useDeleteAccount();
   const [createOpened, { toggle: toggleCreate, close: closeCreate }] = useDisclosure(false);
 
@@ -34,31 +36,6 @@ export function AccountsContainer() {
       },
       { totalAssets: 0, totalLiabilities: 0, netWorth: 0 }
     );
-  }, [accounts]);
-
-  // Mock Stats for individual cards (since we don't have the history endpoint connected yet)
-  const accountStats = useMemo(() => {
-    if (!accounts) {
-      return {};
-    }
-    const stats: Record<string, AccountStats> = {};
-
-    accounts.forEach((acc) => {
-      stats[acc.id] = {
-        balanceHistory: [
-          { date: '2024-01-01', balance: acc.balance * 0.9 },
-          { date: '2024-01-05', balance: acc.balance * 0.92 },
-          { date: '2024-01-10', balance: acc.balance * 0.94 },
-          { date: '2024-01-15', balance: acc.balance * 0.95 },
-          { date: '2024-01-20', balance: acc.balance * 0.97 },
-          { date: '2024-01-25', balance: acc.balance * 0.99 },
-          { date: '2024-01-30', balance: acc.balance },
-        ],
-        monthlySpent: 0,
-        transactionCount: 0,
-      };
-    });
-    return stats;
   }, [accounts]);
 
   const accountCount = accounts?.length ?? 0;
@@ -133,7 +110,6 @@ export function AccountsContainer() {
           isLoading={isLoading}
           onDelete={(id) => deleteMutation.mutate(id)}
           onAccountUpdated={() => {}}
-          accountStats={accountStats}
           onViewDetails={(account) => navigate(`/accounts/${account.id}`)}
         />
       </Stack>

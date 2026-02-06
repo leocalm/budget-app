@@ -16,10 +16,11 @@ import { BudgetCategoryRequest } from '@/types/budget';
 import { CategoryRequest } from '@/types/category';
 import { queryKeys } from './queryKeys';
 
-export const useCategories = () => {
+export const useCategories = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: queryKeys.categories(),
-    queryFn: fetchCategories,
+    queryKey: queryKeys.categories(selectedPeriodId),
+    queryFn: () => fetchCategories(selectedPeriodId),
+    enabled: selectedPeriodId !== null,
   });
 };
 

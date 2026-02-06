@@ -9,6 +9,11 @@ export interface CurrencyResponse {
   decimalPlaces: number;
 }
 
+export interface BalancePerDay {
+  date: string;
+  balance: number;
+}
+
 export interface AccountResponse {
   id: string;
   name: string;
@@ -18,6 +23,9 @@ export interface AccountResponse {
   currency: CurrencyResponse;
   balance: number;
   spendLimit?: number;
+  balancePerDay: BalancePerDay[];
+  balanceChangeThisPeriod: number;
+  transactionCount: number;
 }
 
 export interface AccountRequest {

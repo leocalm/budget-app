@@ -1,8 +1,9 @@
 import { Vendor, VendorInput, VendorWithStats } from '@/types/vendor';
 import { apiDelete, apiGet, apiPost, apiPut } from './client';
 
-export async function fetchVendors(): Promise<VendorWithStats[]> {
-  return apiGet<VendorWithStats[]>('/api/vendors');
+export async function fetchVendors(periodId?: string | null): Promise<VendorWithStats[]> {
+  const url = periodId ? `/api/vendors?period_id=${encodeURIComponent(periodId)}` : '/api/vendors';
+  return apiGet<VendorWithStats[]>(url);
 }
 
 export async function createVendor(payload: VendorInput): Promise<Vendor> {

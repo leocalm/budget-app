@@ -93,6 +93,9 @@ describe('useTransactions', () => {
           color: '#111111',
           accountType: 'Checking',
           balance: 1000,
+          balancePerDay: [],
+          balanceChangeThisPeriod: 0,
+          transactionCount: 0,
           currency: {
             id: 'cur-1',
             name: 'US Dollar',
@@ -154,6 +157,9 @@ describe('useTransactions', () => {
         color: '#111111',
         accountType: 'Checking',
         balance: 1000,
+        balancePerDay: [],
+        balanceChangeThisPeriod: 0,
+        transactionCount: 0,
         currency: {
           id: 'cur-1',
           name: 'US Dollar',
@@ -207,6 +213,9 @@ describe('useTransactions', () => {
         color: '#222222',
         accountType: 'Savings',
         balance: 5000,
+        balancePerDay: [],
+        balanceChangeThisPeriod: 0,
+        transactionCount: 0,
         currency: {
           id: 'cur-1',
           name: 'US Dollar',
@@ -260,6 +269,9 @@ describe('useTransactions', () => {
         color: '#333333',
         accountType: 'Wallet',
         balance: 200,
+        balancePerDay: [],
+        balanceChangeThisPeriod: 0,
+        transactionCount: 0,
         currency: {
           id: 'cur-1',
           name: 'US Dollar',
