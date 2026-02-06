@@ -116,6 +116,7 @@ export function CategoriesContainer() {
         {/* Categories Grid */}
         {filteredCategories.length === 0 ? (
           <EmptyState
+            variant="compact"
             icon="📁"
             title={t('states.empty.categories.title')}
             message={t('states.empty.categories.message')}
