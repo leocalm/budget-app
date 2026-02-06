@@ -1,0 +1,33 @@
+# Caddyfile - Reverse proxy configuration
+
+{
+    # Global options
+    admin off
+    auto_https off
+}
+
+:80 {
+    # Handle API requests - proxy to backend
+    handle /api/* {
+        reverse_proxy backend:8000 {
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Real-IP {remote_host}
+        }
+    }
+
+    # Health check endpoint
+    handle /health {
+        respond "OK" 200
+    }
+
+    # Serve frontend for all other requests
+    handle {
+        reverse_proxy frontend:80
+    }
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}
