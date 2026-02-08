@@ -3,15 +3,17 @@
 {
     # Global options
     admin off
-    auto_https off
+    # auto_https is enabled by default when using domain names
 }
 
-:80 {
+# HTTPS server block - primary access point
+https://localhost:443, https://127.0.0.1:443, https://192.168.1.34:443 {
     # Handle API requests - proxy to backend
     handle /api/* {
         reverse_proxy backend:8000 {
             header_up X-Forwarded-For {remote_host}
             header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-Proto {scheme}
         }
     }
 
@@ -24,6 +26,21 @@
     handle {
         reverse_proxy frontend:80
     }
+
+    # Use Caddy's internal CA for development certificates
+    tls internal
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}
+
+# HTTP server block - redirect to HTTPS
+http://localhost:80, http://127.0.0.1:80, http://192.168.1.34:80 {
+    # Redirect all HTTP traffic to HTTPS
+    redir https://{host}{uri} permanent
 
     # Logging
     log {

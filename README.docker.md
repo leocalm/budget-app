@@ -52,9 +52,75 @@ This directory contains Docker configuration for running the complete Budget app
    ```
 
 4. **Access the application:**
-   - Application: http://localhost
-   - API: http://localhost/api/v1
-   - Health check: http://localhost/health
+   - Application: https://localhost (accepts self-signed cert on first visit)
+   - API: https://localhost/api/v1
+   - Health check: https://localhost/health
+   - Note: HTTP URLs redirect to HTTPS automatically
+
+## HTTPS Setup
+
+The application uses HTTPS by default with self-signed certificates for local development.
+
+### First-Time Access
+
+On first visit to https://localhost, your browser will show a certificate warning. This is expected and safe for local development.
+
+**To proceed:**
+- **Chrome/Edge**: Click "Advanced" → "Proceed to localhost (unsafe)"
+- **Firefox**: Click "Advanced" → "Accept the Risk and Continue"
+- **Safari**: Click "Show Details" → "visit this website"
+
+### Access URLs
+
+After accepting the certificate:
+- Application: https://localhost
+- API: https://localhost/api/v1
+- Health check: https://localhost/health
+- Local network: https://192.168.1.34
+
+HTTP access on port 80 automatically redirects to HTTPS.
+
+### Optional: Trust Caddy's Certificate (Eliminate Browser Warnings)
+
+To eliminate browser warnings, trust Caddy's root CA certificate:
+
+```bash
+# 1. Start the stack first
+docker compose up -d
+
+# 2. Wait for Caddy to generate certificates
+sleep 5
+
+# 3. Extract Caddy's root CA certificate
+docker compose cp caddy:/data/caddy/pki/authorities/local/root.crt ./caddy-root-ca.crt
+
+# 4. Trust the certificate on your system
+
+# macOS:
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./caddy-root-ca.crt
+
+# Linux:
+sudo cp ./caddy-root-ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+
+# Windows (PowerShell as Administrator):
+Import-Certificate -FilePath .\caddy-root-ca.crt -CertStoreLocation Cert:\LocalMachine\Root
+
+# 5. Restart your browser
+
+# 6. Clean up
+rm ./caddy-root-ca.crt
+```
+
+### Disable HTTPS (If Needed)
+
+If you need to revert to HTTP only:
+
+1. Edit `Caddyfile` - add `auto_https off` in global options and change `:443` to `:80`
+2. Edit `docker-compose.yaml`:
+   - Change CORS origins from `https://` to `http://`
+   - Change `BUDGET_SESSION__COOKIE_SECURE: "false"`
+3. Restart: `docker compose down && docker compose up -d`
 
 ## Development with Debug Tools
 
