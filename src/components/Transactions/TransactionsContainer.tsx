@@ -16,7 +16,7 @@ import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
 import { formatDateForApi } from '@/utils/date';
 import { EditFormValues, EditTransactionForm, QuickAddTransaction } from './Form';
-import { ExportButton, PageHeader } from './PageHeader';
+import { PageHeader } from './PageHeader';
 import { TransactionStats } from './Stats';
 import { TransactionFilters, TransactionsSection, TransactionTypeFilter } from './Table';
 
@@ -154,11 +154,6 @@ export function TransactionsContainer() {
     }
   };
 
-  // Handle export
-  const handleExport = () => {
-    // TODO: Implement export functionality
-  };
-
   // Get period display name
   const periodName = useMemo(() => {
     if (!selectedPeriod?.startDate) {
@@ -180,7 +175,6 @@ export function TransactionsContainer() {
       <PageHeader
         title={t('transactions.container.title')}
         subtitle={t('transactions.container.subtitle')}
-        actions={<ExportButton onClick={handleExport} />}
       />
 
       {/* Quick Add Transaction Form */}

@@ -3,7 +3,7 @@ export { Transactions } from './Transactions';
 export { TransactionsContainer } from './TransactionsContainer';
 
 // Page Header
-export { PageHeader, ExportButton, type PageHeaderProps } from './PageHeader';
+export { PageHeader, type PageHeaderProps } from './PageHeader';
 
 // Table components
 export {

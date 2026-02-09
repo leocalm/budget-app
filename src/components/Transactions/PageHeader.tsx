@@ -1,6 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Box, Button, Text, Title } from '@mantine/core';
+import { Box, Text, Title } from '@mantine/core';
 import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 
 export interface PageHeaderProps {
@@ -65,35 +64,5 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
         </Box>
       </Box>
     </Box>
-  );
-};
-
-// Export button component for use in header
-export const ExportButton = ({ onClick }: { onClick?: () => void }) => {
-  const { t } = useTranslation();
-  return (
-    <Button
-      variant="default"
-      onClick={onClick}
-      leftSection={<span>📊</span>}
-      styles={{
-        root: {
-          padding: '12px 24px',
-          borderRadius: '12px',
-          fontSize: '14px',
-          fontWeight: 600,
-          background: '#151b26',
-          color: '#ffffff',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          transition: 'all 0.2s ease',
-          '&:hover': {
-            borderColor: '#00d4ff',
-            background: '#1e2433',
-          },
-        },
-      }}
-    >
-      {t('transactions.pageHeader.export')}
-    </Button>
   );
 };

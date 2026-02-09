@@ -187,9 +187,6 @@
         "load": "Error loading transactions"
       }
     },
-    "pageHeader": {
-      "export": "Export"
-    },
     "container": {
       "confirmDelete": "Are you sure you want to delete this transaction?",
       "thisPeriod": "this period",
