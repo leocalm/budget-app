@@ -7,7 +7,7 @@ export const useCreateVendor = () => {
   return useMutation({
     mutationFn: createVendor,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
     },
   });
 };
