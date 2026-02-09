@@ -12,7 +12,6 @@ import {
   SegmentedControl,
   Select,
   Stack,
-  Switch,
   Text,
   TextInput,
 } from '@mantine/core';
@@ -37,7 +36,6 @@ interface FormValues {
   endDateMode: 'duration' | 'manual';
   manualEndDate: string;
   name: string;
-  copyBudgetsFromPrevious: boolean;
 }
 
 const getDefaultValues = (
@@ -52,7 +50,6 @@ const getDefaultValues = (
       endDateMode: 'manual',
       manualEndDate: period.endDate,
       name: period.name,
-      copyBudgetsFromPrevious: true,
     };
   }
 
@@ -68,7 +65,6 @@ const getDefaultValues = (
       endDateMode: suggestedRange.endDate ? 'manual' : 'duration',
       manualEndDate: suggestedRange.endDate || '',
       name: '',
-      copyBudgetsFromPrevious: true,
     };
   }
 
@@ -79,7 +75,6 @@ const getDefaultValues = (
     endDateMode: 'duration',
     manualEndDate: '',
     name: '',
-    copyBudgetsFromPrevious: true,
   };
 };
 
@@ -195,7 +190,6 @@ export function PeriodFormModal({
       name: values.name.trim() || fallbackName,
       startDate: values.startDate,
       endDate: selectedEndDate,
-      copyBudgetsFromPrevious: values.copyBudgetsFromPrevious,
     };
 
     try {
@@ -315,18 +309,6 @@ export function PeriodFormModal({
           const name = event.currentTarget.value;
           setValues((current) => ({ ...current, name }));
         }}
-      />
-
-      <Switch
-        checked={values.copyBudgetsFromPrevious}
-        onChange={(event) => {
-          const copyBudgetsFromPrevious = event.currentTarget.checked;
-          setValues((current) => ({
-            ...current,
-            copyBudgetsFromPrevious,
-          }));
-        }}
-        label={t('periods.modal.copyBudgets')}
       />
 
       <Group justify="flex-end" mt="sm">
