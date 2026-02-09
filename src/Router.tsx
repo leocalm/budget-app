@@ -57,6 +57,11 @@ const OverlaysPage = lazy(() =>
     default: module.OverlaysPage,
   }))
 );
+const OverlayDetailPage = lazy(() =>
+  import('./components/Overlays/OverlayDetailPage').then((module) => ({
+    default: module.OverlayDetailPage,
+  }))
+);
 const ReportsPage = lazy(() =>
   import('./components/Reports/ReportsPage').then((module) => ({
     default: module.ReportsPage,
@@ -135,6 +140,7 @@ export function Router() {
         { path: 'budget', element: withPageLoader(<Budget />) },
         { path: 'periods', element: withPageLoader(<PeriodsPage />) },
         { path: 'overlays', element: withPageLoader(<OverlaysPage />) },
+        { path: 'overlays/:id', element: withPageLoader(<OverlayDetailPage />) },
         // Placeholders for other routes
         { path: 'reports', element: withPageLoader(<ReportsPage />) },
         { path: 'goals', element: <div>{t('router.goals')}</div> },

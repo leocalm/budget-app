@@ -534,6 +534,38 @@
         "categoryCapPositive": "All category caps must be greater than zero.",
         "saveFailed": "Failed to save overlay."
       }
+    },
+    "detail": {
+      "notFound": "Overlay not found.",
+      "backToList": "Back to overlays",
+      "daysRemaining_one": "{{count}} day left",
+      "daysRemaining_other": "{{count}} days left",
+      "spendSummary": "Spending summary",
+      "noCap": "No cap configured",
+      "remaining": "{{amount}} remaining",
+      "overBy": "{{amount}} over cap",
+      "notifications": {
+        "included": "Transaction included in overlay",
+        "excluded": "Transaction excluded from overlay",
+        "actionFailed": "Failed to update overlay transaction membership"
+      },
+      "transactions": {
+        "title": "Transactions",
+        "count_one": "{{count}} transaction",
+        "count_other": "{{count}} transactions",
+        "empty": "No transactions found for this overlay.",
+        "date": "Date",
+        "description": "Description",
+        "membership": "Membership",
+        "amount": "Amount",
+        "action": "Action",
+        "notIncluded": "Not included",
+        "autoIncludedRules": "Auto included (rules)",
+        "autoIncludedAll": "Auto included (all)",
+        "manuallyIncluded": "Manually included",
+        "include": "Include",
+        "exclude": "Exclude"
+      }
     }
   },
   "router": {

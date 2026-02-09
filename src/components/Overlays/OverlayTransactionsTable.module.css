@@ -1,0 +1,12 @@
+.root {
+  max-height: 520px;
+}
+
+.amountCell {
+  justify-content: flex-end;
+}
+
+.amountValue {
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 700;
+}

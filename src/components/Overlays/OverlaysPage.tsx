@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { IconChevronDown, IconChevronUp, IconPlus, IconTargetArrow } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   ActionIcon,
   Badge,
@@ -30,6 +31,7 @@ const sortByStartDateDesc = (left: Overlay, right: Overlay) =>
 
 export function OverlaysPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: overlays = [], isLoading } = useOverlays();
   const { data: categories = [] } = useCategories(selectedPeriodId);
@@ -109,13 +111,7 @@ export function OverlaysPage() {
     }
   };
 
-  const showDetailNotReady = () => {
-    notifications.show({
-      color: 'blue',
-      title: t('common.info'),
-      message: t('overlays.detailComingSoon'),
-    });
-  };
+  const openDetailPage = (overlay: Overlay) => navigate(`/overlays/${overlay.id}`);
 
   if (isLoading) {
     return (
@@ -164,7 +160,7 @@ export function OverlaysPage() {
                     status="active"
                     onEdit={openEditModal}
                     onDelete={handleDelete}
-                    onView={showDetailNotReady}
+                    onView={openDetailPage}
                   />
                 ))
               ) : (
@@ -190,7 +186,7 @@ export function OverlaysPage() {
                     status="upcoming"
                     onEdit={openEditModal}
                     onDelete={handleDelete}
-                    onView={showDetailNotReady}
+                    onView={openDetailPage}
                   />
                 ))
               ) : (
@@ -227,7 +223,7 @@ export function OverlaysPage() {
                       status="past"
                       onEdit={openEditModal}
                       onDelete={handleDelete}
-                      onView={showDetailNotReady}
+                      onView={openDetailPage}
                     />
                   ))
                 ) : (

@@ -369,6 +369,38 @@
         "categoryCapPositive": "Todos os limites por categoria devem ser maiores que zero.",
         "saveFailed": "Falha ao salvar overlay."
       }
+    },
+    "detail": {
+      "notFound": "Overlay não encontrado.",
+      "backToList": "Voltar para overlays",
+      "daysRemaining_one": "{{count}} dia restante",
+      "daysRemaining_other": "{{count}} dias restantes",
+      "spendSummary": "Resumo de gastos",
+      "noCap": "Sem limite definido",
+      "remaining": "{{amount}} restante",
+      "overBy": "{{amount}} acima do limite",
+      "notifications": {
+        "included": "Transação incluída no overlay",
+        "excluded": "Transação excluída do overlay",
+        "actionFailed": "Falha ao atualizar o vínculo da transação com o overlay"
+      },
+      "transactions": {
+        "title": "Transações",
+        "count_one": "{{count}} transação",
+        "count_other": "{{count}} transações",
+        "empty": "Nenhuma transação encontrada para este overlay.",
+        "date": "Data",
+        "description": "Descrição",
+        "membership": "Vínculo",
+        "amount": "Valor",
+        "action": "Ação",
+        "notIncluded": "Não incluída",
+        "autoIncludedRules": "Incluída automaticamente (regras)",
+        "autoIncludedAll": "Incluída automaticamente (tudo)",
+        "manuallyIncluded": "Incluída manualmente",
+        "include": "Incluir",
+        "exclude": "Excluir"
+      }
     }
   },
   "router": {

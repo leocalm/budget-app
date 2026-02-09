@@ -1,7 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { OverlayRequest } from '@/types/overlay';
 import { apiDelete, apiGet, apiPost, apiPut } from './client';
-import { createOverlay, deleteOverlay, fetchOverlays, updateOverlay } from './overlay';
+import {
+  createOverlay,
+  deleteOverlay,
+  excludeOverlayTransaction,
+  fetchOverlay,
+  fetchOverlays,
+  fetchOverlayTransactions,
+  includeOverlayTransaction,
+  updateOverlay,
+} from './overlay';
 
 vi.mock('./client', () => ({
   apiPost: vi.fn(),
@@ -54,6 +63,48 @@ describe('overlay api', () => {
     expect(apiPost).toHaveBeenCalledWith('/api/overlays', payload);
   });
 
+  it('fetches overlay by id via /api/overlays/:id', async () => {
+    const response = {
+      id: 'overlay-1',
+      name: 'Italy Trip',
+      startDate: '2026-08-10',
+      endDate: '2026-08-20',
+      inclusionMode: 'manual' as const,
+    };
+
+    vi.mocked(apiGet).mockResolvedValueOnce(response);
+
+    await expect(fetchOverlay('overlay-1')).resolves.toEqual(response);
+    expect(apiGet).toHaveBeenCalledWith('/api/overlays/overlay-1');
+  });
+
+  it('fetches overlay transactions by overlay id', async () => {
+    const response = [
+      {
+        id: 'tx-1',
+        description: 'Flight',
+        amount: 12000,
+        occurredAt: '2026-08-11',
+        category: {
+          id: 'cat-1',
+          name: 'Travel',
+          color: '#00d4ff',
+          icon: '✈️',
+          categoryType: 'Outgoing' as const,
+        },
+        fromAccount: { id: 'acc-1', name: 'Main', color: '#00d4ff', icon: '💳' },
+        toAccount: null,
+        vendor: null,
+        membership: { isIncluded: true, inclusionSource: 'manual' as const },
+      },
+    ];
+
+    vi.mocked(apiGet).mockResolvedValueOnce(response);
+
+    await expect(fetchOverlayTransactions('overlay-1')).resolves.toEqual(response);
+    expect(apiGet).toHaveBeenCalledWith('/api/overlays/overlay-1/transactions');
+  });
+
   it('updates an overlay by id', async () => {
     const payload: OverlayRequest = {
       name: 'Updated Overlay',
@@ -78,5 +129,21 @@ describe('overlay api', () => {
     await deleteOverlay('overlay-1');
 
     expect(apiDelete).toHaveBeenCalledWith('/api/overlays/overlay-1');
+  });
+
+  it('includes a transaction in an overlay', async () => {
+    vi.mocked(apiPost).mockResolvedValueOnce(undefined);
+
+    await includeOverlayTransaction('overlay-1', 'tx-1');
+
+    expect(apiPost).toHaveBeenCalledWith('/api/overlays/overlay-1/transactions/tx-1/include', {});
+  });
+
+  it('excludes a transaction from an overlay', async () => {
+    vi.mocked(apiDelete).mockResolvedValueOnce(undefined);
+
+    await excludeOverlayTransaction('overlay-1', 'tx-1');
+
+    expect(apiDelete).toHaveBeenCalledWith('/api/overlays/overlay-1/transactions/tx-1/exclude');
   });
 });

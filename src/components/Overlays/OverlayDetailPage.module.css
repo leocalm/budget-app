@@ -1,0 +1,23 @@
+.pageRoot {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.backButton {
+  align-self: flex-start;
+  padding-left: 0;
+}
+
+.title {
+  line-height: 1.2;
+}
+
+.moneyValue {
+  font-family: var(--mantine-font-family-monospace);
+}

@@ -37,6 +37,7 @@ export const queryKeys = {
   overlays: {
     list: () => ['overlays', 'list'] as const,
     detail: (id: string) => ['overlays', 'detail', id] as const,
+    transactions: (id: string) => ['overlays', 'transactions', id] as const,
   },
 
   // Dashboard

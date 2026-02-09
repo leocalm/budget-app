@@ -1,6 +1,15 @@
 import dayjs from 'dayjs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createOverlay, deleteOverlay, fetchOverlays, updateOverlay } from '@/api/overlay';
+import {
+  createOverlay,
+  deleteOverlay,
+  excludeOverlayTransaction,
+  fetchOverlay,
+  fetchOverlays,
+  fetchOverlayTransactions,
+  includeOverlayTransaction,
+  updateOverlay,
+} from '@/api/overlay';
 import { Overlay, OverlayRequest } from '@/types/overlay';
 import { queryKeys } from './queryKeys';
 
@@ -23,6 +32,24 @@ export const useActiveOverlays = () => {
     queryKey: queryKeys.overlays.list(),
     queryFn: fetchOverlays,
     select: (overlays) => overlays.filter((overlay) => isOverlayActive(overlay)),
+  });
+};
+
+export const useOverlay = (overlayId: string | null) => {
+  return useQuery({
+    queryKey: overlayId ? queryKeys.overlays.detail(overlayId) : ['overlays', 'detail', null],
+    queryFn: () => fetchOverlay(overlayId!),
+    enabled: Boolean(overlayId),
+  });
+};
+
+export const useOverlayTransactions = (overlayId: string | null) => {
+  return useQuery({
+    queryKey: overlayId
+      ? queryKeys.overlays.transactions(overlayId)
+      : ['overlays', 'transactions', null],
+    queryFn: () => fetchOverlayTransactions(overlayId!),
+    enabled: Boolean(overlayId),
   });
 };
 
@@ -57,6 +84,38 @@ export const useDeleteOverlay = () => {
     mutationFn: (id: string) => deleteOverlay(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+    },
+  });
+};
+
+export const useIncludeOverlayTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ overlayId, transactionId }: { overlayId: string; transactionId: string }) =>
+      includeOverlayTransaction(overlayId, transactionId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.detail(variables.overlayId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.overlays.transactions(variables.overlayId),
+      });
+    },
+  });
+};
+
+export const useExcludeOverlayTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ overlayId, transactionId }: { overlayId: string; transactionId: string }) =>
+      excludeOverlayTransaction(overlayId, transactionId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.detail(variables.overlayId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.overlays.transactions(variables.overlayId),
+      });
     },
   });
 };
