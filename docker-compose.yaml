@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,13 +27,14 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres:${DB_PASSWORD:-example}@db:5432/budget_db
-      BUDGET__DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db:5432/budget_db
-      BUDGET__DATABASE__MAX_CONNECTIONS: 10
-      BUDGET__DATABASE__MIN_CONNECTIONS: 1
-      BUDGET__DATABASE__CONNECTION_TIMEOUT: 120
-      BUDGET__DATABASE__ACQUIRE_TIMEOUT: 120
-      BUDGET__SERVER__ADDRESS: 0.0.0.0
-      BUDGET__SERVER__PORT: 8000
+      BUDGET_DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db:5432/budget_db
+      BUDGET_DATABASE__MAX_CONNECTIONS: 10
+      BUDGET_DATABASE__MIN_CONNECTIONS: 1
+      BUDGET_DATABASE__CONNECTION_TIMEOUT: 120
+      BUDGET_DATABASE__ACQUIRE_TIMEOUT: 120
+      BUDGET_SERVER__ADDRESS: 0.0.0.0
+      BUDGET_SERVER__PORT: 8000
+      BUDGET_API__EXPOSE_DOCS: true
       BUDGET_CORS__ALLOWED_ORIGINS: '["https://localhost", "https://127.0.0.1", "https://192.168.1.34"]'
       BUDGET_CORS__ALLOW_CREDENTIALS: "true"
       BUDGET_RATE_LIMIT__USE_FORWARDED_IP: "true"
@@ -47,7 +48,7 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -63,7 +64,7 @@ services:
     container_name: budget-frontend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -87,7 +88,7 @@ services:
       - frontend
       - backend
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
