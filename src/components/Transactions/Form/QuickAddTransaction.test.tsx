@@ -187,7 +187,7 @@ describe('QuickAddTransaction', () => {
           categoryId: '1',
           fromAccountId: '1',
           occurredAt: expect.any(String),
-          toAccountId: '',
+          toAccountId: undefined,
           vendorId: undefined,
         }),
         expect.any(Object)
@@ -418,7 +418,7 @@ describe('QuickAddTransaction', () => {
           amount: 1550,
           categoryId: '1',
           fromAccountId: '1',
-          toAccountId: '',
+          toAccountId: undefined,
           occurredAt: expect.any(String),
           vendorId: undefined,
         }),

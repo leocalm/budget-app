@@ -144,7 +144,7 @@ export const QuickAddTransaction = ({
       occurredAt: formatDateForApi(values.occurredAt!),
       categoryId: values.categoryId,
       fromAccountId: values.fromAccountId,
-      toAccountId: values.toAccountId,
+      toAccountId: categoryType === 'Transfer' ? values.toAccountId : undefined,
       vendorId,
     };
 
