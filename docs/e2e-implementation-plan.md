@@ -21,6 +21,8 @@ Implement Playwright-based end-to-end testing for local and Docker environments,
   - [x] Mobile auth checks
   - [x] Mobile navigation checks
   - [x] Mobile dashboard/transactions checks
+- [x] PR 4: End-to-end journey expansion
+  - [x] Complete journey spec (register → setup → transaction → verification)
 
 ## Constraints
 - Use isolated fixture users (unique test emails).
@@ -39,3 +41,4 @@ Implement Playwright-based end-to-end testing for local and Docker environments,
 - 2026-02-09: Completed PR 1 foundation implementation (config, fixtures, mock/real modes, scripts, baseline desktop/mobile critical route specs).
 - 2026-02-09: Completed PR 2 desktop flow expansion with stateful mock API and desktop route flow specs for periods, accounts, categories, transactions, and dashboard.
 - 2026-02-09: Completed PR 3 mobile flow expansion with dedicated mobile transactions and dashboard specs.
+- 2026-02-09: Completed PR 4 integration journey flow with a dedicated complete user journey spec.
