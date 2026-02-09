@@ -49,6 +49,10 @@
         "invalidEmail": "Invalid email",
         "passwordMinLength": "Password should include at least 6 characters",
         "passwordsDoNotMatch": "Passwords do not match"
+      },
+      "errors": {
+        "title": "Registration Failed",
+        "generic": "An error occurred during registration. Please try again."
       }
     },
     "forgotPassword": {
