@@ -39,6 +39,7 @@ export function UserMenu() {
         <UnstyledButton
           w="100%"
           p="xs"
+          data-testid="user-menu-trigger"
           style={{ borderRadius: '8px', transition: 'background-color 0.2s' }}
         >
           <Group>
@@ -68,6 +69,7 @@ export function UserMenu() {
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item
+          data-testid="user-menu-logout"
           color="red"
           leftSection={<span style={{ fontSize: 14 }}>🚪</span>}
           onClick={handleLogout}

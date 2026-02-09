@@ -1,0 +1,100 @@
+services:
+  db-test:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-example}
+      POSTGRES_DB: budget_test_db
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - budget-test-network
+
+  backend-test:
+    build:
+      context: ../budget
+      dockerfile: ../budget-app/Dockerfile.backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/budget_test_db
+      BUDGET_DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/budget_test_db
+      BUDGET_DATABASE__MAX_CONNECTIONS: 10
+      BUDGET_DATABASE__MIN_CONNECTIONS: 1
+      BUDGET_DATABASE__CONNECTION_TIMEOUT: 120
+      BUDGET_DATABASE__ACQUIRE_TIMEOUT: 120
+      BUDGET_SERVER__ADDRESS: 0.0.0.0
+      BUDGET_SERVER__PORT: 8000
+      BUDGET_API__EXPOSE_DOCS: true
+      BUDGET_CORS__ALLOWED_ORIGINS: '["http://localhost:18080", "https://localhost:18443"]'
+      BUDGET_CORS__ALLOW_CREDENTIALS: "true"
+      BUDGET_RATE_LIMIT__USE_FORWARDED_IP: "true"
+      BUDGET_RATE_LIMIT__FORWARDED_IP_HEADER: x-forwarded-for
+      BUDGET_SESSION__COOKIE_SECURE: "false"
+      ROCKET_SECRET_KEY: ${ROCKET_SECRET_KEY}
+      ROCKET_ADDRESS: 0.0.0.0
+      ROCKET_PORT: 8000
+      RUST_LOG: ${RUST_LOG:-info}
+    depends_on:
+      db-test:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - budget-test-network
+
+  frontend-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - budget-test-network
+
+  caddy-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    restart: unless-stopped
+    ports:
+      - "18080:80"
+      - "18443:443"
+    volumes:
+      - caddy_test_data:/data
+      - caddy_test_config:/config
+    depends_on:
+      - frontend-test
+      - backend-test
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - budget-test-network
+
+volumes:
+  postgres_test_data:
+    driver: local
+  caddy_test_data:
+    driver: local
+  caddy_test_config:
+    driver: local
+
+networks:
+  budget-test-network:
+    driver: bridge

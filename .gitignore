@@ -135,3 +135,6 @@ dist
 redesign
 IMPROVEMENTS.md
 storybook-static/
+playwright-report/
+test-results/
+blob-report/
