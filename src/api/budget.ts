@@ -1,6 +1,7 @@
 import {
   BudgetCategoryRequest,
   BudgetCategoryResponse,
+  BudgetCategoryUpdateRequest,
   BudgetPeriod,
   BudgetPeriodGaps,
   BudgetPeriodRequest,
@@ -38,8 +39,11 @@ export async function deleteBudgetCategory(id: string): Promise<void> {
   return apiDelete(`/api/budget-categories/${id}`);
 }
 
-export async function updateBudgetCategory(id: string, payload: number): Promise<void> {
-  return apiPut<void, number>(`/api/budget-categories/${id}`, payload);
+export async function updateBudgetCategory(
+  id: string,
+  payload: BudgetCategoryUpdateRequest
+): Promise<void> {
+  return apiPut<void, BudgetCategoryUpdateRequest>(`/api/budget-categories/${id}`, payload);
 }
 
 export async function getCurrentBudgetPeriod(): Promise<BudgetPeriod> {

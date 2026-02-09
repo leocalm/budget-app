@@ -54,6 +54,20 @@ interface MockBudgetPeriod {
   budget_used_percentage: number;
 }
 
+interface MockBudgetCategory {
+  id: string;
+  category_id: string;
+  budgeted_value: number;
+  category: {
+    id: string;
+    name: string;
+    color: string;
+    icon: string;
+    parent_id: string | null;
+    category_type: 'Incoming' | 'Outgoing' | 'Transfer';
+  };
+}
+
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
@@ -99,9 +113,36 @@ export class MockApiServer {
     balance_change_this_period: 0,
     transaction_count: 0,
   };
+  private readonly defaultCategory = {
+    id: 'category-1',
+    name: 'Food',
+    color: '#2f9e44',
+    icon: 'food',
+    parent_id: null,
+    category_type: 'Outgoing' as const,
+    used_in_period: 0,
+    difference_vs_average_percentage: 0,
+    transaction_count: 0,
+  };
   private accounts: MockAccount[] = [this.defaultAccount];
   private periods: MockBudgetPeriod[] = [this.defaultPeriod];
   private currentPeriod: MockBudgetPeriod | null = this.defaultPeriod;
+
+  private budgetCategories: MockBudgetCategory[] = [
+    {
+      id: 'budget-category-1',
+      category_id: 'category-1',
+      budgeted_value: 50000,
+      category: {
+        id: 'category-1',
+        name: 'Food',
+        color: '#2f9e44',
+        icon: 'food',
+        parent_id: null,
+        category_type: 'Outgoing',
+      },
+    },
+  ];
   private readonly routeHandler = async (route: Route): Promise<void> => {
     const url = new URL(route.request().url());
     if (!this.shouldHandlePath(url.pathname)) {
@@ -304,25 +345,45 @@ export class MockApiServer {
     }
 
     if (method === 'GET' && path === '/categories') {
-      return {
-        body: [
-          {
-            id: 'category-1',
-            name: 'Food',
-            color: '#2f9e44',
-            icon: 'food',
-            parent_id: null,
-            category_type: 'Outgoing',
-            used_in_period: 0,
-            difference_vs_average_percentage: 0,
-            transaction_count: 0,
-          },
-        ],
-      };
+      return { body: [this.defaultCategory] };
     }
 
     if (method === 'GET' && path === '/categories/not-in-budget') {
       return { body: [] };
+    }
+
+    if (method === 'GET' && path === '/budget-categories') {
+      return { body: this.budgetCategories };
+    }
+
+    if (method === 'PUT' && path.startsWith('/budget-categories/')) {
+      const id = path.slice('/budget-categories/'.length);
+      if (!id) {
+        return {
+          status: 400,
+          body: { message: 'Budget category id is required' },
+        };
+      }
+
+      const budgetedValue =
+        typeof payload?.budgeted_value === 'number' ? payload.budgeted_value : undefined;
+      if (budgetedValue === undefined) {
+        return {
+          status: 422,
+          body: { message: 'budgeted_value is required' },
+        };
+      }
+
+      const existing = this.budgetCategories.find((budgetCategory) => budgetCategory.id === id);
+      if (!existing) {
+        return {
+          status: 404,
+          body: { message: 'Budget category not found' },
+        };
+      }
+
+      existing.budgeted_value = budgetedValue;
+      return { status: 200, body: {} };
     }
 
     if (method === 'GET' && path === '/vendors') {
@@ -372,10 +433,6 @@ export class MockApiServer {
           },
         ],
       };
-    }
-
-    if (method === 'GET' && path === '/budget-categories') {
-      return { body: [] };
     }
 
     if (method === 'GET' && path === '/dashboard/spent-per-category') {

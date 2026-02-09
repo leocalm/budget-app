@@ -15,7 +15,7 @@ import {
   fetchUnbudgetedCategories,
   updateCategory,
 } from '@/api/category';
-import type { BudgetCategoryRequest } from '@/types/budget';
+import type { BudgetCategoryRequest, BudgetCategoryUpdateRequest } from '@/types/budget';
 import type { CategoryRequest } from '@/types/category';
 import { queryKeys } from './queryKeys';
 import {
@@ -245,9 +245,13 @@ describe('useCategories', () => {
 
     const { result } = renderHook(() => useUpdateBudgetCategory(), { wrapper });
 
-    await result.current.mutateAsync({ id: 'budget-category-1', payload: 7500 });
+    const payload: BudgetCategoryUpdateRequest = {
+      budgetedValue: 7500,
+    };
 
-    expect(mockUpdateBudgetCategory).toHaveBeenCalledWith('budget-category-1', 7500);
+    await result.current.mutateAsync({ id: 'budget-category-1', payload });
+
+    expect(mockUpdateBudgetCategory).toHaveBeenCalledWith('budget-category-1', payload);
     expect(refetchSpy).toHaveBeenCalledWith({ queryKey: queryKeys.budgetedCategories() });
   });
 });

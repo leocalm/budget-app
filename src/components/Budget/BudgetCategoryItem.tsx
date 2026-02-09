@@ -70,19 +70,39 @@ export function BudgetCategoryItem({
           <Group className={styles.itemActions} gap={4}>
             {isEditing ? (
               <>
-                <ActionIcon variant="light" color="blue" onClick={onEditSave}>
+                <ActionIcon
+                  variant="light"
+                  color="blue"
+                  onClick={onEditSave}
+                  aria-label="Save budget category"
+                >
                   <span>✅</span>
                 </ActionIcon>
-                <ActionIcon variant="light" color="gray" onClick={onEditCancel}>
+                <ActionIcon
+                  variant="light"
+                  color="gray"
+                  onClick={onEditCancel}
+                  aria-label="Cancel budget category edit"
+                >
                   <span>❌</span>
                 </ActionIcon>
               </>
             ) : (
               <>
-                <ActionIcon variant="subtle" color="gray" onClick={onEditStart}>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  onClick={onEditStart}
+                  aria-label="Edit budget category"
+                >
                   <span>✏️</span>
                 </ActionIcon>
-                <ActionIcon variant="subtle" color="red" onClick={onDelete}>
+                <ActionIcon
+                  variant="subtle"
+                  color="red"
+                  onClick={onDelete}
+                  aria-label="Delete budget category"
+                >
                   <span>🗑️</span>
                 </ActionIcon>
               </>
@@ -95,7 +115,11 @@ export function BudgetCategoryItem({
           <NumberInput
             ref={inputRef}
             value={editingValue}
-            onChange={(value) => onEditChange(typeof value === 'number' ? value : 0)}
+            onChange={(value) => {
+              const parsedValue =
+                typeof value === 'number' ? value : Number.parseFloat(value || '');
+              onEditChange(Number.isFinite(parsedValue) ? parsedValue : 0);
+            }}
             decimalScale={2}
             fixedDecimalScale
             size="sm"

@@ -23,6 +23,10 @@ export interface BudgetCategoryRequest {
   budgetedValue: number;
 }
 
+export interface BudgetCategoryUpdateRequest {
+  budgetedValue: number;
+}
+
 export interface BudgetPeriod {
   id: string;
   name: string;

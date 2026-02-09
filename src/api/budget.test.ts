@@ -5,6 +5,7 @@ import {
   createBudgetPeriodSchedule,
   fetchBudgetPeriodGaps,
   fetchBudgetPeriodSchedule,
+  updateBudgetCategory,
   updateBudgetPeriod,
 } from './budget';
 import { apiGet, apiPost, apiPut } from './client';
@@ -97,5 +98,15 @@ describe('budget api', () => {
     await createBudgetPeriodSchedule(payload);
 
     expect(apiPost).toHaveBeenCalledWith('/api/budget_period/schedule', payload);
+  });
+
+  it('updates budget category with budgeted value payload', async () => {
+    vi.mocked(apiPut).mockResolvedValueOnce(undefined);
+
+    await updateBudgetCategory('budget-category-1', { budgetedValue: 9200 });
+
+    expect(apiPut).toHaveBeenCalledWith('/api/budget-categories/budget-category-1', {
+      budgetedValue: 9200,
+    });
   });
 });

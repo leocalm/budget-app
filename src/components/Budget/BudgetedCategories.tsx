@@ -69,7 +69,7 @@ export function BudgetedCategories({
 
     updateMutation.mutate({
       id: editingId,
-      payload: convertDisplayToCents(values.budgetedValue),
+      payload: { budgetedValue: convertDisplayToCents(values.budgetedValue) },
     });
 
     onEditingChange(null);

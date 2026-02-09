@@ -12,7 +12,7 @@ import {
   fetchUnbudgetedCategories,
   updateCategory,
 } from '@/api/category';
-import { BudgetCategoryRequest } from '@/types/budget';
+import { BudgetCategoryRequest, BudgetCategoryUpdateRequest } from '@/types/budget';
 import { CategoryRequest } from '@/types/category';
 import { queryKeys } from './queryKeys';
 
@@ -104,7 +104,7 @@ export const useUpdateBudgetCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: number }) =>
+    mutationFn: ({ id, payload }: { id: string; payload: BudgetCategoryUpdateRequest }) =>
       updateBudgetCategory(id, payload),
     onSuccess: async () => {
       await Promise.all([queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() })]);
