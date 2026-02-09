@@ -50,6 +50,11 @@ export function Navigation({ onNavigate }: NavigationProps) {
           label: t('layout.navigation.budgetPlan'),
           route: '/budget',
         },
+        {
+          icon: () => <span>🎯</span>,
+          label: t('layout.navigation.overlays'),
+          route: '/overlays',
+        },
       ],
     },
     {

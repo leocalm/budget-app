@@ -411,6 +411,131 @@
       "failedToSave": "Failed to save schedule settings"
     }
   },
+  "overlays": {
+    "page": {
+      "title": "Budget Overlays",
+      "description": "Create temporary spending plans that run in parallel with your regular periods."
+    },
+    "sections": {
+      "active": "Active Overlays",
+      "upcoming": "Upcoming Overlays",
+      "past": "Past Overlays"
+    },
+    "createOverlay": "Create Overlay",
+    "deletedSuccess": "Overlay deleted successfully",
+    "deleteFailed": "Failed to delete overlay",
+    "detailComingSoon": "Overlay detail view is coming soon.",
+    "confirmDelete": "Delete {{name}}? This action cannot be undone.",
+    "status": {
+      "active": "Active",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "modes": {
+      "manual": "Manual",
+      "rules": "Rules-based",
+      "all": "Include all"
+    },
+    "actions": {
+      "view": "View overlay",
+      "edit": "Edit overlay",
+      "delete": "Delete overlay",
+      "togglePast": "Toggle past overlays"
+    },
+    "empty": {
+      "title": "No overlays yet",
+      "description": "Use overlays for vacations, seasonal events, and spending challenges without changing your base budget.",
+      "active": "No active overlays right now.",
+      "upcoming": "No upcoming overlays.",
+      "past": "No past overlays yet."
+    },
+    "card": {
+      "duration_one": "{{count}} day",
+      "duration_other": "{{count}} days",
+      "daysRemaining_one": "{{count}} day left",
+      "daysRemaining_other": "{{count}} days left",
+      "startsIn_one": "Starts in {{count}} day",
+      "startsIn_other": "Starts in {{count}} days",
+      "endedAgo_one": "Ended {{count}} day ago",
+      "endedAgo_other": "Ended {{count}} days ago",
+      "remaining": "{{amount}} remaining",
+      "overBy": "{{amount}} over cap",
+      "transactions_one": "{{count}} transaction",
+      "transactions_other": "{{count}} transactions",
+      "categoryCaps_one": "{{count}} category cap",
+      "categoryCaps_other": "{{count}} category caps"
+    },
+    "modal": {
+      "createTitle": "Create Budget Overlay",
+      "editTitle": "Edit Budget Overlay",
+      "name": "Overlay name",
+      "namePlaceholder": "e.g. Italy Trip",
+      "icon": "Icon / Emoji",
+      "iconPlaceholder": "Optional",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "basicInfoHint": "Overlays are temporary and always require both start and end dates.",
+      "inclusionHint": "Choose how transactions are added to this overlay.",
+      "rulesHint": "Rules use OR logic. Any matching category, vendor, or account includes the transaction.",
+      "ruleCategories": "Categories",
+      "ruleCategoriesPlaceholder": "Select categories",
+      "ruleVendors": "Vendors",
+      "ruleVendorsPlaceholder": "Select vendors",
+      "ruleAccounts": "Accounts",
+      "ruleAccountsPlaceholder": "Select accounts",
+      "totalCap": "Enable total cap",
+      "totalCapAmount": "Total cap amount",
+      "categoryCaps": "Enable category caps",
+      "capCategories": "Capped categories",
+      "capCategoriesPlaceholder": "Select capped categories",
+      "reviewInclusionMode": "Inclusion mode: {{mode}}",
+      "reviewTotalCap": "Total cap: {{amount}}",
+      "reviewCategoryCaps": "Category caps configured: {{count}}",
+      "reviewRules": "Rules configured - categories: {{categories}}, vendors: {{vendors}}, accounts: {{accounts}}",
+      "save": "Save overlay",
+      "create": "Create overlay",
+      "recommended": "Recommended",
+      "editWarning": "Changing date range or inclusion mode updates which transactions may belong to this overlay.",
+      "modeDescriptions": {
+        "manual": "You decide what to include manually.",
+        "rules": "Include transactions automatically from category, vendor, or account rules.",
+        "all": "Include every transaction inside the date range."
+      },
+      "steps": {
+        "basic": {
+          "label": "Basic info"
+        },
+        "inclusion": {
+          "label": "Inclusion"
+        },
+        "rules": {
+          "label": "Rules"
+        },
+        "caps": {
+          "label": "Caps"
+        },
+        "review": {
+          "label": "Review"
+        }
+      },
+      "success": {
+        "created": "Overlay created successfully",
+        "updated": "Overlay updated successfully"
+      },
+      "errors": {
+        "nameMinLength": "Overlay name must have at least 2 characters.",
+        "nameMaxLength": "Overlay name must be 80 characters or less.",
+        "startDateRequired": "Start date is required.",
+        "endDateRequired": "End date is required.",
+        "endDateAfterStart": "End date must be after start date.",
+        "ruleRequired": "Add at least one category, vendor, or account rule.",
+        "totalCapPositive": "Total cap must be greater than zero.",
+        "categoryCapSelectionRequired": "Select at least one category cap.",
+        "categoryCapPositive": "All category caps must be greater than zero.",
+        "saveFailed": "Failed to save overlay."
+      }
+    }
+  },
   "router": {
     "goals": "Goals Page",
     "recurring": "Recurring Page",
@@ -439,6 +564,7 @@
       "categories": "Categories",
       "vendors": "Vendors",
       "budgetPlan": "Budget Plan",
+      "overlays": "Overlays",
       "insights": "Insights",
       "reports": "Reports",
       "goals": "Goals",
@@ -508,6 +634,13 @@
       "title": "You are in a period gap",
       "message": "Your transactions are not currently associated with a budget period. Create or manage periods to restore accurate reporting.",
       "cta": "Manage Periods"
+    },
+    "overlayBanner": {
+      "remaining": "{{amount}} left • {{days}} days",
+      "over": "{{amount}} over • {{days}} days",
+      "noCap": "No cap configured • {{days}} days",
+      "moreCount": "+{{count}}",
+      "dismiss": "Dismiss overlay banner"
     },
     "stats": {
       "remainingBudget": {
@@ -722,6 +855,13 @@
     }
   },
   "common": {
-    "close": "Close"
+    "save": "Save",
+    "cancel": "Cancel",
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "close": "Close",
+    "next": "Next",
+    "back": "Back"
   }
 }
