@@ -3,7 +3,9 @@
   "files": ["vitest.storybook.config.ts"],
   "include": [
     "src",
+    "tests",
     "test-utils",
+    "playwright.config.ts",
     "vitest.config.ts",
     "vitest.storybook.config.ts",
     "vitest.setup.ts",

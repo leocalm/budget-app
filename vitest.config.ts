@@ -2,7 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
@@ -29,5 +29,6 @@ export default defineConfig({
     name: 'unit',
     globals: true,
     setupFiles: ['./vitest.setup.mjs'],
+    exclude: [...configDefaults.exclude, 'tests/e2e/**'],
   },
 });
