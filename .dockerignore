@@ -6,6 +6,10 @@ node_modules
 # Testing
 coverage
 .nyc_output
+tests
+playwright.config.ts
+test-results
+playwright-report
 
 # Production
 dist

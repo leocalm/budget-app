@@ -11,6 +11,7 @@ export function BasicAppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <AppShell
+      data-testid="app-shell"
       header={{ height: 60, collapsed: !isMobile }}
       navbar={{
         width: 280,
@@ -30,7 +31,9 @@ export function BasicAppShell({ children }: { children: React.ReactNode }) {
 
       <Sidebar onNavigate={close} />
 
-      <AppShell.Main pb={isMobile ? 80 : undefined}>{children}</AppShell.Main>
+      <AppShell.Main pb={isMobile ? 80 : undefined} data-testid="app-shell-main">
+        {children}
+      </AppShell.Main>
 
       {isMobile && <BottomNavigation />}
     </AppShell>
