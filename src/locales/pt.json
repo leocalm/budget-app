@@ -96,10 +96,6 @@
       "vendors": "Fornecedores",
       "budgetPlan": "Orçamento",
       "overlays": "Overlays",
-      "insights": "Análises",
-      "reports": "Relatórios",
-      "goals": "Metas",
-      "recurring": "Recorrentes",
       "other": "Outro",
       "settings": "Configurações",
       "helpSupport": "Ajuda e Suporte"
@@ -373,8 +369,6 @@
   },
   "router": {
     "periods": "Página de Períodos",
-    "goals": "Página de Metas",
-    "recurring": "Página de Recorrentes",
     "help": "Página de Ajuda",
     "more": "Página Mais"
   },

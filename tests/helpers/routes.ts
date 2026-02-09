@@ -7,7 +7,6 @@ export const criticalAuthenticatedRoutes = [
   '/budget',
   '/periods',
   '/overlays',
-  '/reports',
   '/settings',
 ] as const;
 

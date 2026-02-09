@@ -58,22 +58,6 @@ export function Navigation({ onNavigate }: NavigationProps) {
       ],
     },
     {
-      title: t('layout.navigation.insights'),
-      items: [
-        {
-          icon: () => <span>📈</span>,
-          label: t('layout.navigation.reports'),
-          route: '/reports',
-        },
-        { icon: () => <span>🎯</span>, label: t('layout.navigation.goals'), route: '/goals' },
-        {
-          icon: () => <span>🔁</span>,
-          label: t('layout.navigation.recurring'),
-          route: '/recurring',
-        },
-      ],
-    },
-    {
       title: t('layout.navigation.other'),
       items: [
         {
