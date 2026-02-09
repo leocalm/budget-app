@@ -45,6 +45,15 @@ interface MockAccount {
   transaction_count: number;
 }
 
+interface MockBudgetPeriod {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  transaction_count: number;
+  budget_used_percentage: number;
+}
+
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
@@ -57,7 +66,7 @@ export class MockApiServer {
       transaction_count: 0,
     },
   ];
-  private readonly defaultPeriod = {
+  private readonly defaultPeriod: MockBudgetPeriod = {
     id: 'period-1',
     name: 'February 2026',
     start_date: '2026-02-01',
@@ -91,6 +100,8 @@ export class MockApiServer {
     transaction_count: 0,
   };
   private accounts: MockAccount[] = [this.defaultAccount];
+  private periods: MockBudgetPeriod[] = [this.defaultPeriod];
+  private currentPeriod: MockBudgetPeriod | null = this.defaultPeriod;
   private readonly routeHandler = async (route: Route): Promise<void> => {
     const url = new URL(route.request().url());
     if (!this.shouldHandlePath(url.pathname)) {
@@ -124,6 +135,14 @@ export class MockApiServer {
 
     this.users.set(credentials.email.toLowerCase(), newUser);
     return newUser;
+  }
+
+  setPeriods(periods: MockBudgetPeriod[]): void {
+    this.periods = periods;
+  }
+
+  setCurrentPeriod(period: MockBudgetPeriod | null): void {
+    this.currentPeriod = period;
   }
 
   private async handleRoute(route: Route): Promise<void> {
@@ -201,11 +220,18 @@ export class MockApiServer {
     payload?: Record<string, unknown>
   ): MockApiResponse {
     if (method === 'GET' && path === '/budget_period/current') {
-      return { body: this.defaultPeriod };
+      if (!this.currentPeriod) {
+        return {
+          status: 404,
+          body: { message: 'Not Found' },
+        };
+      }
+
+      return { body: this.currentPeriod };
     }
 
     if (method === 'GET' && path === '/budget_period') {
-      return { body: [this.defaultPeriod] };
+      return { body: this.periods };
     }
 
     if (method === 'GET' && path === '/budget_period/gaps') {

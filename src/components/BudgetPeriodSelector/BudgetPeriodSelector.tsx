@@ -52,6 +52,16 @@ export function BudgetPeriodSelector({
 
   const selectedPeriod = periods.find((p) => p.id === selectedPeriodId);
   const hasNoPeriods = periods.length === 0;
+  const today = dayjs().startOf('day');
+  const hasActivePeriod = periods.some((period) => {
+    const periodStart = dayjs(period.startDate).startOf('day');
+    const periodEnd = dayjs(period.endDate).startOf('day');
+    return (
+      (today.isAfter(periodStart) || today.isSame(periodStart)) &&
+      (today.isBefore(periodEnd) || today.isSame(periodEnd))
+    );
+  });
+  const showGapWarning = hasNoPeriods || !hasActivePeriod;
 
   const getPeriodRangeLabel = (period: BudgetPeriod) => {
     const startLabel = dayjs(period.startDate).format('MMM D');
@@ -221,7 +231,8 @@ export function BudgetPeriodSelector({
 
   const pickerContent = (
     <Stack gap="sm" className={classes.dropdownContent}>
-      {hasNoPeriods ? warningCard : periodList}
+      {showGapWarning ? warningCard : null}
+      {!hasNoPeriods ? periodList : null}
       <Divider />
       {manageButton}
     </Stack>

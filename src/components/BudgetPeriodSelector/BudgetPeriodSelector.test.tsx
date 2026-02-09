@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import type { ComponentProps } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -21,15 +22,15 @@ vi.mock('@mantine/hooks', async () => {
 const periods: BudgetPeriod[] = [
   {
     id: 'period-current',
-    name: 'February 2026',
-    startDate: '2026-02-01',
-    endDate: '2026-02-28',
+    name: 'Current Period',
+    startDate: dayjs().startOf('month').format('YYYY-MM-DD'),
+    endDate: dayjs().endOf('month').format('YYYY-MM-DD'),
   },
   {
     id: 'period-next',
-    name: 'March 2026',
-    startDate: '2026-03-01',
-    endDate: '2026-03-31',
+    name: 'Next Period',
+    startDate: dayjs().add(1, 'month').startOf('month').format('YYYY-MM-DD'),
+    endDate: dayjs().add(1, 'month').endOf('month').format('YYYY-MM-DD'),
   },
 ];
 
@@ -61,7 +62,7 @@ describe('BudgetPeriodSelector', () => {
     const { onPeriodChange } = renderSelector();
 
     await user.click(screen.getByTestId('budget-period-trigger'));
-    await user.click(screen.getByRole('button', { name: /March 2026/i }));
+    await user.click(screen.getByRole('button', { name: /Next Period/i }));
 
     expect(onPeriodChange).toHaveBeenCalledWith('period-next');
   });
@@ -83,6 +84,33 @@ describe('BudgetPeriodSelector', () => {
     );
   });
 
+  it('shows gap warning when there are periods but none is active today', async () => {
+    const user = userEvent.setup();
+
+    renderSelector({
+      periods: [
+        {
+          id: 'period-past',
+          name: 'Past Period',
+          startDate: dayjs().subtract(2, 'month').startOf('month').format('YYYY-MM-DD'),
+          endDate: dayjs().subtract(2, 'month').endOf('month').format('YYYY-MM-DD'),
+        },
+        {
+          id: 'period-upcoming',
+          name: 'Upcoming Period',
+          startDate: dayjs().add(2, 'month').startOf('month').format('YYYY-MM-DD'),
+          endDate: dayjs().add(2, 'month').endOf('month').format('YYYY-MM-DD'),
+        },
+      ],
+      selectedPeriodId: 'period-past',
+    });
+
+    await user.click(screen.getByTestId('budget-period-trigger'));
+
+    expect(screen.getByText('You are in a period gap')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Upcoming Period/i })).toBeInTheDocument();
+  });
+
   it('opens bottom sheet on mobile and selects period', async () => {
     mockUseMediaQuery.mockReturnValue(true);
     const user = userEvent.setup();
@@ -92,7 +120,7 @@ describe('BudgetPeriodSelector', () => {
 
     expect(screen.getByText('Choose budget period')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /March 2026/i }));
+    await user.click(screen.getByRole('button', { name: /Next Period/i }));
 
     expect(onPeriodChange).toHaveBeenCalledWith('period-next');
   });

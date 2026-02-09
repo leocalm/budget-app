@@ -3,6 +3,7 @@ import { IconAlertTriangle, IconArrowRight } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Alert, Box, Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { ApiError } from '@/api/errors';
 import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 import { ActiveOverlayBanner } from '@/components/Dashboard/ActiveOverlayBanner';
 import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCard';
@@ -11,6 +12,7 @@ import { StatCard } from '@/components/Dashboard/StatCard';
 import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
 import { UI } from '@/constants';
 import { useAccounts } from '@/hooks/useAccounts';
+import { useCurrentBudgetPeriod } from '@/hooks/useBudget';
 import {
   useBudgetPerDay,
   useMonthlyBurnIn,
@@ -31,6 +33,15 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { t } = useTranslation();
 
   const isPeriodMissing = selectedPeriodId === null;
+  const {
+    data: currentPeriod,
+    error: currentPeriodError,
+    isFetched: isCurrentPeriodFetched,
+  } = useCurrentBudgetPeriod();
+  const hasNoActivePeriod =
+    isCurrentPeriodFetched &&
+    !currentPeriod &&
+    (currentPeriodError instanceof ApiError ? currentPeriodError.isNotFound : true);
 
   const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
     useSpentPerCategory(selectedPeriodId);
@@ -116,6 +127,22 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
           </Title>
           <PeriodHeaderControl />
         </Group>
+
+        {hasNoActivePeriod && (
+          <Alert
+            color="orange"
+            variant="light"
+            icon={<IconAlertTriangle size={18} />}
+            title={t('dashboard.noPeriod.title')}
+          >
+            <Stack gap="md" mt="xs">
+              <Text size="sm">{t('dashboard.noPeriod.message')}</Text>
+              <Button component={Link} to="/periods" color="orange" variant="filled" size="sm">
+                {t('dashboard.noPeriod.cta')}
+              </Button>
+            </Stack>
+          </Alert>
+        )}
 
         <ActiveOverlayBanner />
 
