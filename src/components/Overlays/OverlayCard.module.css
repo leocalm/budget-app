@@ -1,0 +1,62 @@
+.card {
+  border-color: var(--border-subtle);
+  background: var(--bg-card);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-sm);
+}
+
+.active {
+  border-color: rgb(0, 212, 255, 0.35);
+  background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.08) 100%);
+}
+
+.overspent {
+  border-color: rgb(255, 107, 157, 0.42);
+}
+
+.mainInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.name {
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metaRow {
+  overflow: hidden;
+}
+
+.metaRow :global(.mantine-Text-root) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.amount {
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .name {
+    max-width: 180px;
+  }
+}

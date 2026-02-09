@@ -95,6 +95,7 @@
       "categories": "Categorias",
       "vendors": "Fornecedores",
       "budgetPlan": "Orçamento",
+      "overlays": "Overlays",
       "insights": "Análises",
       "reports": "Relatórios",
       "goals": "Metas",
@@ -245,6 +246,131 @@
       "failedToSave": "Falha ao salvar configurações de agendamento"
     }
   },
+  "overlays": {
+    "page": {
+      "title": "Overlays de Orçamento",
+      "description": "Crie planos temporários de gastos que funcionam em paralelo aos seus períodos regulares."
+    },
+    "sections": {
+      "active": "Overlays Ativos",
+      "upcoming": "Próximos Overlays",
+      "past": "Overlays Passados"
+    },
+    "createOverlay": "Criar Overlay",
+    "deletedSuccess": "Overlay removido com sucesso",
+    "deleteFailed": "Falha ao remover overlay",
+    "detailComingSoon": "A tela de detalhes do overlay estará disponível em breve.",
+    "confirmDelete": "Excluir {{name}}? Esta ação não pode ser desfeita.",
+    "status": {
+      "active": "Ativo",
+      "upcoming": "Próximo",
+      "past": "Passado"
+    },
+    "modes": {
+      "manual": "Manual",
+      "rules": "Baseado em regras",
+      "all": "Incluir tudo"
+    },
+    "actions": {
+      "view": "Ver overlay",
+      "edit": "Editar overlay",
+      "delete": "Excluir overlay",
+      "togglePast": "Alternar overlays passados"
+    },
+    "empty": {
+      "title": "Ainda não há overlays",
+      "description": "Use overlays para viagens, eventos sazonais e desafios de gasto sem alterar seu orçamento base.",
+      "active": "Nenhum overlay ativo no momento.",
+      "upcoming": "Nenhum overlay futuro.",
+      "past": "Nenhum overlay passado ainda."
+    },
+    "card": {
+      "duration_one": "{{count}} dia",
+      "duration_other": "{{count}} dias",
+      "daysRemaining_one": "{{count}} dia restante",
+      "daysRemaining_other": "{{count}} dias restantes",
+      "startsIn_one": "Começa em {{count}} dia",
+      "startsIn_other": "Começa em {{count}} dias",
+      "endedAgo_one": "Terminou há {{count}} dia",
+      "endedAgo_other": "Terminou há {{count}} dias",
+      "remaining": "{{amount}} restante",
+      "overBy": "{{amount}} acima do limite",
+      "transactions_one": "{{count}} transação",
+      "transactions_other": "{{count}} transações",
+      "categoryCaps_one": "{{count}} limite de categoria",
+      "categoryCaps_other": "{{count}} limites de categoria"
+    },
+    "modal": {
+      "createTitle": "Criar Overlay de Orçamento",
+      "editTitle": "Editar Overlay de Orçamento",
+      "name": "Nome do overlay",
+      "namePlaceholder": "ex.: Viagem para Itália",
+      "icon": "Ícone / Emoji",
+      "iconPlaceholder": "Opcional",
+      "startDate": "Data de início",
+      "endDate": "Data de fim",
+      "basicInfoHint": "Overlays são temporários e sempre exigem data de início e fim.",
+      "inclusionHint": "Escolha como as transações serão adicionadas a este overlay.",
+      "rulesHint": "As regras usam lógica OR. Qualquer categoria, fornecedor ou conta correspondente inclui a transação.",
+      "ruleCategories": "Categorias",
+      "ruleCategoriesPlaceholder": "Selecione categorias",
+      "ruleVendors": "Fornecedores",
+      "ruleVendorsPlaceholder": "Selecione fornecedores",
+      "ruleAccounts": "Contas",
+      "ruleAccountsPlaceholder": "Selecione contas",
+      "totalCap": "Ativar limite total",
+      "totalCapAmount": "Valor do limite total",
+      "categoryCaps": "Ativar limites por categoria",
+      "capCategories": "Categorias com limite",
+      "capCategoriesPlaceholder": "Selecione categorias com limite",
+      "reviewInclusionMode": "Modo de inclusão: {{mode}}",
+      "reviewTotalCap": "Limite total: {{amount}}",
+      "reviewCategoryCaps": "Limites por categoria configurados: {{count}}",
+      "reviewRules": "Regras configuradas - categorias: {{categories}}, fornecedores: {{vendors}}, contas: {{accounts}}",
+      "save": "Salvar overlay",
+      "create": "Criar overlay",
+      "recommended": "Recomendado",
+      "editWarning": "Alterar o período ou modo de inclusão muda quais transações podem pertencer a este overlay.",
+      "modeDescriptions": {
+        "manual": "Você decide manualmente o que incluir.",
+        "rules": "Inclui transações automaticamente por regras de categoria, fornecedor ou conta.",
+        "all": "Inclui todas as transações no intervalo de datas."
+      },
+      "steps": {
+        "basic": {
+          "label": "Informações"
+        },
+        "inclusion": {
+          "label": "Inclusão"
+        },
+        "rules": {
+          "label": "Regras"
+        },
+        "caps": {
+          "label": "Limites"
+        },
+        "review": {
+          "label": "Revisão"
+        }
+      },
+      "success": {
+        "created": "Overlay criado com sucesso",
+        "updated": "Overlay atualizado com sucesso"
+      },
+      "errors": {
+        "nameMinLength": "O nome do overlay deve ter pelo menos 2 caracteres.",
+        "nameMaxLength": "O nome do overlay deve ter no máximo 80 caracteres.",
+        "startDateRequired": "Data de início é obrigatória.",
+        "endDateRequired": "Data de fim é obrigatória.",
+        "endDateAfterStart": "A data de fim deve ser depois da data de início.",
+        "ruleRequired": "Adicione pelo menos uma regra de categoria, fornecedor ou conta.",
+        "totalCapPositive": "O limite total deve ser maior que zero.",
+        "categoryCapSelectionRequired": "Selecione pelo menos um limite por categoria.",
+        "categoryCapPositive": "Todos os limites por categoria devem ser maiores que zero.",
+        "saveFailed": "Falha ao salvar overlay."
+      }
+    }
+  },
   "router": {
     "periods": "Página de Períodos",
     "goals": "Página de Metas",
@@ -257,6 +383,13 @@
       "title": "Você está em uma lacuna de período",
       "message": "Suas transações não estão associadas a nenhum período de orçamento. Crie ou ajuste períodos para restaurar relatórios corretos.",
       "cta": "Gerenciar Períodos"
+    },
+    "overlayBanner": {
+      "remaining": "{{amount}} restante • {{days}} dias",
+      "over": "{{amount}} acima • {{days}} dias",
+      "noCap": "Sem limite definido • {{days}} dias",
+      "moreCount": "+{{count}}",
+      "dismiss": "Dispensar banner de overlay"
     }
   },
   "vendors": {
@@ -466,6 +599,13 @@
     }
   },
   "common": {
-    "close": "Fechar"
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "success": "Sucesso",
+    "error": "Erro",
+    "info": "Info",
+    "close": "Fechar",
+    "next": "Próximo",
+    "back": "Voltar"
   }
 }

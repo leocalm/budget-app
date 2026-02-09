@@ -33,6 +33,12 @@ export const queryKeys = {
     gaps: () => ['budgetPeriods', 'gaps'] as const,
   },
 
+  // Overlays
+  overlays: {
+    list: () => ['overlays', 'list'] as const,
+    detail: (id: string) => ['overlays', 'detail', id] as const,
+  },
+
   // Dashboard
   dashboardData: (periodId?: string | null) => ['dashboardData', periodId] as const,
   spentPerCategory: (periodId?: string | null) => ['spentPerCategory', periodId] as const,

@@ -1,0 +1,35 @@
+.pageRoot {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.emptyState {
+  border-style: dashed;
+  border-color: var(--border-medium);
+}
+
+.emptyIcon {
+  color: var(--text-secondary);
+}
+
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 768px) {
+  .fab {
+    right: 16px;
+    bottom: 96px;
+  }
+}

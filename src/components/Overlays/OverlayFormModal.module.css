@@ -1,0 +1,45 @@
+.modeCard {
+  flex: 1;
+  min-width: 190px;
+  cursor: pointer;
+  border-color: var(--border-subtle);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.modeCard:hover {
+  transform: translateY(-1px);
+  border-color: rgb(0, 212, 255, 0.35);
+  box-shadow: var(--shadow-sm);
+}
+
+.modeCardActive {
+  border-color: rgb(0, 212, 255, 0.45);
+  background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.08) 100%);
+}
+
+.stepContent {
+  min-height: 260px;
+}
+
+.actionsRow {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+}
+
+.capRow {
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgb(255, 255, 255, 0.03);
+}
+
+[data-mantine-color-scheme='light'] .capRow {
+  background: rgb(0, 0, 0, 0.03);
+}
+
+.reviewCard {
+  border-color: var(--border-medium);
+}
