@@ -1,0 +1,6 @@
+.previewCard {
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  padding: 12px;
+}

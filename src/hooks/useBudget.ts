@@ -1,12 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createBudgetPeriod,
+  createBudgetPeriodSchedule,
+  deleteBudgetPeriod,
+  deleteBudgetPeriodSchedule,
   fetchBudget,
+  fetchBudgetPeriodGaps,
   fetchBudgetPeriods,
+  fetchBudgetPeriodSchedule,
   getCurrentBudgetPeriod,
   updateBudget,
+  updateBudgetPeriod,
+  updateBudgetPeriodSchedule,
 } from '@/api/budget';
-import { BudgetPeriodRequest, BudgetResponse } from '@/types/budget';
+import { BudgetPeriodRequest, BudgetPeriodScheduleRequest, BudgetResponse } from '@/types/budget';
 import { queryKeys } from './queryKeys';
 
 export const useBudget = () => {
@@ -49,5 +56,82 @@ export const useCreateBudgetPeriod = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
     },
+  });
+};
+
+export const useUpdateBudgetPeriod = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: BudgetPeriodRequest }) =>
+      updateBudgetPeriod(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+    },
+  });
+};
+
+export const useDeleteBudgetPeriod = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteBudgetPeriod(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+    },
+  });
+};
+
+export const useBudgetPeriodSchedule = () => {
+  return useQuery({
+    queryKey: queryKeys.budgetPeriods.schedule(),
+    queryFn: fetchBudgetPeriodSchedule,
+  });
+};
+
+export const useCreateBudgetPeriodSchedule = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: BudgetPeriodScheduleRequest) => createBudgetPeriodSchedule(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    },
+  });
+};
+
+export const useUpdateBudgetPeriodSchedule = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: BudgetPeriodScheduleRequest) => updateBudgetPeriodSchedule(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    },
+  });
+};
+
+export const useDeleteBudgetPeriodSchedule = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteBudgetPeriodSchedule,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    },
+  });
+};
+
+export const useBudgetPeriodGaps = () => {
+  return useQuery({
+    queryKey: queryKeys.budgetPeriods.gaps(),
+    queryFn: fetchBudgetPeriodGaps,
   });
 };

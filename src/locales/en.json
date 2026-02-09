@@ -289,8 +289,112 @@
   "periods": {
     "page": {
       "title": "Budget Periods",
-      "description": "Periods management is being built in this phase. You can open this page from period picker actions already.",
-      "backToDashboard": "Back to Dashboard"
+      "description": "Manage your budget windows. Create custom periods or enable auto-creation with a recurring schedule."
+    },
+    "sections": {
+      "current": "Current Period",
+      "upcoming": "Upcoming Periods",
+      "past": "Past Periods"
+    },
+    "createPeriod": "Create Period",
+    "autoBadge": "Auto",
+    "days": "days",
+    "confirmDelete": "Delete {{name}}? This action cannot be undone.",
+    "deletedSuccess": "Period deleted successfully",
+    "deleteFailed": "Failed to delete period",
+    "empty": {
+      "current": "No current period found.",
+      "upcoming": "No upcoming periods found.",
+      "past": "No past periods yet."
+    },
+    "card": {
+      "daysRemaining_one": "{{count}} day remaining",
+      "daysRemaining_other": "{{count}} days remaining",
+      "startsIn_one": "Starts in {{count}} day",
+      "startsIn_other": "Starts in {{count}} days",
+      "endedAgo_one": "Ended {{count}} day ago",
+      "endedAgo_other": "Ended {{count}} days ago",
+      "transactionsCount_one": "{{count}} transaction",
+      "transactionsCount_other": "{{count}} transactions"
+    },
+    "gaps": {
+      "title_one": "Gap detected: {{count}} transaction is outside a period",
+      "title_other": "Gap detected: {{count}} transactions are outside a period",
+      "subtitle": "Create a period that covers these transactions to keep reporting accurate.",
+      "fixAction": "Create Period to Cover"
+    },
+    "modal": {
+      "createTitle": "Create Budget Period",
+      "editTitle": "Edit Budget Period",
+      "startDate": "Start Date",
+      "duration": "Duration",
+      "durationUnit": "Duration Unit",
+      "durationUnits": {
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months"
+      },
+      "endDateModes": {
+        "duration": "By Duration",
+        "manual": "Set Manually"
+      },
+      "manualEndDate": "Manual End Date",
+      "calculatedEndDate": "Calculated End Date",
+      "periodName": "Period Name",
+      "periodNamePlaceholder": "e.g. March 2026",
+      "copyBudgets": "Copy budgets from previous period",
+      "createPeriod": "Create Period",
+      "saveChanges": "Save Changes",
+      "editWarning": "Changing period dates changes period membership for transactions.",
+      "success": {
+        "created": "Period created successfully",
+        "updated": "Period updated successfully"
+      },
+      "errors": {
+        "startDateRequired": "Start date is required.",
+        "durationValueMin": "Duration must be at least 1.",
+        "endDateRequired": "End date is required.",
+        "endDateAfterStart": "End date must be after start date.",
+        "overlapDetected": "This period overlaps an existing period.",
+        "saveFailed": "Failed to save period."
+      }
+    },
+    "schedule": {
+      "title": "Period Schedule Settings",
+      "mode": "Creation Mode",
+      "manualMode": "Manual - create periods yourself",
+      "automaticMode": "Automatic - generate periods on a schedule",
+      "autoInfo": "Automatic periods are generated ahead and treated as read-only.",
+      "startDay": "Start Day of Month",
+      "startDayValidation": "Start day must be between 1 and 31.",
+      "generateAhead": "Generate Ahead",
+      "durationValue": "Period Duration",
+      "durationUnit": "Duration Unit",
+      "durationValidation": "Duration must be at least 1.",
+      "saturdayAdjustment": "If start day is Saturday",
+      "sundayAdjustment": "If start day is Sunday",
+      "adjustment": {
+        "keep": "Keep on weekend",
+        "friday": "Move to Friday",
+        "monday": "Move to Monday"
+      },
+      "namePattern": "Name Pattern",
+      "preview": "Schedule Preview",
+      "previewSummary": "Starts on day {{startDay}}, duration {{durationValue}} {{durationUnit}}, Saturday: {{saturday}}, Sunday: {{sunday}}, name example: {{previewName}}, generates {{ahead}} periods ahead.",
+      "activeTitle": "Auto-Creation Enabled",
+      "activeBadge": "Active",
+      "summary": "Starts on day {{startDay}} every {{durationValue}} {{durationUnit}}, generating {{generateAhead}} periods ahead.",
+      "edit": "Edit Schedule",
+      "disable": "Disable Schedule",
+      "disableConfirm": "Disable automatic period creation and switch back to manual mode?",
+      "notConfiguredTitle": "Auto-Creation is disabled",
+      "notConfiguredDescription": "Enable a schedule to generate future periods automatically.",
+      "configure": "Set up Auto-Creation",
+      "enabledSuccess": "Schedule enabled successfully",
+      "updatedSuccess": "Schedule updated successfully",
+      "disabledSuccess": "Schedule disabled successfully",
+      "savedManualMode": "Manual mode remains active",
+      "failedToSave": "Failed to save schedule settings"
     }
   },
   "router": {

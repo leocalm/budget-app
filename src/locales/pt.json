@@ -123,8 +123,112 @@
   "periods": {
     "page": {
       "title": "Períodos de Orçamento",
-      "description": "A gestão de períodos está sendo construída nesta fase. Você já pode abrir esta página pelo seletor de períodos.",
-      "backToDashboard": "Voltar ao Dashboard"
+      "description": "Gerencie suas janelas de orçamento. Crie períodos manuais ou ative criação automática com agendamento."
+    },
+    "sections": {
+      "current": "Período Atual",
+      "upcoming": "Próximos Períodos",
+      "past": "Períodos Passados"
+    },
+    "createPeriod": "Criar Período",
+    "autoBadge": "Auto",
+    "days": "dias",
+    "confirmDelete": "Excluir {{name}}? Esta ação não pode ser desfeita.",
+    "deletedSuccess": "Período excluído com sucesso",
+    "deleteFailed": "Falha ao excluir período",
+    "empty": {
+      "current": "Nenhum período atual encontrado.",
+      "upcoming": "Nenhum próximo período encontrado.",
+      "past": "Ainda não há períodos passados."
+    },
+    "card": {
+      "daysRemaining_one": "{{count}} dia restante",
+      "daysRemaining_other": "{{count}} dias restantes",
+      "startsIn_one": "Começa em {{count}} dia",
+      "startsIn_other": "Começa em {{count}} dias",
+      "endedAgo_one": "Encerrado há {{count}} dia",
+      "endedAgo_other": "Encerrado há {{count}} dias",
+      "transactionsCount_one": "{{count}} transação",
+      "transactionsCount_other": "{{count}} transações"
+    },
+    "gaps": {
+      "title_one": "Lacuna detectada: {{count}} transação está fora de um período",
+      "title_other": "Lacuna detectada: {{count}} transações estão fora de um período",
+      "subtitle": "Crie um período que cubra essas transações para manter os relatórios corretos.",
+      "fixAction": "Criar Período para Cobrir"
+    },
+    "modal": {
+      "createTitle": "Criar Período de Orçamento",
+      "editTitle": "Editar Período de Orçamento",
+      "startDate": "Data de Início",
+      "duration": "Duração",
+      "durationUnit": "Unidade da Duração",
+      "durationUnits": {
+        "days": "Dias",
+        "weeks": "Semanas",
+        "months": "Meses"
+      },
+      "endDateModes": {
+        "duration": "Por Duração",
+        "manual": "Definir Manualmente"
+      },
+      "manualEndDate": "Data Final Manual",
+      "calculatedEndDate": "Data Final Calculada",
+      "periodName": "Nome do Período",
+      "periodNamePlaceholder": "ex.: Março 2026",
+      "copyBudgets": "Copiar orçamentos do período anterior",
+      "createPeriod": "Criar Período",
+      "saveChanges": "Salvar Alterações",
+      "editWarning": "Alterar as datas muda quais transações pertencem a este período.",
+      "success": {
+        "created": "Período criado com sucesso",
+        "updated": "Período atualizado com sucesso"
+      },
+      "errors": {
+        "startDateRequired": "Data de início é obrigatória.",
+        "durationValueMin": "A duração deve ser no mínimo 1.",
+        "endDateRequired": "Data final é obrigatória.",
+        "endDateAfterStart": "A data final deve ser depois da data de início.",
+        "overlapDetected": "Este período se sobrepõe a um período existente.",
+        "saveFailed": "Falha ao salvar período."
+      }
+    },
+    "schedule": {
+      "title": "Configurações de Agendamento",
+      "mode": "Modo de Criação",
+      "manualMode": "Manual - criar períodos manualmente",
+      "automaticMode": "Automático - gerar períodos por agendamento",
+      "autoInfo": "Períodos automáticos são gerados à frente e tratados como somente leitura.",
+      "startDay": "Dia Inicial do Mês",
+      "startDayValidation": "O dia inicial deve estar entre 1 e 31.",
+      "generateAhead": "Gerar à Frente",
+      "durationValue": "Duração do Período",
+      "durationUnit": "Unidade da Duração",
+      "durationValidation": "A duração deve ser no mínimo 1.",
+      "saturdayAdjustment": "Se o dia inicial cair no sábado",
+      "sundayAdjustment": "Se o dia inicial cair no domingo",
+      "adjustment": {
+        "keep": "Manter no fim de semana",
+        "friday": "Mover para sexta-feira",
+        "monday": "Mover para segunda-feira"
+      },
+      "namePattern": "Padrão de Nome",
+      "preview": "Pré-visualização do Agendamento",
+      "previewSummary": "Começa no dia {{startDay}}, duração de {{durationValue}} {{durationUnit}}, sábado: {{saturday}}, domingo: {{sunday}}, exemplo de nome: {{previewName}}, gera {{ahead}} períodos à frente.",
+      "activeTitle": "Criação Automática Ativada",
+      "activeBadge": "Ativo",
+      "summary": "Começa no dia {{startDay}} a cada {{durationValue}} {{durationUnit}}, gerando {{generateAhead}} períodos à frente.",
+      "edit": "Editar Agendamento",
+      "disable": "Desativar Agendamento",
+      "disableConfirm": "Desativar criação automática de períodos e voltar ao modo manual?",
+      "notConfiguredTitle": "Criação automática desativada",
+      "notConfiguredDescription": "Ative um agendamento para gerar períodos futuros automaticamente.",
+      "configure": "Configurar Criação Automática",
+      "enabledSuccess": "Agendamento ativado com sucesso",
+      "updatedSuccess": "Agendamento atualizado com sucesso",
+      "disabledSuccess": "Agendamento desativado com sucesso",
+      "savedManualMode": "Modo manual permanece ativo",
+      "failedToSave": "Falha ao salvar configurações de agendamento"
     }
   },
   "router": {

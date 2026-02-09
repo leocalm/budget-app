@@ -29,6 +29,8 @@ export const queryKeys = {
   budgetPeriods: {
     list: () => ['budgetPeriods', 'list'] as const,
     current: () => ['budgetPeriods', 'current'] as const,
+    schedule: () => ['budgetPeriods', 'schedule'] as const,
+    gaps: () => ['budgetPeriods', 'gaps'] as const,
   },
 
   // Dashboard
