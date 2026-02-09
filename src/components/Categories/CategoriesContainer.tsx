@@ -1,25 +1,42 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, SimpleGrid, Stack, Tabs } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Drawer,
+  Modal,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  useMantineTheme,
+} from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { EmptyState } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
-import { CategoryType } from '@/types/category';
+import { CategoryResponse, CategoryType } from '@/types/category';
 import { PageHeader } from '../Transactions/PageHeader';
 import { CategoryCard } from './CategoryCard';
+import { CreateCategoryForm } from './CreateCategoryForm';
+import { EditCategoryForm } from './EditCategoryForm';
 import styles from './Categories.module.css';
 
 type CategoryTypeFilter = 'all' | CategoryType;
 
 export function CategoriesContainer() {
   const { t } = useTranslation();
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   // Get selected budget period from context
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
   const { data: categories } = useCategories(selectedPeriodId);
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
   const deleteMutation = useDeleteCategory();
+  const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
 
   const filteredCategories = useMemo(() => {
     if (!categories) {
@@ -33,6 +50,16 @@ export function CategoriesContainer() {
 
   const onDeleteCategory = (id: string) => {
     deleteMutation.mutate(id);
+  };
+
+  const onEditCategory = (category: CategoryResponse) => {
+    setSelectedCategory(category);
+    openEdit();
+  };
+
+  const onEditClosed = () => {
+    closeEdit();
+    setSelectedCategory(null);
   };
 
   // Count categories by type
@@ -62,7 +89,7 @@ export function CategoriesContainer() {
           title="Categories"
           subtitle="Organize your transactions into meaningful groups."
           actions={
-            <Button className={styles.addButton} size="md">
+            <Button className={styles.addButton} size="md" onClick={openCreate}>
               <span style={{ fontSize: '16px', marginRight: '4px' }}>+</span>
               Add Category
             </Button>
@@ -103,7 +130,7 @@ export function CategoriesContainer() {
             primaryAction={{
               label: t('states.empty.categories.addButton', 'Add Category'),
               icon: <span>+</span>,
-              onClick: () => {},
+              onClick: openCreate,
             }}
           />
         ) : (
@@ -129,12 +156,46 @@ export function CategoriesContainer() {
                   monthlySpent={category.usedInPeriod}
                   transactionCount={category.transactionCount}
                   trend={trend}
-                  onEdit={() => {}} // Connect to edit modal
+                  onEdit={onEditCategory}
                   onDelete={onDeleteCategory}
                 />
               );
             })}
           </SimpleGrid>
+        )}
+
+        {isMobile ? (
+          <>
+            <Drawer
+              opened={createOpened}
+              onClose={closeCreate}
+              title="Create Category"
+              position="bottom"
+            >
+              <CreateCategoryForm onCategoryCreated={closeCreate} />
+            </Drawer>
+            <Drawer
+              opened={editOpened}
+              onClose={onEditClosed}
+              title="Edit Category"
+              position="bottom"
+            >
+              {selectedCategory && (
+                <EditCategoryForm category={selectedCategory} onUpdated={onEditClosed} />
+              )}
+            </Drawer>
+          </>
+        ) : (
+          <>
+            <Modal opened={createOpened} onClose={closeCreate} title="Create Category" centered>
+              <CreateCategoryForm onCategoryCreated={closeCreate} />
+            </Modal>
+            <Modal opened={editOpened} onClose={onEditClosed} title="Edit Category" centered>
+              {selectedCategory && (
+                <EditCategoryForm category={selectedCategory} onUpdated={onEditClosed} />
+              )}
+            </Modal>
+          </>
         )}
       </Stack>
     </Box>
