@@ -12,7 +12,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { createAccount } from '@/api/account';
+import { useCreateAccount } from '@/hooks/useAccounts';
 import { ACCOUNT_TYPES, AccountRequest, AccountType } from '@/types/account';
 
 interface CreateAccountFormProps {
@@ -20,9 +20,8 @@ interface CreateAccountFormProps {
 }
 
 export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) {
-  const [, setLoading] = useState(false);
+  const createAccountMutation = useCreateAccount();
   const [error, setError] = useState<string | null>(null);
-  const [, setSuccess] = useState(false);
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -43,9 +42,7 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
   });
 
   const submitForm = async (values: typeof form.values) => {
-    setLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
       const accountData: AccountRequest = {
@@ -58,15 +55,12 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
         spendLimit: (values.spendLimit || 0) * 100,
       };
 
-      await createAccount(accountData);
-      setSuccess(true);
+      await createAccountMutation.mutateAsync(accountData);
       form.reset();
 
       onAccountCreated?.();
-    } catch (error) {
+    } catch {
       setError('Failed to create account');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -161,7 +155,7 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
           <Button variant="light" color="gray" onClick={() => form.reset()}>
             Reset
           </Button>
-          <Button type="submit" px="xl">
+          <Button type="submit" px="xl" loading={createAccountMutation.isPending}>
             Create Account
           </Button>
         </Group>

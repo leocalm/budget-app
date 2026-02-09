@@ -25,6 +25,26 @@ interface MockVendor {
   transaction_count: number;
 }
 
+interface MockAccount {
+  id: string;
+  name: string;
+  color: string;
+  icon: string;
+  account_type: string;
+  currency: {
+    id: string;
+    name: string;
+    symbol: string;
+    currency: string;
+    decimal_places: number;
+  };
+  balance: number;
+  spend_limit?: number;
+  balance_per_day: Array<{ date: string; balance: number }>;
+  balance_change_this_period: number;
+  transaction_count: number;
+}
+
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
@@ -70,6 +90,7 @@ export class MockApiServer {
     balance_change_this_period: 0,
     transaction_count: 0,
   };
+  private accounts: MockAccount[] = [this.defaultAccount];
   private readonly routeHandler = async (route: Route): Promise<void> => {
     const url = new URL(route.request().url());
     if (!this.shouldHandlePath(url.pathname)) {
@@ -206,7 +227,54 @@ export class MockApiServer {
     }
 
     if (method === 'GET' && path === '/accounts') {
-      return { body: [this.defaultAccount] };
+      return { body: this.accounts };
+    }
+
+    if (method === 'POST' && path === '/accounts') {
+      const name = typeof payload?.name === 'string' ? payload.name.trim() : '';
+      if (!name) {
+        return {
+          status: 422,
+          body: { message: 'Account name is required' },
+        };
+      }
+
+      const accountType = typeof payload?.account_type === 'string' ? payload.account_type : '';
+      if (!accountType) {
+        return {
+          status: 422,
+          body: { message: 'Account type is required' },
+        };
+      }
+
+      const existing = this.accounts.find(
+        (account) => account.name.toLowerCase() === name.toLowerCase()
+      );
+      if (existing) {
+        return {
+          status: 409,
+          body: { message: 'Account already exists' },
+        };
+      }
+
+      const balance = typeof payload?.balance === 'number' ? payload.balance : 0;
+      const spendLimit = typeof payload?.spend_limit === 'number' ? payload.spend_limit : undefined;
+      const createdAccount: MockAccount = {
+        id: `account-${this.accounts.length + 1}`,
+        name,
+        color: typeof payload?.color === 'string' ? payload.color : '#0088cc',
+        icon: typeof payload?.icon === 'string' ? payload.icon : 'wallet',
+        account_type: accountType,
+        currency: this.defaultCurrency,
+        balance,
+        spend_limit: spendLimit,
+        balance_per_day: [],
+        balance_change_this_period: 0,
+        transaction_count: 0,
+      };
+
+      this.accounts.push(createdAccount);
+      return { status: 201, body: createdAccount };
     }
 
     if (method === 'GET' && path === '/categories') {
