@@ -119,4 +119,20 @@ describe('PeriodFormModal', () => {
       );
     });
   });
+
+  it('always includes copyBudgetsFromPrevious: true in the payload', async () => {
+    const user = userEvent.setup();
+    renderModal();
+
+    fireEvent.change(screen.getByLabelText(/Start Date/i), { target: { value: '2026-03-01' } });
+    await user.click(screen.getByRole('button', { name: 'Create Period' }));
+
+    await waitFor(() => {
+      expect(createBudgetPeriodMutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          copyBudgetsFromPrevious: true,
+        })
+      );
+    });
+  });
 });
