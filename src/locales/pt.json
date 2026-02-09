@@ -31,6 +31,31 @@
         "serverError": "Erro no servidor. Por favor, tente novamente mais tarde."
       }
     },
+    "register": {
+      "createAccountTitle": "Criar uma conta",
+      "fullNameLabel": "Nome Completo",
+      "fullNamePlaceholder": "João Silva",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Sua senha",
+      "confirmPasswordLabel": "Confirmar Senha",
+      "confirmPasswordPlaceholder": "Confirme sua senha",
+      "registerButton": "Cadastrar",
+      "alreadyHaveAccount": "Já tem uma conta?",
+      "login": "Fazer login",
+      "validation": {
+        "nameMinLength": "O nome deve ter pelo menos 2 letras",
+        "invalidEmail": "E-mail inválido",
+        "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+        "passwordStrengthInsufficient": "A senha não é forte o suficiente. Aumente seu comprimento e variedade para torná-la mais segura.",
+        "passwordsDoNotMatch": "As senhas não correspondem"
+      },
+      "errors": {
+        "title": "Falha no Cadastro",
+        "generic": "Ocorreu um erro durante o cadastro. Por favor, tente novamente."
+      }
+    },
     "logout": "Sair",
     "session": {
       "refreshFailed": "Nao foi possivel restaurar sua sessao. Por favor, faca login novamente."

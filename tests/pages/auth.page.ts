@@ -18,6 +18,14 @@ export class AuthPage extends BasePage {
     await this.page.getByRole('button', { name: 'Sign in' }).click();
   }
 
+  async register(name: string, email: string, password: string): Promise<void> {
+    await this.page.getByLabel('Full Name').fill(name);
+    await this.page.getByLabel('Email').fill(email);
+    await this.page.getByLabel('Password', { exact: true }).first().fill(password);
+    await this.page.getByLabel('Confirm Password').fill(password);
+    await this.page.getByRole('button', { name: 'Register' }).click();
+  }
+
   async logout(): Promise<void> {
     await this.page.getByTestId('user-menu-trigger').click();
     await this.page.getByTestId('user-menu-logout').click();
@@ -25,5 +33,9 @@ export class AuthPage extends BasePage {
 
   async expectLoginError(): Promise<void> {
     await expect(this.page.getByText(/invalid email or password/i)).toBeVisible();
+  }
+
+  async expectRegistrationError(errorMessage: string): Promise<void> {
+    await expect(this.page.getByText(errorMessage)).toBeVisible();
   }
 }

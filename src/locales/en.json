@@ -48,7 +48,12 @@
         "nameMinLength": "Name must have at least 2 letters",
         "invalidEmail": "Invalid email",
         "passwordMinLength": "Password should include at least 6 characters",
+        "passwordStrengthInsufficient": "Password is not strong enough. Increase its length and variety to make it stronger.",
         "passwordsDoNotMatch": "Passwords do not match"
+      },
+      "errors": {
+        "title": "Registration Failed",
+        "generic": "An error occurred during registration. Please try again."
       }
     },
     "forgotPassword": {
