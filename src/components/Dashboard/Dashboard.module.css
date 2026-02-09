@@ -1,334 +1,353 @@
 /* ── Dashboard Header ── */
 .dashboardHeader {
-    border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 24px !important;
-    padding-bottom: 24px !important;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 24px !important;
+  padding-bottom: 24px !important;
 }
 
 .dashboardTitle {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin: 0 !important;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 !important;
 }
 
-[data-mantine-color-scheme="dark"] .dashboardTitle {
-    background: linear-gradient(135deg, #fff 0%, var(--accent-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+[data-mantine-color-scheme='dark'] .dashboardTitle {
+  background: linear-gradient(135deg, #fff 0%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-[data-mantine-color-scheme="light"] .dashboardTitle {
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+[data-mantine-color-scheme='light'] .dashboardTitle {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ── Stats Grid Layout ── */
 .statsGrid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
 /* ── Stat Card Base Styles ── */
 .statCard {
-    overflow: hidden;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease backwards;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease backwards;
 }
 
 .statCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .statCard:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--border-medium);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-medium);
 }
 
 .statCard:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* ── Featured Stat Card Styling ── */
-[data-mantine-color-scheme="dark"] .statCard.featured {
-    background: linear-gradient(135deg, rgb(0, 212, 255, 0.12) 0%, rgb(180, 122, 255, 0.08) 100%);
-    border: 1px solid rgb(0, 212, 255, 0.25);
-    box-shadow: 0 0 40px rgb(0, 212, 255, 0.2);
+[data-mantine-color-scheme='dark'] .statCard.featured {
+  background: linear-gradient(135deg, rgb(0, 212, 255, 0.12) 0%, rgb(180, 122, 255, 0.08) 100%);
+  border: 1px solid rgb(0, 212, 255, 0.25);
+  box-shadow: 0 0 40px rgb(0, 212, 255, 0.2);
 }
 
-[data-mantine-color-scheme="light"] .statCard.featured {
-    background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.05) 100%);
-    border: 1px solid rgb(0, 212, 255, 0.2);
-    box-shadow: 0 0 24px rgb(0, 212, 255, 0.12);
+[data-mantine-color-scheme='light'] .statCard.featured {
+  background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.05) 100%);
+  border: 1px solid rgb(0, 212, 255, 0.2);
+  box-shadow: 0 0 24px rgb(0, 212, 255, 0.12);
 }
 
 .statCard.featured::before {
-    opacity: 1;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  opacity: 1;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
 }
 
 .statCard.featured .statValue {
-    font-size: 48px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: inline-block;
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
 }
 
 /* ── Stagger Animations ── */
 .statCard:nth-child(1) {
-    animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
 .statCard:nth-child(2) {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .statCard:nth-child(3) {
-    animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
 .statCard:nth-child(4) {
-    animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
 @keyframes fade-in-up {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Stat Value Styling ── */
 .statValue {
-    font-size: 36px;
-    font-weight: 700;
-    font-family: var(--mantine-font-family-monospace);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+  font-size: 36px;
+  font-weight: 700;
+  font-family: var(--mantine-font-family-monospace);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 /* ── Charts Section ── */
 .chartsSection {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-    margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
 /* ── Chart Card Styling ── */
 .chartCard {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .chartCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .chartCard:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* ── Category Bars Container ── */
 .categoryBarContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 /* ── Category Item ── */
 .categoryItem {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border-subtle);
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
 }
 
 .categoryItem:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .categoryItem:hover {
-    padding-left: 8px;
+  padding-left: 8px;
 }
 
 .categoryName {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .categoryBarWrapper {
-    flex: 3;
-    height: 32px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
+  flex: 3;
+  height: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
 }
 
-[data-mantine-color-scheme="dark"] .categoryBarWrapper {
-    background: rgb(255, 255, 255, 0.03);
+[data-mantine-color-scheme='dark'] .categoryBarWrapper {
+  background: rgb(255, 255, 255, 0.03);
 }
 
-[data-mantine-color-scheme="light"] .categoryBarWrapper {
-    background: rgb(0, 0, 0, 0.04);
+[data-mantine-color-scheme='light'] .categoryBarWrapper {
+  background: rgb(0, 0, 0, 0.04);
 }
 
 .categoryBar {
-    height: 100%;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: white;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(90deg, var(--bar-color, var(--accent-primary)) 0%, var(--bar-color-end, var(--accent-primary)) 100%);
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(
+    90deg,
+    var(--bar-color, var(--accent-primary)) 0%,
+    var(--bar-color-end, var(--accent-primary)) 100%
+  );
 }
 
 .categoryAmount {
-    font-family: var(--mantine-font-family-monospace);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    white-space: nowrap;
-    min-width: 60px;
-    text-align: right;
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  min-width: 60px;
+  text-align: right;
 }
 
 /* ── Recent Activity Table Styling ── */
 .activityHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .activityTitle {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .viewAllBtn {
-    padding: 8px 16px;
-    background: rgb(0, 212, 255, 0.1);
-    color: var(--accent-primary);
-    border: 1px solid rgb(0, 212, 255, 0.2);
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  padding: 8px 16px;
+  background: rgb(0, 212, 255, 0.1);
+  color: var(--accent-primary);
+  border: 1px solid rgb(0, 212, 255, 0.2);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .viewAllBtn:hover {
-    background: rgb(0, 212, 255, 0.15);
-    transform: translateX(4px);
+  background: rgb(0, 212, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.noPeriodContainer {
+  margin: 0 auto;
+  max-width: 820px;
+  padding: 24px;
+}
+
+.noPeriodAlert {
+  border: 1px solid rgb(255, 169, 64, 0.35);
+  background: linear-gradient(135deg, rgb(255, 169, 64, 0.14) 0%, rgb(255, 107, 157, 0.08) 100%);
 }
 
 /* ── Trend Badge Styles ── */
 .trendBadge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
 }
 
 .trendBadge.positive {
-    color: var(--accent-success);
-    background: rgb(0, 255, 163, 0.1);
+  color: var(--accent-success);
+  background: rgb(0, 255, 163, 0.1);
 }
 
 .trendBadge.negative {
-    color: var(--accent-danger);
-    background: rgb(255, 107, 157, 0.1);
+  color: var(--accent-danger);
+  background: rgb(255, 107, 157, 0.1);
 }
 
 /* ── Responsive Design ── */
 @media (max-width: 1200px) {
-    .statsGrid {
-        grid-template-columns: 1fr 1fr;
-    }
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    .chartsSection {
-        grid-template-columns: 1fr;
-    }
+  .chartsSection {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-    .statsGrid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 32px;
-    }
+  .noPeriodContainer {
+    padding: 8px;
+  }
 
-    .chartsSection {
-        gap: 16px;
-        margin-bottom: 32px;
-    }
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
 
-    .statValue {
-        font-size: 28px;
-    }
+  .chartsSection {
+    gap: 16px;
+    margin-bottom: 32px;
+  }
 
-    .statCard.featured .statValue {
-        font-size: 36px;
-    }
+  .statValue {
+    font-size: 28px;
+  }
 
-    .categoryName {
-        flex: 1;
-        min-width: 100px;
-    }
+  .statCard.featured .statValue {
+    font-size: 36px;
+  }
 
-    .categoryBarWrapper {
-        flex: 2;
-    }
+  .categoryName {
+    flex: 1;
+    min-width: 100px;
+  }
 
-    .categoryItem {
-        padding: 12px 0;
-    }
+  .categoryBarWrapper {
+    flex: 2;
+  }
+
+  .categoryItem {
+    padding: 12px 0;
+  }
 }

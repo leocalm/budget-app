@@ -270,11 +270,35 @@
     "title": "Transactions",
     "subtitle": "Review and manage your financial activity for the selected period."
   },
+  "budgetPeriodSelector": {
+    "selectPeriod": "Select period",
+    "noPeriods": "No periods",
+    "triggerMeta": "{{range}} - {{days}}",
+    "triggerMetaEmpty": "Set up your first budget period",
+    "range": "{{start}} - {{end}}",
+    "daysLeft_one": "{{count}} day left",
+    "daysLeft_other": "{{count}} days left",
+    "ended": "Ended",
+    "active": "ACTIVE",
+    "sheetTitle": "Choose budget period",
+    "managePeriods": "Manage Periods",
+    "warningTitle": "You are in a period gap",
+    "warningMessage": "Some transactions may not belong to any budget period.",
+    "fixPeriodGap": "Fix This"
+  },
+  "periods": {
+    "page": {
+      "title": "Budget Periods",
+      "description": "Periods management is being built in this phase. You can open this page from period picker actions already.",
+      "backToDashboard": "Back to Dashboard"
+    }
+  },
   "router": {
     "goals": "Goals Page",
     "recurring": "Recurring Page",
     "help": "Help Page",
-    "more": "More Page"
+    "more": "More Page",
+    "periods": "Periods Page"
   },
   "layout": {
     "logo": {
@@ -362,6 +386,11 @@
   },
   "dashboard": {
     "title": "Financial Dashboard",
+    "noPeriod": {
+      "title": "You are in a period gap",
+      "message": "Your transactions are not currently associated with a budget period. Create or manage periods to restore accurate reporting.",
+      "cta": "Manage Periods"
+    },
     "stats": {
       "remainingBudget": {
         "label": "Remaining Budget",

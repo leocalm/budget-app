@@ -5,7 +5,7 @@ import { queryKeys } from './queryKeys';
 
 export const useAccounts = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: queryKeys.accounts(),
+    queryKey: queryKeys.accounts(selectedPeriodId),
     queryFn: () => fetchAccounts(selectedPeriodId),
     enabled: selectedPeriodId !== null,
   });

@@ -6,15 +6,29 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { BudgetProvider } from '@/context/BudgetContext';
+import { queryKeys } from '@/hooks/queryKeys';
+import { BudgetPeriod } from '@/types/budget';
 import { QuickAddTransaction } from './QuickAddTransaction';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
+      staleTime: Number.POSITIVE_INFINITY,
     },
   },
 });
+
+const mockCurrentPeriod: BudgetPeriod = {
+  id: 'period-storybook-current',
+  name: 'February 2026',
+  startDate: '2026-02-01',
+  endDate: '2026-02-28',
+};
+
+queryClient.setQueryData(queryKeys.budgetPeriods.current(), mockCurrentPeriod);
+queryClient.setQueryData(queryKeys.budgetPeriods.list(), [mockCurrentPeriod]);
 
 const meta: Meta<typeof QuickAddTransaction> = {
   title: 'Transactions/QuickAddTransaction',
@@ -42,9 +56,11 @@ const meta: Meta<typeof QuickAddTransaction> = {
           }}
         >
           <Notifications />
-          <div style={{ padding: '2rem', background: '#0a0e14', minHeight: '100vh' }}>
-            <Story />
-          </div>
+          <BudgetProvider>
+            <div style={{ padding: '2rem', background: '#0a0e14', minHeight: '100vh' }}>
+              <Story />
+            </div>
+          </BudgetProvider>
         </MantineProvider>
       </QueryClientProvider>
     ),

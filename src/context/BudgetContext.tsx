@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
-import { useCurrentBudgetPeriod } from '@/hooks/useBudget';
+import { useBudgetPeriods, useCurrentBudgetPeriod } from '@/hooks/useBudget';
 
 interface BudgetPeriodContextType {
   selectedPeriodId: string | null;
@@ -16,12 +16,36 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   });
 
   const { data: currentPeriod } = useCurrentBudgetPeriod();
+  const { data: periods = [], isFetched: hasFetchedPeriods } = useBudgetPeriods();
 
   useEffect(() => {
-    if (currentPeriod && !selectedPeriodId) {
-      setSelectedPeriodId(currentPeriod.id);
+    if (!hasFetchedPeriods) {
+      return;
     }
-  }, [currentPeriod, selectedPeriodId, setSelectedPeriodId]);
+
+    if (periods.length === 0) {
+      if (selectedPeriodId !== null) {
+        setSelectedPeriodId(null);
+      }
+
+      return;
+    }
+
+    const isSelectedPeriodValid = Boolean(
+      selectedPeriodId && periods.some((period) => period.id === selectedPeriodId)
+    );
+
+    if (isSelectedPeriodValid) {
+      return;
+    }
+
+    const fallbackPeriod =
+      (currentPeriod && periods.find((period) => period.id === currentPeriod.id)) || periods[0];
+
+    if (fallbackPeriod && fallbackPeriod.id !== selectedPeriodId) {
+      setSelectedPeriodId(fallbackPeriod.id);
+    }
+  }, [currentPeriod, hasFetchedPeriods, periods, selectedPeriodId, setSelectedPeriodId]);
 
   return (
     <BudgetPeriodContext.Provider value={{ selectedPeriodId, setSelectedPeriodId }}>

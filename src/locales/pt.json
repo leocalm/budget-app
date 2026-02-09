@@ -104,6 +104,43 @@
       "helpSupport": "Ajuda e Suporte"
     }
   },
+  "budgetPeriodSelector": {
+    "selectPeriod": "Selecionar período",
+    "noPeriods": "Sem períodos",
+    "triggerMeta": "{{range}} - {{days}}",
+    "triggerMetaEmpty": "Configure seu primeiro período",
+    "range": "{{start}} - {{end}}",
+    "daysLeft_one": "{{count}} dia restante",
+    "daysLeft_other": "{{count}} dias restantes",
+    "ended": "Encerrado",
+    "active": "ATIVO",
+    "sheetTitle": "Escolha o período",
+    "managePeriods": "Gerenciar Períodos",
+    "warningTitle": "Você está em uma lacuna de período",
+    "warningMessage": "Algumas transações podem não pertencer a nenhum período.",
+    "fixPeriodGap": "Corrigir"
+  },
+  "periods": {
+    "page": {
+      "title": "Períodos de Orçamento",
+      "description": "A gestão de períodos está sendo construída nesta fase. Você já pode abrir esta página pelo seletor de períodos.",
+      "backToDashboard": "Voltar ao Dashboard"
+    }
+  },
+  "router": {
+    "periods": "Página de Períodos",
+    "goals": "Página de Metas",
+    "recurring": "Página de Recorrentes",
+    "help": "Página de Ajuda",
+    "more": "Página Mais"
+  },
+  "dashboard": {
+    "noPeriod": {
+      "title": "Você está em uma lacuna de período",
+      "message": "Suas transações não estão associadas a nenhum período de orçamento. Crie ou ajuste períodos para restaurar relatórios corretos.",
+      "cta": "Gerenciar Períodos"
+    }
+  },
   "vendors": {
     "title": "Fornecedores",
     "subtitle": "Gerencie seus fornecedores de transações",

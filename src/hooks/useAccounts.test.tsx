@@ -51,7 +51,27 @@ describe('useAccounts', () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(mockFetchAccounts).toHaveBeenCalled();
+    expect(mockFetchAccounts).toHaveBeenCalledWith('period-1');
+  });
+
+  it('caches accounts per period id', async () => {
+    const { wrapper, queryClient } = createWrapper();
+    mockFetchAccounts.mockResolvedValue([]);
+
+    const periodOneHook = renderHook(() => useAccounts('period-1'), { wrapper });
+
+    await waitFor(() => {
+      expect(periodOneHook.result.current.isSuccess).toBe(true);
+    });
+
+    const periodTwoHook = renderHook(() => useAccounts('period-2'), { wrapper });
+
+    await waitFor(() => {
+      expect(periodTwoHook.result.current.isSuccess).toBe(true);
+    });
+
+    expect(queryClient.getQueryState(queryKeys.accounts('period-1'))?.status).toBe('success');
+    expect(queryClient.getQueryState(queryKeys.accounts('period-2'))?.status).toBe('success');
   });
 
   it('refetches accounts after delete', async () => {

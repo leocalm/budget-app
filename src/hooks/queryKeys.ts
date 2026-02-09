@@ -19,7 +19,8 @@ export const queryKeys = {
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,
 
   // Accounts
-  accounts: () => ['accounts'] as const,
+  accounts: (periodId?: string | null) =>
+    periodId === undefined ? (['accounts'] as const) : (['accounts', periodId] as const),
   account: (id: string) => ['account', id] as const,
 
   // Budget
