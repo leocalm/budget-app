@@ -15,7 +15,7 @@ vi.mock('@/hooks/useAccounts', () => ({
       {
         id: '1',
         name: 'ING',
-        icon: '💳',
+        icon: 'wallet',
         color: '#00ffa3',
         account_type: 'Checking',
         balance: 500,
@@ -30,7 +30,7 @@ vi.mock('@/hooks/useAccounts', () => ({
       {
         id: '2',
         name: 'Savings',
-        icon: '💰',
+        icon: 'pigMoney',
         color: '#ffa500',
         account_type: 'Savings',
         balance: 1000,
@@ -132,6 +132,19 @@ describe('QuickAddTransaction', () => {
     expect(screen.getByText(/Tab or Enter to move between fields/i)).toBeInTheDocument();
   });
 
+  it('does not display account icon keys as plain text in account options', async () => {
+    const user = userEvent.setup();
+
+    renderComponent();
+
+    await user.click(screen.getByPlaceholderText('Account...'));
+
+    expect(screen.queryByText('wallet')).not.toBeInTheDocument();
+    expect(screen.queryByText('pigMoney')).not.toBeInTheDocument();
+    expect(screen.getByText('ING')).toBeInTheDocument();
+    expect(screen.getByText('Savings')).toBeInTheDocument();
+  });
+
   it('validates required fields on submit', async () => {
     renderComponent();
 
@@ -158,7 +171,7 @@ describe('QuickAddTransaction', () => {
     await user.type(screen.getByPlaceholderText(/description/i), 'Lunch');
     await user.type(screen.getByPlaceholderText('0.00'), '15.50');
     await user.click(screen.getByPlaceholderText('Account...'));
-    await user.click(screen.getByText('💳 ING'));
+    await user.click(screen.getByText('ING'));
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🍔 Comida'));
 
@@ -199,7 +212,7 @@ describe('QuickAddTransaction', () => {
 
     const accountInput = screen.getByPlaceholderText('Account...');
     await user.click(accountInput);
-    await user.click(screen.getByText('💳 ING'));
+    await user.click(screen.getByText('ING'));
 
     const categoryInput = screen.getByPlaceholderText('Category...');
     await user.click(categoryInput);
@@ -319,7 +332,7 @@ describe('QuickAddTransaction', () => {
     await user.type(screen.getByPlaceholderText(/description/i), 'Transfer to Savings');
     await user.type(screen.getByPlaceholderText('0.00'), '100.00');
     await user.click(screen.getByPlaceholderText('Account...'));
-    await user.click(screen.getByText('💳 ING'));
+    await user.click(screen.getByText('ING'));
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🔄 Transfer'));
 
@@ -348,7 +361,7 @@ describe('QuickAddTransaction', () => {
     await user.type(screen.getByPlaceholderText(/description/i), 'Transfer to Savings');
     await user.type(screen.getByPlaceholderText('0.00'), '100.00');
     await user.click(screen.getByPlaceholderText('Account...'));
-    const allING = screen.getAllByText('💳 ING');
+    const allING = screen.getAllByText('ING');
     await user.click(allING[0]); // Click first occurrence
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🔄 Transfer'));
@@ -358,7 +371,7 @@ describe('QuickAddTransaction', () => {
       expect(screen.getByPlaceholderText('To Account...')).toBeInTheDocument();
     });
     await user.click(screen.getByPlaceholderText('To Account...'));
-    const allSavings = screen.getAllByText('💰 Savings');
+    const allSavings = screen.getAllByText('Savings');
     await user.click(allSavings[allSavings.length - 1]); // Click last occurrence (from toAccount dropdown)
 
     // Submit
@@ -390,7 +403,7 @@ describe('QuickAddTransaction', () => {
     await user.type(screen.getByPlaceholderText(/description/i), 'Lunch');
     await user.type(screen.getByPlaceholderText('0.00'), '15.50');
     await user.click(screen.getByPlaceholderText('Account...'));
-    await user.click(screen.getByText('💳 ING'));
+    await user.click(screen.getByText('ING'));
     await user.click(screen.getByPlaceholderText('Category...'));
     await user.click(screen.getByText('🍔 Comida'));
 

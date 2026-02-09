@@ -18,6 +18,7 @@ import { CategoryResponse, CategoryType } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
 import { convertCentsToDisplay } from '@/utils/currency';
+import { getIcon, iconMap } from '@/utils/IconMap';
 
 interface EditTransactionFormProps {
   transaction: TransactionResponse;
@@ -55,6 +56,18 @@ const inputStyles = {
     color: '#8892a6',
     marginBottom: '8px',
   },
+};
+
+const renderAccountIcon = (icon?: string) => {
+  if (icon && iconMap[icon]) {
+    return getIcon(icon, 16);
+  }
+
+  if (icon) {
+    return <span aria-hidden>{icon}</span>;
+  }
+
+  return getIcon('wallet', 16);
 };
 
 export const EditTransactionForm = ({
@@ -104,6 +117,17 @@ export const EditTransactionForm = ({
   const filteredCategories = categories.filter(
     (cat) => cat.categoryType === form.values.categoryType
   );
+
+  const renderAccountOption = ({ option }: { option: { value: string; label: string } }) => {
+    const account = accounts.find((acc) => acc.id === option.value);
+
+    return (
+      <Group gap="xs" wrap="nowrap">
+        {renderAccountIcon(account?.icon)}
+        <span>{option.label}</span>
+      </Group>
+    );
+  };
 
   const handleSubmit = form.onSubmit(async (values) => {
     try {
@@ -171,8 +195,9 @@ export const EditTransactionForm = ({
           onChange={(value) => form.setFieldValue('fromAccountId', value || '')}
           data={accounts.map((acc) => ({
             value: acc.id,
-            label: `${acc.icon || ''} ${acc.name}`.trim(),
+            label: acc.name,
           }))}
+          renderOption={renderAccountOption}
           error={form.errors.fromAccountId}
           searchable
           styles={inputStyles}
@@ -189,8 +214,9 @@ export const EditTransactionForm = ({
               .filter((acc) => acc.id !== form.values.fromAccountId)
               .map((acc) => ({
                 value: acc.id,
-                label: `${acc.icon || ''} ${acc.name}`.trim(),
+                label: acc.name,
               }))}
+            renderOption={renderAccountOption}
             error={form.errors.toAccountId}
             searchable
             styles={inputStyles}
