@@ -537,8 +537,6 @@
     }
   },
   "router": {
-    "goals": "Goals Page",
-    "recurring": "Recurring Page",
     "help": "Help Page",
     "more": "More Page",
     "periods": "Periods Page"
@@ -565,10 +563,6 @@
       "vendors": "Vendors",
       "budgetPlan": "Budget Plan",
       "overlays": "Overlays",
-      "insights": "Insights",
-      "reports": "Reports",
-      "goals": "Goals",
-      "recurring": "Recurring",
       "other": "Other",
       "settings": "Settings",
       "helpSupport": "Help & Support"

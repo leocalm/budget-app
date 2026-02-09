@@ -57,11 +57,6 @@ const OverlaysPage = lazy(() =>
     default: module.OverlaysPage,
   }))
 );
-const ReportsPage = lazy(() =>
-  import('./components/Reports/ReportsPage').then((module) => ({
-    default: module.ReportsPage,
-  }))
-);
 const SettingsPage = lazy(() =>
   import('./components/Settings/SettingsPage').then((module) => ({
     default: module.SettingsPage,
@@ -135,10 +130,6 @@ export function Router() {
         { path: 'budget', element: withPageLoader(<Budget />) },
         { path: 'periods', element: withPageLoader(<PeriodsPage />) },
         { path: 'overlays', element: withPageLoader(<OverlaysPage />) },
-        // Placeholders for other routes
-        { path: 'reports', element: withPageLoader(<ReportsPage />) },
-        { path: 'goals', element: <div>{t('router.goals')}</div> },
-        { path: 'recurring', element: <div>{t('router.recurring')}</div> },
         { path: 'settings', element: withPageLoader(<SettingsPage />) },
         { path: 'help', element: <div>{t('router.help')}</div> },
         { path: 'more', element: <div>{t('router.more')}</div> },
