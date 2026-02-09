@@ -19,11 +19,24 @@ interface MockApiResponse {
   headers?: Record<string, string>;
 }
 
+interface MockVendor {
+  id: string;
+  name: string;
+  transaction_count: number;
+}
+
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
   private users = new Map<string, MockUser>();
   private sessions = new Map<string, MockSession>();
+  private vendors: MockVendor[] = [
+    {
+      id: 'vendor-1',
+      name: 'Demo Vendor',
+      transaction_count: 0,
+    },
+  ];
   private readonly defaultPeriod = {
     id: 'period-1',
     name: 'February 2026',
@@ -156,11 +169,16 @@ export class MockApiServer {
       return;
     }
 
-    const response = this.resolveAuthenticatedRoute(method, path);
+    const body = this.parseBody(request.postData());
+    const response = this.resolveAuthenticatedRoute(method, path, body);
     await this.fulfill(route, response);
   }
 
-  private resolveAuthenticatedRoute(method: string, path: string): MockApiResponse {
+  private resolveAuthenticatedRoute(
+    method: string,
+    path: string,
+    payload?: Record<string, unknown>
+  ): MockApiResponse {
     if (method === 'GET' && path === '/budget_period/current') {
       return { body: this.defaultPeriod };
     }
@@ -214,15 +232,36 @@ export class MockApiServer {
     }
 
     if (method === 'GET' && path === '/vendors') {
-      return {
-        body: [
-          {
-            id: 'vendor-1',
-            name: 'Demo Vendor',
-            transaction_count: 0,
-          },
-        ],
+      return { body: this.vendors };
+    }
+
+    if (method === 'POST' && path === '/vendors') {
+      const name = typeof payload?.name === 'string' ? payload.name.trim() : '';
+      if (!name) {
+        return {
+          status: 422,
+          body: { message: 'Vendor name is required' },
+        };
+      }
+
+      const existing = this.vendors.find(
+        (vendor) => vendor.name.toLowerCase() === name.toLowerCase()
+      );
+      if (existing) {
+        return {
+          status: 409,
+          body: { message: 'Vendor already exists' },
+        };
+      }
+
+      const createdVendor: MockVendor = {
+        id: `vendor-${this.vendors.length + 1}`,
+        name,
+        transaction_count: 0,
       };
+
+      this.vendors.push(createdVendor);
+      return { status: 201, body: createdVendor };
     }
 
     if (method === 'GET' && path === '/transactions') {

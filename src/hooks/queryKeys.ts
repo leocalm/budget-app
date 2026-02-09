@@ -5,6 +5,7 @@
 
 export const queryKeys = {
   // Vendors
+  vendorsRoot: () => ['vendors'] as const,
   vendors: (periodId?: string | null) => ['vendors', periodId] as const,
   vendor: (id: string) => ['vendor', id] as const,
 

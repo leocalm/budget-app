@@ -17,7 +17,7 @@ export const useCreateVendor = () => {
   return useMutation({
     mutationFn: (data: VendorInput) => createVendor(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
     },
   });
 };
@@ -28,7 +28,7 @@ export const useUpdateVendor = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: VendorInput }) => updateVendor(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
     },
   });
 };
@@ -39,7 +39,7 @@ export const useDeleteVendor = () => {
   return useMutation({
     mutationFn: (id: string) => deleteVendor(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
