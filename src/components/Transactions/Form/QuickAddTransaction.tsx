@@ -22,6 +22,7 @@ import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
 import { formatDateForApi } from '@/utils/date';
+import { getIcon, iconMap } from '@/utils/IconMap';
 import styles from './QuickAddTransaction.module.css';
 
 interface QuickAddTransactionProps {
@@ -40,6 +41,18 @@ interface FormValues {
 }
 
 const inputClassNames = { input: styles.input };
+
+const renderAccountIcon = (icon?: string) => {
+  if (icon && iconMap[icon]) {
+    return getIcon(icon, 16);
+  }
+
+  if (icon) {
+    return <span aria-hidden>{icon}</span>;
+  }
+
+  return getIcon('wallet', 16);
+};
 
 export const QuickAddTransaction = ({
   onSuccess,
@@ -191,6 +204,17 @@ export const QuickAddTransaction = ({
     }
   };
 
+  const renderAccountOption = ({ option }: { option: { value: string; label: string } }) => {
+    const account = accounts.find((acc) => acc.id === option.value);
+
+    return (
+      <Group gap="xs" wrap="nowrap">
+        {renderAccountIcon(account?.icon)}
+        <span>{option.label}</span>
+      </Group>
+    );
+  };
+
   return (
     <Box className={styles.container} onKeyDown={handleKeyDown}>
       {/* Header */}
@@ -248,8 +272,9 @@ export const QuickAddTransaction = ({
             onChange={(value) => form.setFieldValue('fromAccountId', value || '')}
             data={accounts.map((acc) => ({
               value: acc.id,
-              label: `${acc.icon} ${acc.name}`,
+              label: acc.name,
             }))}
+            renderOption={renderAccountOption}
             error={form.errors.fromAccountId}
             searchable
             classNames={inputClassNames}
@@ -263,8 +288,9 @@ export const QuickAddTransaction = ({
               onChange={(value) => form.setFieldValue('toAccountId', value || '')}
               data={accounts.map((acc) => ({
                 value: acc.id,
-                label: `${acc.icon} ${acc.name}`,
+                label: acc.name,
               }))}
+              renderOption={renderAccountOption}
               error={form.errors.toAccountId}
               searchable
               classNames={inputClassNames}
