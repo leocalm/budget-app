@@ -18,7 +18,7 @@ const isEmoji = (str: string): boolean => {
 
 export const CategoryBadge = ({ category }: CategoryBadgeProps) => {
   // Generate background and border colors from category color (10% opacity bg, 20% opacity border)
-  const baseColor = category.color || '#8892a6';
+  const baseColor = category.color || '#00d4ff';
 
   // Render icon - either emoji or Tabler icon
   const renderIcon = () => {

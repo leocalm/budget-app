@@ -34,7 +34,7 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
               fontWeight: 700,
               letterSpacing: '-0.02em',
               marginBottom: '8px',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
             }}
           >
             {title}
@@ -43,7 +43,7 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
             <Text
               style={{
                 fontSize: '15px',
-                color: '#8892a6',
+                color: 'var(--text-secondary)',
               }}
             >
               {subtitle}

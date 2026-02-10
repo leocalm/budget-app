@@ -49,10 +49,10 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
   return (
     <Box
       style={{
-        background: '#151b26',
+        background: 'var(--bg-card)',
         padding: '24px',
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
+        border: '1px solid var(--border-subtle)',
         marginBottom: '32px',
       }}
     >
@@ -61,7 +61,7 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
         gap="sm"
         style={{
           marginBottom: '24px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          borderBottom: '1px solid var(--border-subtle)',
           paddingBottom: '16px',
         }}
       >
@@ -76,19 +76,19 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
               fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              color: typeFilter === tab.value ? '#00d4ff' : '#8892a6',
+              color: typeFilter === tab.value ? 'var(--accent-primary)' : 'var(--text-secondary)',
               background: typeFilter === tab.value ? 'rgba(0, 212, 255, 0.1)' : 'transparent',
             }}
             onMouseEnter={(e) => {
               if (typeFilter !== tab.value) {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.background = 'var(--bg-elevated)';
+                e.currentTarget.style.color = 'var(--text-primary)';
               }
             }}
             onMouseLeave={(e) => {
               if (typeFilter !== tab.value) {
                 e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#8892a6';
+                e.currentTarget.style.color = 'var(--text-secondary)';
               }
             }}
           >
@@ -107,11 +107,11 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
               onClick={() => toggleQuickFilter(filter.id)}
               style={{
                 padding: '8px 16px',
-                background: isActive ? 'rgba(0, 212, 255, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${isActive ? '#00d4ff' : 'rgba(255, 255, 255, 0.06)'}`,
+                background: isActive ? 'rgba(0, 212, 255, 0.15)' : 'var(--bg-elevated)',
+                border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
                 borderRadius: '8px',
                 fontSize: '13px',
-                color: isActive ? '#00d4ff' : '#8892a6',
+                color: isActive ? 'var(--accent-primary)' : 'var(--text-secondary)',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 display: 'flex',
@@ -120,16 +120,16 @@ export function TransactionFilters({ typeFilter, onTypeFilterChange }: Transacti
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.borderColor = '#00d4ff';
-                  e.currentTarget.style.color = '#00d4ff';
+                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                  e.currentTarget.style.color = 'var(--accent-primary)';
                   e.currentTarget.style.background = 'rgba(0, 212, 255, 0.05)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                  e.currentTarget.style.color = '#8892a6';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                  e.currentTarget.style.background = 'var(--bg-elevated)';
                 }
               }}
             >

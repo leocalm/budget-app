@@ -23,10 +23,10 @@ const StatCard = ({ label, value, color, type }: StatCardProps) => {
   return (
     <Box
       style={{
-        background: '#151b26',
+        background: 'var(--bg-card)',
         padding: '24px',
         borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
+        border: '1px solid var(--border-subtle)',
       }}
     >
       <Text
@@ -35,7 +35,7 @@ const StatCard = ({ label, value, color, type }: StatCardProps) => {
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
-          color: '#5a6272',
+          color: 'var(--text-tertiary)',
           marginBottom: '8px',
         }}
       >

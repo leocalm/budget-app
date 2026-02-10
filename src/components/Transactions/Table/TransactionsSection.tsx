@@ -40,9 +40,9 @@ export const TransactionsSection = ({
   return (
     <Box
       style={{
-        background: '#151b26',
+        background: 'var(--bg-card)',
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
+        border: '1px solid var(--border-subtle)',
         overflow: 'hidden',
       }}
     >
@@ -50,7 +50,7 @@ export const TransactionsSection = ({
       <Box
         style={{
           padding: '32px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -61,7 +61,7 @@ export const TransactionsSection = ({
         <Text
           style={{
             fontSize: '15px',
-            color: '#8892a6',
+            color: 'var(--text-secondary)',
           }}
         >
           {t('transactions.section.showing', {
@@ -80,23 +80,23 @@ export const TransactionsSection = ({
             placeholder={t('transactions.section.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.currentTarget.value)}
-            leftSection={<span style={{ color: '#5a6272' }}>🔍</span>}
+            leftSection={<span style={{ color: 'var(--text-tertiary)' }}>🔍</span>}
             styles={{
               input: {
                 width: '300px',
                 padding: '10px 16px 10px 40px',
-                background: '#1e2433',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border-medium)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 fontSize: '14px',
                 transition: 'all 0.3s ease',
                 '&:focus': {
-                  borderColor: '#00d4ff',
+                  borderColor: 'var(--accent-primary)',
                   boxShadow: '0 0 0 3px rgba(0, 212, 255, 0.1)',
                 },
                 '&::placeholder': {
-                  color: '#5a6272',
+                  color: 'var(--text-tertiary)',
                 },
               },
             }}
@@ -207,13 +207,13 @@ export const TransactionsSection = ({
             style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: '#8892a6',
+              color: 'var(--text-secondary)',
               marginBottom: '8px',
             }}
           >
             {t('transactions.section.noTransactionsFound')}
           </Text>
-          <Text style={{ fontSize: '14px', color: '#5a6272' }}>
+          <Text style={{ fontSize: '14px', color: 'var(--text-tertiary)' }}>
             {t('transactions.section.adjustFilters')}
           </Text>
         </Box>

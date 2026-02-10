@@ -43,8 +43,8 @@ export const TransactionGroup = ({
       {/* Date Header */}
       <Table.Tr
         style={{
-          background: 'rgba(255, 255, 255, 0.02)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          background: 'var(--bg-elevated)',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <Table.Td colSpan={6} style={{ padding: '16px 16px' }}>
@@ -54,7 +54,7 @@ export const TransactionGroup = ({
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: '#5a6272',
+              color: 'var(--text-tertiary)',
               whiteSpace: 'nowrap',
             }}
           >
