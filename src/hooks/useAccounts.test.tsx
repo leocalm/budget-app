@@ -2,20 +2,34 @@ import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createAccount, deleteAccount, fetchAccounts, updateAccount } from '@/api/account';
+import {
+  createAccount,
+  deleteAccount,
+  fetchAccounts,
+  fetchAccountsPage,
+  updateAccount,
+} from '@/api/account';
 import type { AccountRequest } from '@/types/account';
 import { queryKeys } from './queryKeys';
-import { useAccounts, useCreateAccount, useDeleteAccount, useUpdateAccount } from './useAccounts';
+import {
+  useAccounts,
+  useCreateAccount,
+  useDeleteAccount,
+  useInfiniteAccounts,
+  useUpdateAccount,
+} from './useAccounts';
 
 vi.mock('@/api/account', () => ({
   createAccount: vi.fn(),
   fetchAccounts: vi.fn(),
+  fetchAccountsPage: vi.fn(),
   deleteAccount: vi.fn(),
   updateAccount: vi.fn(),
 }));
 
 const mockCreateAccount = vi.mocked(createAccount);
 const mockFetchAccounts = vi.mocked(fetchAccounts);
+const mockFetchAccountsPage = vi.mocked(fetchAccountsPage);
 const mockDeleteAccount = vi.mocked(deleteAccount);
 const mockUpdateAccount = vi.mocked(updateAccount);
 
@@ -40,6 +54,7 @@ describe('useAccounts', () => {
   beforeEach(() => {
     mockCreateAccount.mockReset();
     mockFetchAccounts.mockReset();
+    mockFetchAccountsPage.mockReset();
     mockDeleteAccount.mockReset();
     mockUpdateAccount.mockReset();
   });
@@ -167,5 +182,73 @@ describe('useAccounts', () => {
 
     expect(mockUpdateAccount).toHaveBeenCalledWith('account-1', payload);
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.accounts() });
+  });
+
+  it('does not fetch paginated accounts when the period id is null', async () => {
+    const { wrapper } = createWrapper();
+    const { result } = renderHook(() => useInfiniteAccounts(null), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(mockFetchAccountsPage).not.toHaveBeenCalled();
+  });
+
+  it('fetches paginated accounts and loads the next page with cursor', async () => {
+    const { wrapper } = createWrapper();
+
+    mockFetchAccountsPage
+      .mockResolvedValueOnce({
+        accounts: [
+          {
+            id: 'account-1',
+            name: 'Checking',
+            color: '#000000',
+            icon: '🏦',
+            accountType: 'Checking',
+            balance: 1200,
+            balancePerDay: [],
+            balanceChangeThisPeriod: 0,
+            transactionCount: 0,
+            currency: {
+              id: 'currency-1',
+              name: 'USD',
+              symbol: '$',
+              currency: 'USD',
+              decimalPlaces: 2,
+            },
+          },
+        ],
+        nextCursor: 'cursor-1',
+      })
+      .mockResolvedValueOnce({
+        accounts: [],
+        nextCursor: null,
+      });
+
+    const { result } = renderHook(() => useInfiniteAccounts('period-1'), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(mockFetchAccountsPage).toHaveBeenNthCalledWith(1, {
+      selectedPeriodId: 'period-1',
+      cursor: null,
+      pageSize: 50,
+    });
+
+    await result.current.fetchNextPage();
+
+    await waitFor(() => {
+      expect(mockFetchAccountsPage).toHaveBeenCalledTimes(2);
+    });
+
+    expect(mockFetchAccountsPage).toHaveBeenNthCalledWith(2, {
+      selectedPeriodId: 'period-1',
+      cursor: 'cursor-1',
+      pageSize: 50,
+    });
   });
 });

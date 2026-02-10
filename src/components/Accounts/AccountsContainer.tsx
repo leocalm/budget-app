@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useAccounts, useDeleteAccount } from '@/hooks/useAccounts';
+import { useDeleteAccount, useInfiniteAccounts } from '@/hooks/useAccounts';
 import { PageHeader } from '../Transactions/PageHeader';
 import { AccountsSummary } from './AccountsSummary';
 import { AccountsTableView } from './AccountsTableView';
@@ -13,9 +13,19 @@ import styles from './Accounts.module.css';
 export function AccountsContainer() {
   const navigate = useNavigate();
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const { data: accounts, isLoading } = useAccounts(selectedPeriodId);
+  const {
+    data: paginatedAccounts,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteAccounts(selectedPeriodId);
   const deleteMutation = useDeleteAccount();
   const [createOpened, { toggle: toggleCreate, close: closeCreate }] = useDisclosure(false);
+
+  const accounts = useMemo(
+    () => paginatedAccounts?.pages.flatMap((page) => page.accounts) ?? [],
+    [paginatedAccounts]
+  );
 
   // Calculate Summary Stats
   const summary = useMemo(() => {
@@ -107,10 +117,17 @@ export function AccountsContainer() {
         {/* Accounts Grid */}
         <AccountsTableView
           accounts={accounts}
-          isLoading={isLoading}
+          isLoading={!paginatedAccounts}
           onDelete={(id) => deleteMutation.mutate(id)}
           onAccountUpdated={() => {}}
           onViewDetails={(account) => navigate(`/accounts/${account.id}`)}
+          hasMore={Boolean(hasNextPage)}
+          isLoadingMore={isFetchingNextPage}
+          onLoadMore={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              void fetchNextPage();
+            }
+          }}
         />
       </Stack>
     </Box>

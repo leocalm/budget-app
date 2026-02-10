@@ -37,3 +37,8 @@ export interface AccountRequest {
   balance: number;
   spendLimit?: number;
 }
+
+export interface AccountsPage {
+  accounts: AccountResponse[];
+  nextCursor: string | null;
+}

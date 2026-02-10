@@ -24,6 +24,8 @@ export const queryKeys = {
   // Accounts
   accounts: (periodId?: string | null) =>
     periodId === undefined ? (['accounts'] as const) : (['accounts', periodId] as const),
+  accountsInfinite: (periodId?: string | null, pageSize = 50) =>
+    ['accounts', periodId, 'infinite', pageSize] as const,
   account: (id: string) => ['account', id] as const,
 
   // Budget

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Drawer, Modal, SimpleGrid, useMantineTheme } from '@mantine/core';
+import { Box, Drawer, Modal, SimpleGrid, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { EmptyState, LoadingState } from '@/components/Utils';
 import type { AccountResponse } from '@/types/account';
@@ -14,6 +14,9 @@ interface AccountsTableViewProps {
   onAccountUpdated: () => void;
   onViewDetails?: (account: AccountResponse) => void;
   onAddAccount?: () => void;
+  hasMore?: boolean;
+  isLoadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function AccountsTableView({
@@ -23,12 +26,40 @@ export function AccountsTableView({
   onAccountUpdated,
   onViewDetails,
   onAddAccount,
+  hasMore = false,
+  isLoadingMore = false,
+  onLoadMore,
 }: AccountsTableViewProps) {
   const { t } = useTranslation();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [selected, setSelected] = useState<AccountResponse | null>(null);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // Intersection Observer for scroll-triggered load more
+  useEffect(() => {
+    if (!hasMore || isLoadingMore || !onLoadMore) {
+      return;
+    }
+
+    const node = sentinelRef.current;
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingMore, onLoadMore, accounts?.length]);
 
   if (isLoading) {
     return <LoadingState variant="spinner" text={t('states.loading.default')} />;
@@ -72,6 +103,21 @@ export function AccountsTableView({
           />
         ))}
       </SimpleGrid>
+
+      {(hasMore || isLoadingMore) && (
+        <Box
+          ref={sentinelRef}
+          style={{
+            padding: '12px 16px 20px',
+            textAlign: 'center',
+          }}
+        >
+          <Text size="sm" c="dimmed">
+            {isLoadingMore ? t('states.loading.default') : ''}
+          </Text>
+        </Box>
+      )}
+
       {isMobile ? (
         <Drawer opened={editOpened} onClose={closeEdit} title="Edit Account" position="bottom">
           <div>
