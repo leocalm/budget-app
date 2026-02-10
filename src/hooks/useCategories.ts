@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createBudgetCategory,
   deleteBudgetCategory,
@@ -9,6 +9,7 @@ import {
   createCategory,
   deleteCategory,
   fetchCategories,
+  fetchCategoriesPage,
   fetchUnbudgetedCategories,
   updateCategory,
 } from '@/api/category';
@@ -16,10 +17,27 @@ import { BudgetCategoryRequest, BudgetCategoryUpdateRequest } from '@/types/budg
 import { CategoryRequest } from '@/types/category';
 import { queryKeys } from './queryKeys';
 
+const CATEGORIES_PAGE_SIZE = 50;
+
 export const useCategories = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.categories(selectedPeriodId),
     queryFn: () => fetchCategories(selectedPeriodId),
+    enabled: selectedPeriodId !== null,
+  });
+};
+
+export const useInfiniteCategories = (selectedPeriodId: string | null) => {
+  return useInfiniteQuery({
+    queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
+    queryFn: ({ pageParam }) =>
+      fetchCategoriesPage({
+        selectedPeriodId,
+        cursor: pageParam,
+        pageSize: CATEGORIES_PAGE_SIZE,
+      }),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     enabled: selectedPeriodId !== null,
   });
 };

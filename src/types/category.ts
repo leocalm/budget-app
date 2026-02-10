@@ -29,3 +29,8 @@ export interface CategoryRequest {
   parentId: string | null;
   categoryType: CategoryType;
 }
+
+export interface CategoriesPage {
+  categories: CategoryWithStats[];
+  nextCursor: string | null;
+}
