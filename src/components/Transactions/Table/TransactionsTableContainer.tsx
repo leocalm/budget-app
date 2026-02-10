@@ -3,7 +3,7 @@ import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransaction, useDeleteTransaction } from '@/hooks/useTransactions';
-import { useCreateVendor, useVendors } from '@/hooks/useVendor';
+import { useCreateVendor, useVendors } from '@/hooks/useVendors';
 import { TransactionResponse } from '@/types/transaction';
 import { TransactionsTableView } from './TransactionsTableView';
 
