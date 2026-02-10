@@ -42,6 +42,7 @@
     "@vitest/browser-playwright": "^4.0.17",
     "dayjs": "^1.11.19",
     "emoji-picker-react": "^4.17.1",
+    "framer-motion": "^12.34.0",
     "i18next": "^25.8.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

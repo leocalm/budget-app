@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Group, Text, ThemeIcon } from '@mantine/core';
+import { Group, Image, Text, ThemeIcon } from '@mantine/core';
 
 export function Logo() {
   const { t } = useTranslation();
+
   return (
     <Group gap="xs">
-      <ThemeIcon size={40} radius="md" variant="gradient" gradient={{ from: 'cyan', to: 'violet' }}>
-        <span style={{ fontSize: 24 }}>👛</span>
+      <ThemeIcon size={40} radius="md" bg="transparent" variant="light">
+        <Image src="assets/icons/png/gradient/piggy-pulse.png" />
       </ThemeIcon>
-      <Text size="xl" fw={700} variant="gradient" gradient={{ from: 'white', to: 'cyan' }}>
+      <Text size="xl" fw={700} className="brand-text">
         {t('layout.logo.title')}
       </Text>
     </Group>
