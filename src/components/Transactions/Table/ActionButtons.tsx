@@ -13,12 +13,12 @@ const actionBtnStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'rgba(255, 255, 255, 0.05)',
-  border: '1px solid rgba(255, 255, 255, 0.06)',
+  background: 'var(--bg-elevated)',
+  border: '1px solid var(--border-subtle)',
   borderRadius: '8px',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
-  color: '#5a6272',
+  color: 'var(--text-tertiary)',
   fontSize: '14px',
 };
 
@@ -45,13 +45,13 @@ export const ActionButtons = ({ onEdit, onDelete }: ActionButtonsProps) => {
         title="Edit"
         onMouseEnter={(e) => {
           e.currentTarget.style.background = 'rgba(0, 212, 255, 0.1)';
-          e.currentTarget.style.borderColor = '#00d4ff';
-          e.currentTarget.style.color = '#00d4ff';
+          e.currentTarget.style.borderColor = 'var(--accent-primary)';
+          e.currentTarget.style.color = 'var(--accent-primary)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-          e.currentTarget.style.color = '#5a6272';
+          e.currentTarget.style.background = 'var(--bg-elevated)';
+          e.currentTarget.style.borderColor = 'var(--border-subtle)';
+          e.currentTarget.style.color = 'var(--text-tertiary)';
         }}
       >
         <span>✏️</span>
@@ -65,13 +65,13 @@ export const ActionButtons = ({ onEdit, onDelete }: ActionButtonsProps) => {
         title="Delete"
         onMouseEnter={(e) => {
           e.currentTarget.style.background = 'rgba(255, 107, 157, 0.1)';
-          e.currentTarget.style.borderColor = '#ff6b9d';
-          e.currentTarget.style.color = '#ff6b9d';
+          e.currentTarget.style.borderColor = 'var(--accent-danger)';
+          e.currentTarget.style.color = 'var(--accent-danger)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-          e.currentTarget.style.color = '#5a6272';
+          e.currentTarget.style.background = 'var(--bg-elevated)';
+          e.currentTarget.style.borderColor = 'var(--border-subtle)';
+          e.currentTarget.style.color = 'var(--text-tertiary)';
         }}
       >
         <span>🗑️</span>

@@ -43,17 +43,17 @@ export interface EditFormValues {
 
 const inputStyles = {
   input: {
-    background: '#1e2433',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'var(--bg-elevated)',
+    border: '1px solid var(--border-medium)',
     borderRadius: '12px',
-    color: '#ffffff',
+    color: 'var(--text-primary)',
     '&:focus': {
-      borderColor: '#00d4ff',
+      borderColor: 'var(--accent-primary)',
       boxShadow: '0 0 0 3px rgba(0, 212, 255, 0.1)',
     },
   },
   label: {
-    color: '#8892a6',
+    color: 'var(--text-secondary)',
     marginBottom: '8px',
   },
 };
@@ -259,9 +259,9 @@ export const EditTransactionForm = ({
             onClick={onCancel}
             styles={{
               root: {
-                color: '#8892a6',
+                color: 'var(--text-secondary)',
                 '&:hover': {
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'var(--bg-elevated)',
                 },
               },
             }}

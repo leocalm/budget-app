@@ -212,25 +212,25 @@ export function TransactionsContainer() {
         size="lg"
         styles={{
           header: {
-            background: '#151b26',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            background: 'var(--bg-card)',
+            borderBottom: '1px solid var(--border-medium)',
           },
           title: {
             fontSize: '24px',
             fontWeight: 700,
-            color: '#ffffff',
+            color: 'var(--text-primary)',
           },
           content: {
-            background: '#151b26',
+            background: 'var(--bg-card)',
           },
           body: {
             padding: '24px',
           },
           close: {
-            color: '#5a6272',
+            color: 'var(--text-tertiary)',
             '&:hover': {
-              background: 'rgba(255, 107, 157, 0.1)',
-              color: '#ff6b9d',
+              background: 'var(--bg-elevated)',
+              color: 'var(--accent-danger)',
             },
           },
         }}

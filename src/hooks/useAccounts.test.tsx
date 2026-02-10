@@ -77,9 +77,9 @@ describe('useAccounts', () => {
     expect(queryClient.getQueryState(queryKeys.accounts('period-2'))?.status).toBe('success');
   });
 
-  it('refetches accounts after delete', async () => {
+  it('invalidates accounts and total assets after delete', async () => {
     const { wrapper, queryClient } = createWrapper();
-    const refetchSpy = vi.spyOn(queryClient, 'refetchQueries');
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
     mockDeleteAccount.mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useDeleteAccount(), { wrapper });
@@ -87,7 +87,8 @@ describe('useAccounts', () => {
     await result.current.mutateAsync('account-1');
 
     expect(mockDeleteAccount).toHaveBeenCalledWith('account-1');
-    expect(refetchSpy).toHaveBeenCalledWith({ queryKey: queryKeys.accounts() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.accounts() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.totalAssets() });
   });
 
   it('invalidates accounts after create', async () => {

@@ -58,7 +58,7 @@ export const TransactionRow = ({
             <Text
               fw={600}
               style={{
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 fontSize: '15px',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -71,7 +71,7 @@ export const TransactionRow = ({
               <Text
                 size="sm"
                 style={{
-                  color: '#5a6272',
+                  color: 'var(--text-tertiary)',
                   fontSize: '13px',
                 }}
               >
@@ -134,7 +134,7 @@ export const TransactionRow = ({
             size="md"
             fw={600}
             style={{
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               fontSize: '15px',
             }}
           >
