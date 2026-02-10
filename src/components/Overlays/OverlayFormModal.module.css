@@ -33,11 +33,7 @@
   align-items: center;
   padding: 8px 10px;
   border-radius: 10px;
-  background: rgb(255, 255, 255, 0.03);
-}
-
-[data-mantine-color-scheme='light'] .capRow {
-  background: rgb(0, 0, 0, 0.03);
+  background: light-dark(rgb(0, 0, 0, 0.03), rgb(255, 255, 255, 0.03));
 }
 
 .reviewCard {

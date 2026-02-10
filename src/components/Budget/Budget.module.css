@@ -32,8 +32,8 @@
 
 .budgetCategoryItem:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md, 0 4px 16px rgb(0 0 0 / 16%));
-    border-color: var(--border-medium, rgb(255, 255, 255, 0.1));
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-medium);
 }
 
 .budgetCategoryItem:hover::before {

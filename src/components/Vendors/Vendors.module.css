@@ -38,8 +38,8 @@
 @media (min-width: 64em) {
   .vendorCard:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md, 0 4px 16px rgb(0 0 0 / 16%));
-    border-color: var(--border-medium, rgb(255, 255, 255, 0.1));
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-medium);
   }
 
   .vendorCard:hover::before {
@@ -143,7 +143,7 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-md, 16px);
   padding-top: var(--space-md, 16px);
-  border-top: 1px solid var(--border-subtle, rgb(255, 255, 255, 0.06));
+  border-top: 1px solid var(--border-subtle);
 }
 
 .stat {

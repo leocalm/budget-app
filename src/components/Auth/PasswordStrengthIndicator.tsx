@@ -31,7 +31,7 @@ export function PasswordStrengthIndicator({ result }: PasswordStrengthIndicatorP
           </Text>
           <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: 'var(--mantine-font-size-xs)' }}>
             {result.suggestions.map((suggestion, index) => (
-              <li key={index} style={{ color: 'var(--mantine-color-gray-6)' }}>
+              <li key={index} style={{ color: 'var(--text-tertiary)' }}>
                 {suggestion}
               </li>
             ))}
