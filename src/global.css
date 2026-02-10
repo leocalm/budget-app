@@ -17,6 +17,38 @@
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
+
+    /* Background */
+    --bg-dark: #12111B;
+
+    /* Brand gradient */
+    --brand-gradient-start: #4FD1FF;
+    --brand-gradient-end: #9B6BFF;
+    --brand-gradient-angle: 90deg;
+
+    /* Mono */
+    --mono-black: #000;
+    --mono-white: #FFF;
+
+    /* Shadow */
+    --shadow-brand-color: rgb(79, 209, 255, 0.25);
+    --shadow-brand-blur: 24px;
+    --shadow-brand-offset-y: 8px;
+
+    /* Motion */
+    --motion-pulse-duration: 600ms;
+    --motion-coin-duration: 400ms;
+    --motion-ease-standard: ease-in-out;
+    --motion-ease-exit: ease-out;
+
+    /* Pulse scale */
+    --pulse-scale-min: 1;
+    --pulse-scale-max: 1.08;
+
+    /* Typography */
+    --font-brand: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+    --font-brand-weight: 600;
+    --font-brand-tracking: -0.01em;
 }
 
 /* Dark theme variables (default) */
@@ -130,4 +162,31 @@ body {
 :focus-visible {
     outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
+}
+
+.brand-gradient {
+    background: linear-gradient(
+            var(--brand-gradient-angle),
+            var(--brand-gradient-start),
+            var(--brand-gradient-end)
+    );
+}
+
+.brand-text {
+    font-family: var(--font-brand), serif;
+    font-weight: var(--font-brand-weight);
+    letter-spacing: var(--font-brand-tracking);
+    background: linear-gradient(
+            var(--brand-gradient-angle),
+            var(--brand-gradient-start),
+            var(--brand-gradient-end)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-glow {
+    filter: drop-shadow(
+            0 var(--shadow-brand-offset-y) var(--shadow-brand-blur) var(--shadow-brand-color)
+    );
 }

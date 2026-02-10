@@ -94,12 +94,12 @@ export const theme = createTheme({
   },
   primaryColor: 'cyan',
   primaryShade: 5,
-  fontFamily: "'Sora', -apple-system, BlinkMacSystemFont, sans-serif",
-  fontFamilyMonospace: "'JetBrains Mono', monospace",
+  fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
   headings: {
-    fontFamily: "'Sora', -apple-system, BlinkMacSystemFont, sans-serif",
-    fontWeight: '700',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    fontWeight: '600',
   },
+  fontFamilyMonospace: "'JetBrains Mono', monospace",
   radius: {
     xs: rem(4),
     sm: rem(8),
