@@ -18,3 +18,8 @@ export interface VendorDeleteError {
   transactionCount: number;
   vendorId: string;
 }
+
+export interface VendorsPage {
+  items: VendorWithStats[];
+  nextCursor: string | null;
+}

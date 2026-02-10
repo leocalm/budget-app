@@ -7,6 +7,8 @@ export const queryKeys = {
   // Vendors
   vendorsRoot: () => ['vendors'] as const,
   vendors: (periodId?: string | null) => ['vendors', periodId] as const,
+  vendorsInfinite: (periodId?: string | null, pageSize = 50) =>
+    ['vendors', periodId, 'infinite', pageSize] as const,
   vendor: (id: string) => ['vendor', id] as const,
 
   // Transactions

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Group, SimpleGrid, Stack, TextInput } from '@mantine/core';
 import { EmptyState, LoadingState } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useDeleteVendor, useVendors } from '@/hooks/useVendors';
+import { useDeleteVendor, useInfiniteVendors } from '@/hooks/useVendors';
 import { VendorWithStats } from '@/types/vendor';
 import { PageHeader } from '../Transactions/PageHeader';
 import { VendorCard } from './VendorCard';
@@ -17,7 +17,13 @@ type SortOrder = 'name' | 'usage' | 'recent';
 export function VendorsContainer() {
   const { t } = useTranslation();
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const { data: vendors, isLoading } = useVendors(selectedPeriodId);
+  const {
+    data: paginatedData,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteVendors(selectedPeriodId);
   const deleteMutation = useDeleteVendor();
   const navigate = useNavigate();
 
@@ -32,14 +38,24 @@ export function VendorsContainer() {
     vendorId: string;
   } | null>(null);
 
+  // Flatten paginated data into a single array
+  const allVendors = useMemo(() => {
+    if (!paginatedData) {
+      return [];
+    }
+    return paginatedData.pages.flatMap((page) => page.items);
+  }, [paginatedData]);
+
   // Filter and sort vendors
   const processedVendors = useMemo(() => {
-    if (!vendors) {
+    if (!allVendors) {
       return [];
     }
 
     // Filter by search term
-    const filtered = vendors.filter((v) => v.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filtered = allVendors.filter((v) =>
+      v.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     // Sort
     const sorted = [...filtered];
@@ -65,7 +81,7 @@ export function VendorsContainer() {
     }
 
     return sorted;
-  }, [vendors, searchTerm, sortOrder]);
+  }, [allVendors, searchTerm, sortOrder]);
 
   const handleAdd = () => {
     setSelectedVendor(null);
@@ -133,7 +149,7 @@ export function VendorsContainer() {
   }
 
   // Check if we have search results or no vendors at all
-  const hasNoVendors = !vendors || vendors.length === 0;
+  const hasNoVendors = !allVendors || allVendors.length === 0;
   const hasNoSearchResults = searchTerm && processedVendors.length === 0;
 
   return (
@@ -216,17 +232,30 @@ export function VendorsContainer() {
             }}
           />
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
-            {processedVendors.map((vendor) => (
-              <VendorCard
-                key={vendor.id}
-                vendor={vendor}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onViewTransactions={handleViewTransactions}
-              />
-            ))}
-          </SimpleGrid>
+          <Stack gap="lg">
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
+              {processedVendors.map((vendor) => (
+                <VendorCard
+                  key={vendor.id}
+                  vendor={vendor}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onViewTransactions={handleViewTransactions}
+                />
+              ))}
+            </SimpleGrid>
+            {hasNextPage && (
+              <Box style={{ display: 'flex', justifyContent: 'center', paddingTop: '32px' }}>
+                <Button
+                  onClick={() => fetchNextPage()}
+                  loading={isFetchingNextPage}
+                  disabled={!hasNextPage || isFetchingNextPage}
+                >
+                  {t('common.loadMore')}
+                </Button>
+              </Box>
+            )}
+          </Stack>
         )}
       </Stack>
 
