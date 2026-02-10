@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, Table, Text, TextInput, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -14,6 +14,9 @@ export interface TransactionsSectionProps {
   onEdit: (transaction: TransactionResponse) => void;
   onDelete: (id: string) => void;
   onClick?: (transaction: TransactionResponse) => void;
+  hasMore?: boolean;
+  isLoadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export const TransactionsSection = ({
@@ -24,15 +27,42 @@ export const TransactionsSection = ({
   onEdit,
   onDelete,
   onClick,
+  hasMore = false,
+  isLoadingMore = false,
+  onLoadMore,
 }: TransactionsSectionProps) => {
   const { t } = useTranslation();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   // Group transactions by date
   const groupedTransactions = useMemo(() => {
     return groupTransactionsByDate(transactions);
   }, [transactions]);
+
+  useEffect(() => {
+    if (!hasMore || isLoadingMore || !onLoadMore) {
+      return;
+    }
+
+    const node = sentinelRef.current;
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingMore, onLoadMore, transactions.length]);
 
   // Calculate cumulative animation delay
   let cumulativeDelay = 0.1;
@@ -215,6 +245,20 @@ export const TransactionsSection = ({
           </Text>
           <Text style={{ fontSize: '14px', color: 'var(--text-tertiary)' }}>
             {t('transactions.section.adjustFilters')}
+          </Text>
+        </Box>
+      )}
+
+      {(hasMore || isLoadingMore) && (
+        <Box
+          ref={sentinelRef}
+          style={{
+            padding: '12px 16px 20px',
+            textAlign: 'center',
+          }}
+        >
+          <Text size="sm" c="dimmed">
+            {isLoadingMore ? t('states.loading.default') : ''}
           </Text>
         </Box>
       )}

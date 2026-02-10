@@ -8,7 +8,7 @@ import { useBudgetPeriods } from '@/hooks/useBudget';
 import { useCategories } from '@/hooks/useCategories';
 import {
   useDeleteTransaction,
-  useTransactions,
+  useInfiniteTransactions,
   useUpdateTransaction,
 } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
@@ -34,11 +34,21 @@ export function TransactionsContainer() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
   // Data Fetching
-  const { data: transactions } = useTransactions(selectedPeriodId);
+  const {
+    data: paginatedTransactions,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteTransactions(selectedPeriodId);
   const { data: periods } = useBudgetPeriods();
   const { data: accounts = [] } = useAccounts(selectedPeriodId);
   const { data: categories = [] } = useCategories(selectedPeriodId);
   const { data: vendors = [] } = useVendors(selectedPeriodId);
+
+  const transactions = useMemo(
+    () => paginatedTransactions?.pages.flatMap((page) => page.transactions) ?? [],
+    [paginatedTransactions]
+  );
 
   // Find the selected period from periods list
   const selectedPeriod = useMemo(() => {
@@ -199,6 +209,13 @@ export function TransactionsContainer() {
         onSearchChange={setSearchQuery}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        hasMore={Boolean(hasNextPage)}
+        isLoadingMore={isFetchingNextPage}
+        onLoadMore={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            void fetchNextPage();
+          }
+        }}
       />
 
       {/* Edit Modal */}

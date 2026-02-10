@@ -248,6 +248,19 @@ export async function apiGet<T>(url: string): Promise<T> {
 }
 
 /**
+ * GET request with snake_case → camelCase transformation without envelope unwrapping.
+ * Use this when the response metadata (e.g., pagination cursors) must be preserved.
+ */
+export async function apiGetRaw<T>(url: string): Promise<T> {
+  const res = await baseFetch(url);
+  if (!res.ok) {
+    await throwForStatus(res, url);
+  }
+  const data = await res.json();
+  return toCamelCase<T>(data);
+}
+
+/**
  * POST request with automatic case transformations
  * - Request body: camelCase → snake_case
  * - Response: snake_case → camelCase

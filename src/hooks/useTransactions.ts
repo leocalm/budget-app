@@ -1,18 +1,36 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createTransaction,
   createTransactionFromRequest,
   deleteTransaction,
   fetchTransactions,
+  fetchTransactionsPage,
   updateTransaction,
 } from '@/api/transaction';
 import { Transaction, TransactionRequest } from '@/types/transaction';
 import { queryKeys } from './queryKeys';
 
+const TRANSACTIONS_PAGE_SIZE = 50;
+
 export const useTransactions = (selectedPeriodId: string | null) => {
   return useQuery({
     queryKey: queryKeys.transactions(selectedPeriodId),
     queryFn: () => fetchTransactions(selectedPeriodId),
+    enabled: selectedPeriodId !== null,
+  });
+};
+
+export const useInfiniteTransactions = (selectedPeriodId: string | null) => {
+  return useInfiniteQuery({
+    queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+    queryFn: ({ pageParam }) =>
+      fetchTransactionsPage({
+        selectedPeriodId,
+        cursor: pageParam,
+        pageSize: TRANSACTIONS_PAGE_SIZE,
+      }),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     enabled: selectedPeriodId !== null,
   });
 };

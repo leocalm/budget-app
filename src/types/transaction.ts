@@ -34,3 +34,8 @@ export interface TransactionRequest {
   toAccountId: string | undefined;
   vendorId: string | undefined;
 }
+
+export interface TransactionsPage {
+  transactions: TransactionResponse[];
+  nextCursor: string | null;
+}

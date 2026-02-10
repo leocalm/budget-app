@@ -7,6 +7,7 @@ import {
   createTransactionFromRequest,
   deleteTransaction,
   fetchTransactions,
+  fetchTransactionsPage,
   updateTransaction,
 } from '@/api/transaction';
 import type { Transaction, TransactionRequest, TransactionResponse } from '@/types/transaction';
@@ -15,6 +16,7 @@ import {
   useCreateTransaction,
   useCreateTransactionFromRequest,
   useDeleteTransaction,
+  useInfiniteTransactions,
   useTransactions,
   useUpdateTransaction,
 } from './useTransactions';
@@ -24,6 +26,7 @@ vi.mock('@/api/transaction', () => ({
   createTransactionFromRequest: vi.fn(),
   deleteTransaction: vi.fn(),
   fetchTransactions: vi.fn(),
+  fetchTransactionsPage: vi.fn(),
   updateTransaction: vi.fn(),
 }));
 
@@ -31,6 +34,7 @@ const mockCreateTransaction = vi.mocked(createTransaction);
 const mockCreateTransactionFromRequest = vi.mocked(createTransactionFromRequest);
 const mockDeleteTransaction = vi.mocked(deleteTransaction);
 const mockFetchTransactions = vi.mocked(fetchTransactions);
+const mockFetchTransactionsPage = vi.mocked(fetchTransactionsPage);
 const mockUpdateTransaction = vi.mocked(updateTransaction);
 
 const createWrapper = () => {
@@ -57,6 +61,7 @@ describe('useTransactions', () => {
     mockCreateTransactionFromRequest.mockReset();
     mockDeleteTransaction.mockReset();
     mockUpdateTransaction.mockReset();
+    mockFetchTransactionsPage.mockReset();
   });
 
   it('does not fetch when the period id is null', async () => {
@@ -119,6 +124,55 @@ describe('useTransactions', () => {
 
     expect(mockFetchTransactions).toHaveBeenCalledWith('period-1');
     expect(result.current.data).toEqual(response);
+  });
+
+  it('does not fetch paginated transactions when the period id is null', async () => {
+    const { wrapper } = createWrapper();
+    const { result } = renderHook(() => useInfiniteTransactions(null), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(mockFetchTransactionsPage).not.toHaveBeenCalled();
+  });
+
+  it('fetches paginated transactions and loads the next page with cursor', async () => {
+    const { wrapper } = createWrapper();
+
+    mockFetchTransactionsPage
+      .mockResolvedValueOnce({
+        transactions: [],
+        nextCursor: 'cursor-1',
+      })
+      .mockResolvedValueOnce({
+        transactions: [],
+        nextCursor: null,
+      });
+
+    const { result } = renderHook(() => useInfiniteTransactions('period-1'), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(mockFetchTransactionsPage).toHaveBeenNthCalledWith(1, {
+      selectedPeriodId: 'period-1',
+      cursor: null,
+      pageSize: 50,
+    });
+
+    await result.current.fetchNextPage();
+
+    await waitFor(() => {
+      expect(mockFetchTransactionsPage).toHaveBeenCalledTimes(2);
+    });
+
+    expect(mockFetchTransactionsPage).toHaveBeenNthCalledWith(2, {
+      selectedPeriodId: 'period-1',
+      cursor: 'cursor-1',
+      pageSize: 50,
+    });
   });
 
   it('invalidates transactions after delete', async () => {
