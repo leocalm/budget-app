@@ -60,31 +60,39 @@ export function BudgetConfiguration() {
   }
 
   return (
-    <Paper shadow="md" radius="lg" p="xl" h="100%">
-      <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-        <Stack align="flex-start">
-          <Title order={2}>{t('budget.configuration.title')}</Title>
-          <TextInput
-            label={t('budget.configuration.budgetNameLabel')}
-            placeholder={t('budget.configuration.budgetNamePlaceholder')}
-            key={form.key('name')}
-            {...form.getInputProps('name')}
-          />
+    <LoadingState
+      variant="overlay"
+      loading={updateMutation.isPending}
+      text={t('states.loading.default')}
+    >
+      <Paper shadow="md" radius="lg" p="xl" h="100%">
+        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+          <Stack align="flex-start">
+            <Title order={2}>{t('budget.configuration.title')}</Title>
+            <TextInput
+              label={t('budget.configuration.budgetNameLabel')}
+              placeholder={t('budget.configuration.budgetNamePlaceholder')}
+              key={form.key('name')}
+              {...form.getInputProps('name')}
+            />
 
-          <NumberInput
-            label={t('budget.configuration.startDayLabel')}
-            placeholder={t('budget.configuration.startDayPlaceholder')}
-            min={1}
-            max={31}
-            key={form.key('startDay')}
-            {...form.getInputProps('startDay')}
-          />
-        </Stack>
+            <NumberInput
+              label={t('budget.configuration.startDayLabel')}
+              placeholder={t('budget.configuration.startDayPlaceholder')}
+              min={1}
+              max={31}
+              key={form.key('startDay')}
+              {...form.getInputProps('startDay')}
+            />
+          </Stack>
 
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">{t('budget.configuration.updateButton')}</Button>
-        </Group>
-      </form>
-    </Paper>
+          <Group justify="flex-end" mt="md">
+            <Button type="submit" loading={updateMutation.isPending}>
+              {t('budget.configuration.updateButton')}
+            </Button>
+          </Group>
+        </form>
+      </Paper>
+    </LoadingState>
   );
 }

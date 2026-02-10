@@ -1,7 +1,8 @@
-import { Center, Loader } from '@mantine/core';
+import { Center } from '@mantine/core';
+import { PulseLoader } from '../PulseLoader';
 
 export const PageLoader = () => (
   <Center h="50vh">
-    <Loader color="cyan" size="lg" />
+    <PulseLoader state="loading" size={176} color="var(--mantine-color-cyan-5)" />
   </Center>
 );

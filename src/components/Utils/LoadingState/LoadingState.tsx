@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Text } from '@mantine/core';
+import { PulseLoader } from '@/components/PulseLoader';
 import classes from './LoadingState.module.css';
 
 export type LoadingStateVariant =
@@ -47,27 +48,35 @@ export function LoadingState({
 }: LoadingStateProps) {
   const sizeClasses = {
     sm: {
-      spinner: classes.spinnerSm,
       dot: classes.dotSm,
       bar: classes.barSm,
     },
     md: {
-      spinner: classes.spinnerMd,
       dot: classes.dotMd,
       bar: classes.barMd,
     },
     lg: {
-      spinner: classes.spinnerLg,
       dot: classes.dotLg,
       bar: classes.barLg,
     },
+  };
+
+  const pulseSizes: Record<LoadingStateSize, number> = {
+    sm: 130,
+    md: 180,
+    lg: 220,
   };
 
   // Spinner variant
   if (variant === 'spinner') {
     return (
       <div className={classes.loadingContainer} data-testid={testId}>
-        <div className={`${classes.spinner} ${sizeClasses[size].spinner}`} />
+        <PulseLoader
+          state="loading"
+          size={pulseSizes[size]}
+          color="var(--mantine-color-cyan-5)"
+          speed={1.3}
+        />
         {text && <Text className={classes.loadingText}>{text}</Text>}
       </div>
     );
@@ -131,7 +140,13 @@ export function LoadingState({
   if (variant === 'inline') {
     return (
       <div className={classes.inlineContainer} data-testid={testId}>
-        <div className={classes.inlineSpinner} />
+        <PulseLoader
+          state="loading"
+          size={84}
+          color="var(--mantine-color-cyan-5)"
+          speed={1.2}
+          className={classes.inlinePulse}
+        />
         {text && <span className={classes.inlineText}>{text}</span>}
       </div>
     );
@@ -145,7 +160,13 @@ export function LoadingState({
         {loading && (
           <div className={classes.overlayBackdrop}>
             <div className={classes.overlayContent}>
-              <div className={classes.overlaySpinner} />
+              <PulseLoader
+                state="loading"
+                size={500}
+                color="var(--mantine-color-cyan-5)"
+                speed={1.2}
+                className={classes.overlayPulse}
+              />
               {text && <div className={classes.overlayText}>{text}</div>}
             </div>
           </div>
