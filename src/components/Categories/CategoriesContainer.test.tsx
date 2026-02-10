@@ -6,6 +6,7 @@ import { MantineProvider } from '@mantine/core';
 import { CategoriesContainer } from './CategoriesContainer';
 
 const useCategoriesMock = vi.hoisted(() => vi.fn());
+const useInfiniteCategoriesMock = vi.hoisted(() => vi.fn());
 const useDeleteCategoryMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/context/BudgetContext', () => ({
@@ -17,6 +18,7 @@ vi.mock('@/context/BudgetContext', () => ({
 
 vi.mock('@/hooks/useCategories', () => ({
   useCategories: (...args: unknown[]) => useCategoriesMock(...args),
+  useInfiniteCategories: (...args: unknown[]) => useInfiniteCategoriesMock(...args),
   useDeleteCategory: () => useDeleteCategoryMock(),
 }));
 
@@ -57,8 +59,15 @@ vi.mock('../Transactions/PageHeader', () => ({
 describe('CategoriesContainer', () => {
   beforeEach(() => {
     useCategoriesMock.mockReset();
+    useInfiniteCategoriesMock.mockReset();
     useDeleteCategoryMock.mockReset();
     useDeleteCategoryMock.mockReturnValue({ mutate: vi.fn() });
+    useInfiniteCategoriesMock.mockReturnValue({
+      data: { pages: [] },
+      fetchNextPage: vi.fn(),
+      hasNextPage: false,
+      isFetchingNextPage: false,
+    });
   });
 
   const renderPage = () => {
@@ -72,20 +81,30 @@ describe('CategoriesContainer', () => {
   it('opens create category modal when Add Category is clicked', async () => {
     const user = userEvent.setup();
 
-    useCategoriesMock.mockReturnValue({
-      data: [
-        {
-          id: 'category-1',
-          name: 'Food',
-          color: '#00d4ff',
-          icon: '🍔',
-          parentId: null,
-          categoryType: 'Outgoing',
-          usedInPeriod: 0,
-          differenceVsAveragePercentage: 0,
-          transactionCount: 0,
-        },
-      ],
+    useInfiniteCategoriesMock.mockReturnValue({
+      data: {
+        pages: [
+          {
+            categories: [
+              {
+                id: 'category-1',
+                name: 'Food',
+                color: '#00d4ff',
+                icon: '🍔',
+                parentId: null,
+                categoryType: 'Outgoing',
+                usedInPeriod: 0,
+                differenceVsAveragePercentage: 0,
+                transactionCount: 0,
+              },
+            ],
+            nextCursor: null,
+          },
+        ],
+      },
+      fetchNextPage: vi.fn(),
+      hasNextPage: false,
+      isFetchingNextPage: false,
     });
 
     renderPage();
@@ -98,20 +117,30 @@ describe('CategoriesContainer', () => {
   it('opens edit category modal when edit button is clicked', async () => {
     const user = userEvent.setup();
 
-    useCategoriesMock.mockReturnValue({
-      data: [
-        {
-          id: 'category-1',
-          name: 'Food',
-          color: '#00d4ff',
-          icon: '🍔',
-          parentId: null,
-          categoryType: 'Outgoing',
-          usedInPeriod: 0,
-          differenceVsAveragePercentage: 0,
-          transactionCount: 0,
-        },
-      ],
+    useInfiniteCategoriesMock.mockReturnValue({
+      data: {
+        pages: [
+          {
+            categories: [
+              {
+                id: 'category-1',
+                name: 'Food',
+                color: '#00d4ff',
+                icon: '🍔',
+                parentId: null,
+                categoryType: 'Outgoing',
+                usedInPeriod: 0,
+                differenceVsAveragePercentage: 0,
+                transactionCount: 0,
+              },
+            ],
+            nextCursor: null,
+          },
+        ],
+      },
+      fetchNextPage: vi.fn(),
+      hasNextPage: false,
+      isFetchingNextPage: false,
     });
 
     renderPage();

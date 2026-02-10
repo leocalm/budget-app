@@ -12,6 +12,7 @@ import {
   createCategory,
   deleteCategory,
   fetchCategories,
+  fetchCategoriesPage,
   fetchUnbudgetedCategories,
   updateCategory,
 } from '@/api/category';
@@ -25,6 +26,7 @@ import {
   useCreateCategory,
   useDeleteBudgetCategory,
   useDeleteCategory,
+  useInfiniteCategories,
   useUnbudgetedCategories,
   useUpdateBudgetCategory,
   useUpdateCategory,
@@ -41,6 +43,7 @@ vi.mock('@/api/category', () => ({
   createCategory: vi.fn(),
   deleteCategory: vi.fn(),
   fetchCategories: vi.fn(),
+  fetchCategoriesPage: vi.fn(),
   fetchUnbudgetedCategories: vi.fn(),
   updateCategory: vi.fn(),
 }));
@@ -52,6 +55,7 @@ const mockUpdateBudgetCategory = vi.mocked(updateBudgetCategory);
 const mockCreateCategory = vi.mocked(createCategory);
 const mockDeleteCategory = vi.mocked(deleteCategory);
 const mockFetchCategories = vi.mocked(fetchCategories);
+const mockFetchCategoriesPage = vi.mocked(fetchCategoriesPage);
 const mockFetchUnbudgeted = vi.mocked(fetchUnbudgetedCategories);
 const mockUpdateCategory = vi.mocked(updateCategory);
 
@@ -81,6 +85,7 @@ describe('useCategories', () => {
     mockCreateCategory.mockReset();
     mockDeleteCategory.mockReset();
     mockFetchCategories.mockReset();
+    mockFetchCategoriesPage.mockReset();
     mockFetchUnbudgeted.mockReset();
     mockUpdateCategory.mockReset();
   });
@@ -253,5 +258,66 @@ describe('useCategories', () => {
 
     expect(mockUpdateBudgetCategory).toHaveBeenCalledWith('budget-category-1', payload);
     expect(refetchSpy).toHaveBeenCalledWith({ queryKey: queryKeys.budgetedCategories() });
+  });
+
+  it('does not fetch paginated categories when the period id is null', async () => {
+    const { wrapper } = createWrapper();
+    const { result } = renderHook(() => useInfiniteCategories(null), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(mockFetchCategoriesPage).not.toHaveBeenCalled();
+  });
+
+  it('fetches paginated categories and loads the next page with cursor', async () => {
+    const { wrapper } = createWrapper();
+
+    mockFetchCategoriesPage
+      .mockResolvedValueOnce({
+        categories: [
+          {
+            id: 'category-1',
+            name: 'Food',
+            color: '#000000',
+            icon: '🍔',
+            parentId: null,
+            categoryType: 'Outgoing',
+            usedInPeriod: 10000,
+            differenceVsAveragePercentage: 5,
+            transactionCount: 10,
+          },
+        ],
+        nextCursor: 'cursor-1',
+      })
+      .mockResolvedValueOnce({
+        categories: [],
+        nextCursor: null,
+      });
+
+    const { result } = renderHook(() => useInfiniteCategories('period-1'), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(mockFetchCategoriesPage).toHaveBeenNthCalledWith(1, {
+      selectedPeriodId: 'period-1',
+      cursor: null,
+      pageSize: 50,
+    });
+
+    await result.current.fetchNextPage();
+
+    await waitFor(() => {
+      expect(mockFetchCategoriesPage).toHaveBeenCalledTimes(2);
+    });
+
+    expect(mockFetchCategoriesPage).toHaveBeenNthCalledWith(2, {
+      selectedPeriodId: 'period-1',
+      cursor: 'cursor-1',
+      pageSize: 50,
+    });
   });
 });

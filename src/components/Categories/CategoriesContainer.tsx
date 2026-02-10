@@ -8,12 +8,13 @@ import {
   SimpleGrid,
   Stack,
   Tabs,
+  Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { EmptyState } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useCategories, useDeleteCategory } from '@/hooks/useCategories';
+import { useDeleteCategory, useInfiniteCategories } from '@/hooks/useCategories';
 import { CategoryResponse, CategoryType } from '@/types/category';
 import { PageHeader } from '../Transactions/PageHeader';
 import { CategoryCard } from './CategoryCard';
@@ -31,12 +32,22 @@ export function CategoriesContainer() {
   // Get selected budget period from context
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
-  const { data: categories } = useCategories(selectedPeriodId);
+  const {
+    data: paginatedCategories,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteCategories(selectedPeriodId);
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
   const deleteMutation = useDeleteCategory();
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
+
+  const categories = useMemo(
+    () => paginatedCategories?.pages.flatMap((page) => page.categories) ?? [],
+    [paginatedCategories]
+  );
 
   const filteredCategories = useMemo(() => {
     if (!categories) {
@@ -134,34 +145,70 @@ export function CategoriesContainer() {
             }}
           />
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
-            {filteredCategories.map((category) => {
-              // Calculate trend from differenceVsAveragePercentage
-              const trendPercentage = Math.abs(category.differenceVsAveragePercentage);
-              const trend =
-                trendPercentage > 0
-                  ? {
-                      direction:
-                        category.differenceVsAveragePercentage > 0
-                          ? ('up' as const)
-                          : ('down' as const),
-                      percentage: trendPercentage,
-                    }
-                  : undefined;
+          <>
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
+              {filteredCategories.map((category) => {
+                // Calculate trend from differenceVsAveragePercentage
+                const trendPercentage = Math.abs(category.differenceVsAveragePercentage);
+                const trend =
+                  trendPercentage > 0
+                    ? {
+                        direction:
+                          category.differenceVsAveragePercentage > 0
+                            ? ('up' as const)
+                            : ('down' as const),
+                        percentage: trendPercentage,
+                      }
+                    : undefined;
 
-              return (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  monthlySpent={category.usedInPeriod}
-                  transactionCount={category.transactionCount}
-                  trend={trend}
-                  onEdit={onEditCategory}
-                  onDelete={onDeleteCategory}
-                />
-              );
-            })}
-          </SimpleGrid>
+                return (
+                  <CategoryCard
+                    key={category.id}
+                    category={category}
+                    monthlySpent={category.usedInPeriod}
+                    transactionCount={category.transactionCount}
+                    trend={trend}
+                    onEdit={onEditCategory}
+                    onDelete={onDeleteCategory}
+                  />
+                );
+              })}
+            </SimpleGrid>
+
+            {(hasNextPage || isFetchingNextPage) && (
+              <Box
+                style={{
+                  padding: '12px 16px 20px',
+                  textAlign: 'center',
+                }}
+              >
+                <Text size="sm" c="dimmed">
+                  {isFetchingNextPage ? t('states.loading.default') : ''}
+                </Text>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (hasNextPage && !isFetchingNextPage) {
+                      void fetchNextPage();
+                    }
+                  }}
+                  style={{
+                    marginTop: '8px',
+                    padding: '8px 16px',
+                    background: 'var(--accent-primary)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: isFetchingNextPage ? 'not-allowed' : 'pointer',
+                    opacity: isFetchingNextPage ? 0.6 : 1,
+                  }}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? 'Loading...' : 'Load More'}
+                </button>
+              </Box>
+            )}
+          </>
         )}
 
         {isMobile ? (
