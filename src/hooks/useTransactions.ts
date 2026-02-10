@@ -24,6 +24,16 @@ export const useDeleteTransaction = () => {
     mutationFn: deleteTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      // Invalidate dashboard data
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      // Invalidate related entity lists
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -35,6 +45,16 @@ export const useCreateTransaction = () => {
     mutationFn: (newTransaction: Transaction) => createTransaction(newTransaction),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      // Invalidate dashboard data
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      // Invalidate related entity lists
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -47,6 +67,16 @@ export const useCreateTransactionFromRequest = () => {
       createTransactionFromRequest(newTransaction),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      // Invalidate dashboard data
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      // Invalidate related entity lists
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -59,6 +89,16 @@ export const useUpdateTransaction = () => {
       updateTransaction(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      // Invalidate dashboard data
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      // Invalidate related entity lists
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };

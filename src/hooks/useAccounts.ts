@@ -17,7 +17,10 @@ export const useDeleteAccount = () => {
   return useMutation({
     mutationFn: (id: string) => deleteAccount(id),
     onSuccess: async () => {
-      await Promise.all([queryClient.refetchQueries({ queryKey: queryKeys.accounts() })]);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.accounts() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.totalAssets() }),
+      ]);
     },
   });
 };
@@ -28,7 +31,10 @@ export const useCreateAccount = () => {
   return useMutation({
     mutationFn: (payload: AccountRequest) => createAccount(payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: queryKeys.accounts() })]);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.accounts() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.totalAssets() }),
+      ]);
     },
   });
 };
@@ -40,7 +46,10 @@ export const useUpdateAccount = () => {
     mutationFn: ({ id, payload }: { id: string; payload: AccountRequest }) =>
       updateAccount(id, payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: queryKeys.accounts() })]);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.accounts() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.totalAssets() }),
+      ]);
     },
   });
 };

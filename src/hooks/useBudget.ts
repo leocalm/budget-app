@@ -55,6 +55,7 @@ export const useCreateBudgetPeriod = () => {
     mutationFn: (payload: BudgetPeriodRequest) => createBudgetPeriod(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
     },
   });
 };
@@ -69,6 +70,16 @@ export const useUpdateBudgetPeriod = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+      // Invalidate all period-scoped queries since the period definition changed
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
     },
   });
 };
@@ -82,6 +93,16 @@ export const useDeleteBudgetPeriod = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+      // Invalidate all period-scoped queries since a period was deleted
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
     },
   });
 };

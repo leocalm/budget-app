@@ -31,6 +31,8 @@ export const useDeleteCategory = () => {
     mutationFn: deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
     },
   });
 };
@@ -42,6 +44,8 @@ export const useCreateCategory = () => {
     mutationFn: (newCategory: CategoryRequest) => createCategory(newCategory),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
     },
   });
 };
@@ -53,7 +57,11 @@ export const useUpdateCategory = () => {
     mutationFn: ({ id, payload }: { id: string; payload: CategoryRequest }) =>
       updateCategory(id, payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: queryKeys.categories() })]);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.categories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
+      ]);
     },
   });
 };
