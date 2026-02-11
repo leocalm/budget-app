@@ -27,6 +27,11 @@ function normalizeBasePath(basePath: string): string {
   if (!trimmed) {
     return `/api/${DEFAULT_API_VERSION}`;
   }
+
+  if (isAbsoluteUrl(trimmed)) {
+    return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
+  }
+
   const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
   return withLeadingSlash.endsWith('/') ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
 }
