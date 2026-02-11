@@ -75,7 +75,7 @@ export function ResetPasswordPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+  const [token] = useState(() => searchParams.get('token'));
 
   const [validating, setValidating] = useState(true);
   const [tokenValid, setTokenValid] = useState(false);
@@ -114,6 +114,21 @@ export function ResetPasswordPage() {
   });
 
   const passwordStrength = getPasswordStrength(form.values.password);
+
+  // Remove sensitive token from the URL to reduce leak risk via history/referrer logs.
+  useEffect(() => {
+    if (!token || typeof window === 'undefined') {
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('token')) {
+      return;
+    }
+
+    url.searchParams.delete('token');
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  }, [token]);
 
   // Validate token on mount
   useEffect(() => {

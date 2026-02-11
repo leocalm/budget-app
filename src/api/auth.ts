@@ -34,7 +34,7 @@ export async function login(credentials: LoginRequest): Promise<void> {
     await apiPost<void, LoginRequest>('/api/users/login', credentials);
   } catch (error) {
     if (error instanceof ApiError) {
-      if (error.isUnauthorized) {
+      if (error.isUnauthorized || error.status === 403) {
         throw new Error('Invalid email or password. Please try again.');
       }
 

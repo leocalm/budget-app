@@ -27,7 +27,7 @@ export function AccessDeniedPage() {
         icon: <span>📧</span>,
         onClick: () => {
           // Could open a support form or mailto link
-          window.location.href = 'mailto:support@piggypulse.com?subject=Access Request';
+          window.location.href = 'mailto:support@piggy-pulse.com?subject=Access Request';
         },
       }}
       data-testid="access-denied-page"
