@@ -1,6 +1,6 @@
-# Docker Setup - Budget App Full Stack
+# Docker Setup - PiggyPulse Full Stack
 
-This directory contains Docker configuration for running the complete Budget application stack with Caddy reverse proxy.
+This directory contains Docker configuration for running the complete PiggyPulse application stack with Caddy reverse proxy.
 
 ## Stack Components
 

@@ -180,7 +180,7 @@ export function LoadingState({
     return (
       <div className={classes.fullscreenContainer} data-testid={testId}>
         <div className={classes.fullscreenLogo}>💰</div>
-        <div className={classes.fullscreenText}>{text || 'Loading BudgetApp...'}</div>
+        <div className={classes.fullscreenText}>{text || 'Loading PiggyPulse...'}</div>
         <div className={classes.fullscreenSubtext}>Just a moment</div>
       </div>
     );

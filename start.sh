@@ -2,7 +2,7 @@
 set -e
 
 echo "==================================="
-echo "Budget App - Docker Setup"
+echo "PiggyPulse - Docker Setup"
 echo "==================================="
 echo ""
 
