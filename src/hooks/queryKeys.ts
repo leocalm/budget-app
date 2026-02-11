@@ -48,6 +48,12 @@ export const queryKeys = {
     detail: (id: string) => ['overlays', 'detail', id] as const,
   },
 
+  // Settings
+  settings: () => ['settings'] as const,
+
+  // Currencies
+  currencies: () => ['currencies'] as const,
+
   // Dashboard
   dashboardData: (periodId?: string | null) => ['dashboardData', periodId] as const,
   spentPerCategory: (periodId?: string | null) => ['spentPerCategory', periodId] as const,

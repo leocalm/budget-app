@@ -7,7 +7,7 @@ export function Logo() {
   return (
     <Group gap="xs">
       <ThemeIcon size={40} radius="md" bg="transparent" variant="light">
-        <Image src="assets/icons/png/gradient/piggy-pulse.png" />
+        <Image src="/assets/icons/png/gradient/piggy-pulse.png" />
       </ThemeIcon>
       <Text size="xl" fw={700} className="brand-text">
         {t('layout.logo.title')}
