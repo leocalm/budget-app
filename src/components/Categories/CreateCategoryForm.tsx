@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import React, { Suspense, useState } from 'react';
+import type { EmojiClickData } from 'emoji-picker-react';
 import {
   ActionIcon,
   Alert,
@@ -15,6 +15,8 @@ import {
 import { useForm } from '@mantine/form';
 import { useCreateCategory } from '@/hooks/useCategories';
 import { CATEGORY_TYPES, CategoryRequest, CategoryType } from '@/types/category';
+
+const EmojiPicker = React.lazy(() => import('emoji-picker-react'));
 
 interface CreateCategoryFormProps {
   onCategoryCreated?: () => void;
@@ -101,10 +103,14 @@ export function CreateCategoryForm({ onCategoryCreated }: CreateCategoryFormProp
                   </Popover.Target>
 
                   <Popover.Dropdown p="xs">
-                    <EmojiPicker
-                      open={opened}
-                      onEmojiClick={(emojiData) => emojiSelected(form.values, emojiData)}
-                    />
+                    <Suspense fallback={<div>Loading emoji picker...</div>}>
+                      <EmojiPicker
+                        open={opened}
+                        onEmojiClick={(emojiData: EmojiClickData) =>
+                          emojiSelected(form.values, emojiData)
+                        }
+                      />
+                    </Suspense>
                   </Popover.Dropdown>
                 </Popover>
               </Box>
