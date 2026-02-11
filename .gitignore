@@ -138,3 +138,5 @@ storybook-static/
 playwright-report/
 test-results/
 blob-report/
+
+.python-version
