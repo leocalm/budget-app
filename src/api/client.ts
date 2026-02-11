@@ -11,8 +11,8 @@ type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
 const DEFAULT_API_VERSION = 'v1';
-const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:\/|$)/;
-const LOGIN_PATH_PATTERN = /\/api(?:\/v\d+)?\/users\/login\b/;
+const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:[/?#]|$)/;
+const LOGIN_PATH_PATTERN = /\/api(?:\/v\d+)?\/users\/login(?:[/?#]|$)/;
 
 function normalizeApiVersion(version: string): string {
   const trimmed = version.trim();
@@ -27,6 +27,11 @@ function normalizeBasePath(basePath: string): string {
   if (!trimmed) {
     return `/api/${DEFAULT_API_VERSION}`;
   }
+
+  if (isAbsoluteUrl(trimmed)) {
+    return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
+  }
+
   const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
   return withLeadingSlash.endsWith('/') ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
 }
@@ -34,12 +39,22 @@ function normalizeBasePath(basePath: string): string {
 // Allow configuration via env: VITE_API_BASE_PATH (full path) or VITE_API_VERSION (e.g. "v1" or "1").
 function resolveApiBasePath(): string {
   const env = import.meta.env;
+  const version = env?.VITE_API_VERSION?.trim();
   const explicitBasePath = env?.VITE_API_BASE_PATH;
   if (explicitBasePath) {
-    return normalizeBasePath(explicitBasePath);
+    const normalizedBasePath = normalizeBasePath(explicitBasePath);
+    if (!version) {
+      return normalizedBasePath;
+    }
+
+    const normalizedVersion = normalizeApiVersion(version);
+    if (hasVersionPathSegment(normalizedBasePath)) {
+      return normalizedBasePath;
+    }
+
+    return `${normalizedBasePath}/${normalizedVersion}`;
   }
 
-  const version = env?.VITE_API_VERSION;
   const normalizedVersion = version ? normalizeApiVersion(version) : DEFAULT_API_VERSION;
   return normalizeBasePath(`/api/${normalizedVersion}`);
 }
@@ -48,6 +63,23 @@ const API_BASE_PATH = resolveApiBasePath();
 
 function isAbsoluteUrl(url: string): boolean {
   return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+}
+
+function hasVersionPathSegment(pathOrUrl: string): boolean {
+  const versionPattern = /\/v\d+(?:\/|$)/;
+
+  if (!isAbsoluteUrl(pathOrUrl)) {
+    return versionPattern.test(pathOrUrl);
+  }
+
+  try {
+    const parsed = pathOrUrl.startsWith('//')
+      ? new URL(pathOrUrl, 'https://placeholder.local')
+      : new URL(pathOrUrl);
+    return versionPattern.test(parsed.pathname);
+  } catch {
+    return versionPattern.test(pathOrUrl);
+  }
 }
 
 function resolveApiUrl(url: string): string {
@@ -59,8 +91,8 @@ function resolveApiUrl(url: string): string {
     return url;
   }
 
-  if (url === '/api') {
-    return API_BASE_PATH;
+  if (url === '/api' || url.startsWith('/api?') || url.startsWith('/api#')) {
+    return `${API_BASE_PATH}${url.slice('/api'.length)}`;
   }
 
   if (url.startsWith('/api/')) {
