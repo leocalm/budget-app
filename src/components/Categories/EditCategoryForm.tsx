@@ -1,18 +1,38 @@
-import { useState } from 'react';
-import { Alert, Button, Grid, Group, Select, Stack, TextInput } from '@mantine/core';
+import React, { Suspense, useState } from 'react';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import {
+  ActionIcon,
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Group,
+  Popover,
+  Select,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconPicker } from '@/components/Utils/IconPicker';
 import { useUpdateCategory } from '@/hooks/useCategories';
 import { CATEGORY_TYPES, CategoryRequest, CategoryResponse, CategoryType } from '@/types/category';
 
 interface EditCategoryFormProps {
   category: CategoryResponse;
   onUpdated?: () => void;
+  selectedPeriodId: string | null;
 }
 
-export function EditCategoryForm({ category, onUpdated }: EditCategoryFormProps) {
-  const updateMutation = useUpdateCategory();
+export function EditCategoryForm({ category, onUpdated, selectedPeriodId }: EditCategoryFormProps) {
+  const updateMutation = useUpdateCategory(selectedPeriodId);
   const [error, setError] = useState<string | null>(null);
+  const [opened, setOpened] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState(category.icon);
+
+  const emojiSelected = (values: typeof form.values, emoji: EmojiClickData) => {
+    values.icon = emoji.emoji;
+    setSelectedIcon(emoji.emoji);
+    setOpened(false);
+  };
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -58,11 +78,44 @@ export function EditCategoryForm({ category, onUpdated }: EditCategoryFormProps)
         <Grid gutter="md" align="flex-end">
           <Grid.Col span={{ base: 12, md: 8 }}>
             <Group gap="xs" align="flex-end" wrap="nowrap">
-              <IconPicker
-                label="Icon"
-                value={form.getValues().icon}
-                onChange={(val) => form.setFieldValue('icon', val)}
-              />
+              <Box style={{ flexShrink: 0 }}>
+                <Popover
+                  opened={opened}
+                  onChange={setOpened}
+                  position="bottom-start"
+                  withArrow
+                  shadow="md"
+                  width={250}
+                >
+                  <Popover.Target>
+                    <ActionIcon
+                      variant="outline"
+                      size={36} // Matches standard Mantine input height
+                      radius="md"
+                      onClick={() => setOpened((o) => !o)}
+                      styles={{
+                        root: {
+                          borderColor: 'var(--mantine-color-default-border)',
+                          color: 'var(--mantine-color-dimmed)',
+                        },
+                      }}
+                    >
+                      {selectedIcon}
+                    </ActionIcon>
+                  </Popover.Target>
+
+                  <Popover.Dropdown p="xs">
+                    <Suspense fallback={<div>Loading emoji picker...</div>}>
+                      <EmojiPicker
+                        open={opened}
+                        onEmojiClick={(emojiData: EmojiClickData) =>
+                          emojiSelected(form.values, emojiData)
+                        }
+                      />
+                    </Suspense>
+                  </Popover.Dropdown>
+                </Popover>
+              </Box>
               <TextInput
                 label="Category Name"
                 placeholder="e.g. Rent, Groceries"

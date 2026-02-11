@@ -70,7 +70,8 @@ export const QuickAddTransaction = ({
   const { data: vendors = [] } = useVendors(selectedPeriodId);
 
   // Mutations
-  const { mutate: createTransaction, isPending } = useCreateTransactionFromRequest();
+  const { mutate: createTransaction, isPending } =
+    useCreateTransactionFromRequest(selectedPeriodId);
   const createVendor = useCreateVendor();
 
   const [categoryType, setCategoryType] = useState('Outgoing');
@@ -265,6 +266,20 @@ export const QuickAddTransaction = ({
             classNames={inputClassNames}
           />
 
+          {/* Category */}
+          <Select
+            placeholder={t('transactions.quickAddTransaction.category.placeholder')}
+            value={form.values.categoryId}
+            onChange={onCategoryChanged}
+            data={categories.map((cat) => ({
+              value: cat.id,
+              label: `${cat.icon} ${cat.name}`,
+            }))}
+            error={form.errors.categoryId}
+            searchable
+            classNames={inputClassNames}
+          />
+
           {/* From Account */}
           <Select
             placeholder={t('transactions.quickAddTransaction.fromAccount.placeholder')}
@@ -296,20 +311,6 @@ export const QuickAddTransaction = ({
               classNames={inputClassNames}
             />
           )}
-
-          {/* Category */}
-          <Select
-            placeholder={t('transactions.quickAddTransaction.category.placeholder')}
-            value={form.values.categoryId}
-            onChange={onCategoryChanged}
-            data={categories.map((cat) => ({
-              value: cat.id,
-              label: `${cat.icon} ${cat.name}`,
-            }))}
-            error={form.errors.categoryId}
-            searchable
-            classNames={inputClassNames}
-          />
 
           {/* Vendor */}
           {categoryType !== 'Transfer' && (

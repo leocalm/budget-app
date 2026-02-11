@@ -180,7 +180,7 @@ describe('useTransactions', () => {
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
     mockDeleteTransaction.mockResolvedValue(undefined);
 
-    const { result } = renderHook(() => useDeleteTransaction(), { wrapper });
+    const { result } = renderHook(() => useDeleteTransaction(null), { wrapper });
 
     await result.current.mutateAsync('tx-1');
 
@@ -226,7 +226,7 @@ describe('useTransactions', () => {
       vendor: null,
     });
 
-    const { result } = renderHook(() => useCreateTransaction(), { wrapper });
+    const { result } = renderHook(() => useCreateTransaction(null), { wrapper });
 
     const payload: Transaction = {
       description: 'Book',
@@ -282,7 +282,7 @@ describe('useTransactions', () => {
       vendor: null,
     });
 
-    const { result } = renderHook(() => useCreateTransactionFromRequest(), { wrapper });
+    const { result } = renderHook(() => useCreateTransactionFromRequest(null), { wrapper });
 
     const payload: TransactionRequest = {
       description: 'Rent',
@@ -338,7 +338,7 @@ describe('useTransactions', () => {
       vendor: null,
     });
 
-    const { result } = renderHook(() => useUpdateTransaction(), { wrapper });
+    const { result } = renderHook(() => useUpdateTransaction(null), { wrapper });
 
     const payload: TransactionRequest = {
       description: 'Updated',

@@ -42,12 +42,15 @@ export const useInfiniteCategories = (selectedPeriodId: string | null) => {
   });
 };
 
-export const useDeleteCategory = () => {
+export const useDeleteCategory = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteCategory,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
@@ -55,12 +58,15 @@ export const useDeleteCategory = () => {
   });
 };
 
-export const useCreateCategory = () => {
+export const useCreateCategory = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (newCategory: CategoryRequest) => createCategory(newCategory),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
@@ -68,7 +74,7 @@ export const useCreateCategory = () => {
   });
 };
 
-export const useUpdateCategory = () => {
+export const useUpdateCategory = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -76,6 +82,9 @@ export const useUpdateCategory = () => {
       updateCategory(id, payload),
     onSuccess: async () => {
       await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
+        }),
         queryClient.invalidateQueries({ queryKey: queryKeys.categories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),

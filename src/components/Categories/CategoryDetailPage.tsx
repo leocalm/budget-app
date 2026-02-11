@@ -10,7 +10,7 @@ import { getIcon } from '@/utils/IconMap';
 export function CategoryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const deleteTransactionMutation = useDeleteTransaction();
+  const deleteTransactionMutation = useDeleteTransaction(null);
 
   const { selectedPeriodId } = useBudgetPeriodSelection();
 

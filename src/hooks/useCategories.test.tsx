@@ -115,7 +115,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
     });
 
-    const { result } = renderHook(() => useCreateCategory(), { wrapper });
+    const { result } = renderHook(() => useCreateCategory(null), { wrapper });
 
     const payload: CategoryRequest = {
       name: 'Food',
@@ -136,7 +136,7 @@ describe('useCategories', () => {
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
     mockDeleteCategory.mockResolvedValue(undefined);
 
-    const { result } = renderHook(() => useDeleteCategory(), { wrapper });
+    const { result } = renderHook(() => useDeleteCategory(null), { wrapper });
 
     await result.current.mutateAsync('category-1');
 
@@ -156,7 +156,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
     });
 
-    const { result } = renderHook(() => useUpdateCategory(), { wrapper });
+    const { result } = renderHook(() => useUpdateCategory(null), { wrapper });
 
     const payload: CategoryRequest = {
       name: 'Food',

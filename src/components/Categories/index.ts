@@ -9,6 +9,5 @@ export { CategoryCard } from './CategoryCard';
 export { CategoryNameIcon } from './CategoryNameIcon';
 
 // Forms
-export { CreateCategory } from './CreateCategory';
 export { CreateCategoryForm } from './CreateCategoryForm';
 export { EditCategoryForm } from './EditCategoryForm';

@@ -11,7 +11,7 @@ import { AccountCard } from './AccountCard';
 export function AccountDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const deleteTransactionMutation = useDeleteTransaction();
+  const deleteTransactionMutation = useDeleteTransaction(null);
 
   const { data: account, isLoading: isLoadingAccount } = useQuery({
     queryKey: queryKeys.account(id!),

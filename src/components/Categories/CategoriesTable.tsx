@@ -33,7 +33,7 @@ export function CategoriesTable() {
   } = useInfiniteCategories(selectedPeriodId);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const deleteMutation = useDeleteCategory();
+  const deleteMutation = useDeleteCategory(selectedPeriodId);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [selected, setSelected] = useState<CategoryResponse | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -239,6 +239,7 @@ export function CategoriesTable() {
                   closeEdit();
                   setSelected(null);
                 }}
+                selectedPeriodId={selectedPeriodId}
               />
             )}
           </div>
@@ -252,6 +253,7 @@ export function CategoriesTable() {
                 closeEdit();
                 setSelected(null);
               }}
+              selectedPeriodId={selectedPeriodId}
             />
           )}
         </Modal>

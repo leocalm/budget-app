@@ -40,8 +40,8 @@ export const TransactionsTableContainer = ({
     isError: accountsError,
   } = useAccounts(selectedPeriodId);
 
-  const deleteMutation = useDeleteTransaction();
-  const createMutation = useCreateTransaction();
+  const deleteMutation = useDeleteTransaction(selectedPeriodId);
+  const createMutation = useCreateTransaction(selectedPeriodId);
   const createVendorMutation = useCreateVendor();
 
   const combinedLoading =

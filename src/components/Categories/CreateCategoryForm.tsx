@@ -20,15 +20,20 @@ const EmojiPicker = React.lazy(() => import('emoji-picker-react'));
 
 interface CreateCategoryFormProps {
   onCategoryCreated?: () => void;
+  selectedPeriodId: string | null;
 }
 
-export function CreateCategoryForm({ onCategoryCreated }: CreateCategoryFormProps) {
-  const createMutation = useCreateCategory();
+export function CreateCategoryForm({
+  onCategoryCreated,
+  selectedPeriodId,
+}: CreateCategoryFormProps) {
+  const createMutation = useCreateCategory(selectedPeriodId);
   const [opened, setOpened] = useState(false);
-  const [selectedIcon] = useState('❤️');
+  const [selectedIcon, setSelectedIcon] = useState('❤️');
 
   const emojiSelected = (values: typeof form.values, emoji: EmojiClickData) => {
     values.icon = emoji.emoji;
+    setSelectedIcon(emoji.emoji);
     setOpened(false);
   };
 

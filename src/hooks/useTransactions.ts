@@ -35,12 +35,15 @@ export const useInfiniteTransactions = (selectedPeriodId: string | null) => {
   });
 };
 
-export const useDeleteTransaction = () => {
+export const useDeleteTransaction = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteTransaction,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
       queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
@@ -56,12 +59,15 @@ export const useDeleteTransaction = () => {
   });
 };
 
-export const useCreateTransaction = () => {
+export const useCreateTransaction = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (newTransaction: Transaction) => createTransaction(newTransaction),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
       queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
@@ -77,13 +83,16 @@ export const useCreateTransaction = () => {
   });
 };
 
-export const useCreateTransactionFromRequest = () => {
+export const useCreateTransactionFromRequest = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (newTransaction: TransactionRequest) =>
       createTransactionFromRequest(newTransaction),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
       queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
@@ -99,13 +108,16 @@ export const useCreateTransactionFromRequest = () => {
   });
 };
 
-export const useUpdateTransaction = () => {
+export const useUpdateTransaction = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TransactionRequest }) =>
       updateTransaction(id, data),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
       queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });

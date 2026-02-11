@@ -40,7 +40,7 @@ export function CategoriesContainer() {
   } = useInfiniteCategories(selectedPeriodId);
   const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
-  const deleteMutation = useDeleteCategory();
+  const deleteMutation = useDeleteCategory(selectedPeriodId);
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
 
@@ -219,7 +219,10 @@ export function CategoriesContainer() {
               title="Create Category"
               position="bottom"
             >
-              <CreateCategoryForm onCategoryCreated={closeCreate} />
+              <CreateCategoryForm
+                onCategoryCreated={closeCreate}
+                selectedPeriodId={selectedPeriodId}
+              />
             </Drawer>
             <Drawer
               opened={editOpened}
@@ -228,18 +231,29 @@ export function CategoriesContainer() {
               position="bottom"
             >
               {selectedCategory && (
-                <EditCategoryForm category={selectedCategory} onUpdated={onEditClosed} />
+                <EditCategoryForm
+                  category={selectedCategory}
+                  onUpdated={onEditClosed}
+                  selectedPeriodId={selectedPeriodId}
+                />
               )}
             </Drawer>
           </>
         ) : (
           <>
             <Modal opened={createOpened} onClose={closeCreate} title="Create Category" centered>
-              <CreateCategoryForm onCategoryCreated={closeCreate} />
+              <CreateCategoryForm
+                onCategoryCreated={closeCreate}
+                selectedPeriodId={selectedPeriodId}
+              />
             </Modal>
             <Modal opened={editOpened} onClose={onEditClosed} title="Edit Category" centered>
               {selectedCategory && (
-                <EditCategoryForm category={selectedCategory} onUpdated={onEditClosed} />
+                <EditCategoryForm
+                  category={selectedCategory}
+                  onUpdated={onEditClosed}
+                  selectedPeriodId={selectedPeriodId}
+                />
               )}
             </Modal>
           </>

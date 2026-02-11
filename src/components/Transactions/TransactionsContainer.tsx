@@ -59,8 +59,8 @@ export function TransactionsContainer() {
   }, [periods, selectedPeriodId]);
 
   // Mutations
-  const deleteTransactionMutation = useDeleteTransaction();
-  const updateTransactionMutation = useUpdateTransaction();
+  const deleteTransactionMutation = useDeleteTransaction(selectedPeriodId);
+  const updateTransactionMutation = useUpdateTransaction(selectedPeriodId);
   const createVendorMutation = useCreateVendor();
 
   // Client-side filtering
