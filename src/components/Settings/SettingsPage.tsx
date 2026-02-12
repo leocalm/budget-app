@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconLock, IconShieldCheck, IconShieldOff } from '@tabler/icons-react';
 import {
   Alert,
   Avatar,
+  Badge,
   Button,
   Container,
   Group,
   Loader,
+  Modal,
   Paper,
+  PasswordInput,
+  PinInput,
   Select,
   Stack,
   Text,
@@ -22,6 +26,9 @@ import { useSettings, useUpdateSettings } from '@/hooks/useSettings';
 import { useUpdateUser } from '@/hooks/useUser';
 import { LANGUAGE_DISPLAY_NAMES, SettingsRequest, Theme, Language } from '@/types/settings';
 import { useTranslation } from 'react-i18next';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { disableTwoFactor, getTwoFactorStatus } from '@/api/twoFactor';
+import { TwoFactorSetup } from './TwoFactorSetup';
 
 export function SettingsPage() {
   const { setColorScheme } = useMantineColorScheme();
@@ -31,6 +38,7 @@ export function SettingsPage() {
   const updateSettingsMutation = useUpdateSettings();
   const updateUserMutation = useUpdateUser();
   const { i18n, t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const [profileName, setProfileName] = useState(user?.name || '');
   const [profileEmail, setProfileEmail] = useState(user?.email || '');
@@ -38,8 +46,43 @@ export function SettingsPage() {
   const [language, setLanguage] = useState<Language>('en');
   const [currencyId, setCurrencyId] = useState<string | null>(null);
 
+  // 2FA state
+  const [setupModalOpened, setSetupModalOpened] = useState(false);
+  const [disableModalOpened, setDisableModalOpened] = useState(false);
+  const [disablePassword, setDisablePassword] = useState('');
+  const [disableCode, setDisableCode] = useState('');
+
   const hasInitializedSettings = useRef(false);
   const hasInitializedProfile = useRef(false);
+
+  // Fetch 2FA status
+  const twoFactorStatusQuery = useQuery({
+    queryKey: ['twoFactorStatus'],
+    queryFn: getTwoFactorStatus,
+  });
+
+  // Disable 2FA mutation
+  const disableTwoFactorMutation = useMutation({
+    mutationFn: ({ password, code }: { password: string; code: string }) => disableTwoFactor(password, code),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
+      setDisableModalOpened(false);
+      setDisablePassword('');
+      setDisableCode('');
+      notifications.show({
+        title: t('common.success'),
+        message: 'Two-factor authentication disabled successfully',
+        color: 'green',
+      });
+    },
+    onError: (error: Error) => {
+      notifications.show({
+        title: t('common.error'),
+        message: error.message || 'Failed to disable two-factor authentication',
+        color: 'red',
+      });
+    },
+  });
 
   // Sync form when data loads (only on initial load)
   useEffect(() => {
@@ -315,7 +358,147 @@ export function SettingsPage() {
             </Group>
           </Stack>
         </Paper>
+
+        {/* Two-Factor Authentication */}
+        <Paper withBorder radius="md" p="xl">
+          <Stack gap="lg">
+            <div>
+              <Group justify="space-between" mb="xs">
+                <Title order={4}>Two-Factor Authentication</Title>
+                {twoFactorStatusQuery.data?.enabled ? (
+                  <Badge color="green" leftSection={<IconShieldCheck size={14} />}>
+                    Enabled
+                  </Badge>
+                ) : (
+                  <Badge color="gray" leftSection={<IconShieldOff size={14} />}>
+                    Disabled
+                  </Badge>
+                )}
+              </Group>
+              <Text c="dimmed" size="sm">
+                Add an extra layer of security to your account using a time-based one-time password (TOTP)
+              </Text>
+            </div>
+
+            {twoFactorStatusQuery.isLoading && (
+              <Group justify="center">
+                <Loader size="sm" />
+              </Group>
+            )}
+
+            {twoFactorStatusQuery.data && !twoFactorStatusQuery.data.enabled && (
+              <Group>
+                <Button
+                  leftSection={<IconLock size={16} />}
+                  onClick={() => setSetupModalOpened(true)}
+                >
+                  Enable Two-Factor Authentication
+                </Button>
+              </Group>
+            )}
+
+            {twoFactorStatusQuery.data && twoFactorStatusQuery.data.enabled && (
+              <Stack gap="md">
+                <Group>
+                  <Text size="sm" fw={500}>
+                    Backup Codes:
+                  </Text>
+                  <Badge>
+                    {twoFactorStatusQuery.data.backupCodesRemaining} / 10 remaining
+                  </Badge>
+                </Group>
+
+                {twoFactorStatusQuery.data.backupCodesRemaining < 3 && (
+                  <Alert icon={<IconAlertCircle size={16} />} title="Low backup codes" color="yellow" variant="light">
+                    You're running low on backup codes. Consider regenerating them.
+                  </Alert>
+                )}
+
+                <Group>
+                  <Button
+                    variant="light"
+                    color="red"
+                    leftSection={<IconShieldOff size={16} />}
+                    onClick={() => setDisableModalOpened(true)}
+                  >
+                    Disable 2FA
+                  </Button>
+                </Group>
+              </Stack>
+            )}
+          </Stack>
+        </Paper>
       </Stack>
+
+      {/* 2FA Setup Modal */}
+      <TwoFactorSetup
+        opened={setupModalOpened}
+        onClose={() => setSetupModalOpened(false)}
+        onSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
+        }}
+      />
+
+      {/* Disable 2FA Modal */}
+      <Modal
+        opened={disableModalOpened}
+        onClose={() => {
+          setDisableModalOpened(false);
+          setDisablePassword('');
+          setDisableCode('');
+        }}
+        title="Disable Two-Factor Authentication"
+      >
+        <Stack gap="md">
+          <Alert icon={<IconAlertCircle size={16} />} title="Warning" color="red" variant="light">
+            Disabling two-factor authentication will make your account less secure. You'll need to provide your password
+            and a current 2FA code to confirm.
+          </Alert>
+
+          <PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            value={disablePassword}
+            onChange={(e) => setDisablePassword(e.currentTarget.value)}
+            required
+          />
+
+          <div>
+            <Text size="sm" mb="xs">
+              Two-Factor Code
+            </Text>
+            <PinInput
+              length={6}
+              value={disableCode}
+              onChange={setDisableCode}
+              placeholder=""
+              type="number"
+              size="md"
+            />
+          </div>
+
+          <Group justify="space-between" mt="md">
+            <Button
+              variant="default"
+              onClick={() => {
+                setDisableModalOpened(false);
+                setDisablePassword('');
+                setDisableCode('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              color="red"
+              onClick={() => disableTwoFactorMutation.mutate({ password: disablePassword, code: disableCode })}
+              loading={disableTwoFactorMutation.isPending}
+              disabled={!disablePassword || disableCode.length !== 6}
+            >
+              Disable 2FA
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Container>
   );
 }
