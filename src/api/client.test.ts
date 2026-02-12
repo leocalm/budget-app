@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { apiGet, navigation, toCamelCase, toSnakeCase } from './client';
+import { apiDelete, apiGet, navigation, toCamelCase, toSnakeCase } from './client';
 import { ApiError } from './errors';
 
 const fetchMock = vi.fn();
@@ -175,5 +175,30 @@ describe('api client case transformations', () => {
     expect(toSnakeCase<number>(42)).toBe(42);
     expect(toSnakeCase<null>(null)).toBeNull();
     expect(toSnakeCase<undefined>(undefined)).toBeUndefined();
+  });
+});
+
+describe('api client delete requests', () => {
+  beforeEach(() => {
+    fetchMock.mockReset();
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
+  });
+
+  it('sends optional delete body using snake_case keys', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      headers: {
+        get: vi.fn().mockReturnValue(null),
+      },
+    } as unknown as Response);
+
+    await apiDelete('/api/two-factor/disable', { twoFactorCode: '123456' });
+
+    expect(fetchMock).toHaveBeenCalledWith('/api/v1/two-factor/disable', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ two_factor_code: '123456' }),
+      credentials: 'include',
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from './client';
+import { apiDelete, apiGet, apiPost } from './client';
 import { ApiError } from './errors';
 
 export interface TwoFactorSetupResponse {
@@ -64,28 +64,13 @@ export async function verifyTwoFactor(code: string): Promise<void> {
 
 /**
  * Disable two-factor authentication (requires password + current 2FA code)
- * Note: Using direct fetch since apiDelete doesn't support request body
  */
 export async function disableTwoFactor(password: string, code: string): Promise<void> {
   try {
-    const response = await fetch('/api/v1/two-factor/disable', {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ password, code }),
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: 'Failed to disable two-factor authentication' }));
-      throw new Error(error.message || 'Failed to disable two-factor authentication');
-    }
+    await apiDelete<void, TwoFactorDisableRequest>('/api/two-factor/disable', { password, code });
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
+    if (error instanceof ApiError && error.message) {
+      throw new Error(error.message);
     }
     throw new Error('Failed to disable two-factor authentication');
   }

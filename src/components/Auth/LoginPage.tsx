@@ -17,6 +17,8 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { apiPost } from '@/api/client';
+import { ApiError } from '@/api/errors';
 import { useAuth } from '@/context/AuthContext';
 
 export function LoginPage() {
@@ -55,36 +57,14 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // Make login request with optional 2FA code
-      const response = await fetch('/api/v1/users/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      await apiPost<void, { email: string; password: string; twoFactorCode?: string }>(
+        '/api/users/login',
+        {
           email: values.email,
           password: values.password,
-          two_factor_code: requires2FA && twoFactorCode ? twoFactorCode : undefined,
-        }),
-      });
-
-      if (response.status === 428) {
-        // 2FA required
-        const data = await response.json();
-        if (data.two_factor_required) {
-          setRequires2FA(true);
-          setLoading(false);
-          return;
+          twoFactorCode: requires2FA && twoFactorCode ? twoFactorCode : undefined,
         }
-      }
-
-      if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ message: t('auth.login.errors.generic') }));
-        throw new Error(errorData.message || t('auth.login.errors.generic'));
-      }
+      );
 
       // Login successful - hydrate user from cookie-backed endpoint
       const refreshed = await refreshUser(values.rememberMe, false);
@@ -96,6 +76,15 @@ export function LoginPage() {
       const from = (location.state as any)?.from?.pathname || '/dashboard';
       navigate(from, { replace: true });
     } catch (err) {
+      if (err instanceof ApiError && err.status === 428) {
+        const data = err.data as { twoFactorRequired?: boolean } | undefined;
+        if (data?.twoFactorRequired) {
+          setRequires2FA(true);
+          setLoading(false);
+          return;
+        }
+      }
+
       setError(err instanceof Error ? err.message : t('auth.login.errors.generic'));
       setLoading(false);
     }

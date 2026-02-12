@@ -341,9 +341,11 @@ export async function apiPut<T, B = unknown>(url: string, body?: B): Promise<T> 
 /**
  * DELETE request with optional response transformation
  */
-export async function apiDelete<T = void>(url: string): Promise<T> {
+export async function apiDelete<T = void, B = unknown>(url: string, body?: B): Promise<T> {
   const res = await baseFetch(url, {
     method: 'DELETE',
+    headers: body !== undefined ? { 'Content-Type': 'application/json' } : undefined,
+    body: body !== undefined ? JSON.stringify(toSnakeCase(body)) : undefined,
   });
   if (!res.ok) {
     await throwForStatus(res, url);

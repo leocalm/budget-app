@@ -31,6 +31,7 @@ interface AccountCardProps {
   onEdit: (account: AccountResponse) => void;
   onDelete: (id: string) => void;
   onViewDetails: (account: AccountResponse) => void;
+  onTransferOrPayBill?: (account: AccountResponse) => void;
 }
 
 const ACCOUNT_TYPE_ICONS: Record<string, string> = {
@@ -57,6 +58,7 @@ export function AccountCard({
   onEdit,
   onDelete,
   onViewDetails,
+  onTransferOrPayBill,
 }: AccountCardProps) {
   const { t } = useTranslation();
   const currentBalance = convertCentsToDisplay(account.balance);
@@ -245,9 +247,11 @@ export function AccountCard({
           <span style={{ marginRight: 4 }}>📊</span>
           {t('accounts.card.viewDetails')}
         </Button>
-        <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
-          {isCreditCard ? `💳 ${t('accounts.card.payBill')}` : `💸 ${t('accounts.card.transfer')}`}
-        </Button>
+        {onTransferOrPayBill && (
+          <Button variant="default" size="xs" onClick={() => onTransferOrPayBill(account)}>
+            {isCreditCard ? `💳 ${t('accounts.card.payBill')}` : `💸 ${t('accounts.card.transfer')}`}
+          </Button>
+        )}
       </Group>
     </Paper>
   );
