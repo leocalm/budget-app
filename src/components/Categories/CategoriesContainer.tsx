@@ -141,12 +141,12 @@ export function CategoriesContainer() {
 
         {/* Categories Grid */}
         {filteredCategories.length === 0 ? (
-            <EmptyState
-              icon="📁"
-              title={t('states.empty.categories.title')}
-              message={t('states.empty.categories.message')}
-              primaryAction={{
-                label: t('categories.empty.addButton'),
+          <EmptyState
+            icon="📁"
+            title={t('states.empty.categories.title')}
+            message={t('states.empty.categories.message')}
+            primaryAction={{
+              label: t('categories.empty.addButton'),
               icon: <span>+</span>,
               onClick: openCreate,
             }}
@@ -220,23 +220,23 @@ export function CategoriesContainer() {
 
         {isMobile ? (
           <>
-        <Drawer
-          opened={createOpened}
-          onClose={closeCreate}
-          title={t('categories.modal.createTitle')}
-          position="bottom"
-        >
+            <Drawer
+              opened={createOpened}
+              onClose={closeCreate}
+              title={t('categories.modal.createTitle')}
+              position="bottom"
+            >
               <CreateCategoryForm
                 onCategoryCreated={closeCreate}
                 selectedPeriodId={selectedPeriodId}
               />
             </Drawer>
-        <Drawer
-          opened={editOpened}
-          onClose={onEditClosed}
-          title={t('categories.modal.editTitle')}
-          position="bottom"
-        >
+            <Drawer
+              opened={editOpened}
+              onClose={onEditClosed}
+              title={t('categories.modal.editTitle')}
+              position="bottom"
+            >
               {selectedCategory && (
                 <EditCategoryForm
                   category={selectedCategory}
@@ -248,23 +248,23 @@ export function CategoriesContainer() {
           </>
         ) : (
           <>
-        <Modal
-          opened={createOpened}
-          onClose={closeCreate}
-          title={t('categories.modal.createTitle')}
-          centered
-        >
+            <Modal
+              opened={createOpened}
+              onClose={closeCreate}
+              title={t('categories.modal.createTitle')}
+              centered
+            >
               <CreateCategoryForm
                 onCategoryCreated={closeCreate}
                 selectedPeriodId={selectedPeriodId}
               />
             </Modal>
-        <Modal
-          opened={editOpened}
-          onClose={onEditClosed}
-          title={t('categories.modal.editTitle')}
-          centered
-        >
+            <Modal
+              opened={editOpened}
+              onClose={onEditClosed}
+              title={t('categories.modal.editTitle')}
+              centered
+            >
               {selectedCategory && (
                 <EditCategoryForm
                   category={selectedCategory}

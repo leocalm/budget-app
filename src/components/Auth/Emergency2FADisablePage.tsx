@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import { requestEmergencyDisable, confirmEmergencyDisable } from '@/api/twoFactor';
+import { confirmEmergencyDisable, requestEmergencyDisable } from '@/api/twoFactor';
 
 export function Emergency2FADisablePage() {
   const { t } = useTranslation();
@@ -69,7 +69,8 @@ export function Emergency2FADisablePage() {
       setSuccess(true);
       notifications.show({
         title: t('common.success'),
-        message: 'Two-factor authentication has been disabled. You can now log in with just your password.',
+        message:
+          'Two-factor authentication has been disabled. You can now log in with just your password.',
         color: 'green',
         icon: <IconCheck size={20} />,
       });
@@ -117,19 +118,31 @@ export function Emergency2FADisablePage() {
         </Title>
 
         {error && (
-          <Alert icon={<IconAlertCircle size={16} />} title="Error" color="red" variant="light" mb="md">
+          <Alert
+            icon={<IconAlertCircle size={16} />}
+            title="Error"
+            color="red"
+            variant="light"
+            mb="md"
+          >
             {error}
           </Alert>
         )}
 
-        <Alert icon={<IconAlertCircle size={16} />} title="Warning" color="yellow" variant="light" mb="md">
-          You are about to disable two-factor authentication on your account. This will make your account less
-          secure.
+        <Alert
+          icon={<IconAlertCircle size={16} />}
+          title="Warning"
+          color="yellow"
+          variant="light"
+          mb="md"
+        >
+          You are about to disable two-factor authentication on your account. This will make your
+          account less secure.
         </Alert>
 
         <Text size="sm" mb="xl">
-          Click the button below to confirm that you want to disable two-factor authentication. You can re-enable it
-          at any time from your account settings.
+          Click the button below to confirm that you want to disable two-factor authentication. You
+          can re-enable it at any time from your account settings.
         </Text>
 
         <Button
@@ -162,19 +175,31 @@ export function Emergency2FADisablePage() {
       </Title>
 
       {error && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Error" color="red" variant="light" mb="md">
+        <Alert
+          icon={<IconAlertCircle size={16} />}
+          title="Error"
+          color="red"
+          variant="light"
+          mb="md"
+        >
           {error}
         </Alert>
       )}
 
-      <Alert icon={<IconAlertCircle size={16} />} title="Lost Access?" color="blue" variant="light" mb="md">
-        If you've lost access to your authenticator app and cannot log in, we can help you disable two-factor
-        authentication via email.
+      <Alert
+        icon={<IconAlertCircle size={16} />}
+        title="Lost Access?"
+        color="blue"
+        variant="light"
+        mb="md"
+      >
+        If you've lost access to your authenticator app and cannot log in, we can help you disable
+        two-factor authentication via email.
       </Alert>
 
       <Text c="dimmed" fz="sm" ta="center" mb="md">
-        Enter your email address and we'll send you a secure link to disable 2FA. You'll be able to log in with just
-        your password after that.
+        Enter your email address and we'll send you a secure link to disable 2FA. You'll be able to
+        log in with just your password after that.
       </Text>
 
       <form onSubmit={requestForm.onSubmit(handleRequestSubmit)}>

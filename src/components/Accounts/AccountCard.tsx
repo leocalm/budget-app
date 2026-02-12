@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sparkline } from '@mantine/charts';
 import {
   ActionIcon,
@@ -13,7 +14,6 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import type { AccountResponse } from '@/types/account';
 import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Accounts.module.css';
@@ -240,19 +240,15 @@ export function AccountCard({
 
       {/* Quick Actions */}
       <Divider />
-      {false && (
-        <Group grow gap="sm" p="lg" px="xl">
-          <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
-            <span style={{ marginRight: 4 }}>📊</span>
-            {t('accounts.card.viewDetails')}
-          </Button>
-          <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
-            {isCreditCard
-              ? `💳 ${t('accounts.card.payBill')}`
-              : `💸 ${t('accounts.card.transfer')}`}
-          </Button>
-        </Group>
-      )}
+      <Group grow gap="sm" p="lg" px="xl">
+        <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
+          <span style={{ marginRight: 4 }}>📊</span>
+          {t('accounts.card.viewDetails')}
+        </Button>
+        <Button variant="default" size="xs" onClick={() => onViewDetails(account)}>
+          {isCreditCard ? `💳 ${t('accounts.card.payBill')}` : `💸 ${t('accounts.card.transfer')}`}
+        </Button>
+      </Group>
     </Paper>
   );
 }

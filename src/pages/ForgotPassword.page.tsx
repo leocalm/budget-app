@@ -47,7 +47,7 @@ export function ForgotPasswordPage() {
       setError(
         err instanceof Error
           ? err.message
-          : t('auth.forgotPassword.errors.generic', 'Failed to send reset email'),
+          : t('auth.forgotPassword.errors.generic', 'Failed to send reset email')
       );
     } finally {
       setLoading(false);
@@ -58,10 +58,7 @@ export function ForgotPasswordPage() {
     <Container size={420} my={40}>
       <Paper withBorder shadow="md" p={30} radius="md">
         <Stack gap="md">
-          <IconMail
-            size={48}
-            style={{ margin: '0 auto', color: 'var(--mantine-color-blue-6)' }}
-          />
+          <IconMail size={48} style={{ margin: '0 auto', color: 'var(--mantine-color-blue-6)' }} />
 
           <Title order={2} ta="center">
             {t('auth.forgotPassword.title', 'Forgot your password?')}
@@ -70,7 +67,7 @@ export function ForgotPasswordPage() {
           <Text c="dimmed" size="sm" ta="center">
             {t(
               'auth.forgotPassword.description',
-              "Enter your email address and we'll send you a link to reset your password.",
+              "Enter your email address and we'll send you a link to reset your password."
             )}
           </Text>
 
@@ -83,7 +80,7 @@ export function ForgotPasswordPage() {
             >
               {t(
                 'auth.forgotPassword.success.message',
-                'If your email address exists in our system, you will receive a password reset link shortly. Please check your inbox and spam folder.',
+                'If your email address exists in our system, you will receive a password reset link shortly. Please check your inbox and spam folder.'
               )}
             </Alert>
           )}

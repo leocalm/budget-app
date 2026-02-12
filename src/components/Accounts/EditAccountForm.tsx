@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -14,7 +15,6 @@ import { useForm } from '@mantine/form';
 import { useUpdateAccount } from '@/hooks/useAccounts';
 import { ACCOUNT_TYPES, AccountRequest, AccountResponse, AccountType } from '@/types/account';
 import { convertCentsToDisplay, convertDisplayToCents } from '@/utils/currency';
-import { useTranslation } from 'react-i18next';
 
 interface EditAccountFormProps {
   account: AccountResponse;
@@ -39,8 +39,7 @@ export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
     validate: {
       name: (value) =>
         !value || value.length < 2 ? t('accounts.forms.validation.nameMinLength') : null,
-      accountType: (value) =>
-        value ? null : t('accounts.forms.validation.accountTypeRequired'),
+      accountType: (value) => (value ? null : t('accounts.forms.validation.accountTypeRequired')),
       balance: (value) =>
         value === undefined || value === null
           ? t('accounts.forms.validation.balanceRequired')
@@ -94,28 +93,28 @@ export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 4 }}>
-          <Select
-            label={t('accounts.forms.fields.type.label')}
-            placeholder={t('accounts.forms.fields.type.placeholder')}
-            data={accountTypeOptions}
-            searchable
-            nothingFoundMessage={t('accounts.forms.select.nothingFound')}
-            leftSection={<span>💼</span>}
-            {...form.getInputProps('accountType')}
-            required
-          />
+            <Select
+              label={t('accounts.forms.fields.type.label')}
+              placeholder={t('accounts.forms.fields.type.placeholder')}
+              data={accountTypeOptions}
+              searchable
+              nothingFoundMessage={t('accounts.forms.select.nothingFound')}
+              leftSection={<span>💼</span>}
+              {...form.getInputProps('accountType')}
+              required
+            />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
-          <NumberInput
-            label={t('accounts.forms.fields.balance.label')}
-            placeholder={t('accounts.forms.fields.balance.placeholder')}
-            decimalScale={2}
-            fixedDecimalScale
-            leftSection={<span>💶</span>}
-            {...form.getInputProps('balance')}
-            required
-          />
+            <NumberInput
+              label={t('accounts.forms.fields.balance.label')}
+              placeholder={t('accounts.forms.fields.balance.placeholder')}
+              decimalScale={2}
+              fixedDecimalScale
+              leftSection={<span>💶</span>}
+              {...form.getInputProps('balance')}
+              required
+            />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>

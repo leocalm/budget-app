@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  IconAlertCircle,
-  IconCheck,
-  IconKey,
-  IconLock,
-  IconLoader,
-} from '@tabler/icons-react';
+import { IconAlertCircle, IconCheck, IconKey, IconLoader, IconLock } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
@@ -21,10 +15,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import {
-  confirmPasswordReset,
-  validatePasswordResetToken,
-} from '@/api/passwordReset';
+import { confirmPasswordReset, validatePasswordResetToken } from '@/api/passwordReset';
 
 // Password strength indicator
 function getPasswordStrength(password: string): {
@@ -39,14 +30,26 @@ function getPasswordStrength(password: string): {
   let score = 0;
 
   // Length
-  if (password.length >= 8) score += 1;
-  if (password.length >= 12) score += 1;
+  if (password.length >= 8) {
+    score += 1;
+  }
+  if (password.length >= 12) {
+    score += 1;
+  }
 
   // Character types
-  if (/[a-z]/.test(password)) score += 1;
-  if (/[A-Z]/.test(password)) score += 1;
-  if (/[0-9]/.test(password)) score += 1;
-  if (/[^a-zA-Z0-9]/.test(password)) score += 1;
+  if (/[a-z]/.test(password)) {
+    score += 1;
+  }
+  if (/[A-Z]/.test(password)) {
+    score += 1;
+  }
+  if (/[0-9]/.test(password)) {
+    score += 1;
+  }
+  if (/[^a-zA-Z0-9]/.test(password)) {
+    score += 1;
+  }
 
   // Normalize to 0-100
   const percentage = (score / 6) * 100;
@@ -94,14 +97,14 @@ export function ResetPasswordPage() {
         if (val.length < 8) {
           return t(
             'auth.resetPassword.validation.passwordMinLength',
-            'Password must be at least 8 characters',
+            'Password must be at least 8 characters'
           );
         }
         const strength = getPasswordStrength(val);
         if (strength.score < 30) {
           return t(
             'auth.resetPassword.validation.passwordWeak',
-            'Password is too weak. Please use a stronger password.',
+            'Password is too weak. Please use a stronger password.'
           );
         }
         return null;
@@ -137,8 +140,8 @@ export function ResetPasswordPage() {
         setError(
           t(
             'auth.resetPassword.errors.noToken',
-            'No reset token found. Please request a new password reset.',
-          ),
+            'No reset token found. Please request a new password reset.'
+          )
         );
         setValidating(false);
         return;
@@ -153,18 +156,15 @@ export function ResetPasswordPage() {
           setError(
             t(
               'auth.resetPassword.errors.invalidToken',
-              'This password reset link is invalid or has expired. Please request a new one.',
-            ),
+              'This password reset link is invalid or has expired. Please request a new one.'
+            )
           );
         }
       } catch (err) {
         setError(
           err instanceof Error
             ? err.message
-            : t(
-                'auth.resetPassword.errors.validationFailed',
-                'Failed to validate reset token',
-              ),
+            : t('auth.resetPassword.errors.validationFailed', 'Failed to validate reset token')
         );
       } finally {
         setValidating(false);
@@ -195,7 +195,7 @@ export function ResetPasswordPage() {
       setError(
         err instanceof Error
           ? err.message
-          : t('auth.resetPassword.errors.generic', 'Failed to reset password'),
+          : t('auth.resetPassword.errors.generic', 'Failed to reset password')
       );
     } finally {
       setLoading(false);
@@ -237,7 +237,7 @@ export function ResetPasswordPage() {
             <Text c="dimmed" size="sm" ta="center">
               {t(
                 'auth.resetPassword.success.message',
-                'Your password has been reset successfully. Redirecting to login...',
+                'Your password has been reset successfully. Redirecting to login...'
               )}
             </Text>
           </Stack>
@@ -296,10 +296,7 @@ export function ResetPasswordPage() {
     <Container size={420} my={40}>
       <Paper withBorder shadow="md" p={30} radius="md">
         <Stack gap="md">
-          <IconLock
-            size={48}
-            style={{ margin: '0 auto', color: 'var(--mantine-color-blue-6)' }}
-          />
+          <IconLock size={48} style={{ margin: '0 auto', color: 'var(--mantine-color-blue-6)' }} />
 
           <Title order={2} ta="center">
             {t('auth.resetPassword.title', 'Reset your password')}
@@ -307,7 +304,8 @@ export function ResetPasswordPage() {
 
           {userEmail && (
             <Text c="dimmed" size="sm" ta="center">
-              {t('auth.resetPassword.resettingFor', 'Resetting password for:')} <strong>{userEmail}</strong>
+              {t('auth.resetPassword.resettingFor', 'Resetting password for:')}{' '}
+              <strong>{userEmail}</strong>
             </Text>
           )}
 
@@ -334,16 +332,26 @@ export function ResetPasswordPage() {
 
               {form.values.password.length > 0 && (
                 <Stack gap={5}>
-                  <Progress value={passwordStrength.score} color={passwordStrength.color} size="xs" />
+                  <Progress
+                    value={passwordStrength.score}
+                    color={passwordStrength.color}
+                    size="xs"
+                  />
                   <Text size="xs" c={passwordStrength.color}>
-                    {t(`auth.resetPassword.strength.${passwordStrength.label.toLowerCase()}`, passwordStrength.label)}
+                    {t(
+                      `auth.resetPassword.strength.${passwordStrength.label.toLowerCase()}`,
+                      passwordStrength.label
+                    )}
                   </Text>
                 </Stack>
               )}
 
               <PasswordInput
                 label={t('auth.resetPassword.confirmPasswordLabel', 'Confirm password')}
-                placeholder={t('auth.resetPassword.confirmPasswordPlaceholder', 'Confirm new password')}
+                placeholder={t(
+                  'auth.resetPassword.confirmPasswordPlaceholder',
+                  'Confirm new password'
+                )}
                 required
                 disabled={loading}
                 {...form.getInputProps('confirmPassword')}

@@ -139,7 +139,12 @@ export function AccountsTableView({
           </div>
         </Drawer>
       ) : (
-        <Modal opened={editOpened} onClose={closeEdit} title={t('accounts.table.editTitle')} centered>
+        <Modal
+          opened={editOpened}
+          onClose={closeEdit}
+          title={t('accounts.table.editTitle')}
+          centered
+        >
           {selected && (
             <EditAccountForm
               account={selected}

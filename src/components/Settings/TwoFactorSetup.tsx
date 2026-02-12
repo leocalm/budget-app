@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { IconAlertCircle, IconCheck, IconCopy, IconDownload, IconQrcode, IconShieldCheck } from '@tabler/icons-react';
+import {
+  IconAlertCircle,
+  IconCheck,
+  IconCopy,
+  IconDownload,
+  IconQrcode,
+  IconShieldCheck,
+} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -15,7 +22,6 @@ import {
   Stack,
   Stepper,
   Text,
-  Title,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { setupTwoFactor, verifyTwoFactor } from '@/api/twoFactor';
@@ -38,32 +44,43 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
   const [savedBackupCodes, setSavedBackupCodes] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
 
-  const handleSetup = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await setupTwoFactor();
-      console.log('2FA Setup Response:', response);
-      setSecret(response.secret);
-      setQrCode(response.qrCode);
-      setBackupCodes(response.backupCodes);
-      // Stay on step 0 to show the QR code - user will click "Next" to advance
-      console.log('2FA Setup Complete - QR code ready');
-    } catch (err) {
-      console.error('2FA Setup Error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to setup 2FA');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Trigger setup when modal opens
   useEffect(() => {
-    if (opened && !secret) {
-      handleSetup();
+    if (!opened || secret) {
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    let isCancelled = false;
+
+    const initializeTwoFactorSetup = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await setupTwoFactor();
+        if (isCancelled) {
+          return;
+        }
+
+        setSecret(response.secret);
+        setQrCode(response.qrCode);
+        setBackupCodes(response.backupCodes);
+      } catch (err) {
+        if (!isCancelled) {
+          setError(err instanceof Error ? err.message : 'Failed to setup 2FA');
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void initializeTwoFactorSetup();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [opened, secret]);
 
   const handleVerify = async () => {
@@ -166,7 +183,8 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
           >
             <Stack gap="md" mt="md">
               <Text size="sm">
-                Scan this QR code with your authenticator app (Google Authenticator, Authy, 1Password, etc.)
+                Scan this QR code with your authenticator app (Google Authenticator, Authy,
+                1Password, etc.)
               </Text>
 
               {qrCode ? (
@@ -187,7 +205,13 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
 
               <Group>
                 <Code style={{ flex: 1 }}>{secret || 'Loading...'}</Code>
-                <Button variant="light" size="xs" leftSection={<IconCopy size={16} />} onClick={copySecret} disabled={!secret}>
+                <Button
+                  variant="light"
+                  size="xs"
+                  leftSection={<IconCopy size={16} />}
+                  onClick={copySecret}
+                  disabled={!secret}
+                >
                   Copy
                 </Button>
               </Group>
@@ -204,11 +228,20 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
           </Stepper.Step>
 
           {/* Step 2: Save Backup Codes */}
-          <Stepper.Step label="Save Backup Codes" description="For account recovery" icon={<IconDownload size={18} />}>
+          <Stepper.Step
+            label="Save Backup Codes"
+            description="For account recovery"
+            icon={<IconDownload size={18} />}
+          >
             <Stack gap="md" mt="md">
-              <Alert icon={<IconAlertCircle size={16} />} title="Important" color="yellow" variant="light">
-                Save these backup codes in a secure location. Each code can only be used once to access your account if
-                you lose your authenticator device.
+              <Alert
+                icon={<IconAlertCircle size={16} />}
+                title="Important"
+                color="yellow"
+                variant="light"
+              >
+                Save these backup codes in a secure location. Each code can only be used once to
+                access your account if you lose your authenticator device.
               </Alert>
 
               <Paper p="md" withBorder>
@@ -263,9 +296,15 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
           </Stepper.Step>
 
           {/* Step 3: Verify */}
-          <Stepper.Step label="Verify" description="Enter 6-digit code" icon={<IconCheck size={18} />}>
+          <Stepper.Step
+            label="Verify"
+            description="Enter 6-digit code"
+            icon={<IconCheck size={18} />}
+          >
             <Stack gap="md" mt="md">
-              <Text size="sm">Enter the 6-digit code from your authenticator app to verify setup:</Text>
+              <Text size="sm">
+                Enter the 6-digit code from your authenticator app to verify setup:
+              </Text>
 
               <Box style={{ display: 'flex', justifyContent: 'center' }}>
                 <PinInput
@@ -283,7 +322,11 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
                 <Button variant="default" onClick={() => setActive(1)} disabled={loading}>
                   Back
                 </Button>
-                <Button onClick={handleVerify} loading={loading} disabled={verificationCode.length !== 6}>
+                <Button
+                  onClick={handleVerify}
+                  loading={loading}
+                  disabled={verificationCode.length !== 6}
+                >
                   Verify & Enable
                 </Button>
               </Group>

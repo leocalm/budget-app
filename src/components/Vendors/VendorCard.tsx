@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Button, Group, Menu, Paper, Stack, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { VendorWithStats } from '@/types/vendor';
 import styles from './Vendors.module.css';
-import { useTranslation } from 'react-i18next';
 
 interface VendorCardProps {
   vendor: VendorWithStats;
@@ -111,41 +111,37 @@ export function VendorCard({ vendor, onEdit, onDelete, onViewTransactions }: Ven
       </div>
 
       {/* Actions - Mobile: View Transactions + More menu | Desktop: View Transactions full width */}
-      {false && (
-        <>
-          {isMobile ? (
-            <Group gap="xs" mt="md" className={styles.vendorActionsMobile}>
-              <Button
-                variant="light"
-                size="sm"
-                style={{ flex: 1, minHeight: '44px' }}
-                onClick={handleViewTransactions}
-              >
-                <span style={{ marginRight: 4 }}>📊</span>
-                {t('vendors.viewTransactions')}
+      {isMobile ? (
+        <Group gap="xs" mt="md" className={styles.vendorActionsMobile}>
+          <Button
+            variant="light"
+            size="sm"
+            style={{ flex: 1, minHeight: '44px' }}
+            onClick={handleViewTransactions}
+          >
+            <span style={{ marginRight: 4 }}>📊</span>
+            {t('vendors.viewTransactions')}
+          </Button>
+          <Menu opened={menuOpened} onChange={setMenuOpened} position="bottom-end" withinPortal>
+            <Menu.Target>
+              <Button variant="light" size="sm" style={{ flex: 1, minHeight: '44px' }}>
+                ⋯ {t('vendors.card.actions.more')}
               </Button>
-              <Menu opened={menuOpened} onChange={setMenuOpened} position="bottom-end" withinPortal>
-                <Menu.Target>
-                  <Button variant="light" size="sm" style={{ flex: 1, minHeight: '44px' }}>
-                    ⋯ {t('vendors.card.actions.more')}
-                  </Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item leftSection={<span>✏️</span>} onClick={handleEdit}>
-                    {t('vendors.card.actions.edit')}
-                  </Menu.Item>
-                  <Menu.Item leftSection={<span>🗑️</span>} color="red" onClick={handleDelete}>
-                    {t('vendors.card.actions.delete')}
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
-          ) : (
-            <Button variant="light" fullWidth mt="md" size="sm" onClick={handleViewTransactions}>
-              {t('vendors.viewTransactions')}
-            </Button>
-          )}
-        </>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item leftSection={<span>✏️</span>} onClick={handleEdit}>
+                {t('vendors.card.actions.edit')}
+              </Menu.Item>
+              <Menu.Item leftSection={<span>🗑️</span>} color="red" onClick={handleDelete}>
+                {t('vendors.card.actions.delete')}
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
+      ) : (
+        <Button variant="light" fullWidth mt="md" size="sm" onClick={handleViewTransactions}>
+          {t('vendors.viewTransactions')}
+        </Button>
       )}
     </Paper>
   );

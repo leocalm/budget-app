@@ -1,9 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import { CategoryResponse } from '@/types/category';
 import { formatCurrencyValue } from '@/utils/currency';
 import styles from './Categories.module.css';
-import { useTranslation } from 'react-i18next';
 
 interface CategoryCardProps {
   category: CategoryResponse;

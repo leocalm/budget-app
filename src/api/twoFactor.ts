@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost } from './client';
+import { apiGet, apiPost } from './client';
 import { ApiError } from './errors';
 
 export interface TwoFactorSetupResponse {
@@ -78,7 +78,9 @@ export async function disableTwoFactor(password: string, code: string): Promise<
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Failed to disable two-factor authentication' }));
+      const error = await response
+        .json()
+        .catch(() => ({ message: 'Failed to disable two-factor authentication' }));
       throw new Error(error.message || 'Failed to disable two-factor authentication');
     }
   } catch (error) {
@@ -108,7 +110,10 @@ export async function getTwoFactorStatus(): Promise<TwoFactorStatus> {
  */
 export async function regenerateBackupCodes(code: string): Promise<string[]> {
   try {
-    return await apiPost<string[], TwoFactorRegenerateRequest>('/api/two-factor/regenerate-backup-codes', { code });
+    return await apiPost<string[], TwoFactorRegenerateRequest>(
+      '/api/two-factor/regenerate-backup-codes',
+      { code }
+    );
   } catch (error) {
     if (error instanceof ApiError && error.message) {
       throw new Error(error.message);
@@ -122,7 +127,9 @@ export async function regenerateBackupCodes(code: string): Promise<string[]> {
  */
 export async function requestEmergencyDisable(email: string): Promise<void> {
   try {
-    await apiPost<void, EmergencyDisableRequest>('/api/two-factor/emergency-disable-request', { email });
+    await apiPost<void, EmergencyDisableRequest>('/api/two-factor/emergency-disable-request', {
+      email,
+    });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
       throw new Error(error.message);
@@ -136,7 +143,9 @@ export async function requestEmergencyDisable(email: string): Promise<void> {
  */
 export async function confirmEmergencyDisable(token: string): Promise<void> {
   try {
-    await apiPost<void, EmergencyDisableConfirm>('/api/two-factor/emergency-disable-confirm', { token });
+    await apiPost<void, EmergencyDisableConfirm>('/api/two-factor/emergency-disable-confirm', {
+      token,
+    });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
       throw new Error(error.message);

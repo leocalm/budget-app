@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IconBriefcase, IconCurrencyEuro, IconTag } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -14,7 +15,6 @@ import {
 import { useForm } from '@mantine/form';
 import { useCreateAccount } from '@/hooks/useAccounts';
 import { ACCOUNT_TYPES, AccountRequest, AccountType } from '@/types/account';
-import { useTranslation } from 'react-i18next';
 
 interface CreateAccountFormProps {
   onAccountCreated?: () => void;
@@ -40,8 +40,7 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
     validate: {
       name: (value) =>
         !value || value.length < 2 ? t('accounts.forms.validation.nameMinLength') : null,
-      accountType: (value) =>
-        value ? null : t('accounts.forms.validation.accountTypeRequired'),
+      accountType: (value) => (value ? null : t('accounts.forms.validation.accountTypeRequired')),
     },
   });
 
@@ -124,15 +123,15 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
 
           {hasLimit && (
             <Grid.Col span={bottomRowColSpan}>
-            <NumberInput
-              label={t('accounts.forms.fields.spendLimit.label')}
-              placeholder={t('accounts.forms.fields.spendLimit.placeholder')}
-              decimalScale={2}
-              fixedDecimalScale
-              leftSection={<IconCurrencyEuro size={16} />}
-              {...form.getInputProps('spendLimit')}
-              required
-            />
+              <NumberInput
+                label={t('accounts.forms.fields.spendLimit.label')}
+                placeholder={t('accounts.forms.fields.spendLimit.placeholder')}
+                decimalScale={2}
+                fixedDecimalScale
+                leftSection={<IconCurrencyEuro size={16} />}
+                {...form.getInputProps('spendLimit')}
+                required
+              />
             </Grid.Col>
           )}
 

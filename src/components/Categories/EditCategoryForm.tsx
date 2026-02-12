@@ -1,5 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Alert,
@@ -15,7 +16,6 @@ import {
 import { useForm } from '@mantine/form';
 import { useUpdateCategory } from '@/hooks/useCategories';
 import { CATEGORY_TYPES, CategoryRequest, CategoryResponse, CategoryType } from '@/types/category';
-import { useTranslation } from 'react-i18next';
 
 interface EditCategoryFormProps {
   category: CategoryResponse;
@@ -113,9 +113,7 @@ export function EditCategoryForm({ category, onUpdated, selectedPeriodId }: Edit
                   </Popover.Target>
 
                   <Popover.Dropdown p="xs">
-                  <Suspense
-                    fallback={<div>{t('categories.forms.loadingEmojiPicker')}</div>}
-                  >
+                    <Suspense fallback={<div>{t('categories.forms.loadingEmojiPicker')}</div>}>
                       <EmojiPicker
                         open={opened}
                         onEmojiClick={(emojiData: EmojiClickData) =>

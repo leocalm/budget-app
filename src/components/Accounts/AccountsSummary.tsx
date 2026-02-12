@@ -1,8 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Paper, SimpleGrid, Text } from '@mantine/core';
 import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Accounts.module.css';
-import { useTranslation } from 'react-i18next';
 
 interface AccountsSummaryProps {
   totalAssets: number;

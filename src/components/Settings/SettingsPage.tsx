@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { IconAlertCircle, IconLock, IconShieldCheck, IconShieldOff } from '@tabler/icons-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Avatar,
@@ -20,14 +22,12 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { disableTwoFactor, getTwoFactorStatus } from '@/api/twoFactor';
 import { useAuth } from '@/context/AuthContext';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useSettings, useUpdateSettings } from '@/hooks/useSettings';
 import { useUpdateUser } from '@/hooks/useUser';
-import { LANGUAGE_DISPLAY_NAMES, SettingsRequest, Theme, Language } from '@/types/settings';
-import { useTranslation } from 'react-i18next';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { disableTwoFactor, getTwoFactorStatus } from '@/api/twoFactor';
+import { Language, LANGUAGE_DISPLAY_NAMES, SettingsRequest, Theme } from '@/types/settings';
 import { TwoFactorSetup } from './TwoFactorSetup';
 
 export function SettingsPage() {
@@ -63,7 +63,8 @@ export function SettingsPage() {
 
   // Disable 2FA mutation
   const disableTwoFactorMutation = useMutation({
-    mutationFn: ({ password, code }: { password: string; code: string }) => disableTwoFactor(password, code),
+    mutationFn: ({ password, code }: { password: string; code: string }) =>
+      disableTwoFactor(password, code),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
       setDisableModalOpened(false);
@@ -136,8 +137,7 @@ export function SettingsPage() {
         message: t('settings.notifications.profile.success'),
         color: 'green',
       });
-    } catch (error) {
-      console.error('Failed to update profile:', error);
+    } catch {
       notifications.show({
         title: t('common.error'),
         message: t('settings.notifications.profile.error'),
@@ -159,8 +159,7 @@ export function SettingsPage() {
         message: t('settings.notifications.preferences.success'),
         color: 'green',
       });
-    } catch (error) {
-      console.error('Failed to save preferences:', error);
+    } catch {
       notifications.show({
         title: t('common.error'),
         message: t('settings.notifications.preferences.error'),
@@ -185,9 +184,9 @@ export function SettingsPage() {
   if (isError) {
     return (
       <Container size="lg" py="xl">
-          <Alert icon={<IconAlertCircle />} title={t('common.error')} color="red">
-            {t('settings.errors.loadFailed')}
-          </Alert>
+        <Alert icon={<IconAlertCircle />} title={t('common.error')} color="red">
+          {t('settings.errors.loadFailed')}
+        </Alert>
       </Container>
     );
   }
@@ -265,14 +264,14 @@ export function SettingsPage() {
             </Group>
 
             <Group justify="flex-end">
-                <Button
-                  leftSection={<span>💾</span>}
-                  onClick={handleSaveProfile}
-                  loading={updateUserMutation.isPending}
-                  disabled={!profileName.trim() || !profileEmail.trim()}
-                >
-                  {t('settings.profile.saveButton')}
-                </Button>
+              <Button
+                leftSection={<span>💾</span>}
+                onClick={handleSaveProfile}
+                loading={updateUserMutation.isPending}
+                disabled={!profileName.trim() || !profileEmail.trim()}
+              >
+                {t('settings.profile.saveButton')}
+              </Button>
             </Group>
           </Stack>
         </Paper>
@@ -376,7 +375,8 @@ export function SettingsPage() {
                 )}
               </Group>
               <Text c="dimmed" size="sm">
-                Add an extra layer of security to your account using a time-based one-time password (TOTP)
+                Add an extra layer of security to your account using a time-based one-time password
+                (TOTP)
               </Text>
             </div>
 
@@ -403,13 +403,16 @@ export function SettingsPage() {
                   <Text size="sm" fw={500}>
                     Backup Codes:
                   </Text>
-                  <Badge>
-                    {twoFactorStatusQuery.data.backupCodesRemaining} / 10 remaining
-                  </Badge>
+                  <Badge>{twoFactorStatusQuery.data.backupCodesRemaining} / 10 remaining</Badge>
                 </Group>
 
                 {twoFactorStatusQuery.data.backupCodesRemaining < 3 && (
-                  <Alert icon={<IconAlertCircle size={16} />} title="Low backup codes" color="yellow" variant="light">
+                  <Alert
+                    icon={<IconAlertCircle size={16} />}
+                    title="Low backup codes"
+                    color="yellow"
+                    variant="light"
+                  >
                     You're running low on backup codes. Consider regenerating them.
                   </Alert>
                 )}
@@ -451,8 +454,8 @@ export function SettingsPage() {
       >
         <Stack gap="md">
           <Alert icon={<IconAlertCircle size={16} />} title="Warning" color="red" variant="light">
-            Disabling two-factor authentication will make your account less secure. You'll need to provide your password
-            and a current 2FA code to confirm.
+            Disabling two-factor authentication will make your account less secure. You'll need to
+            provide your password and a current 2FA code to confirm.
           </Alert>
 
           <PasswordInput
@@ -490,7 +493,9 @@ export function SettingsPage() {
             </Button>
             <Button
               color="red"
-              onClick={() => disableTwoFactorMutation.mutate({ password: disablePassword, code: disableCode })}
+              onClick={() =>
+                disableTwoFactorMutation.mutate({ password: disablePassword, code: disableCode })
+              }
               loading={disableTwoFactorMutation.isPending}
               disabled={!disablePassword || disableCode.length !== 6}
             >

@@ -17,7 +17,6 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { login } from '@/api/auth';
 import { useAuth } from '@/context/AuthContext';
 
 export function LoginPage() {
@@ -81,7 +80,9 @@ export function LoginPage() {
       }
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: t('auth.login.errors.generic') }));
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: t('auth.login.errors.generic') }));
         throw new Error(errorData.message || t('auth.login.errors.generic'));
       }
 
@@ -210,7 +211,13 @@ export function LoginPage() {
                 {useBackupCode ? 'Use authenticator code instead' : 'Use backup code instead'}
               </Anchor>
 
-              <Anchor component={Link} to="/auth/emergency-2fa-disable" size="sm" ta="center" c="red">
+              <Anchor
+                component={Link}
+                to="/auth/emergency-2fa-disable"
+                size="sm"
+                ta="center"
+                c="red"
+              >
                 Lost access to your authenticator?
               </Anchor>
 

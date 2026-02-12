@@ -17,6 +17,7 @@
     "vitest:watch": "vitest",
     "vitest:storybook": "vitest run --config vitest.storybook.config.ts",
     "test": "npm run typecheck && npm run prettier && npm run lint && npm run vitest && npm run build",
+    "tests": "npm run test",
     "e2e": "playwright test",
     "e2e:local:mock": "E2E_TARGET=local E2E_API_MODE=mock playwright test --project=desktop-chromium --project=mobile-chromium",
     "e2e:local:real": "E2E_TARGET=local E2E_API_MODE=real playwright test --project=desktop-chromium --project=mobile-chromium",

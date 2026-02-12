@@ -28,13 +28,11 @@ export interface PasswordResetValidateResponse {
  * Always returns success to prevent email enumeration.
  * @throws Error with user-friendly message on failure
  */
-export async function requestPasswordReset(
-  email: string,
-): Promise<PasswordResetResponse> {
+export async function requestPasswordReset(email: string): Promise<PasswordResetResponse> {
   try {
     return await apiPost<PasswordResetResponse, PasswordResetRequestPayload>(
       '/api/password-reset/request',
-      { email },
+      { email }
     );
   } catch (error) {
     if (error instanceof ApiError) {
@@ -64,12 +62,12 @@ export async function requestPasswordReset(
  * @throws Error with user-friendly message on failure
  */
 export async function validatePasswordResetToken(
-  token: string,
+  token: string
 ): Promise<PasswordResetValidateResponse> {
   try {
     return await apiPost<PasswordResetValidateResponse, PasswordResetValidatePayload>(
       '/api/password-reset/validate',
-      { token },
+      { token }
     );
   } catch (error) {
     if (error instanceof ApiError) {
@@ -98,10 +96,7 @@ export async function validatePasswordResetToken(
  * Confirm password reset with new password.
  * @throws Error with user-friendly message on failure
  */
-export async function confirmPasswordReset(
-  token: string,
-  newPassword: string,
-): Promise<void> {
+export async function confirmPasswordReset(token: string, newPassword: string): Promise<void> {
   try {
     await apiPost<void, PasswordResetConfirmPayload>('/api/password-reset/confirm', {
       token,
@@ -111,7 +106,7 @@ export async function confirmPasswordReset(
     if (error instanceof ApiError) {
       if (error.status === 400) {
         throw new Error(
-          error.message || 'Invalid or expired reset token. Please request a new one.',
+          error.message || 'Invalid or expired reset token. Please request a new one.'
         );
       }
 

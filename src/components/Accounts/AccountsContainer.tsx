@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Collapse, Divider, Paper, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useTranslation } from 'react-i18next';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useDeleteAccount, useInfiniteAccounts } from '@/hooks/useAccounts';
 import { PageHeader } from '../Transactions/PageHeader';
@@ -94,14 +94,14 @@ export function AccountsContainer() {
             }}
           >
             <Stack gap="md">
-            <div>
-              <Text fw={700} size="lg">
-                {t('accounts.createSection.title')}
-              </Text>
-              <Text size="xs" c="dimmed">
-                {t('accounts.createSection.description')}
-              </Text>
-            </div>
+              <div>
+                <Text fw={700} size="lg">
+                  {t('accounts.createSection.title')}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {t('accounts.createSection.description')}
+                </Text>
+              </div>
               <Divider variant="dashed" />
               <CreateAccountForm onAccountCreated={closeCreate} />
             </Stack>
