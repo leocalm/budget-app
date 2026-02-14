@@ -320,7 +320,7 @@ should be logged for debugging production issues (e.g., silent failures in logou
 ### General Best Practices
 
 - Always run `yarn prettier:write` before committing
-- Always run `npm run test` before committing
+- Always run `yarn test` before committing
 - Run `yarn typecheck` to ensure type safety
 - Use TypeScript types instead of `any` whenever possible
 - Follow existing patterns and conventions in the codebase

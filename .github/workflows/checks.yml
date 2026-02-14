@@ -1,0 +1,49 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      CI: "true"
+      NODE_OPTIONS: "--max-old-space-size=2048"
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install
+        run: |
+          corepack enable
+          yarn --version
+          yarn install --immutable
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Prettier
+        run: yarn prettier
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Vitest
+        run: yarn vitest
+
+      - name: Build
+        run: yarn build
