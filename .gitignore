@@ -129,6 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# npm lockfile (this repo uses Yarn)
+package-lock.json
+
 .DS_Store
 
 
