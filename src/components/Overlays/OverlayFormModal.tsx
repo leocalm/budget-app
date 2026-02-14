@@ -26,8 +26,8 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { useCreateOverlay, useUpdateOverlay } from '@/hooks/useOverlays';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { useCreateOverlay, useUpdateOverlay } from '@/hooks/useOverlays';
 import { AccountResponse } from '@/types/account';
 import { CategoryWithStats } from '@/types/category';
 import { Overlay, OverlayInclusionMode, OverlayRequest } from '@/types/overlay';
@@ -275,9 +275,9 @@ export function OverlayFormModal({
         : null,
       categoryCaps: values.hasCategoryCaps
         ? categoryCapIds.map((categoryId) => ({
-          categoryId,
-          capAmount: convertDisplayToCents(values.categoryCapDisplayValues[categoryId] || 0),
-        }))
+            categoryId,
+            capAmount: convertDisplayToCents(values.categoryCapDisplayValues[categoryId] || 0),
+          }))
         : [],
     };
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Group, Paper, Stack, Text } from '@mantine/core';
-import { CategoryResponse } from '@/types/category';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { CategoryResponse } from '@/types/category';
 import { getIcon } from '@/utils/IconMap';
 import styles from './Categories.module.css';
 
@@ -52,7 +52,9 @@ export function CategoryCard({
   };
 
   const categoryColor = category.color || 'var(--accent-primary)';
-  const categoryBg = getCategoryBackground(categoryColor.startsWith('var') ? '#00d4ff' : categoryColor);
+  const categoryBg = getCategoryBackground(
+    categoryColor.startsWith('var') ? '#00d4ff' : categoryColor
+  );
 
   return (
     <Paper

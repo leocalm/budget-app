@@ -1,9 +1,9 @@
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { Group, Paper, RingProgress, Stack, Text, ThemeIcon } from '@mantine/core';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { MonthlyBurnIn } from '@/types/dashboard';
 import { formatCurrency } from '@/utils/currency';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { useTranslation } from 'react-i18next';
 
 interface RemainingBudgetCardProps {
   data: MonthlyBurnIn | undefined;

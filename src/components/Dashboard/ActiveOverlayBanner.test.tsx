@@ -1,7 +1,7 @@
-import { render, screen, userEvent } from '@/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
+import { render, screen, userEvent } from '@/test-utils';
 import { ActiveOverlayBanner } from './ActiveOverlayBanner';
 
 const useActiveOverlaysMock = vi.hoisted(() => vi.fn());

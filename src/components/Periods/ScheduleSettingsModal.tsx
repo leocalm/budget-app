@@ -181,7 +181,12 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
   const automaticSettings = (
     <Stack gap="md">
       {schedule ? (
-        <Alert icon={<IconInfoCircle size={16} />} variant="light" color="blue" title={t('periods.schedule.editImportant')}>
+        <Alert
+          icon={<IconInfoCircle size={16} />}
+          variant="light"
+          color="blue"
+          title={t('periods.schedule.editImportant')}
+        >
           <Stack gap={4}>
             <Text size="sm">• {t('periods.schedule.editWarningCurrent')}</Text>
             <Text size="sm">• {t('periods.schedule.editWarningPast')}</Text>

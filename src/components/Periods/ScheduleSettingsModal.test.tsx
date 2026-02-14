@@ -1,7 +1,7 @@
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@/test-utils';
 import { BudgetPeriodSchedule } from '@/types/budget';
 import { ScheduleSettingsModal } from './ScheduleSettingsModal';
-import { describe, it, expect, vi } from 'vitest';
 
 const activeSchedule: BudgetPeriodSchedule = {
   id: 'schedule-1',
@@ -16,13 +16,7 @@ const activeSchedule: BudgetPeriodSchedule = {
 
 describe('ScheduleSettingsModal', () => {
   it('shows warnings when editing an existing schedule', () => {
-    render(
-      <ScheduleSettingsModal
-        opened={true}
-        onClose={vi.fn()}
-        schedule={activeSchedule}
-      />
-    );
+    render(<ScheduleSettingsModal opened onClose={vi.fn()} schedule={activeSchedule} />);
 
     expect(screen.getByText(/Important/i)).toBeInTheDocument();
     expect(screen.getByText(/Current period will not be affected/i)).toBeInTheDocument();
@@ -33,13 +27,7 @@ describe('ScheduleSettingsModal', () => {
   });
 
   it('shows auto info when configuring a new schedule', () => {
-    render(
-      <ScheduleSettingsModal
-        opened={true}
-        onClose={vi.fn()}
-        schedule={null}
-      />
-    );
+    render(<ScheduleSettingsModal opened onClose={vi.fn()} schedule={null} />);
 
     // Switch to automatic mode if it's not default (though default is manual)
     // Actually the test needs to simulate selecting automatic mode to see the info

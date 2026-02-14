@@ -15,7 +15,9 @@ const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:[/?#]|$)/;
 const LOGIN_PATH_PATTERN = /\/api(?:\/v\d+)?\/users\/login(?:[/?#]|$)/;
 
 function normalizeApiVersion(version: string): string {
-  if (!version) return DEFAULT_API_VERSION;
+  if (!version) {
+    return DEFAULT_API_VERSION;
+  }
   const trimmed = String(version).trim();
   if (!trimmed) {
     return DEFAULT_API_VERSION;
@@ -24,7 +26,9 @@ function normalizeApiVersion(version: string): string {
 }
 
 function normalizeBasePath(basePath: string): string {
-  if (!basePath) return `/api/${DEFAULT_API_VERSION}`;
+  if (!basePath) {
+    return `/api/${DEFAULT_API_VERSION}`;
+  }
   const trimmed = String(basePath).trim();
   if (!trimmed) {
     return `/api/${DEFAULT_API_VERSION}`;

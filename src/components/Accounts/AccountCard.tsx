@@ -14,10 +14,10 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import type { AccountResponse } from '@/types/account';
-import { convertCentsToDisplay } from '@/utils/currency';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import type { AccountResponse } from '@/types/account';
+import { convertCentsToDisplay } from '@/utils/currency';
 import styles from './Accounts.module.css';
 
 interface BudgetPerDay {
@@ -70,7 +70,9 @@ export function AccountCard({
 
   const currentBalance = convertCentsToDisplay(account.balance, decimalPlaces);
   const startBalance =
-    balanceHistory.length > 0 ? convertCentsToDisplay(balanceHistory[0].balance, decimalPlaces) : currentBalance;
+    balanceHistory.length > 0
+      ? convertCentsToDisplay(balanceHistory[0].balance, decimalPlaces)
+      : currentBalance;
   const balanceChange = currentBalance - startBalance;
   const isPositive = balanceChange >= 0;
   const isNegativeBalance = currentBalance < 0;
@@ -94,9 +96,11 @@ export function AccountCard({
   const balanceChangeColor = balanceChange === 0 ? 'gray' : isPositive ? 'green' : 'red';
 
   // Need raw cents for CurrencyValue
-  const balanceChangeCents = Math.abs(account.balance - (balanceHistory.length > 0 ? balanceHistory[0].balance : account.balance));
+  const balanceChangeCents = Math.abs(
+    account.balance - (balanceHistory.length > 0 ? balanceHistory[0].balance : account.balance)
+  );
 
-  // Note: Embedding component in translated string is complex. 
+  // Note: Embedding component in translated string is complex.
   // For now, we will reconstruct the "change" display cleanly.
 
   // Determine stats based on account type
@@ -123,7 +127,8 @@ export function AccountCard({
   } else if (hasSpendLimit) {
     Stat1Component = (
       <>
-        <CurrencyValue cents={account.spendLimit!} />/mo
+        <CurrencyValue cents={account.spendLimit!} />
+        /mo
       </>
     );
   } else if (monthlySpent !== 0) {
@@ -193,7 +198,8 @@ export function AccountCard({
           <CurrencyValue cents={account.balance} />
         </Text>
         <Badge variant="light" color={balanceChangeColor} size="lg" ff="monospace">
-          {isPositive ? '↑' : '↓'} <CurrencyValue cents={balanceChangeCents} /> {t('accounts.card.change').replace('{{arrow}} {{amount}}', '').trim()}
+          {isPositive ? '↑' : '↓'} <CurrencyValue cents={balanceChangeCents} />{' '}
+          {t('accounts.card.change').replace('{{arrow}} {{amount}}', '').trim()}
         </Badge>
       </Box>
 

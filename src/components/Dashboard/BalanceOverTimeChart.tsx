@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { AreaChart } from '@mantine/charts';
 import { Paper, Title } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 
 interface BudgetPerDay {

@@ -8,8 +8,8 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Group, Paper, Progress, Stack, Text } from '@mantine/core';
-import { Overlay } from '@/types/overlay';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { Overlay } from '@/types/overlay';
 import { formatCurrency } from '@/utils/currency';
 import classes from './OverlayCard.module.css';
 
@@ -150,11 +150,11 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
             <Text size="xs" c={isOverCap ? 'red' : 'dimmed'}>
               {isOverCap
                 ? t('overlays.card.overBy', {
-                  amount: format(spentAmount - totalCapAmount),
-                })
+                    amount: format(spentAmount - totalCapAmount),
+                  })
                 : t('overlays.card.remaining', {
-                  amount: format(totalCapAmount - spentAmount),
-                })}
+                    amount: format(totalCapAmount - spentAmount),
+                  })}
             </Text>
           </>
         ) : (

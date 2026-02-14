@@ -4,8 +4,8 @@ import { IconLayersIntersect, IconX } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ActionIcon, Badge, Group, Paper, Progress, Stack, Text } from '@mantine/core';
-import { useActiveOverlays } from '@/hooks/useOverlays';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { useActiveOverlays } from '@/hooks/useOverlays';
 import { formatCurrency } from '@/utils/currency';
 import classes from './ActiveOverlayBanner.module.css';
 
@@ -40,13 +40,13 @@ export function ActiveOverlayBanner() {
     totalCap && totalCap > 0
       ? spent <= totalCap
         ? t('dashboard.overlayBanner.remaining', {
-          amount: format(totalCap - spent),
-          days: daysLeft,
-        })
+            amount: format(totalCap - spent),
+            days: daysLeft,
+          })
         : t('dashboard.overlayBanner.over', {
-          amount: format(spent - totalCap),
-          days: daysLeft,
-        })
+            amount: format(spent - totalCap),
+            days: daysLeft,
+          })
       : t('dashboard.overlayBanner.noCap', { days: daysLeft });
 
   const progressValue =

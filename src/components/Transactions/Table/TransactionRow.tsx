@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Group, Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { TransactionResponse } from '@/types/transaction';
 import { formatCurrencyValue } from '@/utils/currency';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { AccountBadge } from './AccountBadge';
 import { ActionButtons } from './ActionButtons';
 import { CategoryBadge } from './CategoryBadge';
@@ -39,11 +39,7 @@ export const TransactionRow = ({
       : 'var(--accent-success)';
 
   const prefix = isOutgoing ? '-' : isTransfer ? '' : '+';
-  const formattedValue = formatCurrencyValue(
-    t.amount,
-    globalCurrency.decimalPlaces,
-    i18n.language
-  );
+  const formattedValue = formatCurrencyValue(t.amount, globalCurrency.decimalPlaces, i18n.language);
   const formattedAmount = `${prefix}${globalCurrency.symbol} ${formattedValue}`;
 
   // Mobile Layout

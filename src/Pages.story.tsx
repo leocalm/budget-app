@@ -1,21 +1,21 @@
 import React from 'react';
-import { http, HttpResponse } from 'msw';
-import { handlers } from './mocks/handlers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthContext } from './context/AuthContext';
-import { BudgetProvider } from './context/BudgetContext';
-import { DashboardPage } from './components/Dashboard/DashboardPage';
-import { Transactions } from './components/Transactions/Transactions';
+import { http, HttpResponse } from 'msw';
+import { BasicAppShell } from './AppShell';
 import { Accounts } from './components/Accounts/Accounts';
-import { Categories } from './components/Categories/Categories';
-import { Vendors } from './components/Vendors/Vendors';
-import { PeriodsPage } from './components/Periods/PeriodsPage';
-import { OverlaysPage } from './components/Overlays/OverlaysPage';
-import { SettingsPage } from './components/Settings/SettingsPage';
 import { LoginPage } from './components/Auth/LoginPage';
 import { RegisterPage } from './components/Auth/RegisterPage';
+import { Categories } from './components/Categories/Categories';
+import { DashboardPage } from './components/Dashboard/DashboardPage';
+import { OverlaysPage } from './components/Overlays/OverlaysPage';
+import { PeriodsPage } from './components/Periods/PeriodsPage';
+import { SettingsPage } from './components/Settings/SettingsPage';
+import { Transactions } from './components/Transactions/Transactions';
+import { Vendors } from './components/Vendors/Vendors';
+import { AuthContext } from './context/AuthContext';
+import { BudgetProvider } from './context/BudgetContext';
+import { handlers } from './mocks/handlers';
 import { ForgotPasswordPage } from './pages/ForgotPassword.page';
-import { BasicAppShell } from './AppShell';
 
 // Mock Auth Context setup
 const mockUser = {
@@ -25,10 +25,16 @@ const mockUser = {
   role: 'user',
 };
 
-const MockAuthProvider = ({ children, authenticated = true }: { children: React.ReactNode, authenticated?: boolean }) => (
+const MockAuthProvider = ({
+  children,
+  authenticated = true,
+}: {
+  children: React.ReactNode;
+  authenticated?: boolean;
+}) => (
   <AuthContext.Provider
     value={{
-      user: authenticated ? mockUser as any : null,
+      user: authenticated ? (mockUser as any) : null,
       isAuthenticated: authenticated,
       isLoading: false,
       login: () => {},
@@ -44,21 +50,22 @@ export default {
   title: 'App Pages',
 };
 
-const createTestQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      staleTime: Infinity,
-      gcTime: Infinity,
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: Infinity,
+        gcTime: Infinity,
+      },
     },
-  },
-});
+  });
 
 const AuthenticatedPage = (Story: any) => {
   const [queryClient] = React.useState(() => createTestQueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <MockAuthProvider authenticated={true}>
+      <MockAuthProvider authenticated>
         <BudgetProvider>
           <BasicAppShell>
             <Story />
@@ -74,7 +81,7 @@ const PublicPage = (Story: any) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MockAuthProvider authenticated={false}>
-         <Story />
+        <Story />
       </MockAuthProvider>
     </QueryClientProvider>
   );
@@ -85,15 +92,17 @@ const AuthPageDecorator = (Story: any) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MockAuthProvider authenticated={false}>
-        <div style={{ 
-          minHeight: '100vh', 
-          background: 'var(--bg-primary)', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '20px'
-        }}>
+        <div
+          style={{
+            minHeight: '100vh',
+            background: 'var(--bg-primary)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '20px',
+          }}
+        >
           <div style={{ width: '100%', maxWidth: '420px' }}>
             <Story />
           </div>
@@ -110,12 +119,12 @@ export const DashboardEmpty = () => <DashboardPage />;
 DashboardEmpty.decorators = [AuthenticatedPage];
 DashboardEmpty.parameters = {
   msw: {
-    handlers: handlers.map(h => h), // Inherit default handlers
+    handlers: handlers.map((h) => h), // Inherit default handlers
   },
   // We can also use query params in the mock handlers we wrote
   // or define override handlers here
 };
-// Setting the scenario via path in MSW handlers is more flexible, 
+// Setting the scenario via path in MSW handlers is more flexible,
 // but for simplicity in this file, I'll add examples of how to use MSW parameters.
 
 export const TransactionsPage = () => <Transactions />;
@@ -178,7 +187,7 @@ export const MSWDebug = () => {
 
   React.useEffect(() => {
     fetch('/api/v1/settings')
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setData)
       .catch(setError);
   }, []);
@@ -186,11 +195,15 @@ export const MSWDebug = () => {
   return (
     <div style={{ padding: 20 }}>
       <h1>MSW Debug</h1>
-      <p>This story tests if MSW is intercepting requests to <code>/api/v1/settings</code></p>
+      <p>
+        This story tests if MSW is intercepting requests to <code>/api/v1/settings</code>
+      </p>
       {data ? (
         <pre data-testid="msw-success">{JSON.stringify(data, null, 2)}</pre>
       ) : error ? (
-        <pre style={{ color: 'red' }} data-testid="msw-error">{error.message}</pre>
+        <pre style={{ color: 'red' }} data-testid="msw-error">
+          {error.message}
+        </pre>
       ) : (
         <p>Loading...</p>
       )}

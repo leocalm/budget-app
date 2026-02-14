@@ -19,10 +19,10 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { Vendor } from '@/types/vendor';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { useTransactionFormContext } from './TransactionFormContext';
 
 interface TransactionFormFieldsProps {

@@ -1,8 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Paper, Progress, Text } from '@mantine/core';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { MonthlyBurnIn } from '@/types/dashboard';
 import { convertCentsToDisplay, formatCurrencyValue } from '@/utils/currency';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { useTranslation } from 'react-i18next';
 
 type MonthlyBurnRateProps = {
   data: MonthlyBurnIn | undefined;

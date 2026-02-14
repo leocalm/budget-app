@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { render } from '@/test-utils';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
+import { render } from '@/test-utils';
 import { OverlayFormModal } from './OverlayFormModal';
 
 const createOverlayMutateAsync = vi.hoisted(() => vi.fn());
@@ -33,7 +33,7 @@ describe('OverlayFormModal', () => {
       <MantineProvider>
         <OverlayFormModal
           opened
-          onClose={() => { }}
+          onClose={() => {}}
           overlay={props?.overlay ?? null}
           categories={props?.categories ?? []}
           vendors={props?.vendors ?? []}

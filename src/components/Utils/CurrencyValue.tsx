@@ -42,7 +42,7 @@ export const CurrencyValue = ({
   const { i18n } = useTranslation();
   const globalCurrency = useDisplayCurrency();
 
-  // Decide which currency to use: 
+  // Decide which currency to use:
   // 1. If forceGlobal is true, always use globalCurrency
   // 2. Else if propCurrency is provided, use it
   // 3. Fallback to globalCurrency

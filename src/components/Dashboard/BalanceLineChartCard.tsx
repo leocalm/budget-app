@@ -2,10 +2,10 @@ import { useTranslation } from 'react-i18next';
 import { AreaChart, AreaChartSeries } from '@mantine/charts';
 import { Group, Paper, Stack, Text } from '@mantine/core';
 import { ChartSkeleton, EmptyState } from '@/components/Utils';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { AccountResponse } from '@/types/account';
 import { BudgetPerDay } from '@/types/dashboard';
 import { convertCentsToDisplay } from '@/utils/currency';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import styles from './Dashboard.module.css';
 
 type BalanceLineChartCardProps = {

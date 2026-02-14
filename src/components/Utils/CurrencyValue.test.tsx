@@ -1,5 +1,5 @@
-import { render } from '@/test-utils';
 import { describe, expect, it } from 'vitest';
+import { render } from '@/test-utils';
 import { CurrencyValue } from './CurrencyValue';
 
 describe('CurrencyValue', () => {

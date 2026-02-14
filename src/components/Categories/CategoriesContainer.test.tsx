@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { render, screen, userEvent } from '@/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
+import { render, screen, userEvent } from '@/test-utils';
 import { CategoriesContainer } from './CategoriesContainer';
 
 const useCategoriesMock = vi.hoisted(() => vi.fn());

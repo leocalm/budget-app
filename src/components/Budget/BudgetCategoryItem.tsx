@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, NumberInput, Paper, Stack, Text } from '@mantine/core';
-import { BudgetCategoryResponse } from '@/types/budget';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { BudgetCategoryResponse } from '@/types/budget';
 import styles from './Budget.module.css';
 
 interface BudgetCategoryItemProps {
@@ -64,10 +64,7 @@ export function BudgetCategoryItem({
                   <CurrencyValue cents={spent} />
                 </span>
                 <span className={styles.budgetAmount}>
-                  {t('budget.budgetedCategories.of').replace(
-                    '{{budget}}',
-                    ''
-                  )}
+                  {t('budget.budgetedCategories.of').replace('{{budget}}', '')}
                   {/* Using a separate component for the value to handle formatting correctly */}
                   <CurrencyValue cents={category.budgetedValue} />
                 </span>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, SimpleGrid, Text } from '@mantine/core';
-import { formatCurrencyValue } from '@/utils/currency';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { formatCurrencyValue } from '@/utils/currency';
 
 interface TransactionStatsProps {
   income: number;

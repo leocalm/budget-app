@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from '@/test-utils';
-import { PeriodsPage } from './PeriodsPage';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as useBudget from '@/hooks/useBudget';
+import { fireEvent, render, screen } from '@/test-utils';
+import { PeriodsPage } from './PeriodsPage';
 
 vi.mock('@/hooks/useBudget', async () => {
   const actual = await vi.importActual('@/hooks/useBudget');
@@ -19,7 +19,10 @@ vi.mock('@/hooks/useBudget', async () => {
 describe('PeriodsPage', () => {
   beforeEach(() => {
     vi.mocked(useBudget.useBudgetPeriods).mockReturnValue({ data: [], isLoading: false } as any);
-    vi.mocked(useBudget.useBudgetPeriodGaps).mockReturnValue({ data: { unassignedCount: 0, transactions: [] }, isLoading: false } as any);
+    vi.mocked(useBudget.useBudgetPeriodGaps).mockReturnValue({
+      data: { unassignedCount: 0, transactions: [] },
+      isLoading: false,
+    } as any);
   });
 
   it('shows detailed warnings when disabling schedule', async () => {
@@ -44,6 +47,8 @@ describe('PeriodsPage', () => {
     expect(await screen.findByText(/Disable Auto-Creation\?/i)).toBeInTheDocument();
     expect(await screen.findByText(/Stop automatic period creation/i)).toBeInTheDocument();
     expect(await screen.findByText(/Delete unused future periods/i)).toBeInTheDocument();
-    expect(await screen.findByText(/Convert periods with transactions to manual periods/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Convert periods with transactions to manual periods/i)
+    ).toBeInTheDocument();
   });
 });

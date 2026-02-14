@@ -1,8 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { DonutChart } from '@mantine/charts';
 import { Center, Stack, Text } from '@mantine/core';
-import { formatCurrency } from '@/utils/currency';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '@/utils/currency';
 
 interface ChartData {
   name: string;

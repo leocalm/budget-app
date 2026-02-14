@@ -61,11 +61,11 @@
     --text-primary: #fff;
     --text-secondary: #8892a6;
     --text-tertiary: #5a6272;
-    --border-subtle: rgba(255, 255, 255, 0.1);
-    --border-medium: rgba(255, 255, 255, 0.15);
-    --shadow-sm: 0 2px 8px rgb(0, 0, 0, 0.12);
-    --shadow-md: 0 4px 16px rgb(0, 0, 0, 0.16);
-    --shadow-lg: 0 8px 32px rgb(0, 0, 0, 0.24);
+    --border-subtle: rgb(255 255 255 / 0.1);
+    --border-medium: rgb(255 255 255 / 0.15);
+    --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.12);
+    --shadow-md: 0 4px 16px rgb(0 0 0 / 0.16);
+    --shadow-lg: 0 8px 32px rgb(0 0 0 / 0.24);
 }
 
 /* Light theme variables */
@@ -78,11 +78,11 @@
     --text-primary: #141517;
     --text-secondary: #5c5f66;
     --text-tertiary: #909296;
-    --border-subtle: rgba(0, 0, 0, 0.12);
-    --border-medium: rgba(0, 0, 0, 0.2);
-    --shadow-sm: 0 2px 8px rgb(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgb(0, 0, 0, 0.12);
-    --shadow-lg: 0 8px 32px rgb(0, 0, 0, 0.16);
+    --border-subtle: rgb(0 0 0 / 0.12);
+    --border-medium: rgb(0 0 0 / 0.2);
+    --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.08);
+    --shadow-md: 0 4px 16px rgb(0 0 0 / 0.12);
+    --shadow-lg: 0 8px 32px rgb(0 0 0 / 0.16);
     --brand-gradient-start: #2FB7F6;
     --brand-gradient-end: #7A5CFF;
 }
