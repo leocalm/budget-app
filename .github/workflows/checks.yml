@@ -25,23 +25,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-          cache: "npm"
+          cache: "yarn"
 
       - name: Install
-        run: npm ci
+        run: |
+          corepack enable
+          yarn --version
+          yarn install --immutable
 
       - name: Typecheck
-        run: npm run typecheck
+        run: yarn typecheck
 
       - name: Prettier
-        run: npm run prettier
+        run: yarn prettier
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
 
       - name: Vitest
-        run: npm run vitest
+        run: yarn vitest
 
       - name: Build
-        run: npm run build
-
+        run: yarn build
