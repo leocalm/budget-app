@@ -40,7 +40,7 @@
     "@mantine/hooks": "^8.3.10",
     "@mantine/notifications": "^8.3.10",
     "@tabler/icons-react": "^3.35.0",
-    "@tanstack/react-query": "^5.90.11",
+    "@tanstack/react-query": "^5.90.21",
     "@vitest/browser-playwright": "^4.0.17",
     "dayjs": "^1.11.19",
     "emoji-picker-react": "^4.18.0",
