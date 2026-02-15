@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD:-example}
-      POSTGRES_DB: budget_test_db
+      POSTGRES_DB: piggy_pulse_test_db
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
     healthcheck:
@@ -14,28 +14,28 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - budget-test-network
+      - piggy-pulse-test-network
 
   backend-test:
     build:
-      context: ../budget
-      dockerfile: ../budget-app/Dockerfile.backend
+      context: ../piggy-pulse-api
+      dockerfile: ../piggy-pulse-app/Dockerfile.backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/budget_test_db
-      BUDGET_DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/budget_test_db
-      BUDGET_DATABASE__MAX_CONNECTIONS: 10
-      BUDGET_DATABASE__MIN_CONNECTIONS: 1
-      BUDGET_DATABASE__CONNECTION_TIMEOUT: 120
-      BUDGET_DATABASE__ACQUIRE_TIMEOUT: 120
-      BUDGET_SERVER__ADDRESS: 0.0.0.0
-      BUDGET_SERVER__PORT: 8000
-      BUDGET_API__EXPOSE_DOCS: true
-      BUDGET_CORS__ALLOWED_ORIGINS: '["http://localhost:18080", "https://localhost:18443"]'
-      BUDGET_CORS__ALLOW_CREDENTIALS: "true"
-      BUDGET_RATE_LIMIT__USE_FORWARDED_IP: "true"
-      BUDGET_RATE_LIMIT__FORWARDED_IP_HEADER: x-forwarded-for
-      BUDGET_SESSION__COOKIE_SECURE: "false"
+      DATABASE_URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/piggy_pulse_test_db
+      PIGGY_PULSE_DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/piggy_pulse_test_db
+      PIGGY_PULSE_DATABASE__MAX_CONNECTIONS: 10
+      PIGGY_PULSE_DATABASE__MIN_CONNECTIONS: 1
+      PIGGY_PULSE_DATABASE__CONNECTION_TIMEOUT: 120
+      PIGGY_PULSE_DATABASE__ACQUIRE_TIMEOUT: 120
+      PIGGY_PULSE_SERVER__ADDRESS: 0.0.0.0
+      PIGGY_PULSE_SERVER__PORT: 8000
+      PIGGY_PULSE_API__EXPOSE_DOCS: true
+      PIGGY_PULSE_CORS__ALLOWED_ORIGINS: '["http://localhost:18080", "https://localhost:18443"]'
+      PIGGY_PULSE_CORS__ALLOW_CREDENTIALS: "true"
+      PIGGY_PULSE_RATE_LIMIT__USE_FORWARDED_IP: "true"
+      PIGGY_PULSE_RATE_LIMIT__FORWARDED_IP_HEADER: x-forwarded-for
+      PIGGY_PULSE_SESSION__COOKIE_SECURE: "false"
       ROCKET_SECRET_KEY: ${ROCKET_SECRET_KEY}
       ROCKET_ADDRESS: 0.0.0.0
       ROCKET_PORT: 8000
@@ -50,7 +50,7 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - budget-test-network
+      - piggy-pulse-test-network
 
   frontend-test:
     build:
@@ -63,7 +63,7 @@ services:
       timeout: 10s
       retries: 3
     networks:
-      - budget-test-network
+      - piggy-pulse-test-network
 
   caddy-test:
     build:
@@ -85,7 +85,7 @@ services:
       timeout: 10s
       retries: 3
     networks:
-      - budget-test-network
+      - piggy-pulse-test-network
 
 volumes:
   postgres_test_data:
@@ -96,5 +96,5 @@ volumes:
     driver: local
 
 networks:
-  budget-test-network:
+  piggy-pulse-test-network:
     driver: bridge
