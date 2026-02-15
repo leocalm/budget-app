@@ -3157,14 +3157,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emoji-picker-react@npm:^4.17.1":
-  version: 4.17.1
-  resolution: "emoji-picker-react@npm:4.17.1"
+"emoji-picker-react@npm:^4.18.0":
+  version: 4.18.0
+  resolution: "emoji-picker-react@npm:4.18.0"
   dependencies:
     flairup: "npm:1.0.0"
   peerDependencies:
     react: ">=16"
-  checksum: 10c0/a6b45479c9edc9415cb0b6cd4b8a05b7b65dab18d16c11fd037bd81427b270baef3bc1863af19a143518f75240cac79b445acc18cd26b944b7fe9737b6874c6e
+  checksum: 10c0/a37b79a8c54440caf5fa473a440dd83d6fd9dca4a1ffd0c4d951127783aefc5ba0570ffd1af429b97dee0e1e4b27c1c797524d968b3a4ed921ac83393224fb01
   languageName: node
   linkType: hard
 
@@ -5689,7 +5689,7 @@ __metadata:
     "@vitest/browser-playwright": "npm:^4.0.17"
     "@vitest/coverage-v8": "npm:4.0.17"
     dayjs: "npm:^1.11.19"
-    emoji-picker-react: "npm:^4.17.1"
+    emoji-picker-react: "npm:^4.18.0"
     eslint: "npm:^9.39.2"
     eslint-config-mantine: "npm:^4.0.3"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
