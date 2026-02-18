@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
+  fetchNetPosition,
   fetchRecentTransactions,
-  fetchTotalAssets,
   getBudgetPerDay,
   getBudgetStability,
   getMonthlyBurnIn,
@@ -50,10 +50,11 @@ export const useRecentTransactions = (selectedPeriodId: string | null) => {
   });
 };
 
-export const useTotalAssets = () => {
+export const useNetPosition = (selectedPeriodId: string | null) => {
   return useQuery({
-    queryKey: queryKeys.totalAssets(),
-    queryFn: fetchTotalAssets,
+    queryKey: queryKeys.netPosition(selectedPeriodId),
+    queryFn: () => fetchNetPosition(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
   });
 };
 

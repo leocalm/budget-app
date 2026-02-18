@@ -268,6 +268,32 @@ export const handlers = [
     const total = db.accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
     return HttpResponse.json({ totalAssets: total });
   }),
+  http.get('/api/v1/dashboard/net-position', () => {
+    const liquidBalance = db.accounts
+      .filter((account) =>
+        ['Checking', 'Wallet', 'Allowance'].includes(
+          (account as { accountType: string }).accountType
+        )
+      )
+      .reduce((sum, account) => sum + ((account as { balance?: number }).balance || 0), 0);
+
+    const protectedBalance = db.accounts
+      .filter((account) => (account as { accountType: string }).accountType === 'Savings')
+      .reduce((sum, account) => sum + ((account as { balance?: number }).balance || 0), 0);
+
+    const debtBalance = db.accounts
+      .filter((account) => (account as { accountType: string }).accountType === 'CreditCard')
+      .reduce((sum, account) => sum + ((account as { balance?: number }).balance || 0), 0);
+
+    return HttpResponse.json({
+      totalNetPosition: liquidBalance + protectedBalance + debtBalance,
+      changeThisPeriod: 0,
+      liquidBalance,
+      protectedBalance,
+      debtBalance,
+      accountCount: db.accounts.length,
+    });
+  }),
 
   http.get('/api/v1/dashboard/spent-per-category', () =>
     HttpResponse.json([

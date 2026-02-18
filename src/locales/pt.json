@@ -787,6 +787,16 @@
       "moreCount": "+{{count}}",
       "dismiss": "Dispensar banner de overlay"
     },
+    "netPosition": {
+      "title": "Posição Líquida",
+      "changeThisPeriod": "{{amount}} neste período",
+      "breakdownLiquid": "Líquido {{amount}}",
+      "breakdownProtected": "Protegido {{amount}}",
+      "breakdownDebt": "Dívida {{amount}}",
+      "empty": "Nenhuma conta disponível.",
+      "error": "Não foi possível carregar a posição líquida.",
+      "retry": "Tentar novamente"
+    },
     "stats": {
       "remainingBudget": {
         "label": "Orçamento Restante",

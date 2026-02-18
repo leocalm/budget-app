@@ -876,6 +876,16 @@
       "moreCount": "+{{count}}",
       "dismiss": "Dismiss overlay banner"
     },
+    "netPosition": {
+      "title": "Net Position",
+      "changeThisPeriod": "{{amount}} this period",
+      "breakdownLiquid": "Liquid {{amount}}",
+      "breakdownProtected": "Protected {{amount}}",
+      "breakdownDebt": "Debt {{amount}}",
+      "empty": "No accounts available.",
+      "error": "Could not load net position.",
+      "retry": "Retry"
+    },
     "stats": {
       "remainingBudget": {
         "label": "Remaining Budget",

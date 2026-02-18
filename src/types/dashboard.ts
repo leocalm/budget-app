@@ -29,6 +29,15 @@ export interface TotalAssets {
   totalAssets: number;
 }
 
+export interface NetPosition {
+  totalNetPosition: number;
+  changeThisPeriod: number;
+  liquidBalance: number;
+  protectedBalance: number;
+  debtBalance: number;
+  accountCount: number;
+}
+
 export interface BudgetStabilityPeriod {
   periodId: string;
   isOutsideTolerance: boolean;

@@ -62,6 +62,7 @@ export const queryKeys = {
   budgetPerDay: (periodId?: string | null) => ['budgetPerDay', periodId] as const,
   recentTransactions: (periodId?: string | null) => ['recentTransactions', periodId] as const,
   totalAssets: () => ['totalAssets'] as const,
+  netPosition: (periodId?: string | null) => ['netPosition', periodId] as const,
   budgetStability: () => ['budgetStability'] as const,
 };
 
