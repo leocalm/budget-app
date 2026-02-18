@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Dashboard - Redesigned</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -20,23 +23,23 @@
             --bg-tertiary: #1a1f2e;
             --bg-card: #151b26;
             --bg-elevated: #1e2433;
-            
+
             /* Accent Colors */
             --accent-primary: #00d4ff;
             --accent-success: #00ffa3;
             --accent-warning: #ffa940;
             --accent-danger: #ff6b9d;
             --accent-purple: #b47aff;
-            
+
             /* Text Colors */
             --text-primary: #ffffff;
             --text-secondary: #8892a6;
             --text-tertiary: #5a6272;
-            
+
             /* Borders */
             --border-subtle: rgba(255, 255, 255, 0.06);
             --border-medium: rgba(255, 255, 255, 0.1);
-            
+
             /* Spacing */
             --space-xs: 4px;
             --space-sm: 8px;
@@ -44,13 +47,13 @@
             --space-lg: 24px;
             --space-xl: 32px;
             --space-2xl: 48px;
-            
+
             /* Border Radius */
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 24px;
-            
+
             /* Shadows */
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
@@ -503,11 +506,12 @@
         }
 
         /* Animations */
-        @keyframes fadeInUp {
+        @keyframes fade-in-up {
             from {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -515,20 +519,31 @@
         }
 
         .stat-card {
-            animation: fadeInUp 0.6s ease backwards;
+            animation: fade-in-up 0.6s ease backwards;
         }
 
-        .stat-card:nth-child(1) { animation-delay: 0.1s; }
-        .stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .stat-card:nth-child(3) { animation-delay: 0.3s; }
-        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
 
         /* Responsive */
         @media (max-width: 1200px) {
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
             }
-            
+
             .charts-section {
                 grid-template-columns: 1fr;
             }
@@ -538,27 +553,28 @@
             .container {
                 padding: var(--space-md);
             }
-            
+
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: var(--space-md);
             }
-            
+
             .stat-value {
                 font-size: 28px;
             }
-            
+
             .stat-card.featured .stat-value {
                 font-size: 36px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -657,35 +673,40 @@
                     <div class="category-item">
                         <div class="category-name">Outros</div>
                         <div class="category-bar-container">
-                            <div class="category-bar" style="width: 95%; --bar-color: #ff6b9d; --bar-color-end: #ff8fb3;"></div>
+                            <div class="category-bar"
+                                style="width: 95%; --bar-color: #ff6b9d; --bar-color-end: #ff8fb3;"></div>
                         </div>
                         <div class="category-amount">€284</div>
                     </div>
                     <div class="category-item">
                         <div class="category-name">Cuidados Pessoais</div>
                         <div class="category-bar-container">
-                            <div class="category-bar" style="width: 82%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
+                            <div class="category-bar"
+                                style="width: 82%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
                         </div>
                         <div class="category-amount">€246</div>
                     </div>
                     <div class="category-item">
                         <div class="category-name">Macumba</div>
                         <div class="category-bar-container">
-                            <div class="category-bar" style="width: 78%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
+                            <div class="category-bar"
+                                style="width: 78%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
                         </div>
                         <div class="category-amount">€234</div>
                     </div>
                     <div class="category-item">
                         <div class="category-name">Mercado</div>
                         <div class="category-bar-container">
-                            <div class="category-bar" style="width: 75%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
+                            <div class="category-bar"
+                                style="width: 75%; --bar-color: #ffa940; --bar-color-end: #ffbd6b;"></div>
                         </div>
                         <div class="category-amount">€225</div>
                     </div>
                     <div class="category-item">
                         <div class="category-name">iCloud</div>
                         <div class="category-bar-container">
-                            <div class="category-bar" style="width: 45%; --bar-color: #00d4ff; --bar-color-end: #5ae1ff;"></div>
+                            <div class="category-bar"
+                                style="width: 45%; --bar-color: #00d4ff; --bar-color-end: #5ae1ff;"></div>
                         </div>
                         <div class="category-amount">€135</div>
                     </div>
@@ -726,7 +747,9 @@
                             <div class="transaction-vendor">Xarope para tosse</div>
                             <div class="transaction-desc">Etos</div>
                         </td>
-                        <td><span class="category-badge" style="background: rgba(255, 169, 64, 0.1); border-color: rgba(255, 169, 64, 0.2); color: var(--accent-warning);">💊 Farmacia</span></td>
+                        <td><span class="category-badge"
+                                style="background: rgba(255, 169, 64, 0.1); border-color: rgba(255, 169, 64, 0.2); color: var(--accent-warning);">💊
+                                Farmacia</span></td>
                         <td><span class="account-badge">💳 ING</span></td>
                         <td style="text-align: right;"><span class="amount negative">€ 18.48</span></td>
                     </tr>
@@ -736,7 +759,9 @@
                             <div class="transaction-vendor">Vending Machine Booking</div>
                             <div class="transaction-desc">Booking</div>
                         </td>
-                        <td><span class="category-badge" style="background: rgba(180, 122, 255, 0.1); border-color: rgba(180, 122, 255, 0.2); color: var(--accent-purple);">🍔 Comida</span></td>
+                        <td><span class="category-badge"
+                                style="background: rgba(180, 122, 255, 0.1); border-color: rgba(180, 122, 255, 0.2); color: var(--accent-purple);">🍔
+                                Comida</span></td>
                         <td><span class="account-badge">💳 ING</span></td>
                         <td style="text-align: right;"><span class="amount negative">€ 1.7</span></td>
                     </tr>
@@ -746,7 +771,9 @@
                             <div class="transaction-vendor">Netflix</div>
                             <div class="transaction-desc">Netflix</div>
                         </td>
-                        <td><span class="category-badge" style="background: rgba(255, 107, 157, 0.1); border-color: rgba(255, 107, 157, 0.2); color: var(--accent-danger);">📺 Netflix</span></td>
+                        <td><span class="category-badge"
+                                style="background: rgba(255, 107, 157, 0.1); border-color: rgba(255, 107, 157, 0.2); color: var(--accent-danger);">📺
+                                Netflix</span></td>
                         <td><span class="account-badge">💳 ING</span></td>
                         <td style="text-align: right;"><span class="amount negative">€ 15.99</span></td>
                     </tr>
@@ -756,7 +783,9 @@
                             <div class="transaction-vendor">Seguro de Vida</div>
                             <div class="transaction-desc">NN</div>
                         </td>
-                        <td><span class="category-badge" style="background: rgba(0, 255, 163, 0.1); border-color: rgba(0, 255, 163, 0.2); color: var(--accent-success);">🏥 Seguro de Vida</span></td>
+                        <td><span class="category-badge"
+                                style="background: rgba(0, 255, 163, 0.1); border-color: rgba(0, 255, 163, 0.2); color: var(--accent-success);">🏥
+                                Seguro de Vida</span></td>
                         <td><span class="account-badge">💳 ING</span></td>
                         <td style="text-align: right;"><span class="amount negative">€ 159.24</span></td>
                     </tr>
@@ -768,7 +797,7 @@
     <script>
         // Balance Over Time Chart
         const ctx = document.getElementById('balanceChart').getContext('2d');
-        
+
         const gradient1 = ctx.createLinearGradient(0, 0, 0, 300);
         gradient1.addColorStop(0, 'rgba(0, 212, 255, 0.3)');
         gradient1.addColorStop(1, 'rgba(0, 212, 255, 0)');
@@ -839,7 +868,7 @@
                         padding: 12,
                         displayColors: true,
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return context.dataset.label + ': €' + context.parsed.y.toFixed(2);
                             }
                         }
@@ -868,7 +897,7 @@
                             font: {
                                 size: 11
                             },
-                            callback: function(value) {
+                            callback: function (value) {
                                 return '€' + value.toLocaleString();
                             }
                         }
@@ -890,4 +919,5 @@
         });
     </script>
 </body>
+
 </html>

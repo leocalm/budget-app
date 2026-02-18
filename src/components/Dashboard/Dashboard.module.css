@@ -26,7 +26,7 @@
   overflow: hidden;
   position: relative;
   transition: all 0.3s ease;
-  animation: fadeInUp 0.6s ease backwards;
+  animation: fade-in-up 0.6s ease backwards;
 }
 
 .statCard::before {
@@ -101,7 +101,7 @@
   animation-delay: 0.4s;
 }
 
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(20px);
