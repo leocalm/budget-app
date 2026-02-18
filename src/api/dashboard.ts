@@ -4,7 +4,6 @@ import {
   MonthProgress,
   NetPosition,
   SpentPerCategory,
-  TotalAssets,
 } from '@/types/dashboard';
 import { TransactionResponse } from '@/types/transaction';
 import { apiGet } from './client';
@@ -41,10 +40,6 @@ export async function fetchRecentTransactions(
   return apiGet<TransactionResponse[]>(
     `/api/dashboard/recent-transactions?period_id=${selectedPeriodId}`
   );
-}
-
-export async function fetchTotalAssets(): Promise<TotalAssets> {
-  return apiGet<TotalAssets>('/api/dashboard/total-assets');
 }
 
 export async function fetchNetPosition(selectedPeriodId: string): Promise<NetPosition> {
