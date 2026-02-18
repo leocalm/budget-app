@@ -1,25 +1,25 @@
 /* components/transactions/QuickAddTransaction/SuggestionChips.module.css */
 
 .label {
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.05em;
-    color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
 }
 
 .chip {
-    padding: 6px 12px;
-    background: light-dark(rgb(0, 0, 0, 0.04), rgb(255, 255, 255, 0.03));
-    border: 1px solid light-dark(rgb(0, 0, 0, 0.08), rgb(255, 255, 255, 0.06));
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--text-primary);
+  padding: 6px 12px;
+  background: light-dark(rgb(0, 0, 0, 0.04), rgb(255, 255, 255, 0.03));
+  border: 1px solid light-dark(rgb(0, 0, 0, 0.08), rgb(255, 255, 255, 0.06));
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
 }
 
 .chip:hover {
-    background: rgb(0, 212, 255, 0.1);
-    border-color: var(--mantine-color-cyan-5);
-    color: var(--mantine-color-cyan-5);
-    transform: translateY(-1px);
+  background: rgb(0, 212, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-1px);
 }

@@ -28,7 +28,10 @@ const CATEGORY_TYPE_ICONS: Record<string, string> = {
 
 // Define background colors with alpha for each category type
 const getCategoryBackground = (color: string) => {
-  // Convert hex to rgba with 10% opacity
+  if (color.startsWith('var(')) {
+    return 'var(--color-accent-primary-soft)';
+  }
+
   return `${color}1A`;
 };
 
@@ -52,9 +55,7 @@ export function CategoryCard({
   };
 
   const categoryColor = category.color || 'var(--accent-primary)';
-  const categoryBg = getCategoryBackground(
-    categoryColor.startsWith('var') ? '#00d4ff' : categoryColor
-  );
+  const categoryBg = getCategoryBackground(categoryColor);
 
   return (
     <Paper

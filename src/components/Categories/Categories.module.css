@@ -1,12 +1,12 @@
 /* ── Add Button gradient ── */
 .addButton {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: none;
-  box-shadow: 0 4px 16px rgb(0 212 255 / 30%);
+  box-shadow: var(--shadow-reflective-glow);
 }
 
 .addButton:hover {
-  box-shadow: 0 6px 20px rgb(0 212 255 / 40%);
+  box-shadow: var(--shadow-reflective-glow);
 }
 
 /* ── Filter Tabs ── */
@@ -19,9 +19,9 @@
 
 .filterTab {
   flex: 1;
-  padding: 12px 20px;
+  padding: var(--spacing-m) var(--spacing-l);
   border-radius: var(--radius-sm, 8px);
-  font-size: 14px;
+  font-size: var(--type-reflective-label-size);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -32,7 +32,7 @@
 }
 
 .filterTab:hover:not([data-active]) {
-  background: light-dark(rgb(0, 0, 0, 0.03), rgb(255, 255, 255, 0.03));
+  background: var(--bg-elevated);
   color: var(--text-primary);
 }
 
@@ -40,7 +40,7 @@
   display: inline-block;
   margin-left: 6px;
   padding: 2px 8px;
-  background: light-dark(rgb(0, 0, 0, 0.08), rgb(255, 255, 255, 0.1));
+  background: var(--bg-elevated);
   border-radius: 12px;
   font-size: 12px;
   font-weight: 700;
@@ -139,7 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--category-bg, rgb(0, 212, 255, 0.1));
+  background: var(--category-bg, var(--color-accent-primary-soft));
   border-radius: var(--radius-md, 12px);
   font-size: 28px;
   flex-shrink: 0;
@@ -154,12 +154,12 @@
 /* ── Category type badge ── */
 .categoryType {
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  background: light-dark(rgb(0, 0, 0, 0.04), rgb(255, 255, 255, 0.05));
+  background: var(--bg-elevated);
   border-radius: 4px;
   font-weight: 600;
   text-transform: uppercase;
@@ -206,9 +206,9 @@
 }
 
 .trendUp {
-  color: var(--accent-danger, var(--mantine-color-red-6));
+  color: var(--accent-primary);
 }
 
 .trendDown {
-  color: var(--accent-success, var(--mantine-color-green-6));
+  color: var(--accent-secondary);
 }

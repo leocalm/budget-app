@@ -12,7 +12,7 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
   return (
     <Box
       style={{
-        marginBottom: '48px',
+        marginBottom: 'var(--spacing-2xl)',
       }}
     >
       <Box
@@ -20,9 +20,9 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          marginBottom: '16px',
+          marginBottom: 'var(--spacing-l)',
           flexWrap: 'wrap',
-          gap: '24px',
+          gap: 'var(--spacing-xl)',
         }}
         className="header-top"
       >
@@ -30,11 +30,12 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
           <Title
             order={1}
             style={{
-              fontSize: '32px',
-              fontWeight: 700,
+              fontSize: 'var(--type-reflective-hero-size)',
+              fontWeight: 'var(--type-reflective-hero-weight)',
               letterSpacing: '-0.02em',
-              marginBottom: '8px',
+              marginBottom: 'var(--spacing-s)',
               color: 'var(--text-primary)',
+              fontFamily: 'var(--font-title)',
             }}
           >
             {title}
@@ -42,7 +43,7 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
           {subtitle && (
             <Text
               style={{
-                fontSize: '15px',
+                fontSize: 'var(--type-diagnostic-name-size)',
                 color: 'var(--text-secondary)',
               }}
             >
@@ -54,7 +55,7 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '16px',
+            gap: 'var(--spacing-l)',
             justifyContent: 'flex-end',
             marginLeft: 'auto',
           }}

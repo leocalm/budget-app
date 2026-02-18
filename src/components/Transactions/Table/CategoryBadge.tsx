@@ -7,6 +7,19 @@ export interface CategoryBadgeProps {
   category: CategoryResponse;
 }
 
+const toTransparentColor = (color: string, alphaHex: string): string => {
+  if (/^#[0-9A-F]{6}$/i.test(color)) {
+    return `${color}${alphaHex}`;
+  }
+
+  if (/^#[0-9A-F]{3}$/i.test(color)) {
+    const [r, g, b] = color.slice(1).split('');
+    return `#${r}${r}${g}${g}${b}${b}${alphaHex}`;
+  }
+
+  return 'var(--color-accent-primary-soft)';
+};
+
 // Check if string is an emoji (starts with emoji unicode range)
 const isEmoji = (str: string): boolean => {
   if (!str) {
@@ -17,8 +30,9 @@ const isEmoji = (str: string): boolean => {
 };
 
 export const CategoryBadge = ({ category }: CategoryBadgeProps) => {
-  // Generate background and border colors from category color (10% opacity bg, 20% opacity border)
-  const baseColor = category.color || '#00d4ff';
+  const baseColor = category.color || '#5E63E6';
+  const backgroundColor = toTransparentColor(baseColor, '1F');
+  const borderColor = toTransparentColor(baseColor, '4D');
 
   // Render icon - either emoji or Tabler icon
   const renderIcon = () => {
@@ -43,8 +57,8 @@ export const CategoryBadge = ({ category }: CategoryBadgeProps) => {
         fontSize: '13px',
         fontWeight: 600,
         width: 'fit-content',
-        backgroundColor: `${baseColor}1a`, // 10% opacity
-        border: `1px solid ${baseColor}33`, // 20% opacity
+        backgroundColor,
+        border: `1px solid ${borderColor}`,
         color: baseColor,
       }}
     >

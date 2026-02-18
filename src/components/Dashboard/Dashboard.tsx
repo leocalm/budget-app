@@ -151,9 +151,9 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   return (
     <Box
       style={{
-        maxWidth: '1400px',
+        maxWidth: '1100px',
         margin: '0 auto',
-        padding: '32px',
+        padding: 'var(--spacing-2xl)',
       }}
     >
       <Stack gap="xl" component="div">

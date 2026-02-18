@@ -45,11 +45,11 @@ const ACCOUNT_TYPE_ICONS: Record<string, string> = {
 };
 
 const ACCOUNT_TYPE_COLORS: Record<string, string> = {
-  CreditCard: '#00d4ff',
-  Checking: '#00ffa3',
-  Savings: '#ffa940',
-  Wallet: '#ff6b9d',
-  Allowance: '#b47aff',
+  CreditCard: 'var(--accent-primary)',
+  Checking: 'var(--accent-secondary)',
+  Savings: 'var(--accent-primary)',
+  Wallet: 'var(--accent-secondary)',
+  Allowance: 'var(--accent-secondary)',
 };
 
 export function AccountCard({
@@ -77,7 +77,8 @@ export function AccountCard({
   const isPositive = balanceChange >= 0;
   const isNegativeBalance = currentBalance < 0;
 
-  const accentColor = account.color || ACCOUNT_TYPE_COLORS[account.accountType] || '#00d4ff';
+  const accentColor =
+    account.color || ACCOUNT_TYPE_COLORS[account.accountType] || 'var(--accent-primary)';
   const typeIcon = ACCOUNT_TYPE_ICONS[account.accountType] || '💳';
   const typeLabel = t(`accounts.types.${account.accountType}`, {
     defaultValue: account.accountType,
@@ -85,12 +86,12 @@ export function AccountCard({
 
   const getBalanceColor = () => {
     if (isNegativeBalance) {
-      return 'var(--accent-danger)';
+      return 'var(--text-secondary)';
     }
     if (currentBalance < 50) {
       return 'var(--text-secondary)';
     }
-    return 'var(--accent-success)';
+    return 'var(--text-primary)';
   };
 
   const balanceChangeColor = balanceChange === 0 ? 'gray' : isPositive ? 'green' : 'red';
@@ -233,7 +234,7 @@ export function AccountCard({
             ff="monospace"
             c={
               !isCreditCard && !hasSpendLimit && monthlySpent !== 0
-                ? 'var(--accent-danger)'
+                ? 'var(--accent-secondary)'
                 : 'var(--text-secondary)'
             }
           >

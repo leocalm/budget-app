@@ -18,11 +18,11 @@ interface TopCategoriesChartProps {
 
 // Array of colors for category bars
 const CATEGORY_COLORS = [
-  { start: '#ff6b9d', end: '#ff8fb3' }, // danger/pink
-  { start: '#ffa940', end: '#ffbd6b' }, // warning/orange
-  { start: '#b47aff', end: '#d4a5ff' }, // purple
-  { start: '#00ffa3', end: '#5eff74' }, // success/green
-  { start: '#00d4ff', end: '#5ae1ff' }, // primary/cyan
+  { start: '#ff6b9d', end: '#ff8fb3' },
+  { start: '#ffa940', end: '#ffbd6b' },
+  { start: '#b47aff', end: '#d4a5ff' },
+  { start: '#00ffa3', end: '#5eff74' },
+  { start: '#00d4ff', end: '#5ae1ff' },
 ];
 
 export function TopCategoriesChart({

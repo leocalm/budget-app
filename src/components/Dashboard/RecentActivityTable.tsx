@@ -18,14 +18,14 @@ export function RecentActivityTable({ transactions, onViewAll }: RecentActivityT
         {onViewAll && (
           <Button
             variant="light"
-            color="cyan"
+            color="piggyPrimary"
             size="xs"
             rightSection={<span>➡️</span>}
             onClick={onViewAll}
             style={{
-              background: 'rgba(0, 212, 255, 0.1)',
-              color: 'var(--mantine-color-cyan-5)',
-              border: '1px solid rgba(0, 212, 255, 0.2)',
+              background: 'var(--color-accent-primary-soft)',
+              color: 'var(--accent-primary)',
+              border: '1px solid var(--color-accent-primary-soft-strong)',
             }}
           >
             View All

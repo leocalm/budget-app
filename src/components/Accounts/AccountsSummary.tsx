@@ -36,7 +36,7 @@ export function AccountsSummary({
         <Text size="xs" fw={600} tt="uppercase" lts="0.05em" c="dimmed" mb="md">
           {t('accounts.summary.assets')}
         </Text>
-        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--accent-success)">
+        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--mantine-color-green-6)">
           <CurrencyValue cents={totalAssets} />
         </Text>
         <Text size="sm" c="dimmed">
@@ -47,7 +47,7 @@ export function AccountsSummary({
         <Text size="xs" fw={600} tt="uppercase" lts="0.05em" c="dimmed" mb="md">
           {t('accounts.summary.liabilities')}
         </Text>
-        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--accent-danger)">
+        <Text size="2xl" fw={700} ff="monospace" mb="xs" c="var(--mantine-color-red-6)">
           <CurrencyValue cents={totalLiabilities} />
         </Text>
         <Text size="sm" c="dimmed">

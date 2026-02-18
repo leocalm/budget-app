@@ -50,7 +50,7 @@ const inputStyles = {
     color: 'var(--text-primary)',
     '&:focus': {
       borderColor: 'var(--accent-primary)',
-      boxShadow: '0 0 0 3px rgba(0, 212, 255, 0.1)',
+      boxShadow: '0 0 0 3px var(--color-accent-primary-soft)',
     },
   },
   label: {
@@ -274,7 +274,8 @@ export const EditTransactionForm = ({
             loading={isPending}
             styles={{
               root: {
-                background: 'linear-gradient(135deg, #00d4ff 0%, #b47aff 100%)',
+                background:
+                  'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
                 border: 'none',
                 '&:hover': {
                   opacity: 0.9,
