@@ -23,6 +23,12 @@ export interface PasswordResetValidateResponse {
   email?: string;
 }
 
+function createError(message: string, cause: unknown): Error {
+  return new Error(message, {
+    cause: cause instanceof Error ? cause : undefined,
+  });
+}
+
 /**
  * Request a password reset email.
  * Always returns success to prevent email enumeration.
@@ -37,23 +43,26 @@ export async function requestPasswordReset(email: string): Promise<PasswordReset
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 429) {
-        throw new Error('Too many password reset attempts. Please try again later.');
+        throw createError('Too many password reset attempts. Please try again later.', error);
       }
 
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw createError('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw new Error(error.message);
+        throw createError(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the server. Please check your internet connection.');
+      throw createError(
+        'Unable to connect to the server. Please check your internet connection.',
+        error
+      );
     }
 
-    throw new Error('Password reset request failed. Please try again.');
+    throw createError('Password reset request failed. Please try again.', error);
   }
 }
 
@@ -72,23 +81,26 @@ export async function validatePasswordResetToken(
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
-        throw new Error('Invalid or expired reset token.');
+        throw createError('Invalid or expired reset token.', error);
       }
 
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw createError('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw new Error(error.message);
+        throw createError(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the server. Please check your internet connection.');
+      throw createError(
+        'Unable to connect to the server. Please check your internet connection.',
+        error
+      );
     }
 
-    throw new Error('Token validation failed. Please try again.');
+    throw createError('Token validation failed. Please try again.', error);
   }
 }
 
@@ -105,28 +117,32 @@ export async function confirmPasswordReset(token: string, newPassword: string): 
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
-        throw new Error(
-          error.message || 'Invalid or expired reset token. Please request a new one.'
+        throw createError(
+          error.message || 'Invalid or expired reset token. Please request a new one.',
+          error
         );
       }
 
       if (error.status === 429) {
-        throw new Error('Too many attempts. Please try again later.');
+        throw createError('Too many attempts. Please try again later.', error);
       }
 
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw createError('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw new Error(error.message);
+        throw createError(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the server. Please check your internet connection.');
+      throw createError(
+        'Unable to connect to the server. Please check your internet connection.',
+        error
+      );
     }
 
-    throw new Error('Password reset failed. Please try again.');
+    throw createError('Password reset failed. Please try again.', error);
   }
 }
