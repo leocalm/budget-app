@@ -68,7 +68,7 @@ export function BudgetStabilityCard({
           </Text>
         ) : (
           <Stack gap="sm">
-            <Text className={styles.stabilityValue}>{`${data.withinTolerancePercentage}%`}</Text>
+            <Text className={styles.stabilityValue}>{`${Math.round(data.withinTolerancePercentage)}%`}</Text>
             <Text size="sm" c="dimmed">
               {t('dashboard.stability.withinRangeCount', {
                 within: data.periodsWithinTolerance,
@@ -76,7 +76,7 @@ export function BudgetStabilityCard({
               })}
             </Text>
             <Group gap={8}>
-              {data.recentClosedPeriods.map((period) => (
+              {data.recentClosedPeriods.slice(0, 6).map((period) => (
                 <span
                   key={period.periodId}
                   className={`${styles.stabilityDot} ${period.isOutsideTolerance ? styles.stabilityDotFilled : ''}`}

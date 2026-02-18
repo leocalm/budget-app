@@ -57,9 +57,10 @@ export const useTotalAssets = () => {
   });
 };
 
-export const useBudgetStability = () => {
+export const useBudgetStability = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: queryKeys.budgetStability(),
     queryFn: getBudgetStability,
+    enabled: options?.enabled ?? true,
   });
 };

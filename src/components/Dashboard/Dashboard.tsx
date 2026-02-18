@@ -61,7 +61,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     isLoading: isBudgetStabilityLoading,
     isError: isBudgetStabilityError,
     refetch: refetchBudgetStability,
-  } = useBudgetStability();
+  } = useBudgetStability({ enabled: !isPeriodMissing });
   const { data: totalAsset, isLoading: isTotalAssetLoading } = useTotalAssets();
   const { data: accounts } = useAccounts(selectedPeriodId);
 
