@@ -15,8 +15,8 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { confirmEmergencyDisable, requestEmergencyDisable } from '@/api/twoFactor';
+import { toast } from '@/lib/toast';
 
 export function Emergency2FADisablePage() {
   const { t } = useTranslation();
@@ -42,11 +42,9 @@ export function Emergency2FADisablePage() {
     try {
       await requestEmergencyDisable(values.email);
       setSuccess(true);
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message: 'If your email exists and has 2FA enabled, you will receive instructions shortly.',
-        color: 'green',
-        icon: <IconCheck size={20} />,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to request emergency disable');
@@ -67,12 +65,10 @@ export function Emergency2FADisablePage() {
     try {
       await confirmEmergencyDisable(token);
       setSuccess(true);
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message:
           'Two-factor authentication has been disabled. You can now log in with just your password.',
-        color: 'green',
-        icon: <IconCheck size={20} />,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to disable two-factor authentication');

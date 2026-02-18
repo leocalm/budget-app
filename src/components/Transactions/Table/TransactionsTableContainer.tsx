@@ -9,15 +9,19 @@ import { TransactionsTableView } from './TransactionsTableView';
 
 export interface TransactionsTableProps {
   transactions: TransactionResponse[] | undefined;
+  isLocked: boolean;
   isLoading: boolean | undefined;
   isError: boolean | undefined;
+  onRetry: () => void;
   insertEnabled: boolean;
 }
 
 export const TransactionsTableContainer = ({
   transactions,
+  isLocked,
   isLoading,
   isError,
+  onRetry,
   insertEnabled,
 }: TransactionsTableProps) => {
   const { selectedPeriodId } = useBudgetPeriodSelection();
@@ -26,18 +30,21 @@ export const TransactionsTableContainer = ({
     data: categories,
     isLoading: categoriesLoading,
     isError: categoriesError,
+    refetch: refetchCategories,
   } = useCategories(selectedPeriodId);
 
   const {
     data: vendors,
     isLoading: vendorsLoading,
     isError: vendorsError,
+    refetch: refetchVendors,
   } = useVendors(selectedPeriodId);
 
   const {
     data: accounts,
     isLoading: accountsLoading,
     isError: accountsError,
+    refetch: refetchAccounts,
   } = useAccounts(selectedPeriodId);
 
   const deleteMutation = useDeleteTransaction(selectedPeriodId);
@@ -51,8 +58,13 @@ export const TransactionsTableContainer = ({
   return (
     <TransactionsTableView
       transactions={transactions}
+      isLocked={isLocked}
       isLoading={combinedLoading}
       isError={combinedError}
+      onRetry={() => {
+        onRetry();
+        void Promise.all([refetchAccounts(), refetchCategories(), refetchVendors()]);
+      }}
       insertEnabled={insertEnabled}
       accounts={accounts}
       categories={categories}

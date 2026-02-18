@@ -3,12 +3,12 @@ import { useMemo, useState } from 'react';
 import { IconChevronDown, IconChevronUp, IconPlus, IconTargetArrow } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Button, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useDeleteOverlay, useOverlays } from '@/hooks/useOverlays';
 import { useVendors } from '@/hooks/useVendors';
+import { toast } from '@/lib/toast';
 import { Overlay } from '@/types/overlay';
 import { ConfirmDialog } from './ConfirmDialog';
 import { OverlayCard } from './OverlayCard';
@@ -84,24 +84,28 @@ export function OverlaysPage() {
 
     try {
       await deleteOverlayMutation.mutateAsync(overlayPendingDelete.id);
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: t('overlays.deletedSuccess'),
       });
       setOverlayPendingDelete(null);
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('overlays.deleteFailed'),
+        nonCritical: true,
+        action: {
+          label: t('common.retry'),
+          onClick: () => {
+            void confirmDelete();
+          },
+        },
       });
     }
   };
 
   const showDetailNotReady = () => {
-    notifications.show({
-      color: 'blue',
+    toast.info({
       title: t('common.info'),
       message: t('overlays.detailComingSoon'),
     });

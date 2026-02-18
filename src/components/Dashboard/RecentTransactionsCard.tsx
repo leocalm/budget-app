@@ -2,15 +2,27 @@ import { TransactionsTable } from '@/components/Transactions';
 import { TransactionResponse } from '@/types/transaction';
 
 interface RecentTransactionsCardProps {
+  isLocked?: boolean;
+  isLoading?: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
   data: TransactionResponse[];
 }
 
-export function RecentTransactionsCard({ data }: RecentTransactionsCardProps) {
+export function RecentTransactionsCard({
+  isLocked = false,
+  isLoading = false,
+  isError = false,
+  onRetry = () => {},
+  data,
+}: RecentTransactionsCardProps) {
   return (
     <TransactionsTable
       transactions={data}
-      isError={false}
-      isLoading={false}
+      isLocked={isLocked}
+      isError={isError}
+      isLoading={isLoading}
+      onRetry={onRetry}
       insertEnabled={false}
     />
   );

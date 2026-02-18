@@ -13,13 +13,13 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import {
   useCreateBudgetPeriodSchedule,
   useDeleteBudgetPeriodSchedule,
   useUpdateBudgetPeriodSchedule,
 } from '@/hooks/useBudget';
+import { toast } from '@/lib/toast';
 import {
   BudgetPeriodSchedule,
   BudgetPeriodScheduleRequest,
@@ -101,8 +101,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
   const saveSchedule = async () => {
     if (values.mode === 'manual') {
       if (!schedule) {
-        notifications.show({
-          color: 'green',
+        toast.success({
           title: t('common.success'),
           message: t('periods.schedule.savedManualMode'),
         });
@@ -112,17 +111,16 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
 
       try {
         await deleteScheduleMutation.mutateAsync();
-        notifications.show({
-          color: 'green',
+        toast.success({
           title: t('common.success'),
           message: t('periods.schedule.disabledSuccess'),
         });
         onClose();
       } catch (error) {
-        notifications.show({
-          color: 'red',
+        toast.error({
           title: t('common.error'),
           message: error instanceof Error ? error.message : t('periods.schedule.failedToSave'),
+          nonCritical: true,
         });
       }
 
@@ -130,19 +128,19 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
     }
 
     if (values.startDay < 1 || values.startDay > 31) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: t('periods.schedule.startDayValidation'),
+        nonCritical: true,
       });
       return;
     }
 
     if (values.durationValue < 1) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: t('periods.schedule.durationValidation'),
+        nonCritical: true,
       });
       return;
     }
@@ -164,8 +162,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         await createScheduleMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: schedule
           ? t('periods.schedule.updatedSuccess')
@@ -173,10 +170,10 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
       });
       onClose();
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('periods.schedule.failedToSave'),
+        nonCritical: true,
       });
     }
   };

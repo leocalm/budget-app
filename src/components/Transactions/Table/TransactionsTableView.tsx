@@ -12,7 +12,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { ErrorState, TransactionListSkeleton } from '@/components/Utils';
+import { StateRenderer, TransactionListSkeleton } from '@/components/Utils';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { Transaction, TransactionResponse } from '@/types/transaction';
@@ -28,8 +28,10 @@ import { MobileTransactionCard, TransactionList } from '../List';
 
 export interface TransactionsTableViewProps {
   transactions: TransactionResponse[] | undefined;
+  isLocked: boolean;
   isLoading: boolean | undefined;
   isError: boolean | undefined;
+  onRetry: () => void;
   insertEnabled: boolean;
 
   accounts: AccountResponse[] | undefined;
@@ -43,8 +45,10 @@ export interface TransactionsTableViewProps {
 
 export const TransactionsTableView = ({
   transactions,
+  isLocked,
   isLoading,
   isError,
+  onRetry,
   insertEnabled,
   accounts,
   categories,
@@ -122,24 +126,6 @@ export const TransactionsTableView = ({
     });
   };
 
-  if (isLoading) {
-    return (
-      <Group justify="center" py="xl">
-        <TransactionListSkeleton count={8} />
-      </Group>
-    );
-  }
-  if (isError) {
-    return (
-      <ErrorState
-        variant="inline"
-        icon="⚠️"
-        title={t('states.error.loadFailed.title')}
-        message={t('transactions.tableView.error.load')}
-      />
-    );
-  }
-
   const handleSubmit = async (values: TransactionFormValues) => {
     let vendor = values.vendor;
 
@@ -189,65 +175,92 @@ export const TransactionsTableView = ({
   };
 
   return (
-    <Box>
-      <TransactionFormProvider form={form}>
-        <form key={form.key('root')} onSubmit={form.onSubmit(handleSubmit)}>
-          {isMobile ? (
-            <Stack gap="xs">
-              {transactions?.map((t) => (
-                <MobileTransactionCard key={t.id} transaction={t} />
-              ))}
+    <StateRenderer
+      variant="page"
+      isLocked={isLocked}
+      lockMessage={t('states.locked.message.periodRequired')}
+      lockAction={{ label: t('states.locked.configure'), to: '/periods' }}
+      hasError={Boolean(isError)}
+      errorMessage={t('transactions.tableView.error.load')}
+      onRetry={onRetry}
+      isLoading={Boolean(isLoading)}
+      loadingSkeleton={
+        <Group justify="center" py="xl" w="100%">
+          <TransactionListSkeleton count={8} />
+        </Group>
+      }
+      isEmpty={!transactions || transactions.length === 0}
+      emptyItemsLabel={t('states.contract.items.transactions')}
+      emptyMessage={t('states.empty.transactions.message')}
+      emptyAction={
+        insertEnabled && isMobile
+          ? {
+              label: t('states.empty.transactions.addTransaction'),
+              onClick: openDrawer,
+            }
+          : undefined
+      }
+    >
+      <Box>
+        <TransactionFormProvider form={form}>
+          <form key={form.key('root')} onSubmit={form.onSubmit(handleSubmit)}>
+            {isMobile ? (
+              <Stack gap="xs">
+                {transactions?.map((t) => (
+                  <MobileTransactionCard key={t.id} transaction={t} />
+                ))}
 
-              <Drawer
-                opened={drawerOpened}
-                onClose={closeDrawer}
-                title={t('transactions.tableView.addTransaction')}
-                position="bottom"
-                size="80%"
-                padding="md"
-              >
-                <Stack gap="xl">
-                  <TransactionFormFields
-                    accounts={accounts}
-                    categories={categories}
-                    vendors={vendors}
-                    accountsByName={accountsByName}
-                    categoriesByName={categoriesByName}
-                    vendorsByName={vendorsByName}
-                    size="sm"
-                  />
-                  <Button type="submit" fullWidth leftSection={<span>➕</span>}>
-                    {t('transactions.tableView.createTransaction')}
-                  </Button>
-                </Stack>
-              </Drawer>
+                <Drawer
+                  opened={drawerOpened}
+                  onClose={closeDrawer}
+                  title={t('transactions.tableView.addTransaction')}
+                  position="bottom"
+                  size="80%"
+                  padding="md"
+                >
+                  <Stack gap="xl">
+                    <TransactionFormFields
+                      accounts={accounts}
+                      categories={categories}
+                      vendors={vendors}
+                      accountsByName={accountsByName}
+                      categoriesByName={categoriesByName}
+                      vendorsByName={vendorsByName}
+                      size="sm"
+                    />
+                    <Button type="submit" fullWidth leftSection={<span>➕</span>}>
+                      {t('transactions.tableView.createTransaction')}
+                    </Button>
+                  </Stack>
+                </Drawer>
 
-              <Affix position={{ bottom: 80, right: 20 }}>
-                <Transition transition="slide-up" mounted={insertEnabled && !drawerOpened}>
-                  {(transitionStyles) => (
-                    <ActionIcon
-                      color="blue"
-                      radius="xl"
-                      size={56}
-                      style={transitionStyles}
-                      onClick={openDrawer}
-                      variant="filled"
-                    >
-                      <span style={{ fontSize: 28 }}>➕</span>
-                    </ActionIcon>
-                  )}
-                </Transition>
-              </Affix>
-            </Stack>
-          ) : (
-            <TransactionList
-              transactions={transactions}
-              deleteTransaction={deleteTransaction}
-              editTransaction={handleEdit}
-            />
-          )}
-        </form>
-      </TransactionFormProvider>
-    </Box>
+                <Affix position={{ bottom: 80, right: 20 }}>
+                  <Transition transition="slide-up" mounted={insertEnabled && !drawerOpened}>
+                    {(transitionStyles) => (
+                      <ActionIcon
+                        color="blue"
+                        radius="xl"
+                        size={56}
+                        style={transitionStyles}
+                        onClick={openDrawer}
+                        variant="filled"
+                      >
+                        <span style={{ fontSize: 28 }}>➕</span>
+                      </ActionIcon>
+                    )}
+                  </Transition>
+                </Affix>
+              </Stack>
+            ) : (
+              <TransactionList
+                transactions={transactions}
+                deleteTransaction={deleteTransaction}
+                editTransaction={handleEdit}
+              />
+            )}
+          </form>
+        </TransactionFormProvider>
+      </Box>
+    </StateRenderer>
   );
 };

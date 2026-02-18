@@ -24,7 +24,6 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import {
   useBudgetPeriodGaps,
   useBudgetPeriods,
@@ -33,6 +32,7 @@ import {
   useDeleteBudgetPeriodSchedule,
   useUpdateBudgetPeriod,
 } from '@/hooks/useBudget';
+import { toast } from '@/lib/toast';
 import { BudgetPeriod, BudgetPeriodGaps } from '@/types/budget';
 import { PeriodCard } from './PeriodCard';
 import { PeriodFormModal } from './PeriodFormModal';
@@ -200,17 +200,22 @@ export function PeriodsPage() {
 
     try {
       await deletePeriodMutation.mutateAsync(periodPendingDelete.id);
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: t('periods.deletedSuccess'),
       });
       setPeriodPendingDelete(null);
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('periods.deleteFailed'),
+        nonCritical: true,
+        action: {
+          label: t('common.retry'),
+          onClick: () => {
+            void confirmDelete();
+          },
+        },
       });
     }
   };
@@ -218,17 +223,16 @@ export function PeriodsPage() {
   const confirmDisableSchedule = async () => {
     try {
       await disableScheduleMutation.mutateAsync();
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: t('periods.schedule.disabledSuccess'),
       });
       setDisableScheduleConfirmOpen(false);
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('periods.schedule.failedToSave'),
+        nonCritical: true,
       });
     }
   };
@@ -260,18 +264,17 @@ export function PeriodsPage() {
     }
 
     if (hasOverlapConflict) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: t('periods.gaps.overlapConflict'),
+        nonCritical: true,
       });
       return;
     }
 
     if (!hasGapCoverageChanges) {
-      notifications.show({
-        color: 'yellow',
-        title: t('common.success'),
+      toast.info({
+        title: t('common.info'),
         message: t('periods.gaps.noCoverageChange'),
       });
       return;
@@ -287,17 +290,16 @@ export function PeriodsPage() {
         },
       });
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: t('periods.gaps.extendSuccess'),
       });
       setGapResolutionModalOpen(false);
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('periods.gaps.extendFailed'),
+        nonCritical: true,
       });
     }
   };
