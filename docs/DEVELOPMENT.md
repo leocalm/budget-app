@@ -1,6 +1,6 @@
 # Development Guide
 
-This document describes how to run, test, and develop the budget-app frontend locally.
+This document describes how to run, test, and develop the piggy-pulse-app frontend locally.
 
 ## Requirements
 

@@ -1770,12 +1770,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.10.9":
-  version: 24.10.9
-  resolution: "@types/node@npm:24.10.9"
+"@types/node@npm:^25.2.3":
+  version: 25.2.3
+  resolution: "@types/node@npm:25.2.3"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/e9e436fcd2136bddb1bbe3271a89f4653910bcf6ee8047c4117f544c7905a106c039e2720ee48f28505ef2560e22fb9ead719f28bf5e075fdde0c1120e38e3b2
+  checksum: 10c0/925833029ce0bb4a72c36f90b93287184d3511aeb0fa60a994ae94b5430c22f9be6693d67d210df79267cb54c6f6978caaefb149d99ab5f83af5827ba7cb9822
   languageName: node
   linkType: hard
 
@@ -3157,14 +3157,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emoji-picker-react@npm:^4.17.1":
-  version: 4.17.1
-  resolution: "emoji-picker-react@npm:4.17.1"
+"emoji-picker-react@npm:^4.18.0":
+  version: 4.18.0
+  resolution: "emoji-picker-react@npm:4.18.0"
   dependencies:
     flairup: "npm:1.0.0"
   peerDependencies:
     react: ">=16"
-  checksum: 10c0/a6b45479c9edc9415cb0b6cd4b8a05b7b65dab18d16c11fd037bd81427b270baef3bc1863af19a143518f75240cac79b445acc18cd26b944b7fe9737b6874c6e
+  checksum: 10c0/a37b79a8c54440caf5fa473a440dd83d6fd9dca4a1ffd0c4d951127783aefc5ba0570ffd1af429b97dee0e1e4b27c1c797524d968b3a4ed921ac83393224fb01
   languageName: node
   linkType: hard
 
@@ -5680,7 +5680,7 @@ __metadata:
     "@testing-library/jest-dom": "npm:^6.9.1"
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/user-event": "npm:^14.6.1"
-    "@types/node": "npm:^24.10.9"
+    "@types/node": "npm:^25.2.3"
     "@types/react": "npm:^19.2.2"
     "@types/react-dom": "npm:^19.2.1"
     "@types/react-is": "npm:^19"
@@ -5689,7 +5689,7 @@ __metadata:
     "@vitest/browser-playwright": "npm:^4.0.17"
     "@vitest/coverage-v8": "npm:4.0.17"
     dayjs: "npm:^1.11.19"
-    emoji-picker-react: "npm:^4.17.1"
+    emoji-picker-react: "npm:^4.18.0"
     eslint: "npm:^9.39.2"
     eslint-config-mantine: "npm:^4.0.3"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
@@ -5719,7 +5719,7 @@ __metadata:
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.46.0"
     vite: "npm:^7.1.9"
-    vite-tsconfig-paths: "npm:^5.1.4"
+    vite-tsconfig-paths: "npm:^6.1.1"
     vitest: "npm:^4.0.17"
     zxcvbn: "npm:^4.4.2"
   languageName: unknown
@@ -7647,19 +7647,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:^5.1.4":
-  version: 5.1.4
-  resolution: "vite-tsconfig-paths@npm:5.1.4"
+"vite-tsconfig-paths@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "vite-tsconfig-paths@npm:6.1.1"
   dependencies:
     debug: "npm:^4.1.1"
     globrex: "npm:^0.1.2"
     tsconfck: "npm:^3.0.3"
   peerDependencies:
     vite: "*"
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: 10c0/6228f23155ea25d92b1e1702284cf8dc52ad3c683c5ca691edd5a4c82d2913e7326d00708cef1cbfde9bb226261df0e0a12e03ef1d43b6a92d8f02b483ef37e3
+  checksum: 10c0/5e61080991418fefa08c5b98995cdcada4931ae01ac97ef9e2ee941051f61b76890a6e7ba48bed3b2a229ec06fef33a06621bba4ce457b3f4233ad31dc0c1d1b
   languageName: node
   linkType: hard
 

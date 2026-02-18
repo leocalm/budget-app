@@ -243,8 +243,8 @@ The backend uses Rocket's environment variable system. Always use `ROCKET_` pref
 - `ROCKET_SECRET_KEY` - Session encryption key (required)
 
 **Database Configuration:**
-- Environment variables use double underscores for nesting: `BUDGET__DATABASE__URL`, `BUDGET__DATABASE__MAX_CONNECTIONS`
-- Configuration priority: Environment variables → `Budget.toml` → defaults
+- Environment variables use double underscores for nesting: `PIGGY_PULSE__DATABASE__URL`, `PIGGY_PULSE__DATABASE__MAX_CONNECTIONS`
+- Configuration priority: Environment variables → `PiggyPulse.toml` → defaults
 - Database host must be `db` (Docker service name), not `localhost`
 
 **Common Issues:**
@@ -253,14 +253,14 @@ The backend uses Rocket's environment variable system. Always use `ROCKET_` pref
    - Verify in logs: Should show "Rocket has launched from http://0.0.0.0:8000"
 
 2. **Database Connection Timeout**:
-   - Check Budget.toml has correct database URL: `postgres://postgres:example@db:5432/budget_db`
+   - Check PiggyPulse.toml has correct database URL: `postgres://postgres:example@db:5432/piggy_pulse_db`
    - Verify network connectivity: `docker-compose exec backend curl http://db:5432`
 
 3. **Migrations Not Applied**:
    ```bash
    # Run migrations manually if needed
    docker-compose exec -T backend cat /app/migrations/0001_init/up.sql | \
-     docker-compose exec -T db psql -U postgres -d budget_db
+     docker-compose exec -T db psql -U postgres -d piggy_pulse_db
    ```
 
 ### Test User

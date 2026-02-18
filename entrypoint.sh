@@ -19,5 +19,5 @@ if [ $counter -eq $max_retries ]; then
 fi
 
 echo "PostgreSQL is up!"
-echo "Starting Budget API..."
-exec /app/budget
+echo "Starting PiggyPulse API..."
+exec /app/piggy-pulse

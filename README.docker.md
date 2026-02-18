@@ -34,17 +34,17 @@ This directory contains Docker configuration for running the complete PiggyPulse
    cargo install sqlx-cli --no-default-features --features rustls,postgres
 
    # Set DATABASE_URL and run migrations
-   export DATABASE_URL=postgres://postgres:example@localhost:5432/budget_db
-   cd ../budget
+   export DATABASE_URL=postgres://postgres:example@localhost:5432/piggy_pulse_db
+   cd ../piggy-pulse-api
    sqlx migrate run
    ```
 
    **Option B: Use a temporary container with sqlx-cli**
    ```bash
    # Create a temporary container with sqlx-cli
-   docker run --rm --network budget-app_budget-network \
-     -v "$(pwd)/../budget/migrations:/migrations" \
-     -e DATABASE_URL=postgres://postgres:example@db:5432/budget_db \
+   docker run --rm --network piggy-pulse-app_piggy-pulse-network \
+     -v "$(pwd)/../piggy-pulse-api/migrations:/migrations" \
+     -e DATABASE_URL=postgres://postgres:example@db:5432/piggy_pulse_db \
      rust:1.84-slim \
      sh -c "apt-get update && apt-get install -y pkg-config libssl-dev && \
             cargo install sqlx-cli --no-default-features --features rustls,postgres && \
@@ -122,7 +122,7 @@ If you need to revert to HTTP only:
 1. Edit `Caddyfile` - add `auto_https off` in global options and change `:443` to `:80`
 2. Edit `docker-compose.yaml`:
     - Change CORS origins from `https://` to `http://`
-    - Change `BUDGET_SESSION__COOKIE_SECURE: "false"`
+    - Change `PIGGY_PULSE_SESSION__COOKIE_SECURE: "false"`
 3. Restart: `docker compose down && docker compose up -d`
 
 ## Development with Debug Tools
@@ -212,7 +212,7 @@ docker compose up -d --build backend
 docker compose exec backend sh
 
 # Database shell
-docker compose exec db psql -U postgres -d budget_db
+docker compose exec db psql -U postgres -d piggy_pulse_db
 ```
 
 ## Configuration
@@ -222,7 +222,7 @@ docker compose exec db psql -U postgres -d budget_db
 Backend configuration is done via environment variables in the `docker-compose.yaml` file. Key settings:
 
 - `DATABASE_URL`: PostgreSQL connection string
-- `BUDGET_CORS__ALLOWED_ORIGINS`: Frontend origin for CORS
+- `PIGGY_PULSE_CORS__ALLOWED_ORIGINS`: Frontend origin for CORS
 - `ROCKET_SECRET_KEY`: Required for sessions (set in .env)
 
 ### Frontend Build-Time Configuration
@@ -289,14 +289,14 @@ api.example.com {
 
 5. **Backups**: Set up automated PostgreSQL backups:
    ```bash
-   docker compose exec db pg_dump -U postgres budget_db > backup.sql
+   docker compose exec db pg_dump -U postgres piggy_pulse_db > backup.sql
    ```
 
 6. **Security**:
     - Change default passwords in `.env`
     - Keep images updated
     - Use non-root users in Dockerfiles
-    - Scan images for vulnerabilities: `docker scan budget-backend`
+    - Scan images for vulnerabilities: `docker scan piggy-pulse-backend`
 
 ## Troubleshooting
 
@@ -338,7 +338,7 @@ docker compose exec frontend ls -la /usr/share/nginx/html
 ```bash
 # Ensure proper ownership of volumes
 docker compose down
-docker volume rm budget-app_postgres_data
+docker volume rm piggy-pulse-app_postgres_data
 docker compose up -d
 ```
 

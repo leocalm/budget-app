@@ -23,7 +23,7 @@ RUN mkdir src && \
 # Copy source code
 COPY src ./src
 COPY migrations ./migrations
-COPY Budget.toml ./Budget.toml
+COPY PiggyPulse.toml ./PiggyPulse.toml
 
 # Build the actual application
 RUN touch src/main.rs && cargo build --release
@@ -42,13 +42,13 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=builder /app/target/release/budget /app/budget
+COPY --from=builder /app/target/release/piggy-pulse /app/piggy-pulse
 
 # Copy migrations
 COPY --from=builder /app/migrations /app/migrations
 
 # Copy configuration
-COPY --from=builder /app/Budget.toml /app/Budget.toml
+COPY --from=builder /app/PiggyPulse.toml /app/PiggyPulse.toml
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
