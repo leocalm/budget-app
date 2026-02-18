@@ -1,11 +1,9 @@
 import { apiDelete, apiGet, apiPost } from './client';
 import { ApiError } from './errors';
 
-const withCause = (message: string, cause: unknown) => {
-  return new Error(message, {
-    cause: cause instanceof Error ? cause : undefined,
-  });
-};
+function errorWithCause(message: string, cause: unknown): Error {
+  return new Error(message, { cause });
+}
 
 export interface TwoFactorSetupResponse {
   secret: string;
@@ -48,9 +46,9 @@ export async function setupTwoFactor(): Promise<TwoFactorSetupResponse> {
     return await apiPost<TwoFactorSetupResponse>('/api/two-factor/setup');
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Failed to setup two-factor authentication', error);
+    throw errorWithCause('Failed to setup two-factor authentication', error);
   }
 }
 
@@ -62,9 +60,9 @@ export async function verifyTwoFactor(code: string): Promise<void> {
     await apiPost<void, TwoFactorVerifyRequest>('/api/two-factor/verify', { code });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Invalid verification code', error);
+    throw errorWithCause('Invalid verification code', error);
   }
 }
 
@@ -76,9 +74,9 @@ export async function disableTwoFactor(password: string, code: string): Promise<
     await apiDelete<void, TwoFactorDisableRequest>('/api/two-factor/disable', { password, code });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Failed to disable two-factor authentication', error);
+    throw errorWithCause('Failed to disable two-factor authentication', error);
   }
 }
 
@@ -90,9 +88,9 @@ export async function getTwoFactorStatus(): Promise<TwoFactorStatus> {
     return await apiGet<TwoFactorStatus>('/api/two-factor/status');
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Failed to get two-factor status', error);
+    throw errorWithCause('Failed to get two-factor status', error);
   }
 }
 
@@ -107,9 +105,9 @@ export async function regenerateBackupCodes(code: string): Promise<string[]> {
     );
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Failed to regenerate backup codes', error);
+    throw errorWithCause('Failed to regenerate backup codes', error);
   }
 }
 
@@ -123,9 +121,9 @@ export async function requestEmergencyDisable(email: string): Promise<void> {
     });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Failed to request emergency disable', error);
+    throw errorWithCause('Failed to request emergency disable', error);
   }
 }
 
@@ -139,8 +137,8 @@ export async function confirmEmergencyDisable(token: string): Promise<void> {
     });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw withCause(error.message, error);
+      throw errorWithCause(error.message, error);
     }
-    throw withCause('Invalid or expired token', error);
+    throw errorWithCause('Invalid or expired token', error);
   }
 }
