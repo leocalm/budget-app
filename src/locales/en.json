@@ -9,6 +9,7 @@
     "next": "Next",
     "back": "Back",
     "loadMore": "Load More",
+    "confirmDialogLabel": "Confirmation dialog",
     "unsavedChanges": {
       "title": "Discard changes?",
       "impact": "Your edits won't be saved.",
