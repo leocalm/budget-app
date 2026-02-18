@@ -7,18 +7,18 @@ import classes from './StateRenderer.module.css';
 
 type StateRendererVariant = 'page' | 'card';
 
-interface LockAction {
+export interface LockAction {
   label: string;
   to?: string;
   onClick?: () => void;
 }
 
-interface EmptyAction {
+export interface EmptyAction {
   label: string;
   onClick: () => void;
 }
 
-interface StateRendererProps {
+export interface StateRendererProps {
   variant?: StateRendererVariant;
   isLocked?: boolean;
   lockStatusLabel?: string;

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 import { CategoryListSkeleton, StateRenderer } from '@/components/Utils';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { SpentPerCategory } from '@/types/dashboard';
@@ -8,6 +8,7 @@ import { formatCurrency } from '@/utils/currency';
 import styles from './Dashboard.module.css';
 
 interface TopCategoriesChartProps {
+  title?: string;
   isLocked?: boolean;
   isError?: boolean;
   onRetry?: () => void;
@@ -25,6 +26,7 @@ const CATEGORY_COLORS = [
 ];
 
 export function TopCategoriesChart({
+  title,
   isLocked = false,
   isError = false,
   onRetry,
@@ -62,31 +64,38 @@ export function TopCategoriesChart({
       emptyItemsLabel={t('states.contract.items.categories')}
       emptyMessage={t('states.empty.charts.message')}
     >
-      <div className={styles.categoryBarContainer}>
-        {data.map((category, index) => {
-          const percentage = (category.amountSpent / maxSpent) * 100;
-          const colors = CATEGORY_COLORS[index % CATEGORY_COLORS.length];
+      <Stack gap="xl">
+        {title ? (
+          <Text fw={600} size="lg">
+            {title}
+          </Text>
+        ) : null}
+        <div className={styles.categoryBarContainer}>
+          {data.map((category, index) => {
+            const percentage = (category.amountSpent / maxSpent) * 100;
+            const colors = CATEGORY_COLORS[index % CATEGORY_COLORS.length];
 
-          return (
-            <div key={category.categoryName} className={styles.categoryItem}>
-              <div className={styles.categoryName}>{category.categoryName}</div>
-              <div className={styles.categoryBarWrapper}>
-                <div
-                  className={styles.categoryBar}
-                  style={
-                    {
-                      width: `${percentage}%`,
-                      '--bar-color': colors.start,
-                      '--bar-color-end': colors.end,
-                    } as React.CSSProperties
-                  }
-                />
+            return (
+              <div key={category.categoryName} className={styles.categoryItem}>
+                <div className={styles.categoryName}>{category.categoryName}</div>
+                <div className={styles.categoryBarWrapper}>
+                  <div
+                    className={styles.categoryBar}
+                    style={
+                      {
+                        width: `${percentage}%`,
+                        '--bar-color': colors.start,
+                        '--bar-color-end': colors.end,
+                      } as React.CSSProperties
+                    }
+                  />
+                </div>
+                <div className={styles.categoryAmount}>{format(category.amountSpent)}</div>
               </div>
-              <div className={styles.categoryAmount}>{format(category.amountSpent)}</div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </Stack>
     </StateRenderer>
   );
 }

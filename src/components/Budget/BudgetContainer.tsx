@@ -91,7 +91,7 @@ export function BudgetContainer() {
           onRetry={() => {
             void Promise.all([refetchBudgetedCategories(), refetchUnbudgetedCategories()]);
           }}
-          isLoading={isBudgetedCategoriesLoading && isUnbudgetedCategoriesLoading}
+          isLoading={isBudgetedCategoriesLoading || isUnbudgetedCategoriesLoading}
           loadingSkeleton={
             <Grid gutter={{ base: 'md', md: 'xl' }} columns={3} w="100%">
               <Grid.Col span={{ base: 3, md: 2 }}>

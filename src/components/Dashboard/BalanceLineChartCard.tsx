@@ -66,31 +66,6 @@ export function BalanceLineChartCard({
         borderColor: 'var(--border-medium)',
       }}
     >
-      <Group justify="space-between" mb="xl">
-        <Text fw={600} size="lg">
-          {t('dashboard.charts.balanceOverTime.title')}
-        </Text>
-        {accounts && accounts.length > 0 && (
-          <Group gap="md">
-            {accounts.map((account) => (
-              <Group key={account.id} gap={8} styles={{ root: { fontSize: 12 } }}>
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    backgroundColor: account.color,
-                  }}
-                />
-                <Text size="xs" c="var(--mantine-color-dimmed)">
-                  {account.name}
-                </Text>
-              </Group>
-            ))}
-          </Group>
-        )}
-      </Group>
-
       <StateRenderer
         variant="card"
         isLocked={isLocked}
@@ -109,20 +84,46 @@ export function BalanceLineChartCard({
         emptyItemsLabel={t('states.contract.items.balanceHistory')}
         emptyMessage={t('states.empty.charts.message')}
       >
-        <AreaChart
-          h={280}
-          data={parsedData}
-          dataKey="date"
-          withLegend={false}
-          series={series}
-          gridAxis="x"
-          curveType="monotone"
-          valueFormatter={(val: number) => format(val)}
-          withDots={false}
-          strokeWidth={2}
-          fillOpacity={0.1}
-          tickLine="none"
-        />
+        <Stack gap="xl">
+          <Group justify="space-between" mb="xl">
+            <Text fw={600} size="lg">
+              {t('dashboard.charts.balanceOverTime.title')}
+            </Text>
+            {accounts && accounts.length > 0 && (
+              <Group gap="md">
+                {accounts.map((account) => (
+                  <Group key={account.id} gap={8} styles={{ root: { fontSize: 12 } }}>
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        backgroundColor: account.color,
+                      }}
+                    />
+                    <Text size="xs" c="var(--mantine-color-dimmed)">
+                      {account.name}
+                    </Text>
+                  </Group>
+                ))}
+              </Group>
+            )}
+          </Group>
+          <AreaChart
+            h={280}
+            data={parsedData}
+            dataKey="date"
+            withLegend={false}
+            series={series}
+            gridAxis="x"
+            curveType="monotone"
+            valueFormatter={(val: number) => format(val)}
+            withDots={false}
+            strokeWidth={2}
+            fillOpacity={0.1}
+            tickLine="none"
+          />
+        </Stack>
       </StateRenderer>
     </Paper>
   );

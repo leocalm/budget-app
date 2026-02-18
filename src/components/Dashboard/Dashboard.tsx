@@ -140,18 +140,13 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const isDashboardLoading =
     !isDashboardLocked &&
     !isDashboardError &&
-    !monthlyBurnIn &&
-    !monthProgress &&
-    !totalAsset &&
-    !recentTransactions &&
-    !budgetPerDay &&
-    !spentPerCategory &&
-    isMonthlyBurnInLoading &&
-    isMonthProgressLoading &&
-    isTotalAssetLoading &&
-    isRecentTransactionsLoading &&
-    isBudgetPerDayLoading &&
-    isSpentPerCategoryLoading;
+    (isMonthlyBurnInLoading ||
+      isMonthProgressLoading ||
+      isTotalAssetLoading ||
+      isRecentTransactionsLoading ||
+      isBudgetPerDayLoading ||
+      isSpentPerCategoryLoading ||
+      isAccountsLoading);
 
   return (
     <Box
@@ -253,8 +248,8 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
             {/* Charts Section */}
             <div className={styles.chartsSection}>
               <BalanceLineChartCard
-                data={budgetPerDay || []}
-                accounts={accounts || []}
+                data={budgetPerDay}
+                accounts={accounts}
                 isLoading={isBudgetPerDayLoading || isAccountsLoading}
                 isError={isBudgetPerDayError || isAccountsError}
                 onRetry={() => {
@@ -273,13 +268,8 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
                   borderColor: 'var(--border-medium)',
                 }}
               >
-                <Group justify="space-between" mb="xl">
-                  <Text fw={600} size="lg">
-                    {t('dashboard.charts.topCategories.title')}
-                  </Text>
-                </Group>
-
                 <TopCategoriesChart
+                  title={t('dashboard.charts.topCategories.title')}
                   data={topCategories}
                   isLoading={isSpentPerCategoryLoading}
                   isError={isSpentPerCategoryError}
