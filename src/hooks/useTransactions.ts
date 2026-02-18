@@ -51,6 +51,7 @@ export const useDeleteTransaction = (selectedPeriodId: string | null) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
@@ -75,6 +76,7 @@ export const useCreateTransaction = (selectedPeriodId: string | null) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
@@ -100,6 +102,7 @@ export const useCreateTransactionFromRequest = (selectedPeriodId: string | null)
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
@@ -125,6 +128,7 @@ export const useUpdateTransaction = (selectedPeriodId: string | null) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });

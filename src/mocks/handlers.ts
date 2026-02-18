@@ -28,6 +28,7 @@ const db = {
     theme: 'auto' as const,
     language: 'en' as const,
     defaultCurrencyId: 'cur-1',
+    budgetStabilityToleranceBasisPoints: 1000,
     updatedAt: new Date().toISOString(),
   },
 };
@@ -286,6 +287,21 @@ export const handlers = [
   ),
   http.get('/api/v1/dashboard/budget-per-day', () =>
     HttpResponse.json([{ accountName: 'Checking', date: '2026-01-01', balance: 5000 }])
+  ),
+  http.get('/api/v1/dashboard/budget-stability', () =>
+    HttpResponse.json({
+      withinTolerancePercentage: 78,
+      periodsWithinTolerance: 18,
+      totalClosedPeriods: 23,
+      recentClosedPeriods: [
+        { periodId: 'period-1', isOutsideTolerance: false },
+        { periodId: 'period-2', isOutsideTolerance: true },
+        { periodId: 'period-3', isOutsideTolerance: false },
+        { periodId: 'period-4', isOutsideTolerance: true },
+        { periodId: 'period-5', isOutsideTolerance: false },
+        { periodId: 'period-6', isOutsideTolerance: false },
+      ],
+    })
   ),
 
   // --- TWO-FACTOR AUTHENTICATION ---

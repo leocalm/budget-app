@@ -797,6 +797,18 @@
       },
       "noTransactions": "Nenhuma transação recente",
       "addFirst": "Adicione sua primeira transação para começar"
+    },
+    "stability": {
+      "title": "Estabilidade do Orçamento",
+      "withinRangeCount": "{{within}} de {{total}} períodos dentro da faixa",
+      "lastClosedPeriodsLabel": "Últimos 6 períodos fechados",
+      "empty": "Ainda não há períodos fechados",
+      "error": "Não foi possível carregar a estabilidade do orçamento.",
+      "retry": "Tentar novamente",
+      "dots": {
+        "outside": "Fora da tolerância",
+        "within": "Dentro da tolerância"
+      }
     }
   },
   "vendors": {

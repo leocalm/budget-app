@@ -28,3 +28,15 @@ export interface BudgetPerDay {
 export interface TotalAssets {
   totalAssets: number;
 }
+
+export interface BudgetStabilityPeriod {
+  periodId: string;
+  isOutsideTolerance: boolean;
+}
+
+export interface BudgetStability {
+  withinTolerancePercentage: number;
+  periodsWithinTolerance: number;
+  totalClosedPeriods: number;
+  recentClosedPeriods: BudgetStabilityPeriod[];
+}

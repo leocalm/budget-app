@@ -125,6 +125,25 @@
   margin-bottom: 48px;
 }
 
+.stabilityValue {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.stabilityDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--text-secondary);
+  background: transparent;
+}
+
+.stabilityDotFilled {
+  background: var(--text-secondary);
+}
+
 /* ── Chart Card Styling ── */
 .chartCard {
   position: relative;

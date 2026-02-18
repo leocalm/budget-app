@@ -80,6 +80,7 @@ export const useUpdateBudgetPeriod = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
     },
   });
 };
@@ -103,6 +104,7 @@ export const useDeleteBudgetPeriod = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
       queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
     },
   });
 };

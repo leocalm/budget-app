@@ -874,6 +874,18 @@
       },
       "noTransactions": "No recent transactions",
       "addFirst": "Add your first transaction to get started"
+    },
+    "stability": {
+      "title": "Budget Stability",
+      "withinRangeCount": "{{within}} of {{total}} periods within range",
+      "lastClosedPeriodsLabel": "Last 6 closed periods",
+      "empty": "No closed periods yet",
+      "error": "Could not load budget stability.",
+      "retry": "Retry",
+      "dots": {
+        "outside": "Outside tolerance",
+        "within": "Within tolerance"
+      }
     }
   },
   "states": {

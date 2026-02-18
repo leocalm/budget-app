@@ -12,6 +12,7 @@ export interface SettingsResponse {
   theme: Theme;
   language: Language;
   defaultCurrencyId: string | null;
+  budgetStabilityToleranceBasisPoints: number;
   updatedAt: string;
 }
 
@@ -19,4 +20,5 @@ export interface SettingsRequest {
   theme: Theme;
   language: Language;
   defaultCurrencyId?: string | null;
+  budgetStabilityToleranceBasisPoints?: number;
 }

@@ -1,5 +1,6 @@
 import {
   BudgetPerDay,
+  BudgetStability,
   MonthlyBurnIn,
   MonthProgress,
   SpentPerCategory,
@@ -44,4 +45,8 @@ export async function fetchRecentTransactions(
 
 export async function fetchTotalAssets(): Promise<TotalAssets> {
   return apiGet<TotalAssets>('/api/dashboard/total-assets');
+}
+
+export async function getBudgetStability(): Promise<BudgetStability> {
+  return apiGet<BudgetStability>('/api/dashboard/budget-stability');
 }
