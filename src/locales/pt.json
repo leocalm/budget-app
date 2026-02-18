@@ -863,6 +863,30 @@
     }
   },
   "states": {
+    "contract": {
+      "emptyTitle": "Sem {{items}} ainda.",
+      "items": {
+        "data": "itens",
+        "accounts": "contas",
+        "categories": "categorias",
+        "vendors": "fornecedores",
+        "transactions": "transações",
+        "balanceHistory": "histórico de saldos"
+      }
+    },
+    "locked": {
+      "status": {
+        "notConfigured": "Não configurado"
+      },
+      "configure": "Configurar",
+      "message": {
+        "periodRequired": "Um período de orçamento é necessário antes de exibir este conteúdo."
+      }
+    },
+    "changeSurfaced": {
+      "title": "Atualizado.",
+      "message": "Os valores atualizados refletem suas alterações recentes."
+    },
     "empty": {
       "tips": {
         "title": "Dicas Rápidas"

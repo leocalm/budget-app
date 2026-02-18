@@ -877,6 +877,30 @@
     }
   },
   "states": {
+    "contract": {
+      "emptyTitle": "No {{items}} yet.",
+      "items": {
+        "data": "items",
+        "accounts": "accounts",
+        "categories": "categories",
+        "vendors": "vendors",
+        "transactions": "transactions",
+        "balanceHistory": "balance history"
+      }
+    },
+    "locked": {
+      "status": {
+        "notConfigured": "Not configured"
+      },
+      "configure": "Configure",
+      "message": {
+        "periodRequired": "A budget period is required before this content can be shown."
+      }
+    },
+    "changeSurfaced": {
+      "title": "Updated.",
+      "message": "Updated values reflect your recent changes."
+    },
     "empty": {
       "tips": {
         "title": "Quick Tips"
@@ -1021,7 +1045,7 @@
         "reportIssue": "Report Issue",
         "retryConnection": "Retry Connection"
       },
-      "retry": "Try Again",
+      "retry": "Retry",
       "details": {
         "title": "Error Details",
         "code": "Error Code",

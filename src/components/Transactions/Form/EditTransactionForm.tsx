@@ -135,9 +135,8 @@ export const EditTransactionForm = ({
     try {
       await onSave(values);
       notifications.show({
-        title: t('common.success'),
-        message: t('transactions.editTransaction.success'),
-        color: 'green',
+        title: t('states.changeSurfaced.title'),
+        message: t('states.changeSurfaced.message'),
       });
     } catch (error) {
       notifications.show({
