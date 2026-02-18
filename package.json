@@ -58,7 +58,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@storybook/addon-themes": "10.1.11",
+    "@storybook/addon-themes": "10.2.10",
     "@storybook/addon-vitest": "10.1.11",
     "@storybook/react": "10.1.11",
     "@storybook/react-vite": "10.2.8",
