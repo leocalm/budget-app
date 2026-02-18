@@ -42,7 +42,7 @@ describe('CurrentPeriodCard', () => {
       <CurrentPeriodCard selectedPeriodId="period-1" isLoading={false} isError onRetry={onRetry} />
     );
 
-    await user.click(screen.getByRole('button', { name: 'Try Again' }));
+    await user.click(screen.getByRole('button', { name: 'Retry' }));
     expect(onRetry).toHaveBeenCalledTimes(1);
   });
 
