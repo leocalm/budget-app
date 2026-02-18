@@ -98,24 +98,33 @@ export function Navigation({ onNavigate }: NavigationProps) {
             {section.title}
           </Text>
           <Stack gap={2}>
-            {section.items.map((item) => (
-              <NavLink
-                key={item.route}
-                label={item.label}
-                leftSection={item.icon}
-                active={
-                  location.pathname === item.route ||
-                  (item.route === '/dashboard' && location.pathname === '/')
-                }
-                onClick={() => {
-                  navigate(item.route);
-                  onNavigate?.();
-                }}
-                variant="light"
-                color="cyan"
-                style={{ borderRadius: '8px' }}
-              />
-            ))}
+            {section.items.map((item) => {
+              const active =
+                location.pathname === item.route ||
+                (item.route === '/dashboard' && location.pathname === '/');
+              return (
+                <NavLink
+                  key={item.route}
+                  label={item.label}
+                  leftSection={item.icon}
+                  active={active}
+                  onClick={() => {
+                    navigate(item.route);
+                    onNavigate?.();
+                  }}
+                  variant="light"
+                  color="cyan"
+                  style={{ borderRadius: '8px' }}
+                  styles={{
+                    label: {
+                      color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                      fontSize: 14,
+                      fontWeight: 500,
+                    },
+                  }}
+                />
+              );
+            })}
           </Stack>
         </Box>
       ))}
@@ -124,32 +133,32 @@ export function Navigation({ onNavigate }: NavigationProps) {
         <Text size="xs" fw={700} c="dimmed" mb="xs" tt="uppercase" px="sm">
           {t('layout.navigation.session')}
         </Text>
-        <Stack gap={2}>
-          {sessionItems.map((item) => (
+          <Stack gap={2}>
+            {sessionItems.map((item) => (
+              <NavLink
+                key={item.route}
+                label={item.label}
+                leftSection={item.icon}
+                active={location.pathname === item.route}
+                onClick={() => {
+                  navigate(item.route);
+                  onNavigate?.();
+                }}
+                variant="light"
+                color="cyan"
+                style={{ borderRadius: '8px', fontSize: 14, fontWeight: 500 }}
+              />
+            ))}
             <NavLink
-              key={item.route}
-              label={item.label}
-              leftSection={item.icon}
-              active={location.pathname === item.route}
-              onClick={() => {
-                navigate(item.route);
-                onNavigate?.();
-              }}
-              variant="light"
-              color="cyan"
-              style={{ borderRadius: '8px' }}
+              label={t('layout.navigation.logout')}
+              leftSection={<IconLogout size={18} />}
+              onClick={handleLogout}
+              disabled={loggingOut}
+              variant="subtle"
+              color="dimmed"
+              style={{ borderRadius: '8px', fontSize: 14, fontWeight: 500 }}
             />
-          ))}
-          <NavLink
-            label={t('layout.navigation.logout')}
-            leftSection={<IconLogout size={18} />}
-            onClick={handleLogout}
-            disabled={loggingOut}
-            variant="subtle"
-            color="dimmed"
-            style={{ borderRadius: '8px' }}
-          />
-        </Stack>
+          </Stack>
       </Box>
     </Stack>
   );

@@ -3,12 +3,15 @@ import {
   IconCalendar,
   IconDots,
   IconLayoutDashboard,
+  IconWallet,
+  IconTag,
+  IconBuildingStore,
+  IconSettings,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Group, Paper, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
+import { Group, Paper, Text, ThemeIcon, UnstyledButton, Popover, Stack, NavLink, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MoreMenuDrawer } from './MoreMenuDrawer';
 
 export function BottomNavigation() {
   const { t } = useTranslation();
@@ -59,15 +62,198 @@ export function BottomNavigation() {
             item.route !== null &&
             (location.pathname === item.route ||
               (item.route === '/dashboard' && location.pathname === '/'));
+
+          if (item.route === null) {
+            return (
+              <Popover
+                key={item.label}
+                opened={opened}
+                onClose={close}
+                position="top"
+                withArrow
+                trapFocus={false}
+              >
+                <Popover.Target>
+                <UnstyledButton
+                    onClick={() => open()}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1,
+                      height: '100%',
+                    }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: isActive ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)' }}>
+                      {item.icon}
+                    </span>
+                    <Text size="xs" mt={4} c={isActive ? 'cyan' : 'dimmed'} fw={500}>
+                      {item.label}
+                    </Text>
+                  </UnstyledButton>
+                </Popover.Target>
+
+                <Popover.Dropdown p={0} style={{
+                  backgroundColor: 'var(--mantine-color-body)',
+                  border: '1px solid var(--border-medium)',
+                  borderRadius: 12,
+                  minWidth: 220,
+                }}>
+                  <Stack gap={0}>
+                    {(() => {
+                      const route = '/accounts';
+                      const active = location.pathname === route;
+                      return (
+                        <>
+                          <NavLink
+                            label={t('layout.navigation.accounts')}
+                            leftSection={
+                              <ThemeIcon
+                                variant={active ? 'light' : 'transparent'}
+                                color={active ? 'cyan' : 'gray'}
+                                size="lg"
+                                radius="md"
+                              >
+                                <IconWallet size={22} />
+                              </ThemeIcon>
+                            }
+                            onClick={() => {
+                              navigate(route);
+                              close();
+                            }}
+                            variant="light"
+                            styles={{
+                              label: {
+                                color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                                fontSize: 14,
+                                fontWeight: 500,
+                              },
+                            }}
+                            style={{ padding: '8px 12px' }}
+                          />
+                          <Divider />
+                        </>
+                      );
+                    })()}
+
+                    {(() => {
+                      const route = '/categories';
+                      const active = location.pathname === route;
+                      return (
+                        <>
+                          <NavLink
+                            label={t('layout.navigation.categories')}
+                            leftSection={
+                              <ThemeIcon
+                                variant={active ? 'light' : 'transparent'}
+                                color={active ? 'cyan' : 'gray'}
+                                size="lg"
+                                radius="md"
+                              >
+                                <IconTag size={22} />
+                              </ThemeIcon>
+                            }
+                            onClick={() => {
+                              navigate(route);
+                              close();
+                            }}
+                            variant="light"
+                            styles={{
+                              label: {
+                                color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                                fontSize: 14,
+                                fontWeight: 500,
+                              },
+                            }}
+                            style={{ padding: '8px 12px' }}
+                          />
+                          <Divider />
+                        </>
+                      );
+                    })()}
+
+                    {(() => {
+                      const route = '/vendors';
+                      const active = location.pathname === route;
+                      return (
+                        <>
+                          <NavLink
+                            label={t('layout.navigation.vendors')}
+                            leftSection={
+                              <ThemeIcon
+                                variant={active ? 'light' : 'transparent'}
+                                color={active ? 'cyan' : 'gray'}
+                                size="lg"
+                                radius="md"
+                              >
+                                <IconBuildingStore size={22} />
+                              </ThemeIcon>
+                            }
+                            onClick={() => {
+                              navigate(route);
+                              close();
+                            }}
+                            variant="light"
+                            styles={{
+                              label: {
+                                color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                                fontSize: 14,
+                                fontWeight: 500,
+                              },
+                            }}
+                            style={{ padding: '8px 12px' }}
+                          />
+                          <Divider />
+                        </>
+                      );
+                    })()}
+
+                    {(() => {
+                      const route = '/settings';
+                      const active = location.pathname === route;
+                      return (
+                        <>
+                          <NavLink
+                            label={t('layout.navigation.settings')}
+                            leftSection={
+                              <ThemeIcon
+                                variant={active ? 'light' : 'transparent'}
+                                color={active ? 'cyan' : 'gray'}
+                                size="lg"
+                                radius="md"
+                              >
+                                <IconSettings size={22} />
+                              </ThemeIcon>
+                            }
+                            onClick={() => {
+                              navigate(route);
+                              close();
+                            }}
+                            variant="light"
+                            styles={{
+                              label: {
+                                color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                                fontSize: 14,
+                                fontWeight: 500,
+                              },
+                            }}
+                            style={{ padding: '8px 12px' }}
+                          />
+                        </>
+                      );
+                    })()}
+                  </Stack>
+                </Popover.Dropdown>
+              </Popover>
+            );
+          }
+
           return (
             <UnstyledButton
               key={item.label}
               onClick={() => {
-                if (item.route === null) {
-                  open();
-                } else {
-                  navigate(item.route);
-                }
+                navigate(item.route as string);
               }}
               style={{
                 display: 'flex',
@@ -93,8 +279,6 @@ export function BottomNavigation() {
           );
         })}
       </Group>
-
-      <MoreMenuDrawer opened={opened} onClose={close} />
     </Paper>
   );
 }
