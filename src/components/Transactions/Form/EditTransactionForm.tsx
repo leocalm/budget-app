@@ -12,8 +12,8 @@ import {
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { toast } from '@/lib/toast';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse, CategoryType } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
@@ -134,15 +134,15 @@ export const EditTransactionForm = ({
   const handleSubmit = form.onSubmit(async (values) => {
     try {
       await onSave(values);
-      notifications.show({
-        title: t('states.changeSurfaced.title'),
-        message: t('states.changeSurfaced.message'),
+      toast.success({
+        title: t('common.success'),
+        message: t('transactions.editTransaction.success'),
       });
     } catch (error) {
-      notifications.show({
+      toast.error({
         title: t('common.error'),
         message: t('transactions.editTransaction.error.update'),
-        color: 'red',
+        nonCritical: true,
       });
     }
   });

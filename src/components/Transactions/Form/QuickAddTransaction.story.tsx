@@ -5,7 +5,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import { ToastViewport } from '@/components/Notifications/ToastViewport';
 import { BudgetProvider } from '@/context/BudgetContext';
 import { queryKeys } from '@/hooks/queryKeys';
 import { BudgetPeriod } from '@/types/budget';
@@ -55,7 +55,7 @@ const meta: Meta<typeof QuickAddTransaction> = {
             },
           }}
         >
-          <Notifications />
+          <ToastViewport />
           <BudgetProvider>
             <div style={{ padding: '2rem', background: '#0a0e14', minHeight: '100vh' }}>
               <Story />

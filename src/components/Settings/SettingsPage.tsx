@@ -21,12 +21,12 @@ import {
   Title,
   useMantineColorScheme,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { disableTwoFactor, getTwoFactorStatus } from '@/api/twoFactor';
 import { useAuth } from '@/context/AuthContext';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useSettings, useUpdateSettings } from '@/hooks/useSettings';
 import { useUpdateUser } from '@/hooks/useUser';
+import { toast } from '@/lib/toast';
 import { Language, LANGUAGE_DISPLAY_NAMES, SettingsRequest, Theme } from '@/types/settings';
 import { TwoFactorSetup } from './TwoFactorSetup';
 
@@ -70,17 +70,16 @@ export function SettingsPage() {
       setDisableModalOpened(false);
       setDisablePassword('');
       setDisableCode('');
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message: 'Two-factor authentication disabled successfully',
-        color: 'green',
       });
     },
     onError: (error: Error) => {
-      notifications.show({
+      toast.error({
         title: t('common.error'),
         message: error.message || 'Failed to disable two-factor authentication',
-        color: 'red',
+        nonCritical: true,
       });
     },
   });
@@ -132,16 +131,15 @@ export function SettingsPage() {
         data: { name: profileName, email: profileEmail },
       });
       await refreshUser();
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message: t('settings.notifications.profile.success'),
-        color: 'green',
       });
     } catch {
-      notifications.show({
+      toast.error({
         title: t('common.error'),
         message: t('settings.notifications.profile.error'),
-        color: 'red',
+        nonCritical: true,
       });
     }
   };
@@ -154,16 +152,15 @@ export function SettingsPage() {
     };
     try {
       await updateSettingsMutation.mutateAsync(settingsData);
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message: t('settings.notifications.preferences.success'),
-        color: 'green',
       });
     } catch {
-      notifications.show({
+      toast.error({
         title: t('common.error'),
         message: t('settings.notifications.preferences.error'),
-        color: 'red',
+        nonCritical: true,
       });
     }
   };

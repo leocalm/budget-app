@@ -25,9 +25,9 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { useCreateOverlay, useUpdateOverlay } from '@/hooks/useOverlays';
+import { toast } from '@/lib/toast';
 import { AccountResponse } from '@/types/account';
 import { CategoryWithStats } from '@/types/category';
 import { Overlay, OverlayInclusionMode, OverlayRequest } from '@/types/overlay';
@@ -319,8 +319,7 @@ export function OverlayFormModal({
         await createMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: overlay
           ? t('overlays.modal.success.updated')
@@ -329,10 +328,10 @@ export function OverlayFormModal({
 
       onClose();
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('overlays.modal.errors.saveFailed'),
+        nonCritical: true,
       });
     }
   };

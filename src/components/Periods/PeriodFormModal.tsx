@@ -16,8 +16,8 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useCreateBudgetPeriod, useUpdateBudgetPeriod } from '@/hooks/useBudget';
+import { toast } from '@/lib/toast';
 import { BudgetPeriod, PeriodDurationUnit } from '@/types/budget';
 import classes from './PeriodFormModal.module.css';
 
@@ -199,8 +199,7 @@ export function PeriodFormModal({
         await createMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: isEditMode
           ? t('periods.modal.success.updated')
@@ -210,10 +209,10 @@ export function PeriodFormModal({
       onClose();
     } catch (error) {
       const message = error instanceof Error ? error.message : t('periods.modal.errors.saveFailed');
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message,
+        nonCritical: true,
       });
     }
   };

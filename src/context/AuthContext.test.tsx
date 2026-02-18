@@ -7,9 +7,9 @@ import { AuthProvider, useAuth } from './AuthContext';
 const mockShow = vi.hoisted(() => vi.fn());
 const mockFetchCurrentUser = vi.hoisted(() => vi.fn());
 
-vi.mock('@mantine/notifications', () => ({
-  notifications: {
-    show: mockShow,
+vi.mock('@/lib/toast', () => ({
+  toast: {
+    error: mockShow,
   },
 }));
 
