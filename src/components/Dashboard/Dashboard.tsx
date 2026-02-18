@@ -7,6 +7,7 @@ import { ApiError } from '@/api/errors';
 import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 import { ActiveOverlayBanner } from '@/components/Dashboard/ActiveOverlayBanner';
 import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCard';
+import { CurrentPeriodCard } from '@/components/Dashboard/CurrentPeriodCard';
 import { RecentTransactionsCard } from '@/components/Dashboard/RecentTransactionsCard';
 import { StatCard } from '@/components/Dashboard/StatCard';
 import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
@@ -34,7 +35,6 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const { t, i18n } = useTranslation();
   const globalCurrency = useDisplayCurrency();
 
-  const isPeriodMissing = selectedPeriodId === null;
   const {
     data: currentPeriod,
     error: currentPeriodError,
@@ -47,23 +47,23 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
 
   const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
     useSpentPerCategory(selectedPeriodId);
-  const { data: monthlyBurnIn, isLoading: isMonthlyBurnInLoading } =
-    useMonthlyBurnIn(selectedPeriodId);
-  const { data: monthProgress, isLoading: isMonthProgressLoading } =
-    useMonthProgress(selectedPeriodId);
+  const {
+    data: monthlyBurnIn,
+    isLoading: isMonthlyBurnInLoading,
+    error: monthlyBurnInError,
+    refetch: refetchMonthlyBurnIn,
+  } = useMonthlyBurnIn(selectedPeriodId);
+  const {
+    data: monthProgress,
+    isLoading: isMonthProgressLoading,
+    error: monthProgressError,
+    refetch: refetchMonthProgress,
+  } = useMonthProgress(selectedPeriodId);
   const { data: budgetPerDay, isLoading: isBudgetPerDayLoading } =
     useBudgetPerDay(selectedPeriodId);
   const { data: recentTransactions } = useRecentTransactions(selectedPeriodId);
   const { data: totalAsset, isLoading: isTotalAssetLoading } = useTotalAssets();
   const { data: accounts } = useAccounts(selectedPeriodId);
-
-  // Calculate derived values from dashboard data
-  const remainingBudget = useMemo(() => {
-    if (!monthlyBurnIn) {
-      return 0;
-    }
-    return monthlyBurnIn.totalBudget - monthlyBurnIn.spentBudget;
-  }, [monthlyBurnIn]);
 
   const avgDailySpend = useMemo(() => {
     if (!monthlyBurnIn || monthlyBurnIn.currentDay === 0) {
@@ -75,7 +75,15 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   const totalAssets = totalAsset?.totalAssets || 0;
   const daysPassedPercentage = monthProgress?.daysPassedPercentage || 0;
   const daysUntilReset = monthProgress?.remainingDays || 0;
-  const budgetLimit = monthlyBurnIn?.totalBudget || 0;
+  const hasCurrentPeriodError = Boolean(monthlyBurnInError || monthProgressError);
+  const isCurrentPeriodLoading =
+    selectedPeriodId !== null &&
+    !hasCurrentPeriodError &&
+    (isMonthlyBurnInLoading || isMonthProgressLoading || !monthlyBurnIn || !monthProgress);
+
+  const retryCurrentPeriod = () => {
+    void Promise.all([refetchMonthlyBurnIn(), refetchMonthProgress()]);
+  };
 
   // Format currency using global settings
   const format = (cents: number): string => formatCurrency(cents, globalCurrency, i18n.language);
@@ -87,27 +95,6 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     }
     return spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
   }, [spentPerCategory]);
-
-  if (isPeriodMissing) {
-    return (
-      <Box className={styles.noPeriodContainer}>
-        <Alert
-          color="orange"
-          variant="light"
-          icon={<IconAlertTriangle size={18} />}
-          title={t('dashboard.noPeriod.title')}
-          className={styles.noPeriodAlert}
-        >
-          <Stack gap="md" mt="xs">
-            <Text size="sm">{t('dashboard.noPeriod.message')}</Text>
-            <Button component={Link} to="/periods" color="orange" variant="filled" size="sm">
-              {t('dashboard.noPeriod.cta')}
-            </Button>
-          </Stack>
-        </Alert>
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -144,19 +131,17 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
 
         <ActiveOverlayBanner />
 
+        <CurrentPeriodCard
+          selectedPeriodId={selectedPeriodId}
+          monthlyBurnIn={monthlyBurnIn}
+          monthProgress={monthProgress}
+          isLoading={isCurrentPeriodLoading}
+          isError={hasCurrentPeriodError}
+          onRetry={retryCurrentPeriod}
+        />
+
         {/* Stats Grid */}
         <div className={styles.statsGrid}>
-          {/* Remaining Budget - Featured Card */}
-          <StatCard
-            icon={() => <span style={{ fontSize: 18 }}>💰</span>}
-            label={t('dashboard.stats.remainingBudget.label')}
-            value={format(remainingBudget)}
-            meta={t('dashboard.stats.remainingBudget.meta', { limit: format(budgetLimit) })}
-            trend={{ direction: 'down', value: '12%', positive: false }}
-            featured
-            loading={isMonthlyBurnInLoading}
-          />
-
           {/* Total Assets */}
           <StatCard
             icon={() => <span style={{ fontSize: 18 }}>💳</span>}

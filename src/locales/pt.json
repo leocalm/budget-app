@@ -738,6 +738,22 @@
   },
   "dashboard": {
     "title": "Painel Financeiro",
+    "currentPeriod": {
+      "title": "Periodo Atual",
+      "hero": {
+        "remaining": "{{amount}} restante",
+        "meta": "{{percent}}% usado • {{days}} dias restantes"
+      },
+      "metrics": {
+        "totalBudget": "Orcamento total",
+        "actualSpend": "Total gasto"
+      },
+      "projection": "Gasto projetado no ritmo atual: {{amount}}",
+      "states": {
+        "empty": "Nenhum periodo selecionado.",
+        "error": "Nao foi possivel carregar os valores do periodo atual."
+      }
+    },
     "noPeriod": {
       "title": "Você está em uma lacuna de período",
       "message": "Suas transações não estão associadas a nenhum período de orçamento. Crie ou ajuste períodos para restaurar relatórios corretos.",

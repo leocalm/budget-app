@@ -1,0 +1,85 @@
+.card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card) 90%),
+    color-mix(in srgb, var(--accent-purple) 8%, var(--bg-card) 92%)
+  );
+  box-shadow: 0 10px 30px rgb(20, 22, 26, 0.08);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.heroValue {
+  font-size: clamp(28px, 2.3vw, 32px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.heroMeta {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.metricLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.metricValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--border-soft) 82%, var(--bg-card) 18%);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+  transition: width 0.2s ease;
+}
+
+.projection {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.stateText {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 900px) {
+  .metricsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}

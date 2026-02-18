@@ -815,6 +815,22 @@
   },
   "dashboard": {
     "title": "Financial Dashboard",
+    "currentPeriod": {
+      "title": "Current Period",
+      "hero": {
+        "remaining": "{{amount}} remaining",
+        "meta": "{{percent}}% used • {{days}} days remaining"
+      },
+      "metrics": {
+        "totalBudget": "Total budget",
+        "actualSpend": "Total actual spend"
+      },
+      "projection": "Projected spend at current pace: {{amount}}",
+      "states": {
+        "empty": "No period selected.",
+        "error": "Unable to load current period values."
+      }
+    },
     "noPeriod": {
       "title": "You are in a period gap",
       "message": "Your transactions are not currently associated with a budget period. Create or manage periods to restore accurate reporting.",
