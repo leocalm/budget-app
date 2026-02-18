@@ -143,3 +143,6 @@ test-results/
 blob-report/
 
 .python-version
+
+screenshots/
+.opencode/
