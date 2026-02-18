@@ -9,7 +9,14 @@
     "next": "Next",
     "back": "Back",
     "loadMore": "Load More",
-    "retry": "Retry"
+    "confirmDialogLabel": "Confirmation dialog",
+    "retry": "Retry",
+    "unsavedChanges": {
+      "title": "Discard changes?",
+      "impact": "Your edits won't be saved.",
+      "keepEditing": "Keep editing",
+      "discard": "Discard"
+    }
   },
   "currencies": {
     "EUR": "Euro",
@@ -502,6 +509,7 @@
     "deleteFailed": "Failed to delete overlay",
     "detailComingSoon": "Overlay detail view is coming soon.",
     "confirmDelete": "Delete {{name}}? This action cannot be undone.",
+    "confirmDeleteImpact": "This will permanently delete {{name}}. Historical transactions remain unchanged.",
     "status": {
       "active": "Active",
       "upcoming": "Upcoming",
@@ -785,7 +793,7 @@
     },
     "delete": {
       "confirmTitle": "Delete Vendor",
-      "confirmMessage": "Are you sure you want to delete this vendor?",
+      "confirmMessage": "This will permanently delete this vendor. Historical transactions keep the current vendor name.",
       "confirmButton": "Delete",
       "cancelButton": "Cancel"
     },

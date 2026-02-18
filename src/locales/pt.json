@@ -9,7 +9,14 @@
     "next": "Próximo",
     "back": "Voltar",
     "loadMore": "Carregar mais",
-    "retry": "Tentar novamente"
+    "confirmDialogLabel": "Diálogo de confirmação",
+    "retry": "Tentar novamente",
+    "unsavedChanges": {
+      "title": "Descartar alterações?",
+      "impact": "Suas edições não serão salvas.",
+      "keepEditing": "Continuar editando",
+      "discard": "Descartar"
+    }
   },
   "currencies": {
     "EUR": "Euro",
@@ -622,6 +629,7 @@
     "deleteFailed": "Falha ao remover overlay",
     "detailComingSoon": "A tela de detalhes do overlay estará disponível em breve.",
     "confirmDelete": "Excluir {{name}}? Esta ação não pode ser desfeita.",
+    "confirmDeleteImpact": "Isso removerá {{name}} permanentemente. Transações históricas permanecem inalteradas.",
     "status": {
       "active": "Ativo",
       "upcoming": "Próximo",
@@ -822,7 +830,7 @@
     },
     "delete": {
       "confirmTitle": "Excluir Fornecedor",
-      "confirmMessage": "Tem certeza que deseja excluir este fornecedor?",
+      "confirmMessage": "Isso removerá este fornecedor permanentemente. Transações históricas mantêm o nome atual do fornecedor.",
       "confirmButton": "Excluir",
       "cancelButton": "Cancelar"
     },

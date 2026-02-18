@@ -2,18 +2,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { IconChevronDown, IconChevronUp, IconPlus, IconTargetArrow } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Badge,
-  Button,
-  Group,
-  Loader,
-  Modal,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { ActionIcon, Badge, Button, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
@@ -21,6 +10,7 @@ import { useDeleteOverlay, useOverlays } from '@/hooks/useOverlays';
 import { useVendors } from '@/hooks/useVendors';
 import { toast } from '@/lib/toast';
 import { Overlay } from '@/types/overlay';
+import { ConfirmDialog } from './ConfirmDialog';
 import { OverlayCard } from './OverlayCard';
 import { OverlayFormModal } from './OverlayFormModal';
 import classes from './OverlaysPage.module.css';
@@ -262,29 +252,18 @@ export function OverlaysPage() {
         accounts={accounts}
       />
 
-      <Modal
+      <ConfirmDialog
         opened={Boolean(overlayPendingDelete)}
         onClose={() => setOverlayPendingDelete(null)}
         title={t('overlays.actions.delete')}
-        centered
-      >
-        <Stack gap="md">
-          <Text>
-            {t('overlays.confirmDelete', {
-              name: overlayPendingDelete?.name ?? '',
-            })}
-          </Text>
-
-          <Group justify="flex-end">
-            <Button variant="subtle" onClick={() => setOverlayPendingDelete(null)}>
-              {t('common.cancel')}
-            </Button>
-            <Button color="red" onClick={confirmDelete} loading={deleteOverlayMutation.isPending}>
-              {t('overlays.actions.delete')}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        impact={t('overlays.confirmDeleteImpact', {
+          name: overlayPendingDelete?.name ?? '',
+        })}
+        safeActionLabel={t('common.cancel')}
+        actionLabel={t('overlays.actions.delete')}
+        onAction={confirmDelete}
+        actionLoading={deleteOverlayMutation.isPending}
+      />
     </Stack>
   );
 }
