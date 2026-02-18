@@ -20,9 +20,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         <Navigation onNavigate={onNavigate} />
       </AppShell.Section>
 
-      <AppShell.Section pt="md" style={{ borderTop: '1px solid var(--border-medium)' }}>
-        <UserMenu />
-      </AppShell.Section>
+      {/* Desktop sidebar should not show the UserMenu (session area) */}
     </AppShell.Navbar>
   );
 }
