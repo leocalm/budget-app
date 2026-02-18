@@ -94,7 +94,7 @@ export function AccountCard({
     return 'var(--text-primary)';
   };
 
-  const balanceChangeColor = 'gray';
+  const balanceChangeColor = balanceChange === 0 ? 'gray' : isPositive ? 'green' : 'red';
 
   // Need raw cents for CurrencyValue
   const balanceChangeCents = Math.abs(

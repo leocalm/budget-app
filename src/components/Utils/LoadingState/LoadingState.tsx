@@ -74,7 +74,7 @@ export function LoadingState({
         <PulseLoader
           state="loading"
           size={pulseSizes[size]}
-          color="var(--mantine-color-cyan-5)"
+          color="var(--accent-primary)"
           speed={1.3}
         />
         {text && <Text className={classes.loadingText}>{text}</Text>}
@@ -143,7 +143,7 @@ export function LoadingState({
         <PulseLoader
           state="loading"
           size={84}
-          color="var(--mantine-color-cyan-5)"
+          color="var(--accent-primary)"
           speed={1.2}
           className={classes.inlinePulse}
         />
@@ -163,7 +163,7 @@ export function LoadingState({
               <PulseLoader
                 state="loading"
                 size={500}
-                color="var(--mantine-color-cyan-5)"
+                color="var(--accent-primary)"
                 speed={1.2}
                 className={classes.overlayPulse}
               />

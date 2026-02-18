@@ -89,11 +89,11 @@ export function Navigation({ onNavigate }: NavigationProps) {
                     onNavigate?.();
                   }}
                   variant="light"
-                  color="cyan"
+                  color="piggyPrimary"
                   style={{ borderRadius: '8px' }}
                   styles={{
                     label: {
-                      color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
+                      color: active ? 'var(--accent-primary)' : 'var(--mantine-color-dimmed)',
                       fontSize: 14,
                       fontWeight: 500,
                     },

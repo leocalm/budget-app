@@ -23,16 +23,16 @@ interface CreateAccountFormProps {
 }
 
 const ACCOUNT_COLOR_SWATCHES = [
-  'var(--accent-primary)',
-  'var(--accent-secondary)',
-  'var(--text-primary)',
-  'var(--text-secondary)',
-  'var(--text-muted)',
-  'var(--accent-primary)',
-  'var(--accent-secondary)',
-  'var(--text-primary)',
-  'var(--text-secondary)',
-  'var(--text-muted)',
+  '#5E63E6',
+  '#8C6CFB',
+  '#00D4FF',
+  '#00FFA3',
+  '#FFA940',
+  '#FF6B9D',
+  '#B47AFF',
+  '#4A4FC2',
+  '#7358D4',
+  '#CC8733',
 ];
 
 export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) {

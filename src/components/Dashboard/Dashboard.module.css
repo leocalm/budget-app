@@ -81,7 +81,7 @@
 .statCard.featured .statValue {
   font-size: var(--type-reflective-hero-size);
   font-weight: var(--type-reflective-hero-weight);
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

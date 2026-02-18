@@ -3,6 +3,6 @@ import { PulseLoader } from '../PulseLoader';
 
 export const PageLoader = () => (
   <Center h="50vh">
-    <PulseLoader state="loading" size={176} color="var(--mantine-color-cyan-5)" />
+    <PulseLoader state="loading" size={176} color="var(--accent-primary)" />
   </Center>
 );

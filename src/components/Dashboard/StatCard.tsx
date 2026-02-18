@@ -28,6 +28,12 @@ export function StatCard({
 }: StatCardProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const trendColor =
+    trend?.direction === 'up' ? 'var(--mantine-color-green-6)' : 'var(--mantine-color-red-6)';
+  const trendBg =
+    trend?.direction === 'up'
+      ? 'var(--mantine-color-green-light)'
+      : 'var(--mantine-color-red-light)';
 
   if (loading) {
     return (
@@ -158,7 +164,7 @@ export function StatCard({
                 <span
                   style={{
                     fontSize: 14,
-                    color: 'var(--accent-primary)',
+                    color: trendColor,
                   }}
                 >
                   ↗️
@@ -167,7 +173,7 @@ export function StatCard({
                 <span
                   style={{
                     fontSize: 14,
-                    color: 'var(--accent-primary)',
+                    color: trendColor,
                   }}
                 >
                   ↘️
@@ -176,9 +182,9 @@ export function StatCard({
               <Text
                 size="xs"
                 fw={600}
-                c="var(--accent-primary)"
+                c={trendColor}
                 style={{
-                  backgroundColor: 'var(--color-accent-primary-soft)',
+                  backgroundColor: trendBg,
                   padding: '2px 6px',
                   borderRadius: 4,
                 }}

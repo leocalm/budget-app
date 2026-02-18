@@ -1,6 +1,6 @@
 /* ── Add Button gradient ── */
 .addButton {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: none;
   box-shadow: 0 4px 16px rgb(0 212 255 / 30%);
 }

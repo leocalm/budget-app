@@ -14,11 +14,11 @@ interface TopCategoriesChartProps {
 
 // Array of colors for category bars
 const CATEGORY_COLORS = [
-  { start: 'var(--accent-primary)', end: 'var(--accent-secondary)' },
-  { start: 'var(--accent-secondary)', end: 'var(--accent-primary)' },
-  { start: 'var(--accent-primary)', end: 'var(--accent-primary)' },
-  { start: 'var(--accent-secondary)', end: 'var(--accent-secondary)' },
-  { start: 'var(--accent-primary)', end: 'var(--accent-secondary)' },
+  { start: '#ff6b9d', end: '#ff8fb3' },
+  { start: '#ffa940', end: '#ffbd6b' },
+  { start: '#b47aff', end: '#d4a5ff' },
+  { start: '#00ffa3', end: '#5eff74' },
+  { start: '#00d4ff', end: '#5ae1ff' },
 ];
 
 export function TopCategoriesChart({ data, isLoading }: TopCategoriesChartProps) {

@@ -35,8 +35,8 @@ export const TransactionRow = ({
   const amountColor = isTransfer
     ? 'var(--accent-primary)'
     : isOutgoing
-      ? 'var(--text-primary)'
-      : 'var(--text-secondary)';
+      ? 'var(--mantine-color-red-6)'
+      : 'var(--mantine-color-green-6)';
 
   const prefix = isOutgoing ? '-' : isTransfer ? '' : '+';
   const formattedValue = formatCurrencyValue(t.amount, globalCurrency.decimalPlaces, i18n.language);

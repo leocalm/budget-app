@@ -112,14 +112,17 @@ export function BottomNavigation() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isActive
-                          ? 'var(--mantine-color-cyan-6)'
-                          : 'var(--mantine-color-dimmed)',
+                        color: isActive ? 'var(--accent-primary)' : 'var(--mantine-color-dimmed)',
                       }}
                     >
                       {item.icon}
                     </span>
-                    <Text size="xs" mt={4} c={isActive ? 'cyan' : 'dimmed'} fw={500}>
+                    <Text
+                      size="xs"
+                      mt={4}
+                      c={isActive ? 'var(--accent-primary)' : 'dimmed'}
+                      fw={500}
+                    >
                       {item.label}
                     </Text>
                   </UnstyledButton>
@@ -147,7 +150,7 @@ export function BottomNavigation() {
                             leftSection={
                               <ThemeIcon
                                 variant={active ? 'light' : 'transparent'}
-                                color={active ? 'cyan' : 'gray'}
+                                color={active ? 'piggyPrimary' : 'gray'}
                                 size="lg"
                                 radius="md"
                               >
@@ -162,7 +165,7 @@ export function BottomNavigation() {
                             styles={{
                               label: {
                                 color: active
-                                  ? 'var(--mantine-color-cyan-6)'
+                                  ? 'var(--accent-primary)'
                                   : 'var(--mantine-color-dimmed)',
                                 fontSize: 14,
                                 fontWeight: 500,
@@ -198,13 +201,13 @@ export function BottomNavigation() {
             >
               <ThemeIcon
                 variant={isActive ? 'light' : 'transparent'}
-                color={isActive ? 'cyan' : 'gray'}
+                color={isActive ? 'piggyPrimary' : 'gray'}
                 size="lg"
                 radius="md"
               >
                 {item.icon}
               </ThemeIcon>
-              <Text size="xs" mt={4} c={isActive ? 'cyan' : 'dimmed'} fw={500}>
+              <Text size="xs" mt={4} c={isActive ? 'var(--accent-primary)' : 'dimmed'} fw={500}>
                 {item.label}
               </Text>
             </UnstyledButton>

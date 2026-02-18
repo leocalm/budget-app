@@ -71,19 +71,19 @@ export function TransactionStats({ income, expenses, balance }: TransactionStats
       <StatCard
         label={t('transactions.stats.totalIncome')}
         value={income}
-        color="var(--text-primary)"
+        color="var(--mantine-color-green-6)"
         type="income"
       />
       <StatCard
         label={t('transactions.stats.totalExpenses')}
         value={expenses}
-        color="var(--text-secondary)"
+        color="var(--mantine-color-red-6)"
         type="expenses"
       />
       <StatCard
         label={t('transactions.stats.netChange')}
         value={balance}
-        color="var(--accent-primary)"
+        color={balance < 0 ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-green-6)'}
         type="net"
       />
     </SimpleGrid>
