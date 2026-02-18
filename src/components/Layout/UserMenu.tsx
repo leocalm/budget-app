@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
+import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
@@ -77,9 +77,7 @@ export function UserMenu({ variant = 'sidebar' }: UserMenuProps) {
 
       <Menu.Dropdown>
         <Menu.Label>{t('layout.userMenu.application')}</Menu.Label>
-        <Menu.Item leftSection={<IconUser size={14} />} onClick={() => navigate('/settings')}>
-          {t('layout.userMenu.profile')}
-        </Menu.Item>
+        {/* Profile link removed from user menu per request */}
         <Menu.Item leftSection={<IconSettings size={14} />} onClick={() => navigate('/settings')}>
           {t('layout.userMenu.settings')}
         </Menu.Item>
