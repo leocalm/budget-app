@@ -1,3 +1,12 @@
+import React from 'react';
+import {
+  IconArrowsExchange,
+  IconBuildingStore,
+  IconCalendar,
+  IconLayoutDashboard,
+  IconTag,
+  IconWallet,
+} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, NavLink, Stack, Text } from '@mantine/core';
@@ -10,65 +19,48 @@ export function Navigation({ onNavigate }: NavigationProps) {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  // No session items in desktop sidebar per design
 
   const navigationSections = [
     {
-      title: t('layout.navigation.overview'),
+      key: 'core',
+      title: t('layout.navigation.core'),
       items: [
         {
-          icon: () => <span>📊</span>,
+          icon: <IconLayoutDashboard size={18} />,
           label: t('layout.navigation.dashboard'),
           route: '/dashboard',
         },
         {
-          icon: () => <span>💶</span>,
+          icon: <IconArrowsExchange size={18} />,
           label: t('layout.navigation.transactions'),
           route: '/transactions',
+        },
+        {
+          icon: <IconCalendar size={18} />,
+          label: t('layout.navigation.periods'),
+          route: '/periods',
         },
       ],
     },
     {
-      title: t('layout.navigation.management'),
+      key: 'structure',
+      title: t('layout.navigation.structure'),
       items: [
         {
-          icon: () => <span>👛</span>,
+          icon: <IconWallet size={18} />,
           label: t('layout.navigation.accounts'),
           route: '/accounts',
         },
         {
-          icon: () => <span>🏷️</span>,
+          icon: <IconTag size={18} />,
           label: t('layout.navigation.categories'),
           route: '/categories',
         },
         {
-          icon: () => <span>🏪</span>,
+          icon: <IconBuildingStore size={18} />,
           label: t('layout.navigation.vendors'),
           route: '/vendors',
-        },
-        {
-          icon: () => <span>📊</span>,
-          label: t('layout.navigation.budgetPlan'),
-          route: '/budget',
-        },
-        {
-          icon: () => <span>🗓️</span>,
-          label: t('layout.navigation.periods'),
-          route: '/periods',
-        },
-        {
-          icon: () => <span>🎯</span>,
-          label: t('layout.navigation.overlays'),
-          route: '/overlays',
-        },
-      ],
-    },
-    {
-      title: t('layout.navigation.other'),
-      items: [
-        {
-          icon: () => <span>⚙️</span>,
-          label: t('layout.navigation.settings'),
-          route: '/settings',
         },
       ],
     },
@@ -77,32 +69,43 @@ export function Navigation({ onNavigate }: NavigationProps) {
   return (
     <Stack gap="md">
       {navigationSections.map((section) => (
-        <Box key={section.title}>
+        <Box key={section.key}>
           <Text size="xs" fw={700} c="dimmed" mb="xs" tt="uppercase" px="sm">
             {section.title}
           </Text>
           <Stack gap={2}>
-            {section.items.map((item) => (
-              <NavLink
-                key={item.route}
-                label={item.label}
-                leftSection={<item.icon />}
-                active={
-                  location.pathname === item.route ||
-                  (item.route === '/dashboard' && location.pathname === '/')
-                }
-                onClick={() => {
-                  navigate(item.route);
-                  onNavigate?.();
-                }}
-                variant="light"
-                color="cyan"
-                style={{ borderRadius: '8px' }}
-              />
-            ))}
+            {section.items.map((item) => {
+              const active =
+                location.pathname === item.route ||
+                (item.route === '/dashboard' && location.pathname === '/');
+              return (
+                <NavLink
+                  key={item.route}
+                  label={item.label}
+                  leftSection={item.icon}
+                  active={active}
+                  onClick={() => {
+                    navigate(item.route);
+                    onNavigate?.();
+                  }}
+                  variant="light"
+                  color="piggyPrimary"
+                  style={{ borderRadius: '8px' }}
+                  styles={{
+                    label: {
+                      color: active ? 'var(--accent-primary)' : 'var(--mantine-color-dimmed)',
+                      fontSize: 14,
+                      fontWeight: 500,
+                    },
+                  }}
+                />
+              );
+            })}
           </Stack>
         </Box>
       ))}
+
+      {/* Session section intentionally omitted for desktop sidebar */}
     </Stack>
   );
 }

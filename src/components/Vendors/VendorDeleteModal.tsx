@@ -61,10 +61,10 @@ export function VendorDeleteModal({
           <Text>{t('vendors.delete.confirmMessage')}</Text>
 
           <Group justify="flex-end" mt="md">
-            <Button variant="subtle" onClick={onClose} disabled={isDeleting}>
+            <Button variant="filled" onClick={onClose} disabled={isDeleting}>
               {t('vendors.delete.cancelButton')}
             </Button>
-            <Button color="red" onClick={onConfirm} loading={isDeleting}>
+            <Button color="red" variant="subtle" onClick={onConfirm} loading={isDeleting}>
               {t('vendors.delete.confirmButton')}
             </Button>
           </Group>
@@ -81,6 +81,8 @@ export function VendorDeleteModal({
         position="bottom"
         title={t('vendors.deleteVendor')}
         size="auto"
+        closeOnEscape={false}
+        closeOnClickOutside={false}
       >
         {content}
       </Drawer>
@@ -88,7 +90,14 @@ export function VendorDeleteModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t('vendors.deleteVendor')} centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={t('vendors.deleteVendor')}
+      centered
+      closeOnEscape={false}
+      closeOnClickOutside={false}
+    >
       {content}
     </Modal>
   );

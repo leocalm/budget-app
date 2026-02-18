@@ -21,6 +21,19 @@ interface EditAccountFormProps {
   onUpdated?: () => void;
 }
 
+const ACCOUNT_COLOR_SWATCHES = [
+  '#5E63E6',
+  '#8C6CFB',
+  '#00D4FF',
+  '#00FFA3',
+  '#FFA940',
+  '#FF6B9D',
+  '#B47AFF',
+  '#4A4FC2',
+  '#7358D4',
+  '#CC8733',
+];
+
 export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
   const [error, setError] = useState<string | null>(null);
   const updateMutation = useUpdateAccount();
@@ -125,18 +138,7 @@ export function EditAccountForm({ account, onUpdated }: EditAccountFormProps) {
               disallowInput
               withPicker={false}
               swatchesPerRow={10}
-              swatches={[
-                '#fa5252',
-                '#fd7e14',
-                '#fab005',
-                '#82c91e',
-                '#40c057',
-                '#15aabf',
-                '#228be6',
-                '#4c6ef5',
-                '#7950f2',
-                '#be4bdb',
-              ]}
+              swatches={ACCOUNT_COLOR_SWATCHES}
               {...form.getInputProps('color')}
             />
           </Grid.Col>

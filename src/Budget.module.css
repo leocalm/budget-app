@@ -28,10 +28,10 @@
 }
 
 .deleteButton:hover {
-    color: var(--mantine-color-red-6) !important;
-    background-color: var(--mantine-color-red-0) !important;
+    color: var(--accent-secondary) !important;
+    background-color: var(--color-accent-secondary-soft) !important;
 }
 
 :global([data-mantine-color-scheme='dark']) .deleteButton:hover {
-    background-color: rgb(250, 82, 82, 0.1) !important;
+    background-color: var(--color-accent-secondary-soft) !important;
 }

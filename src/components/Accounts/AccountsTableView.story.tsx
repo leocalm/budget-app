@@ -36,7 +36,10 @@ const InteractiveWrapper = () => {
   return (
     <AccountsTableView
       accounts={accounts}
+      isLocked={false}
       isLoading={false}
+      isError={false}
+      onRetry={() => {}}
       onDelete={handleDelete}
       onAccountUpdated={() => {}}
     />
@@ -77,7 +80,10 @@ export const Interactive: Story = {
 export const Loading: Story = {
   args: {
     accounts: undefined,
+    isLocked: false,
     isLoading: true,
+    isError: false,
+    onRetry: () => {},
     onDelete: () => {},
     onAccountUpdated: () => {},
   },
@@ -86,7 +92,10 @@ export const Loading: Story = {
 export const Empty: Story = {
   args: {
     accounts: [],
+    isLocked: false,
     isLoading: false,
+    isError: false,
+    onRetry: () => {},
     onDelete: () => {},
     onAccountUpdated: () => {},
   },

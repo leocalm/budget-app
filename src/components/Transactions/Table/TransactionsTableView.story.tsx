@@ -80,8 +80,10 @@ const InteractiveTransactionsWrapper = () => {
   return (
     <TransactionsTableView
       transactions={transactions}
+      isLocked={false}
       isLoading={false}
       isError={false}
+      onRetry={() => {}}
       insertEnabled
       accounts={mockAccounts}
       categories={mockCategories}
@@ -111,8 +113,10 @@ export const InteractiveCreateDelete: Story = {
 export const Loading: Story = {
   args: {
     transactions: undefined,
+    isLocked: false,
     isLoading: true,
     isError: false,
+    onRetry: () => {},
     insertEnabled: true,
     accounts: mockAccounts,
     categories: mockCategories,
@@ -126,8 +130,10 @@ export const Loading: Story = {
 export const ErrorStory: Story = {
   args: {
     transactions: undefined,
+    isLocked: false,
     isLoading: false,
     isError: true,
+    onRetry: () => {},
     insertEnabled: true,
     accounts: mockAccounts,
     categories: mockCategories,

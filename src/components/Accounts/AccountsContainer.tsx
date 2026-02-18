@@ -17,6 +17,9 @@ export function AccountsContainer() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: paginatedAccounts,
+    isLoading,
+    isError,
+    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -119,7 +122,12 @@ export function AccountsContainer() {
         {/* Accounts Grid */}
         <AccountsTableView
           accounts={accounts}
-          isLoading={!paginatedAccounts}
+          isLocked={selectedPeriodId === null}
+          isLoading={isLoading}
+          isError={isError}
+          onRetry={() => {
+            void refetch();
+          }}
           onDelete={(id) => deleteMutation.mutate(id)}
           onAccountUpdated={() => {}}
           onViewDetails={(account) => navigate(`/accounts/${account.id}`)}

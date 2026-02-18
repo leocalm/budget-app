@@ -50,12 +50,20 @@ export default defineConfig({
     {
       name: 'mobile-chromium',
       use: { ...devices['Pixel 7'] },
-      testMatch: [/tests\/e2e\/mobile\/.*\.spec\.ts/, /screenshots\.spec\.ts/],
+      testMatch: [
+        /tests\/e2e\/mobile\/.*\.spec\.ts/,
+        /screenshots\.spec\.ts/,
+        /screenshots-features\.spec\.ts/,
+      ],
     },
     {
       name: 'mobile-webkit',
       use: { ...devices['iPhone 14'] },
-      testMatch: [/tests\/e2e\/mobile\/.*\.spec\.ts/, /screenshots\.spec\.ts/],
+      testMatch: [
+        /tests\/e2e\/mobile\/.*\.spec\.ts/,
+        /screenshots\.spec\.ts/,
+        /screenshots-features\.spec\.ts/,
+      ],
     },
   ],
 });

@@ -31,9 +31,9 @@ export function DashboardContainer() {
   return (
     <Box
       style={{
-        maxWidth: '1400px',
         margin: '0 auto',
-        padding: '32px',
+        maxWidth: '1100px',
+        padding: 'var(--spacing-2xl)',
       }}
     >
       <Stack gap="lg">
@@ -42,8 +42,8 @@ export function DashboardContainer() {
             order={1}
             style={{
               background: isDark
-                ? 'linear-gradient(135deg, #ffffff 0%, var(--mantine-color-cyan-5) 100%)'
-                : 'linear-gradient(135deg, var(--text-primary) 0%, var(--mantine-color-cyan-5) 100%)',
+                ? 'linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%)'
+                : 'linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}

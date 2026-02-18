@@ -24,7 +24,10 @@ export function BudgetBreakdownList({
     <Stack gap="sm">
       <div className={styles.breakdownItem}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
-          <div className={styles.breakdownDot} style={{ backgroundColor: '#00d4ff' }} />
+          <div
+            className={styles.breakdownDot}
+            style={{ backgroundColor: 'var(--accent-primary)' }}
+          />
           <div className={styles.breakdownLabel}>{t('budget.overview.totalBudget')}</div>
         </div>
         <div className={styles.breakdownValue}>
@@ -34,7 +37,10 @@ export function BudgetBreakdownList({
 
       <div className={styles.breakdownItem}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
-          <div className={styles.breakdownDot} style={{ backgroundColor: '#845ef7' }} />
+          <div
+            className={styles.breakdownDot}
+            style={{ backgroundColor: 'var(--accent-secondary)' }}
+          />
           <div className={styles.breakdownLabel}>{t('budget.overview.allocated')}</div>
         </div>
         <div className={styles.breakdownValue}>
@@ -44,7 +50,10 @@ export function BudgetBreakdownList({
 
       <div className={styles.breakdownItem}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
-          <div className={styles.breakdownDot} style={{ backgroundColor: '#ff6b6b' }} />
+          <div
+            className={styles.breakdownDot}
+            style={{ backgroundColor: 'var(--text-secondary)' }}
+          />
           <div className={styles.breakdownLabel}>{t('budget.overview.spent')}</div>
         </div>
         <div className={styles.breakdownValue}>
@@ -56,7 +65,9 @@ export function BudgetBreakdownList({
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
           <div
             className={styles.breakdownDot}
-            style={{ backgroundColor: remaining >= 0 ? '#51cf66' : '#ff6b6b' }}
+            style={{
+              backgroundColor: remaining >= 0 ? 'var(--accent-primary)' : 'var(--text-secondary)',
+            }}
           />
           <div className={styles.breakdownLabel}>
             {remaining >= 0 ? t('budget.overview.remaining') : t('budget.overview.overBudget')}
@@ -70,7 +81,10 @@ export function BudgetBreakdownList({
       {unbudgetedCount > 0 && (
         <div className={styles.breakdownItem}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
-            <div className={styles.breakdownDot} style={{ backgroundColor: '#ffd43b' }} />
+            <div
+              className={styles.breakdownDot}
+              style={{ backgroundColor: 'var(--accent-secondary)' }}
+            />
             <div className={styles.breakdownLabel}>
               {t('budget.overview.unbudgeted', { count: unbudgetedCount })}
             </div>

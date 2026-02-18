@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { notifications } from '@mantine/notifications';
 import { fetchCurrentUser, type User } from '@/api/auth';
+import { toast } from '@/lib/toast';
 
 interface AuthContextType {
   user: User | null;
@@ -36,10 +36,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem('user');
         sessionStorage.removeItem('user');
         if (showToast) {
-          notifications.show({
+          toast.error({
             title: t('common.error'),
             message: t('auth.session.refreshFailed'),
-            color: 'red',
+            nonCritical: true,
           });
         }
         return false;

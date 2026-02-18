@@ -1,6 +1,10 @@
 import { apiPost } from './client';
 import { ApiError } from './errors';
 
+function errorWithCause(message: string, cause: unknown): Error {
+  return new Error(message, { cause });
+}
+
 export interface PasswordResetRequestPayload {
   email: string;
 }
@@ -23,12 +27,6 @@ export interface PasswordResetValidateResponse {
   email?: string;
 }
 
-function createError(message: string, cause: unknown): Error {
-  return new Error(message, {
-    cause: cause instanceof Error ? cause : undefined,
-  });
-}
-
 /**
  * Request a password reset email.
  * Always returns success to prevent email enumeration.
@@ -43,26 +41,26 @@ export async function requestPasswordReset(email: string): Promise<PasswordReset
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 429) {
-        throw createError('Too many password reset attempts. Please try again later.', error);
+        throw errorWithCause('Too many password reset attempts. Please try again later.', error);
       }
 
       if (error.status >= 500) {
-        throw createError('Server error. Please try again later.', error);
+        throw errorWithCause('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw createError(error.message, error);
+        throw errorWithCause(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw createError(
+      throw errorWithCause(
         'Unable to connect to the server. Please check your internet connection.',
         error
       );
     }
 
-    throw createError('Password reset request failed. Please try again.', error);
+    throw errorWithCause('Password reset request failed. Please try again.', error);
   }
 }
 
@@ -81,26 +79,26 @@ export async function validatePasswordResetToken(
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
-        throw createError('Invalid or expired reset token.', error);
+        throw errorWithCause('Invalid or expired reset token.', error);
       }
 
       if (error.status >= 500) {
-        throw createError('Server error. Please try again later.', error);
+        throw errorWithCause('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw createError(error.message, error);
+        throw errorWithCause(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw createError(
+      throw errorWithCause(
         'Unable to connect to the server. Please check your internet connection.',
         error
       );
     }
 
-    throw createError('Token validation failed. Please try again.', error);
+    throw errorWithCause('Token validation failed. Please try again.', error);
   }
 }
 
@@ -117,32 +115,32 @@ export async function confirmPasswordReset(token: string, newPassword: string): 
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
-        throw createError(
+        throw errorWithCause(
           error.message || 'Invalid or expired reset token. Please request a new one.',
           error
         );
       }
 
       if (error.status === 429) {
-        throw createError('Too many attempts. Please try again later.', error);
+        throw errorWithCause('Too many attempts. Please try again later.', error);
       }
 
       if (error.status >= 500) {
-        throw createError('Server error. Please try again later.', error);
+        throw errorWithCause('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw createError(error.message, error);
+        throw errorWithCause(error.message, error);
       }
     }
 
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw createError(
+      throw errorWithCause(
         'Unable to connect to the server. Please check your internet connection.',
         error
       );
     }
 
-    throw createError('Password reset failed. Please try again.', error);
+    throw errorWithCause('Password reset failed. Please try again.', error);
   }
 }

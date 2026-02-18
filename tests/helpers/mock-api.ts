@@ -68,6 +68,27 @@ interface MockBudgetCategory {
   };
 }
 
+interface MockOverlay {
+  id: string;
+  name: string;
+  icon?: string | null;
+  start_date: string;
+  end_date: string;
+  inclusion_mode: 'manual' | 'rules' | 'all';
+  total_cap_amount?: number | null;
+  spent_amount?: number;
+  transaction_count?: number;
+  category_caps?: Array<{
+    category_id: string;
+    cap_amount: number;
+  }>;
+  rules?: {
+    category_ids: string[];
+    vendor_ids: string[];
+    account_ids: string[];
+  } | null;
+}
+
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
@@ -141,6 +162,51 @@ export class MockApiServer {
         parent_id: null,
         category_type: 'Outgoing',
       },
+    },
+  ];
+  private overlays: MockOverlay[] = [
+    {
+      id: 'overlay-1',
+      name: 'Active Overlay',
+      icon: '🎯',
+      start_date: '2026-02-10',
+      end_date: '2026-02-25',
+      inclusion_mode: 'manual',
+      total_cap_amount: 50000,
+      spent_amount: 25000,
+      transaction_count: 5,
+      category_caps: [{ category_id: 'category-1', cap_amount: 20000 }],
+      rules: null,
+    },
+    {
+      id: 'overlay-2',
+      name: 'Upcoming Overlay',
+      icon: '🚀',
+      start_date: '2026-03-01',
+      end_date: '2026-03-10',
+      inclusion_mode: 'rules',
+      total_cap_amount: 100000,
+      spent_amount: 0,
+      transaction_count: 0,
+      category_caps: [],
+      rules: {
+        category_ids: ['category-1'],
+        vendor_ids: [],
+        account_ids: ['account-1'],
+      },
+    },
+    {
+      id: 'overlay-3',
+      name: 'Past Overlay',
+      icon: '📅',
+      start_date: '2026-01-01',
+      end_date: '2026-01-31',
+      inclusion_mode: 'all',
+      total_cap_amount: null,
+      spent_amount: 75000,
+      transaction_count: 12,
+      category_caps: null,
+      rules: null,
     },
   ];
   private readonly routeHandler = async (route: Route): Promise<void> => {
@@ -486,11 +552,19 @@ export class MockApiServer {
     }
 
     if (method === 'GET' && path === '/overlays') {
-      return { body: [] };
+      return { body: this.overlays };
     }
 
     if (method === 'GET' && path === '/currencies') {
       return { body: [this.defaultCurrency] };
+    }
+
+    if (method === 'DELETE' && path.startsWith('/overlays/')) {
+      const id = path.slice('/overlays/'.length);
+      if (id) {
+        this.overlays = this.overlays.filter((overlay) => overlay.id !== id);
+      }
+      return { status: 200, body: {} };
     }
 
     if (method === 'POST' || method === 'PUT' || method === 'DELETE') {

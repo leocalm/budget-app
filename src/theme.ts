@@ -2,58 +2,65 @@ import { createTheme, rem } from '@mantine/core';
 
 export const theme = createTheme({
   colors: {
-    // Custom dark palette based on spec
-    // 9: primary bg, 8: secondary bg, 7: card bg, 6: tertiary bg, 5: elevated bg
     dark: [
       '#C1C2C5', // 0
       '#A6A7AB', // 1
       '#909296', // 2
       '#5C5F66', // 3
       '#373A40', // 4
-      '#1e2433', // 5 - elevated
-      '#1a1f2e', // 6 - tertiary
-      '#151b26', // 7 - card
-      '#121720', // 8 - secondary
-      '#0a0e14', // 9 - primary
+      '#2A2F38', // 5
+      '#242934', // 6
+      '#1C1F26', // 7
+      '#181B21', // 8
+      '#14161A', // 9
     ],
-    // Custom light palette (inverted from dark)
-    // 0-3: text colors (darkest to light), 4: borders, 5: elevated, 6: tertiary, 7-9: backgrounds (light)
     light: [
-      '#141517', // 0 - primary text (darkest)
-      '#2e3035', // 1 - secondary text
-      '#5c5f66', // 2 - tertiary text
-      '#909296', // 3 - muted text
-      '#e9ecef', // 4 - borders/dividers
-      '#f8f9fa', // 5 - elevated background
-      '#f1f3f5', // 6 - tertiary background
-      '#ffffff', // 7 - card background
-      '#fafbfc', // 8 - secondary background
-      '#ffffff', // 9 - primary background
+      '#1A1D21', // 0
+      '#303745', // 1
+      '#5C6470', // 2
+      '#8B93A1', // 3
+      '#E6E8F0', // 4
+      '#FAFBFF', // 5
+      '#FFFFFF', // 6
+      '#FFFFFF', // 7
+      '#F7F8FC', // 8
+      '#F4F6FB', // 9
     ],
-    // Accents (Index 5 matches the spec hex codes)
+    piggyPrimary: [
+      '#ECECFF',
+      '#D8D9FF',
+      '#B4B7FF',
+      '#9094FF',
+      '#7378F3',
+      '#5E63E6',
+      '#4A4FC2',
+      '#373A99',
+      '#23255F',
+      '#141634',
+    ],
+    piggySecondary: [
+      '#F3EDFF',
+      '#E5D8FF',
+      '#D0BAFF',
+      '#B99AFD',
+      '#A37CF8',
+      '#8C6CFB',
+      '#7358D4',
+      '#5A43A8',
+      '#3C2C6F',
+      '#23183F',
+    ],
     cyan: [
-      '#e0fbff',
-      '#b3f2ff',
-      '#80eaff',
-      '#4de1ff',
-      '#1ad9ff',
-      '#00d4ff',
-      '#00aacc',
-      '#008099',
-      '#005566',
-      '#002b33',
-    ],
-    green: [
-      '#e0ffed',
-      '#b3ffdb',
-      '#80ffc8',
-      '#4dffb6',
-      '#1affa4',
-      '#00ffa3',
-      '#00cc82',
-      '#009962',
-      '#006641',
-      '#003321',
+      '#E3FAFC',
+      '#C5F6FA',
+      '#99E9F2',
+      '#66D9E8',
+      '#3BC9DB',
+      '#22B8CF',
+      '#15AABF',
+      '#1098AD',
+      '#0C8599',
+      '#0B7285',
     ],
     orange: [
       '#fff0e0',
@@ -92,51 +99,52 @@ export const theme = createTheme({
       '#241833',
     ],
   },
-  primaryColor: 'cyan',
+  primaryColor: 'piggyPrimary',
   primaryShade: 5,
   fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
   headings: {
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Sora, Inter, system-ui, sans-serif',
     fontWeight: '600',
   },
   fontFamilyMonospace: "'JetBrains Mono', monospace",
   radius: {
     xs: rem(4),
     sm: rem(8),
+    md: rem(14),
+    lg: rem(16),
+    xl: rem(20),
+  },
+  spacing: {
+    xs: rem(6),
+    sm: rem(8),
     md: rem(12),
     lg: rem(16),
     xl: rem(24),
-  },
-  spacing: {
-    xs: rem(4),
-    sm: rem(8),
-    md: rem(16),
-    lg: rem(24),
-    xl: rem(32),
-    xxl: rem(48),
-    xxxl: rem(64),
+    xxl: rem(32),
+    xxxl: rem(40),
   },
   shadows: {
     sm: '0 2px 8px rgba(0, 0, 0, 0.12)',
     md: '0 4px 16px rgba(0, 0, 0, 0.16)',
     lg: '0 8px 32px rgba(0, 0, 0, 0.24)',
-    glow: '0 0 32px rgba(0, 212, 255, 0.15)',
+    glow: '0 0 24px rgba(94, 99, 230, 0.16)',
   },
   components: {
     Container: {
       defaultProps: {
-        size: 'xl',
+        size: 1100,
       },
     },
     Paper: {
       defaultProps: {
-        radius: 'md',
+        radius: 'lg',
         withBorder: true,
       },
       styles: {
         root: {
-          backgroundColor: 'var(--bg-card)',
-          borderColor: 'var(--border-medium)',
+          backgroundColor: 'var(--surface)',
+          borderColor: 'var(--border-soft)',
+          borderWidth: rem(1),
         },
       },
     },
@@ -148,26 +156,27 @@ export const theme = createTheme({
     },
     Card: {
       defaultProps: {
-        radius: 'md',
+        radius: 'lg',
         withBorder: true,
       },
       styles: {
         root: {
-          backgroundColor: 'var(--bg-card)',
-          borderColor: 'var(--border-medium)',
+          backgroundColor: 'var(--surface)',
+          borderColor: 'var(--border-soft)',
+          borderWidth: rem(1),
         },
       },
     },
   },
   other: {
-    brandGradient: 'linear-gradient(90deg, #4FD1FF 0%, #9B6BFF 100%)',
+    brandGradient: 'linear-gradient(90deg, #5E63E6 0%, #8C6CFB 100%)',
     colors: {
       background: {
-        primary: '#0a0e14',
-        secondary: '#121720',
-        tertiary: '#1a1f2e',
-        card: '#151b26',
-        elevated: '#1e2433',
+        primary: '#14161A',
+        secondary: '#1C1F26',
+        tertiary: '#242934',
+        card: '#1C1F26',
+        elevated: '#242934',
       },
     },
   },

@@ -12,13 +12,13 @@ import {
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { UI } from '@/constants';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateTransactionFromRequest } from '@/hooks/useTransactions';
 import { useCreateVendor, useVendors } from '@/hooks/useVendors';
+import { toast } from '@/lib/toast';
 import { TransactionRequest } from '@/types/transaction';
 import { convertDisplayToCents } from '@/utils/currency';
 import { formatDateForApi } from '@/utils/date';
@@ -151,20 +151,19 @@ export const QuickAddTransaction = ({
 
     createTransaction(transactionData, {
       onSuccess: () => {
-        notifications.show({
+        toast.success({
           title: t('common.success'),
           message: t('transactions.quickAddTransaction.success'),
-          color: 'green',
         });
         form.reset();
         setTimeout(() => descriptionRef.current?.focus(), 100);
         onSuccess?.();
       },
       onError: (error: Error) => {
-        notifications.show({
+        toast.error({
           title: t('common.error'),
           message: error.message || t('transactions.quickAddTransaction.error.create'),
-          color: 'red',
+          nonCritical: true,
         });
       },
     });

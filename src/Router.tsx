@@ -1,5 +1,11 @@
-import { lazy, ReactElement, Suspense } from 'react';
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
+import { lazy, ReactElement, Suspense, useEffect } from 'react';
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+  useLocation,
+} from 'react-router-dom';
 import { BasicAppShell } from './AppShell';
 import { ProtectedRoute } from './components/Auth/ProtectedRoute';
 import { PageLoader } from './components/Utils/PageLoader';
@@ -107,15 +113,30 @@ const AccessDeniedPage = lazy(() =>
   }))
 );
 
-const Layout = () => (
-  <ProtectedRoute>
-    <BudgetProvider>
-      <BasicAppShell>
-        <Outlet />
-      </BasicAppShell>
-    </BudgetProvider>
-  </ProtectedRoute>
-);
+const Layout = () => {
+  const location = useLocation();
+
+  /** Move focus to page H1 on route change for screen reader accessibility */
+  useEffect(() => {
+    const h1 = document.querySelector('h1');
+    if (h1) {
+      if (!h1.hasAttribute('tabindex')) {
+        h1.setAttribute('tabindex', '-1');
+      }
+      h1.focus();
+    }
+  }, [location.pathname]);
+
+  return (
+    <ProtectedRoute>
+      <BudgetProvider>
+        <BasicAppShell>
+          <Outlet />
+        </BasicAppShell>
+      </BudgetProvider>
+    </ProtectedRoute>
+  );
+};
 
 const withPageLoader = (element: ReactElement) => (
   <Suspense fallback={<PageLoader />}>{element}</Suspense>

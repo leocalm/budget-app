@@ -52,7 +52,7 @@
 .submitButton {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: none;
   border-radius: var(--radius-md);
   color: var(--text-primary);

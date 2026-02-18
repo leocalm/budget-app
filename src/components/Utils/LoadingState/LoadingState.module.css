@@ -17,7 +17,7 @@
 
 .dot {
   border-radius: 50%;
-  background: var(--mantine-color-cyan-5);
+  background: var(--accent-primary);
   animation: dot-bounce 1.4s ease-in-out infinite;
 }
 
@@ -36,12 +36,22 @@
   height: 16px;
 }
 
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes dot-bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.8);
     opacity: 0.5;
   }
@@ -60,7 +70,7 @@
 }
 
 .bar {
-  background: var(--mantine-color-cyan-5);
+  background: var(--accent-primary);
   border-radius: 2px;
   animation: bar-pulse 1.2s ease-in-out infinite;
 }
@@ -80,14 +90,29 @@
   height: 32px;
 }
 
-.bar:nth-child(1) { animation-delay: 0s; }
-.bar:nth-child(2) { animation-delay: 0.1s; }
-.bar:nth-child(3) { animation-delay: 0.2s; }
-.bar:nth-child(4) { animation-delay: 0.3s; }
-.bar:nth-child(5) { animation-delay: 0.4s; }
+.bar:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.bar:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.bar:nth-child(5) {
+  animation-delay: 0.4s;
+}
 
 @keyframes bar-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scaleY(0.6);
     opacity: 0.5;
   }
@@ -120,7 +145,7 @@
   font-family: var(--mantine-font-family-monospace);
   font-size: var(--mantine-font-size-sm);
   font-weight: 600;
-  color: var(--mantine-color-cyan-5);
+  color: var(--accent-primary);
 }
 
 .progressBar {
@@ -134,7 +159,7 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--mantine-color-cyan-5), var(--mantine-color-violet-5));
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -145,8 +170,13 @@
 }
 
 @keyframes progress-slide {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(400%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(400%);
+  }
 }
 
 /* Inline Loading */
@@ -222,7 +252,7 @@
 .fullscreenLogo {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--mantine-color-cyan-5), var(--mantine-color-violet-5));
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   border-radius: var(--mantine-radius-lg);
   display: flex;
   align-items: center;
@@ -233,7 +263,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
