@@ -747,6 +747,18 @@
   },
   "dashboard": {
     "title": "Painel Financeiro",
+    "locked": {
+      "statusLabel": "Status: {{status}}",
+      "status": {
+        "notConfigured": "Não configurado",
+        "noActivePeriod": "Sem período ativo"
+      },
+      "requirement": {
+        "notConfigured": "Configure um período de orçamento para exibir dados no painel.",
+        "noActivePeriod": "Crie ou ajuste períodos para que um período esteja ativo hoje."
+      },
+      "configure": "Configurar"
+    },
     "noPeriod": {
       "title": "Você está em uma lacuna de período",
       "message": "Suas transações não estão associadas a nenhum período de orçamento. Crie ou ajuste períodos para restaurar relatórios corretos.",

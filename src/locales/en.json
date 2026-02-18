@@ -836,6 +836,18 @@
   },
   "dashboard": {
     "title": "Financial Dashboard",
+    "locked": {
+      "statusLabel": "Status: {{status}}",
+      "status": {
+        "notConfigured": "Not configured",
+        "noActivePeriod": "No active period"
+      },
+      "requirement": {
+        "notConfigured": "Set up a budget period to display dashboard data.",
+        "noActivePeriod": "Create or adjust periods so one period is active today."
+      },
+      "configure": "Configure"
+    },
     "noPeriod": {
       "title": "You are in a period gap",
       "message": "Your transactions are not currently associated with a budget period. Create or manage periods to restore accurate reporting.",

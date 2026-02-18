@@ -1,4 +1,10 @@
 /* ── Dashboard Header ── */
+.dashboardRoot {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 32px;
+}
+
 .dashboardHeader {
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: var(--spacing-xl) !important;
@@ -266,19 +272,29 @@
   transform: translateX(4px);
 }
 
-.noPeriodContainer {
-  margin: 0 auto;
-  max-width: 820px;
-  padding: var(--spacing-xl);
+.lockedCard {
+  background: color-mix(in srgb, var(--bg-card) 80%, var(--bg-primary) 20%);
+  border-style: dashed;
+  border-color: var(--border-medium);
+  opacity: 0.65;
 }
 
-.noPeriodAlert {
-  border: 1px solid var(--color-accent-primary-soft-strong);
-  background: linear-gradient(
-    135deg,
-    var(--color-accent-primary-soft) 0%,
-    var(--color-accent-secondary-soft) 100%
-  );
+.lockedCardContent {
+  pointer-events: none;
+}
+
+.lockedStatus {
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.lockedConfigureLink {
+  color: var(--mantine-color-indigo-6);
+  pointer-events: auto;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  width: fit-content;
 }
 
 /* ── Trend Badge Styles ── */
@@ -314,8 +330,8 @@
 }
 
 @media (max-width: 768px) {
-  .noPeriodContainer {
-    padding: 8px;
+  .dashboardRoot {
+    padding: 16px;
   }
 
   .statsGrid {
