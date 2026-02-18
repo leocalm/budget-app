@@ -340,18 +340,18 @@
       "logout": "Sair"
     },
     "navigation": {
-      "overview": "Visão Geral",
+      "core": "Principal",
+      "structure": "Estrutura",
       "dashboard": "Dashboard",
       "transactions": "Transações",
-      "management": "Gestão",
       "accounts": "Contas",
       "categories": "Categorias",
       "vendors": "Fornecedores",
       "budgetPlan": "Orçamento",
       "periods": "Períodos",
       "overlays": "Overlays",
-      "other": "Outro",
       "settings": "Configurações",
+      "logout": "Sair",
       "helpSupport": "Ajuda e Suporte",
       "more": "Mais"
     }

@@ -620,27 +620,39 @@
     "logo": {
       "title": "PiggyPulse"
     },
+    "topbar": {
+      "pageTitle": {
+        "dashboard": "Dashboard",
+        "transactions": "Transactions",
+        "periods": "Periods",
+        "accounts": "Accounts",
+        "categories": "Categories",
+        "vendors": "Vendors",
+        "settings": "Settings"
+      }
+    },
     "userMenu": {
       "userName": "John Doe",
       "userEmail": "john@example.com",
       "application": "Application",
       "profile": "Profile",
       "settings": "Settings",
-      "logout": "Logout"
+      "logout": "Log out"
     },
     "navigation": {
-      "overview": "Overview",
+      "core": "Core",
+      "structure": "Structure",
+      "session": "Session",
       "dashboard": "Dashboard",
       "transactions": "Transactions",
-      "management": "Management",
       "accounts": "Accounts",
       "categories": "Categories",
       "vendors": "Vendors",
       "budgetPlan": "Budget Plan",
       "periods": "Periods",
       "overlays": "Overlays",
-      "other": "Other",
       "settings": "Settings",
+      "logout": "Log out",
       "helpSupport": "Help & Support",
       "more": "More"
     }
