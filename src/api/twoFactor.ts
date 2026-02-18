@@ -1,6 +1,10 @@
 import { apiDelete, apiGet, apiPost } from './client';
 import { ApiError } from './errors';
 
+function errorWithCause(message: string, cause: unknown): Error {
+  return new Error(message, { cause });
+}
+
 export interface TwoFactorSetupResponse {
   secret: string;
   qrCode: string; // data URL for QR code image (camelCase from snake_case qr_code)
@@ -42,9 +46,9 @@ export async function setupTwoFactor(): Promise<TwoFactorSetupResponse> {
     return await apiPost<TwoFactorSetupResponse>('/api/two-factor/setup');
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Failed to setup two-factor authentication');
+    throw errorWithCause('Failed to setup two-factor authentication', error);
   }
 }
 
@@ -56,9 +60,9 @@ export async function verifyTwoFactor(code: string): Promise<void> {
     await apiPost<void, TwoFactorVerifyRequest>('/api/two-factor/verify', { code });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Invalid verification code');
+    throw errorWithCause('Invalid verification code', error);
   }
 }
 
@@ -70,9 +74,9 @@ export async function disableTwoFactor(password: string, code: string): Promise<
     await apiDelete<void, TwoFactorDisableRequest>('/api/two-factor/disable', { password, code });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Failed to disable two-factor authentication');
+    throw errorWithCause('Failed to disable two-factor authentication', error);
   }
 }
 
@@ -84,9 +88,9 @@ export async function getTwoFactorStatus(): Promise<TwoFactorStatus> {
     return await apiGet<TwoFactorStatus>('/api/two-factor/status');
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Failed to get two-factor status');
+    throw errorWithCause('Failed to get two-factor status', error);
   }
 }
 
@@ -101,9 +105,9 @@ export async function regenerateBackupCodes(code: string): Promise<string[]> {
     );
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Failed to regenerate backup codes');
+    throw errorWithCause('Failed to regenerate backup codes', error);
   }
 }
 
@@ -117,9 +121,9 @@ export async function requestEmergencyDisable(email: string): Promise<void> {
     });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Failed to request emergency disable');
+    throw errorWithCause('Failed to request emergency disable', error);
   }
 }
 
@@ -133,8 +137,8 @@ export async function confirmEmergencyDisable(token: string): Promise<void> {
     });
   } catch (error) {
     if (error instanceof ApiError && error.message) {
-      throw new Error(error.message);
+      throw errorWithCause(error.message, error);
     }
-    throw new Error('Invalid or expired token');
+    throw errorWithCause('Invalid or expired token', error);
   }
 }
