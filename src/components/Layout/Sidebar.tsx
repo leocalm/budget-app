@@ -1,7 +1,6 @@
 import { AppShell, Group, ScrollArea } from '@mantine/core';
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
-import { UserMenu } from './UserMenu';
 
 interface SidebarProps {
   onNavigate?: () => void;
@@ -20,9 +19,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         <Navigation onNavigate={onNavigate} />
       </AppShell.Section>
 
-      <AppShell.Section pt="md" style={{ borderTop: '1px solid var(--border-medium)' }}>
-        <UserMenu />
-      </AppShell.Section>
+      {/* Desktop sidebar should not show the UserMenu (session area) */}
     </AppShell.Navbar>
   );
 }

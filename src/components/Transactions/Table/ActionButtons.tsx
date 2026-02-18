@@ -44,7 +44,7 @@ export const ActionButtons = ({ onEdit, onDelete }: ActionButtonsProps) => {
         }}
         title="Edit"
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(0, 212, 255, 0.1)';
+          e.currentTarget.style.background = 'var(--color-accent-primary-soft)';
           e.currentTarget.style.borderColor = 'var(--accent-primary)';
           e.currentTarget.style.color = 'var(--accent-primary)';
         }}
@@ -64,9 +64,9 @@ export const ActionButtons = ({ onEdit, onDelete }: ActionButtonsProps) => {
         }}
         title="Delete"
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(255, 107, 157, 0.1)';
-          e.currentTarget.style.borderColor = 'var(--accent-danger)';
-          e.currentTarget.style.color = 'var(--accent-danger)';
+          e.currentTarget.style.background = 'var(--color-accent-secondary-soft)';
+          e.currentTarget.style.borderColor = 'var(--accent-secondary)';
+          e.currentTarget.style.color = 'var(--accent-secondary)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'var(--bg-elevated)';

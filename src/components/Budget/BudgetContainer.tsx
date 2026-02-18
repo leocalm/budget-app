@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Grid, Paper, Stack } from '@mantine/core';
 import { PageHeader } from '@/components/Transactions/PageHeader';
+import { CardSkeleton, StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { queryKeys } from '@/hooks/queryKeys';
 import { useBudgetedCategories, useUnbudgetedCategories } from '@/hooks/useCategories';
@@ -20,9 +21,18 @@ export function BudgetContainer() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
   // Fetch budgeted categories and transactions
-  const { data: budgetedCategories } = useBudgetedCategories();
-  const { data: unbudgetedCategories, isLoading: isUnbudgetedCategoriesLoading } =
-    useUnbudgetedCategories();
+  const {
+    data: budgetedCategories,
+    isLoading: isBudgetedCategoriesLoading,
+    isError: isBudgetedCategoriesError,
+    refetch: refetchBudgetedCategories,
+  } = useBudgetedCategories();
+  const {
+    data: unbudgetedCategories,
+    isLoading: isUnbudgetedCategoriesLoading,
+    isError: isUnbudgetedCategoriesError,
+    refetch: refetchUnbudgetedCategories,
+  } = useUnbudgetedCategories();
   const { data: transactions } = useTransactions(selectedPeriodId);
 
   // Calculate spending per category from transactions
@@ -71,48 +81,78 @@ export function BudgetContainer() {
       <Stack gap="xl">
         <PageHeader title={t('budget.container.title')} subtitle={t('budget.container.subtitle')} />
 
-        <BudgetOverview
-          totalBudget={totalBudget}
-          totalSpent={totalSpent}
-          remaining={remaining}
-          overBudget={overBudget}
-          allocationData={allocationData}
-          unbudgetedCount={unbudgetedCategories?.length || 0}
-        />
-
-        <Grid gutter={{ base: 'md', md: 'xl' }} columns={3}>
-          {/* Main Area: Budgeted Categories (2fr) */}
-          <Grid.Col span={{ base: 3, md: 2 }}>
-            <BudgetedCategories
-              editingId={editingId}
-              onEditingChange={setEditingId}
-              categories={budgetedCategories || []}
-              categorySpending={categorySpending}
+        <StateRenderer
+          variant="page"
+          isLocked={selectedPeriodId === null}
+          lockMessage={t('states.locked.message.periodRequired')}
+          lockAction={{ label: t('states.locked.configure'), to: '/periods' }}
+          hasError={isBudgetedCategoriesError || isUnbudgetedCategoriesError}
+          errorMessage={t('states.error.loadFailed.message')}
+          onRetry={() => {
+            void Promise.all([refetchBudgetedCategories(), refetchUnbudgetedCategories()]);
+          }}
+          isLoading={isBudgetedCategoriesLoading || isUnbudgetedCategoriesLoading}
+          loadingSkeleton={
+            <Grid gutter={{ base: 'md', md: 'xl' }} columns={3} w="100%">
+              <Grid.Col span={{ base: 3, md: 2 }}>
+                <CardSkeleton />
+              </Grid.Col>
+              <Grid.Col span={{ base: 3, md: 1 }}>
+                <CardSkeleton />
+              </Grid.Col>
+            </Grid>
+          }
+          isEmpty={
+            (budgetedCategories?.length ?? 0) === 0 && (unbudgetedCategories?.length ?? 0) === 0
+          }
+          emptyItemsLabel={t('states.contract.items.categories')}
+          emptyMessage={t('states.empty.categories.message')}
+        >
+          <>
+            <BudgetOverview
+              totalBudget={totalBudget}
+              totalSpent={totalSpent}
+              remaining={remaining}
+              overBudget={overBudget}
+              allocationData={allocationData}
+              unbudgetedCount={unbudgetedCategories?.length || 0}
             />
-          </Grid.Col>
 
-          {/* Sidebar Area: Unbudgeted Categories (1fr) */}
-          <Grid.Col span={{ base: 3, md: 1 }}>
-            <Paper shadow="sm" radius="md" p="xl" withBorder h="100%">
-              <Stack gap="md">
-                <div>
-                  <h3 style={{ margin: '0 0 8px 0', fontSize: 16, fontWeight: 700 }}>
-                    {t('budget.unbudgetedCategories.title')}
-                  </h3>
-                  <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)' }}>
-                    {t('budget.unbudgetedCategories.subtitle')}
-                  </p>
-                </div>
-
-                <UnbudgetedCategories
-                  onCategoryAdded={handleCategoryAdded}
-                  categories={unbudgetedCategories || []}
-                  isLoading={isUnbudgetedCategoriesLoading}
+            <Grid gutter={{ base: 'md', md: 'xl' }} columns={3}>
+              {/* Main Area: Budgeted Categories (2fr) */}
+              <Grid.Col span={{ base: 3, md: 2 }}>
+                <BudgetedCategories
+                  editingId={editingId}
+                  onEditingChange={setEditingId}
+                  categories={budgetedCategories || []}
+                  categorySpending={categorySpending}
                 />
-              </Stack>
-            </Paper>
-          </Grid.Col>
-        </Grid>
+              </Grid.Col>
+
+              {/* Sidebar Area: Unbudgeted Categories (1fr) */}
+              <Grid.Col span={{ base: 3, md: 1 }}>
+                <Paper shadow="sm" radius="md" p="xl" withBorder h="100%">
+                  <Stack gap="md">
+                    <div>
+                      <h3 style={{ margin: '0 0 8px 0', fontSize: 16, fontWeight: 700 }}>
+                        {t('budget.unbudgetedCategories.title')}
+                      </h3>
+                      <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)' }}>
+                        {t('budget.unbudgetedCategories.subtitle')}
+                      </p>
+                    </div>
+
+                    <UnbudgetedCategories
+                      onCategoryAdded={handleCategoryAdded}
+                      categories={unbudgetedCategories || []}
+                      isLoading={isUnbudgetedCategoriesLoading}
+                    />
+                  </Stack>
+                </Paper>
+              </Grid.Col>
+            </Grid>
+          </>
+        </StateRenderer>
       </Stack>
     </Box>
   );

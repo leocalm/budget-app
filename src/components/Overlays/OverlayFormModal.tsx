@@ -12,9 +12,7 @@ import {
   Badge,
   Button,
   Divider,
-  Drawer,
   Group,
-  Modal,
   MultiSelect,
   NumberInput,
   Paper,
@@ -24,10 +22,10 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { useCreateOverlay, useUpdateOverlay } from '@/hooks/useOverlays';
+import { toast } from '@/lib/toast';
 import { AccountResponse } from '@/types/account';
 import { CategoryWithStats } from '@/types/category';
 import { Overlay, OverlayInclusionMode, OverlayRequest } from '@/types/overlay';
@@ -125,10 +123,10 @@ export function OverlayFormModal({
 }: OverlayFormModalProps) {
   const { t, i18n } = useTranslation();
   const globalCurrency = useDisplayCurrency();
-  const isMobile = useMediaQuery('(max-width: 48em)');
   const createMutation = useCreateOverlay();
   const updateMutation = useUpdateOverlay();
   const [values, setValues] = useState<OverlayFormValues>(getDefaultValues(overlay));
+  const [initialValues, setInitialValues] = useState<OverlayFormValues>(getDefaultValues(overlay));
   const [activeStep, setActiveStep] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -153,11 +151,15 @@ export function OverlayFormModal({
 
   useEffect(() => {
     if (opened) {
-      setValues(getDefaultValues(overlay));
+      const defaults = getDefaultValues(overlay);
+      setValues(defaults);
+      setInitialValues(defaults);
       setActiveStep(0);
       setErrorMessage(null);
     }
   }, [opened, overlay]);
+
+  const isDirty = JSON.stringify(values) !== JSON.stringify(initialValues);
 
   const categoryOptions = categories.map((category) => ({
     value: category.id,
@@ -319,8 +321,7 @@ export function OverlayFormModal({
         await createMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: overlay
           ? t('overlays.modal.success.updated')
@@ -329,10 +330,10 @@ export function OverlayFormModal({
 
       onClose();
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('overlays.modal.errors.saveFailed'),
+        nonCritical: true,
       });
     }
   };
@@ -601,85 +602,69 @@ export function OverlayFormModal({
       </Stack>
     );
 
-  const stepperContent = (
-    <Stack gap="lg">
-      {isEditMode && (
-        <Alert variant="light" color="yellow" icon={<IconAlertTriangle size={16} />}>
-          {t('overlays.modal.editWarning')}
-        </Alert>
-      )}
-
-      {errorMessage && (
-        <Alert variant="light" color="red" icon={<IconAlertTriangle size={16} />}>
-          {errorMessage}
-        </Alert>
-      )}
-
-      <Stepper active={activeStep} allowNextStepsSelect={false} iconPosition="right">
-        {steps.map((step) => (
-          <Stepper.Step key={step} label={t(`overlays.modal.steps.${step}.label`)}>
-            {null}
-          </Stepper.Step>
-        ))}
-      </Stepper>
-
-      <div className={classes.stepContent}>{stepContent}</div>
-
-      <Group justify="space-between" className={classes.actionsRow}>
-        <Button
-          variant="subtle"
-          onClick={activeStep === 0 ? onClose : handleBack}
-          disabled={isSubmitting}
-        >
-          {activeStep === 0 ? t('common.cancel') : t('common.back')}
-        </Button>
-
-        <Button
-          onClick={handleNext}
-          loading={isSubmitting}
-          leftSection={
-            isLastStep ? (
-              isEditMode ? (
-                <IconDeviceFloppy size={16} />
-              ) : (
-                <IconPlus size={16} />
-              )
-            ) : undefined
-          }
-        >
-          {isLastStep
-            ? isEditMode
-              ? t('overlays.modal.save')
-              : t('overlays.modal.create')
-            : t('common.next')}
-        </Button>
-      </Group>
-    </Stack>
-  );
-
-  if (isMobile) {
-    return (
-      <Drawer
-        opened={opened}
-        onClose={onClose}
-        position="bottom"
-        size="100%"
-        title={isEditMode ? t('overlays.modal.editTitle') : t('overlays.modal.createTitle')}
-      >
-        {stepperContent}
-      </Drawer>
-    );
-  }
-
   return (
-    <Modal
+    <FormOverlay
       opened={opened}
       onClose={onClose}
-      centered
-      size="xl"
       title={isEditMode ? t('overlays.modal.editTitle') : t('overlays.modal.createTitle')}
+      isDirty={isDirty}
+      closeBlocked={isSubmitting}
     >
-      {stepperContent}
-    </Modal>
+      {(requestClose) => (
+        <Stack gap="lg">
+          {isEditMode && (
+            <Alert variant="light" color="yellow" icon={<IconAlertTriangle size={16} />}>
+              {t('overlays.modal.editWarning')}
+            </Alert>
+          )}
+
+          {errorMessage && (
+            <Alert variant="light" color="red" icon={<IconAlertTriangle size={16} />}>
+              {errorMessage}
+            </Alert>
+          )}
+
+          <Stepper active={activeStep} allowNextStepsSelect={false} iconPosition="right">
+            {steps.map((step) => (
+              <Stepper.Step key={step} label={t(`overlays.modal.steps.${step}.label`)}>
+                {null}
+              </Stepper.Step>
+            ))}
+          </Stepper>
+
+          <div className={classes.stepContent}>{stepContent}</div>
+
+          <Group justify="space-between" className={classes.actionsRow}>
+            <Button
+              variant="subtle"
+              onClick={activeStep === 0 ? requestClose : handleBack}
+              disabled={isSubmitting}
+            >
+              {activeStep === 0 ? t('common.cancel') : t('common.back')}
+            </Button>
+
+            <Button
+              onClick={handleNext}
+              loading={isSubmitting}
+              leftSection={
+                isLastStep ? (
+                  isEditMode ? (
+                    <IconDeviceFloppy size={16} />
+                  ) : (
+                    <IconPlus size={16} />
+                  )
+                ) : undefined
+              }
+            >
+              {isLastStep
+                ? isEditMode
+                  ? t('overlays.modal.save')
+                  : t('overlays.modal.create')
+                : t('common.next')}
+            </Button>
+          </Group>
+        </Stack>
+      )}
+    </FormOverlay>
   );
 }

@@ -32,26 +32,26 @@ const StatCard = ({ label, value, color, type }: StatCardProps) => {
     <Box
       style={{
         background: 'var(--bg-card)',
-        padding: '24px',
-        borderRadius: '12px',
-        border: '1px solid var(--border-medium)',
+        padding: 'var(--spacing-xl)',
+        borderRadius: 'var(--radius-card)',
+        border: '1px solid var(--border-soft)',
       }}
     >
       <Text
         style={{
-          fontSize: '12px',
+          fontSize: 'var(--type-diagnostic-metric-size)',
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           color: 'var(--text-tertiary)',
-          marginBottom: '8px',
+          marginBottom: 'var(--spacing-s)',
         }}
       >
         {label}
       </Text>
       <Text
         style={{
-          fontSize: '24px',
+          fontSize: 'var(--type-reflective-secondary-size)',
           fontWeight: 700,
           fontFamily: "'JetBrains Mono', monospace",
           color,
@@ -71,19 +71,19 @@ export function TransactionStats({ income, expenses, balance }: TransactionStats
       <StatCard
         label={t('transactions.stats.totalIncome')}
         value={income}
-        color="var(--accent-success)"
+        color="var(--mantine-color-green-6)"
         type="income"
       />
       <StatCard
         label={t('transactions.stats.totalExpenses')}
         value={expenses}
-        color="var(--accent-danger)"
+        color="var(--mantine-color-red-6)"
         type="expenses"
       />
       <StatCard
         label={t('transactions.stats.netChange')}
         value={balance}
-        color="var(--accent-primary)"
+        color={balance < 0 ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-green-6)'}
         type="net"
       />
     </SimpleGrid>

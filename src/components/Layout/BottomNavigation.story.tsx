@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fireEvent } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from './BottomNavigation';
 
@@ -35,6 +36,30 @@ const NavigationWrapper = ({ route }: { route: string }) => {
   return <BottomNavigation />;
 };
 
+const MorePopoverWrapper = ({ route }: { route: string }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(route);
+  }, [navigate, route]);
+
+  useEffect(() => {
+    // Auto-open the More popover by simulating a click on the More button
+    const timeout = setTimeout(() => {
+      const buttons = document.querySelectorAll('button');
+      for (const btn of buttons) {
+        if (btn.textContent?.includes('More')) {
+          fireEvent.click(btn);
+          break;
+        }
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return <BottomNavigation />;
+};
+
 export const Default: Story = {
   render: () => <NavigationWrapper route="/dashboard" />,
 };
@@ -43,10 +68,10 @@ export const OnTransactions: Story = {
   render: () => <NavigationWrapper route="/transactions" />,
 };
 
-export const OnBudget: Story = {
-  render: () => <NavigationWrapper route="/budget" />,
+export const OnPeriods: Story = {
+  render: () => <NavigationWrapper route="/periods" />,
 };
 
-export const OnAccounts: Story = {
-  render: () => <NavigationWrapper route="/accounts" />,
+export const MorePopoverOpen: Story = {
+  render: () => <MorePopoverWrapper route="/dashboard" />,
 };

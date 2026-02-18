@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
-  Drawer,
   Group,
-  Modal,
   NumberInput,
   SegmentedControl,
   Select,
@@ -15,9 +13,9 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import { useCreateBudgetPeriod, useUpdateBudgetPeriod } from '@/hooks/useBudget';
+import { toast } from '@/lib/toast';
 import { BudgetPeriod, PeriodDurationUnit } from '@/types/budget';
 import classes from './PeriodFormModal.module.css';
 
@@ -121,20 +119,26 @@ export function PeriodFormModal({
   suggestedRange,
 }: PeriodFormModalProps) {
   const { t } = useTranslation();
-  const isMobile = useMediaQuery('(max-width: 48em)');
   const createMutation = useCreateBudgetPeriod();
   const updateMutation = useUpdateBudgetPeriod();
   const [values, setValues] = useState<FormValues>(getDefaultValues(period, suggestedRange));
+  const [initialValues, setInitialValues] = useState<FormValues>(
+    getDefaultValues(period, suggestedRange)
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isEditMode = Boolean(period);
 
   useEffect(() => {
     if (opened) {
-      setValues(getDefaultValues(period, suggestedRange));
+      const defaults = getDefaultValues(period, suggestedRange);
+      setValues(defaults);
+      setInitialValues(defaults);
       setErrorMessage(null);
     }
   }, [opened, period, suggestedRange]);
+
+  const isDirty = JSON.stringify(values) !== JSON.stringify(initialValues);
 
   const calculatedEndDate = useMemo(
     () => getDurationEndDate(values.startDate, values.durationValue, values.durationUnit),
@@ -199,8 +203,7 @@ export function PeriodFormModal({
         await createMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: isEditMode
           ? t('periods.modal.success.updated')
@@ -210,145 +213,131 @@ export function PeriodFormModal({
       onClose();
     } catch (error) {
       const message = error instanceof Error ? error.message : t('periods.modal.errors.saveFailed');
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message,
+        nonCritical: true,
       });
     }
   };
 
-  const formContent = (
-    <Stack gap="md">
-      {isEditMode && (
-        <Alert variant="light" color="yellow" icon={<IconAlertTriangle size={16} />}>
-          {t('periods.modal.editWarning')}
-        </Alert>
-      )}
-
-      {errorMessage && (
-        <Alert variant="light" color="red" icon={<IconAlertTriangle size={16} />}>
-          {errorMessage}
-        </Alert>
-      )}
-
-      <TextInput
-        type="date"
-        label={t('periods.modal.startDate')}
-        value={values.startDate}
-        onChange={(event) => {
-          const startDate = event.currentTarget.value;
-          setValues((current) => ({ ...current, startDate }));
-        }}
-        required
-      />
-
-      <Group grow align="flex-end">
-        <NumberInput
-          min={1}
-          label={t('periods.modal.duration')}
-          value={values.durationValue}
-          onChange={(value) =>
-            setValues((current) => ({ ...current, durationValue: Number(value) || 1 }))
-          }
-          required
-        />
-        <Select
-          label={t('periods.modal.durationUnit')}
-          value={values.durationUnit}
-          onChange={(value) =>
-            setValues((current) => ({
-              ...current,
-              durationUnit: (value as PeriodDurationUnit) || 'months',
-            }))
-          }
-          data={[
-            { label: t('periods.modal.durationUnits.days'), value: 'days' },
-            { label: t('periods.modal.durationUnits.weeks'), value: 'weeks' },
-            { label: t('periods.modal.durationUnits.months'), value: 'months' },
-          ]}
-        />
-      </Group>
-
-      <SegmentedControl
-        value={values.endDateMode}
-        onChange={(value) =>
-          setValues((current) => ({ ...current, endDateMode: value as 'duration' | 'manual' }))
-        }
-        data={[
-          { label: t('periods.modal.endDateModes.duration'), value: 'duration' },
-          { label: t('periods.modal.endDateModes.manual'), value: 'manual' },
-        ]}
-      />
-
-      {values.endDateMode === 'manual' ? (
-        <TextInput
-          type="date"
-          label={t('periods.modal.manualEndDate')}
-          value={values.manualEndDate}
-          onChange={(event) => {
-            const manualEndDate = event.currentTarget.value;
-            setValues((current) => ({ ...current, manualEndDate }));
-          }}
-          required
-        />
-      ) : (
-        <div className={classes.previewCard}>
-          <Text size="xs" c="dimmed">
-            {t('periods.modal.calculatedEndDate')}
-          </Text>
-          <Text fw={700}>{selectedEndDateDisplay}</Text>
-        </div>
-      )}
-
-      <TextInput
-        label={t('periods.modal.periodName')}
-        placeholder={t('periods.modal.periodNamePlaceholder')}
-        value={values.name}
-        onChange={(event) => {
-          const name = event.currentTarget.value;
-          setValues((current) => ({ ...current, name }));
-        }}
-      />
-
-      <Group justify="flex-end" mt="sm">
-        <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-          {t('common.cancel')}
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          loading={isSubmitting}
-          leftSection={isEditMode ? <IconDeviceFloppy size={16} /> : <IconCalendarPlus size={16} />}
-        >
-          {isEditMode ? t('periods.modal.saveChanges') : t('periods.modal.createPeriod')}
-        </Button>
-      </Group>
-    </Stack>
-  );
-
-  if (isMobile) {
-    return (
-      <Drawer
-        opened={opened}
-        onClose={onClose}
-        position="bottom"
-        title={isEditMode ? t('periods.modal.editTitle') : t('periods.modal.createTitle')}
-        size="95%"
-      >
-        {formContent}
-      </Drawer>
-    );
-  }
-
   return (
-    <Modal
+    <FormOverlay
       opened={opened}
       onClose={onClose}
       title={isEditMode ? t('periods.modal.editTitle') : t('periods.modal.createTitle')}
-      centered
-      size="lg"
+      isDirty={isDirty}
+      closeBlocked={isSubmitting}
     >
-      {formContent}
-    </Modal>
+      {(requestClose) => (
+        <Stack gap="md">
+          {isEditMode && (
+            <Alert variant="light" color="yellow" icon={<IconAlertTriangle size={16} />}>
+              {t('periods.modal.editWarning')}
+            </Alert>
+          )}
+
+          {errorMessage && (
+            <Alert variant="light" color="red" icon={<IconAlertTriangle size={16} />}>
+              {errorMessage}
+            </Alert>
+          )}
+
+          <TextInput
+            type="date"
+            label={t('periods.modal.startDate')}
+            value={values.startDate}
+            onChange={(event) => {
+              const startDate = event.currentTarget.value;
+              setValues((current) => ({ ...current, startDate }));
+            }}
+            required
+          />
+
+          <Group grow align="flex-end">
+            <NumberInput
+              min={1}
+              label={t('periods.modal.duration')}
+              value={values.durationValue}
+              onChange={(value) =>
+                setValues((current) => ({ ...current, durationValue: Number(value) || 1 }))
+              }
+              required
+            />
+            <Select
+              label={t('periods.modal.durationUnit')}
+              value={values.durationUnit}
+              onChange={(value) =>
+                setValues((current) => ({
+                  ...current,
+                  durationUnit: (value as PeriodDurationUnit) || 'months',
+                }))
+              }
+              data={[
+                { label: t('periods.modal.durationUnits.days'), value: 'days' },
+                { label: t('periods.modal.durationUnits.weeks'), value: 'weeks' },
+                { label: t('periods.modal.durationUnits.months'), value: 'months' },
+              ]}
+            />
+          </Group>
+
+          <SegmentedControl
+            value={values.endDateMode}
+            onChange={(value) =>
+              setValues((current) => ({ ...current, endDateMode: value as 'duration' | 'manual' }))
+            }
+            data={[
+              { label: t('periods.modal.endDateModes.duration'), value: 'duration' },
+              { label: t('periods.modal.endDateModes.manual'), value: 'manual' },
+            ]}
+          />
+
+          {values.endDateMode === 'manual' ? (
+            <TextInput
+              type="date"
+              label={t('periods.modal.manualEndDate')}
+              value={values.manualEndDate}
+              onChange={(event) => {
+                const manualEndDate = event.currentTarget.value;
+                setValues((current) => ({ ...current, manualEndDate }));
+              }}
+              required
+            />
+          ) : (
+            <div className={classes.previewCard}>
+              <Text size="xs" c="dimmed">
+                {t('periods.modal.calculatedEndDate')}
+              </Text>
+              <Text fw={700}>{selectedEndDateDisplay}</Text>
+            </div>
+          )}
+
+          <TextInput
+            label={t('periods.modal.periodName')}
+            placeholder={t('periods.modal.periodNamePlaceholder')}
+            value={values.name}
+            onChange={(event) => {
+              const name = event.currentTarget.value;
+              setValues((current) => ({ ...current, name }));
+            }}
+          />
+
+          <Group justify="flex-end" mt="sm">
+            <Button variant="subtle" onClick={requestClose} disabled={isSubmitting}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              loading={isSubmitting}
+              leftSection={
+                isEditMode ? <IconDeviceFloppy size={16} /> : <IconCalendarPlus size={16} />
+              }
+            >
+              {isEditMode ? t('periods.modal.saveChanges') : t('periods.modal.createPeriod')}
+            </Button>
+          </Group>
+        </Stack>
+      )}
+    </FormOverlay>
   );
 }

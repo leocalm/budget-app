@@ -5,7 +5,6 @@ import {
   IconCopy,
   IconDownload,
   IconQrcode,
-  IconShieldCheck,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,8 +22,8 @@ import {
   Stepper,
   Text,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { setupTwoFactor, verifyTwoFactor } from '@/api/twoFactor';
+import { toast } from '@/lib/toast';
 
 interface TwoFactorSetupProps {
   opened: boolean;
@@ -94,11 +93,9 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
 
     try {
       await verifyTwoFactor(verificationCode);
-      notifications.show({
+      toast.success({
         title: t('common.success'),
         message: 'Two-factor authentication enabled successfully',
-        color: 'green',
-        icon: <IconShieldCheck size={20} />,
       });
       onSuccess();
       handleClose();
@@ -122,11 +119,9 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
 
   const copySecret = () => {
     navigator.clipboard.writeText(secret);
-    notifications.show({
+    toast.info({
       title: t('common.success'),
       message: 'Secret copied to clipboard',
-      color: 'green',
-      icon: <IconCopy size={20} />,
     });
   };
 
@@ -141,21 +136,17 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    notifications.show({
+    toast.info({
       title: t('common.success'),
       message: 'Backup codes downloaded',
-      color: 'green',
-      icon: <IconDownload size={20} />,
     });
   };
 
   const copyBackupCodes = () => {
     navigator.clipboard.writeText(backupCodes.join('\n'));
-    notifications.show({
+    toast.info({
       title: t('common.success'),
       message: 'Backup codes copied to clipboard',
-      color: 'green',
-      icon: <IconCopy size={20} />,
     });
   };
 

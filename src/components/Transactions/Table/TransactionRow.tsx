@@ -35,8 +35,8 @@ export const TransactionRow = ({
   const amountColor = isTransfer
     ? 'var(--accent-primary)'
     : isOutgoing
-      ? 'var(--accent-danger)'
-      : 'var(--accent-success)';
+      ? 'var(--mantine-color-red-6)'
+      : 'var(--mantine-color-green-6)';
 
   const prefix = isOutgoing ? '-' : isTransfer ? '' : '+';
   const formattedValue = formatCurrencyValue(t.amount, globalCurrency.decimalPlaces, i18n.language);
@@ -48,8 +48,8 @@ export const TransactionRow = ({
       <Box
         onClick={() => onClick?.(t)}
         style={{
-          padding: '16px',
-          borderBottom: '1px solid var(--border-medium)',
+          padding: 'var(--spacing-l)',
+          borderBottom: '1px solid var(--border-soft)',
           cursor: onClick ? 'pointer' : 'default',
           animation: `fadeInUp 0.4s ease backwards`,
           animationDelay: `${animationDelay}s`,
@@ -62,7 +62,7 @@ export const TransactionRow = ({
               fw={600}
               style={{
                 color: 'var(--text-primary)',
-                fontSize: '15px',
+                fontSize: 'var(--type-diagnostic-name-size)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -74,8 +74,8 @@ export const TransactionRow = ({
               <Text
                 size="sm"
                 style={{
-                  color: 'var(--text-tertiary)',
-                  fontSize: '13px',
+                  color: 'var(--text-muted)',
+                  fontSize: 'var(--type-diagnostic-metric-size)',
                 }}
               >
                 {t.vendor.name}
@@ -86,7 +86,7 @@ export const TransactionRow = ({
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontWeight: 700,
-              fontSize: '16px',
+              fontSize: 'var(--type-reflective-label-size)',
               color: amountColor,
               whiteSpace: 'nowrap',
               flexShrink: 0,
@@ -138,13 +138,13 @@ export const TransactionRow = ({
             fw={600}
             style={{
               color: 'var(--text-primary)',
-              fontSize: '15px',
+              fontSize: 'var(--type-diagnostic-name-size)',
             }}
           >
             {isTransfer ? translator('transactions.list.row.transferDescription') : t.description}
           </Text>
           {t.vendor && (
-            <Text size="sm" c="dimmed" style={{ fontSize: '13px' }}>
+            <Text size="sm" c="dimmed" style={{ fontSize: 'var(--type-diagnostic-metric-size)' }}>
               {t.vendor.name}
             </Text>
           )}

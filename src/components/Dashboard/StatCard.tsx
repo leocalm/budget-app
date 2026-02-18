@@ -28,20 +28,26 @@ export function StatCard({
 }: StatCardProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const trendColor =
+    trend?.direction === 'up' ? 'var(--mantine-color-green-6)' : 'var(--mantine-color-red-6)';
+  const trendBg =
+    trend?.direction === 'up'
+      ? 'var(--mantine-color-green-light)'
+      : 'var(--mantine-color-red-light)';
 
   if (loading) {
     return (
       <Paper
         p="lg"
-        radius="md"
+        radius="lg"
         withBorder
         style={{
           background: featured
             ? isDark
-              ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
-              : 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.05) 100%)'
+              ? 'linear-gradient(135deg, var(--color-accent-primary-soft-strong) 0%, var(--color-accent-secondary-soft) 100%)'
+              : 'linear-gradient(135deg, var(--color-accent-primary-soft) 0%, var(--color-accent-secondary-soft) 100%)'
             : 'var(--bg-card)',
-          borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--border-medium)',
+          borderColor: featured ? 'var(--accent-primary)' : 'var(--border-soft)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -55,7 +61,7 @@ export function StatCard({
               right: 0,
               height: 4,
               background:
-                'linear-gradient(90deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)',
+                'linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
             }}
           />
         )}
@@ -72,23 +78,19 @@ export function StatCard({
   return (
     <Card
       padding="lg"
-      radius="md"
+      radius="lg"
       withBorder
       onClick={onClick}
       style={{
         cursor: onClick ? 'pointer' : 'default',
         background: featured
           ? isDark
-            ? 'linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(180, 122, 255, 0.08) 100%)'
-            : 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(180, 122, 255, 0.05) 100%)'
+            ? 'linear-gradient(135deg, var(--color-accent-primary-soft-strong) 0%, var(--color-accent-secondary-soft) 100%)'
+            : 'linear-gradient(135deg, var(--color-accent-primary-soft) 0%, var(--color-accent-secondary-soft) 100%)'
           : 'var(--bg-card)',
-        borderColor: featured ? 'rgba(0, 212, 255, 0.25)' : 'var(--border-medium)',
+        borderColor: featured ? 'var(--accent-primary)' : 'var(--border-soft)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        boxShadow: featured
-          ? isDark
-            ? '0 0 40px rgba(0, 212, 255, 0.2)'
-            : '0 0 24px rgba(0, 212, 255, 0.12)'
-          : undefined,
+        boxShadow: featured ? 'var(--shadow-reflective-glow)' : undefined,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -103,7 +105,7 @@ export function StatCard({
             right: 0,
             height: 4,
             background:
-              'linear-gradient(90deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)',
+              'linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
           }}
         />
       )}
@@ -116,7 +118,7 @@ export function StatCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+              background: 'var(--bg-elevated)',
               borderRadius: 6,
             }}
           >
@@ -136,12 +138,14 @@ export function StatCard({
         <Text
           fw={700}
           style={{
-            fontSize: featured ? rem(48) : rem(28),
+            fontSize: featured
+              ? 'var(--type-reflective-hero-size)'
+              : 'var(--type-reflective-secondary-size)',
             fontFamily: 'var(--mantine-font-family-monospace)',
             lineHeight: 1.2,
             color: featured ? undefined : 'var(--text-primary)',
             background: featured
-              ? 'linear-gradient(135deg, var(--mantine-color-cyan-5) 0%, var(--mantine-color-violet-5) 100%)'
+              ? 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)'
               : undefined,
             WebkitBackgroundClip: featured ? 'text' : undefined,
             WebkitTextFillColor: featured ? 'transparent' : undefined,
@@ -160,9 +164,7 @@ export function StatCard({
                 <span
                   style={{
                     fontSize: 14,
-                    color: trend.positive
-                      ? 'var(--mantine-color-green-5)'
-                      : 'var(--mantine-color-red-5)',
+                    color: trendColor,
                   }}
                 >
                   ↗️
@@ -171,9 +173,7 @@ export function StatCard({
                 <span
                   style={{
                     fontSize: 14,
-                    color: trend.positive
-                      ? 'var(--mantine-color-green-5)'
-                      : 'var(--mantine-color-red-5)',
+                    color: trendColor,
                   }}
                 >
                   ↘️
@@ -182,11 +182,9 @@ export function StatCard({
               <Text
                 size="xs"
                 fw={600}
-                c={trend.positive ? 'green.5' : 'red.5'}
+                c={trendColor}
                 style={{
-                  backgroundColor: trend.positive
-                    ? 'rgba(0, 255, 163, 0.1)'
-                    : 'rgba(255, 107, 157, 0.1)',
+                  backgroundColor: trendBg,
                   padding: '2px 6px',
                   borderRadius: 4,
                 }}

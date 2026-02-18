@@ -12,7 +12,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { EmptyState } from '@/components/Utils';
+import { CardSkeleton, StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useDeleteCategory, useInfiniteCategories } from '@/hooks/useCategories';
 import { CategoryResponse, CategoryType } from '@/types/category';
@@ -35,6 +35,9 @@ export function CategoriesContainer() {
 
   const {
     data: paginatedCategories,
+    isLoading,
+    isError,
+    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -90,9 +93,9 @@ export function CategoriesContainer() {
   return (
     <Box
       style={{
-        maxWidth: '1400px',
+        maxWidth: '1100px',
         margin: '0 auto',
-        padding: '32px',
+        padding: 'var(--spacing-2xl)',
       }}
     >
       <Stack gap="xl">
@@ -140,22 +143,35 @@ export function CategoriesContainer() {
         )}
 
         {/* Categories Grid */}
-        {filteredCategories.length === 0 ? (
-          <EmptyState
-            icon="📁"
-            title={t('states.empty.categories.title')}
-            message={t('states.empty.categories.message')}
-            primaryAction={{
-              label: t('categories.empty.addButton'),
-              icon: <span>+</span>,
-              onClick: openCreate,
-            }}
-          />
-        ) : (
+        <StateRenderer
+          variant="page"
+          isLocked={selectedPeriodId === null}
+          lockMessage={t('states.locked.message.periodRequired')}
+          lockAction={{ label: t('states.locked.configure'), to: '/periods' }}
+          hasError={isError}
+          errorMessage={t('states.error.loadFailed.message')}
+          onRetry={() => {
+            void refetch();
+          }}
+          isLoading={isLoading}
+          loadingSkeleton={
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg" w="100%">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((item) => (
+                <CardSkeleton key={item} />
+              ))}
+            </SimpleGrid>
+          }
+          isEmpty={filteredCategories.length === 0}
+          emptyItemsLabel={t('states.contract.items.categories')}
+          emptyMessage={t('states.empty.categories.message')}
+          emptyAction={{
+            label: t('categories.empty.addButton'),
+            onClick: openCreate,
+          }}
+        >
           <>
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
               {filteredCategories.map((category) => {
-                // Calculate trend from differenceVsAveragePercentage
                 const trendPercentage = Math.abs(category.differenceVsAveragePercentage);
                 const trend =
                   trendPercentage > 0
@@ -218,7 +234,7 @@ export function CategoriesContainer() {
               </Box>
             )}
           </>
-        )}
+        </StateRenderer>
 
         {isMobile ? (
           <>

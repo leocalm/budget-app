@@ -1,0 +1,54 @@
+.surface {
+  border: 1px solid var(--border-medium);
+  border-radius: 14px;
+  background: var(--bg-card);
+  padding: 20px;
+}
+
+.page {
+  min-height: 280px;
+}
+
+.card {
+  min-height: 180px;
+}
+
+.centered {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.locked {
+  border-style: dashed;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.statusLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.message {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.retryButton {
+  margin-top: 8px;
+}
+
+.skeletonLine {
+  width: 100%;
+}

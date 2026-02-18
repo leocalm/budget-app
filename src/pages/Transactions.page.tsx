@@ -9,7 +9,7 @@ export function TransactionsPage() {
   const { t } = useTranslation();
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
-  const { data: transactions, isLoading, isError } = useTransactions(selectedPeriodId);
+  const { data: transactions, isLoading, isError, refetch } = useTransactions(selectedPeriodId);
 
   return (
     <BasicAppShell>
@@ -29,8 +29,12 @@ export function TransactionsPage() {
 
         <TransactionsTable
           transactions={transactions}
+          isLocked={selectedPeriodId === null}
           isLoading={isLoading}
           isError={isError}
+          onRetry={() => {
+            void refetch();
+          }}
           insertEnabled
         />
       </Stack>

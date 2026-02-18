@@ -1,6 +1,6 @@
 /* ── Add Button gradient ── */
 .addButton {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: none;
   box-shadow: 0 4px 16px rgb(0 212 255 / 30%);
 }
@@ -11,7 +11,7 @@
 
 /* ── Summary gradient text ── */
 .summaryValueGradient {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -98,7 +98,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent-success);
+  background: var(--accent-primary);
   animation: pulse 2s infinite;
 }
 

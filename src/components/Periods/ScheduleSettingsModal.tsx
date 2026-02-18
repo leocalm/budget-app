@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
-  Drawer,
   Group,
-  Modal,
   NumberInput,
   Radio,
   Select,
@@ -15,13 +13,13 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import {
   useCreateBudgetPeriodSchedule,
   useDeleteBudgetPeriodSchedule,
   useUpdateBudgetPeriodSchedule,
 } from '@/hooks/useBudget';
+import { toast } from '@/lib/toast';
 import {
   BudgetPeriodSchedule,
   BudgetPeriodScheduleRequest,
@@ -53,11 +51,11 @@ const defaultValues: ScheduleFormValues = {
 
 export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSettingsModalProps) {
   const { t } = useTranslation();
-  const isMobile = useMediaQuery('(max-width: 48em)');
   const createScheduleMutation = useCreateBudgetPeriodSchedule();
   const updateScheduleMutation = useUpdateBudgetPeriodSchedule();
   const deleteScheduleMutation = useDeleteBudgetPeriodSchedule();
   const [values, setValues] = useState<ScheduleFormValues>(defaultValues);
+  const [initialValues, setInitialValues] = useState<ScheduleFormValues>(defaultValues);
 
   useEffect(() => {
     if (!opened) {
@@ -65,7 +63,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
     }
 
     if (schedule) {
-      setValues({
+      const nextValues: ScheduleFormValues = {
         mode: 'automatic',
         startDay: schedule.startDay,
         durationValue: schedule.durationValue,
@@ -74,12 +72,17 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         sundayAdjustment: schedule.sundayAdjustment,
         namePattern: schedule.namePattern,
         generateAhead: schedule.generateAhead,
-      });
+      };
+      setValues(nextValues);
+      setInitialValues(nextValues);
       return;
     }
 
     setValues(defaultValues);
+    setInitialValues(defaultValues);
   }, [opened, schedule]);
+
+  const isDirty = JSON.stringify(values) !== JSON.stringify(initialValues);
 
   const isSubmitting =
     createScheduleMutation.isPending ||
@@ -98,8 +101,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
   const saveSchedule = async () => {
     if (values.mode === 'manual') {
       if (!schedule) {
-        notifications.show({
-          color: 'green',
+        toast.success({
           title: t('common.success'),
           message: t('periods.schedule.savedManualMode'),
         });
@@ -109,17 +111,16 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
 
       try {
         await deleteScheduleMutation.mutateAsync();
-        notifications.show({
-          color: 'green',
+        toast.success({
           title: t('common.success'),
           message: t('periods.schedule.disabledSuccess'),
         });
         onClose();
       } catch (error) {
-        notifications.show({
-          color: 'red',
+        toast.error({
           title: t('common.error'),
           message: error instanceof Error ? error.message : t('periods.schedule.failedToSave'),
+          nonCritical: true,
         });
       }
 
@@ -127,19 +128,19 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
     }
 
     if (values.startDay < 1 || values.startDay > 31) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: t('periods.schedule.startDayValidation'),
+        nonCritical: true,
       });
       return;
     }
 
     if (values.durationValue < 1) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: t('periods.schedule.durationValidation'),
+        nonCritical: true,
       });
       return;
     }
@@ -161,8 +162,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         await createScheduleMutation.mutateAsync(payload);
       }
 
-      notifications.show({
-        color: 'green',
+      toast.success({
         title: t('common.success'),
         message: schedule
           ? t('periods.schedule.updatedSuccess')
@@ -170,10 +170,10 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
       });
       onClose();
     } catch (error) {
-      notifications.show({
-        color: 'red',
+      toast.error({
         title: t('common.error'),
         message: error instanceof Error ? error.message : t('periods.schedule.failedToSave'),
+        nonCritical: true,
       });
     }
   };
@@ -308,7 +308,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
     </Stack>
   );
 
-  const content = (
+  const content = (requestClose: () => void) => (
     <Stack gap="lg">
       {!schedule && (
         <Radio.Group
@@ -328,7 +328,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
       {(values.mode === 'automatic' || !!schedule) && automaticSettings}
 
       <Group justify="flex-end">
-        <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
+        <Button variant="subtle" onClick={requestClose} disabled={isSubmitting}>
           {t('common.cancel')}
         </Button>
         <Button onClick={saveSchedule} loading={isSubmitting}>
@@ -338,23 +338,15 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
     </Stack>
   );
 
-  if (isMobile) {
-    return (
-      <Drawer
-        opened={opened}
-        onClose={onClose}
-        position="bottom"
-        size="95%"
-        title={t('periods.schedule.title')}
-      >
-        {content}
-      </Drawer>
-    );
-  }
-
   return (
-    <Modal opened={opened} onClose={onClose} centered size="lg" title={t('periods.schedule.title')}>
-      {content}
-    </Modal>
+    <FormOverlay
+      opened={opened}
+      onClose={onClose}
+      title={t('periods.schedule.title')}
+      isDirty={isDirty}
+      closeBlocked={isSubmitting}
+    >
+      {(requestClose) => content(requestClose)}
+    </FormOverlay>
   );
 }

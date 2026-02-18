@@ -8,7 +8,15 @@
     "close": "Close",
     "next": "Next",
     "back": "Back",
-    "loadMore": "Load More"
+    "loadMore": "Load More",
+    "confirmDialogLabel": "Confirmation dialog",
+    "retry": "Retry",
+    "unsavedChanges": {
+      "title": "Discard changes?",
+      "impact": "Your edits won't be saved.",
+      "keepEditing": "Keep editing",
+      "discard": "Discard"
+    }
   },
   "currencies": {
     "EUR": "Euro",
@@ -501,6 +509,7 @@
     "deleteFailed": "Failed to delete overlay",
     "detailComingSoon": "Overlay detail view is coming soon.",
     "confirmDelete": "Delete {{name}}? This action cannot be undone.",
+    "confirmDeleteImpact": "This will permanently delete {{name}}. Historical transactions remain unchanged.",
     "status": {
       "active": "Active",
       "upcoming": "Upcoming",
@@ -620,27 +629,39 @@
     "logo": {
       "title": "PiggyPulse"
     },
+    "topbar": {
+      "pageTitle": {
+        "dashboard": "Dashboard",
+        "transactions": "Transactions",
+        "periods": "Periods",
+        "accounts": "Accounts",
+        "categories": "Categories",
+        "vendors": "Vendors",
+        "settings": "Settings"
+      }
+    },
     "userMenu": {
       "userName": "John Doe",
       "userEmail": "john@example.com",
       "application": "Application",
       "profile": "Profile",
       "settings": "Settings",
-      "logout": "Logout"
+      "logout": "Log out"
     },
     "navigation": {
-      "overview": "Overview",
+      "core": "Core",
+      "structure": "Structure",
+      "session": "Session",
       "dashboard": "Dashboard",
       "transactions": "Transactions",
-      "management": "Management",
       "accounts": "Accounts",
       "categories": "Categories",
       "vendors": "Vendors",
       "budgetPlan": "Budget Plan",
       "periods": "Periods",
       "overlays": "Overlays",
-      "other": "Other",
       "settings": "Settings",
+      "logout": "Log out",
       "helpSupport": "Help & Support",
       "more": "More"
     }
@@ -772,7 +793,7 @@
     },
     "delete": {
       "confirmTitle": "Delete Vendor",
-      "confirmMessage": "Are you sure you want to delete this vendor?",
+      "confirmMessage": "This will permanently delete this vendor. Historical transactions keep the current vendor name.",
       "confirmButton": "Delete",
       "cancelButton": "Cancel"
     },
@@ -893,6 +914,30 @@
     }
   },
   "states": {
+    "contract": {
+      "emptyTitle": "No {{items}} yet.",
+      "items": {
+        "data": "items",
+        "accounts": "accounts",
+        "categories": "categories",
+        "vendors": "vendors",
+        "transactions": "transactions",
+        "balanceHistory": "balance history"
+      }
+    },
+    "locked": {
+      "status": {
+        "notConfigured": "Not configured"
+      },
+      "configure": "Configure",
+      "message": {
+        "periodRequired": "A budget period is required before this content can be shown."
+      }
+    },
+    "changeSurfaced": {
+      "title": "Updated.",
+      "message": "Updated values reflect your recent changes."
+    },
     "empty": {
       "tips": {
         "title": "Quick Tips"
@@ -1037,7 +1082,7 @@
         "reportIssue": "Report Issue",
         "retryConnection": "Retry Connection"
       },
-      "retry": "Try Again",
+      "retry": "Retry",
       "details": {
         "title": "Error Details",
         "code": "Error Code",

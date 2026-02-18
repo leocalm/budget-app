@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Group, SimpleGrid, Stack, TextInput } from '@mantine/core';
-import { EmptyState, LoadingState } from '@/components/Utils';
+import { CardSkeleton, StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useDeleteVendor, useInfiniteVendors } from '@/hooks/useVendors';
 import { VendorWithStats } from '@/types/vendor';
@@ -20,6 +20,8 @@ export function VendorsContainer() {
   const {
     data: paginatedData,
     isLoading,
+    isError,
+    refetch,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -140,14 +142,6 @@ export function VendorsContainer() {
     setDeleteError(null);
   };
 
-  if (isLoading) {
-    return (
-      <Box p="xl">
-        <LoadingState variant="spinner" text={t('states.loading.default')} />
-      </Box>
-    );
-  }
-
   // Check if we have search results or no vendors at all
   const hasNoVendors = !allVendors || allVendors.length === 0;
   const hasNoSearchResults = searchTerm && processedVendors.length === 0;
@@ -211,30 +205,44 @@ export function VendorsContainer() {
         )}
 
         {/* Vendors Grid or Empty State */}
-        {hasNoVendors ? (
-          <EmptyState
-            icon="🏪"
-            title={t('states.empty.vendors.title')}
-            message={t('states.empty.vendors.message')}
-            primaryAction={{
-              label: t('states.empty.vendors.addVendor'),
-              icon: <span>+</span>,
-              onClick: handleAdd,
-            }}
-          />
-        ) : hasNoSearchResults ? (
-          <EmptyState
-            variant="search"
-            icon="🔍"
-            title={t('states.empty.search.title')}
-            searchQuery={searchTerm}
-            primaryAction={{
-              label: t('states.empty.filter.clearAll'),
-              icon: <span>🔄</span>,
-              onClick: () => setSearchTerm(''),
-            }}
-          />
-        ) : (
+        <StateRenderer
+          variant="page"
+          isLocked={selectedPeriodId === null}
+          lockMessage={t('states.locked.message.periodRequired')}
+          lockAction={{ label: t('states.locked.configure'), to: '/periods' }}
+          hasError={isError}
+          errorMessage={t('states.error.loadFailed.message')}
+          onRetry={() => {
+            void refetch();
+          }}
+          isLoading={isLoading}
+          loadingSkeleton={
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg" w="100%">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((item) => (
+                <CardSkeleton key={item} />
+              ))}
+            </SimpleGrid>
+          }
+          isEmpty={Boolean(hasNoVendors || hasNoSearchResults)}
+          emptyItemsLabel={t('states.contract.items.vendors')}
+          emptyTitle={hasNoSearchResults ? t('states.empty.search.title') : undefined}
+          emptyMessage={
+            hasNoSearchResults
+              ? `${t('states.empty.search.noResults')} "${searchTerm}"`
+              : t('states.empty.vendors.message')
+          }
+          emptyAction={
+            hasNoSearchResults
+              ? {
+                  label: t('states.empty.filter.clearAll'),
+                  onClick: () => setSearchTerm(''),
+                }
+              : {
+                  label: t('states.empty.vendors.addVendor'),
+                  onClick: handleAdd,
+                }
+          }
+        >
           <Stack gap="lg">
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
               {processedVendors.map((vendor) => (
@@ -259,7 +267,7 @@ export function VendorsContainer() {
               </Box>
             )}
           </Stack>
-        )}
+        </StateRenderer>
       </Stack>
 
       {/* Form Modal */}

@@ -177,9 +177,9 @@ export function TransactionsContainer() {
   return (
     <Box
       style={{
-        maxWidth: '1400px',
+        maxWidth: '1100px',
         margin: '0 auto',
-        padding: '32px',
+        padding: 'var(--spacing-2xl)',
       }}
     >
       {/* Page Header */}
@@ -244,13 +244,13 @@ export function TransactionsContainer() {
             background: 'var(--bg-card)',
           },
           body: {
-            padding: '24px',
+            padding: 'var(--spacing-xl)',
           },
           close: {
             color: 'var(--text-tertiary)',
             '&:hover': {
               background: 'var(--bg-elevated)',
-              color: 'var(--accent-danger)',
+              color: 'var(--accent-primary)',
             },
           },
         }}
