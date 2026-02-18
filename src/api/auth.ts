@@ -1,6 +1,10 @@
 import { apiGet, apiPost, apiPut } from './client';
 import { ApiError } from './errors';
 
+function errorWithCause(message: string, cause: unknown): Error {
+  return new Error(message, { cause });
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -35,19 +39,19 @@ export async function login(credentials: LoginRequest): Promise<void> {
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.isUnauthorized || error.status === 403) {
-        throw new Error('Invalid email or password. Please try again.');
+        throw errorWithCause('Invalid email or password. Please try again.', error);
       }
 
       if (error.status === 429) {
-        throw new Error('Too many login attempts. Please try again later.');
+        throw errorWithCause('Too many login attempts. Please try again later.', error);
       }
 
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw errorWithCause('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw new Error(error.message);
+        throw errorWithCause(error.message, error);
       }
     }
 
@@ -55,16 +59,19 @@ export async function login(credentials: LoginRequest): Promise<void> {
     if (error instanceof Error) {
       // Check if it's a network error
       if (error.message.includes('Failed to fetch')) {
-        throw new Error('Unable to connect to the server. Please check your internet connection.');
+        throw errorWithCause(
+          'Unable to connect to the server. Please check your internet connection.',
+          error
+        );
       }
 
       if (error.message.trim().length > 0) {
-        throw new Error(error.message);
+        throw errorWithCause(error.message, error);
       }
     }
 
     // Generic error fallback
-    throw new Error('Login failed. Please try again.');
+    throw errorWithCause('Login failed. Please try again.', error);
   }
 }
 
@@ -93,19 +100,22 @@ export async function updateUser(id: string, data: UpdateUserRequest): Promise<U
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
-        throw new Error(error.message || 'Invalid data. Please check your inputs.');
+        throw errorWithCause(error.message || 'Invalid data. Please check your inputs.', error);
       }
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw errorWithCause('Server error. Please try again later.', error);
       }
       if (error.message) {
-        throw new Error(error.message);
+        throw errorWithCause(error.message, error);
       }
     }
     if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the server. Please check your internet connection.');
+      throw errorWithCause(
+        'Unable to connect to the server. Please check your internet connection.',
+        error
+      );
     }
-    throw new Error('Update failed. Please try again.');
+    throw errorWithCause('Update failed. Please try again.', error);
   }
 }
 
@@ -120,19 +130,25 @@ export async function register(credentials: RegisterRequest): Promise<void> {
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 409) {
-        throw new Error('This email is already registered. Please use a different email.');
+        throw errorWithCause(
+          'This email is already registered. Please use a different email.',
+          error
+        );
       }
 
       if (error.status === 400) {
-        throw new Error(error.message || 'Invalid registration data. Please check your inputs.');
+        throw errorWithCause(
+          error.message || 'Invalid registration data. Please check your inputs.',
+          error
+        );
       }
 
       if (error.status >= 500) {
-        throw new Error('Server error. Please try again later.');
+        throw errorWithCause('Server error. Please try again later.', error);
       }
 
       if (error.message) {
-        throw new Error(error.message);
+        throw errorWithCause(error.message, error);
       }
     }
 
@@ -140,16 +156,19 @@ export async function register(credentials: RegisterRequest): Promise<void> {
     if (error instanceof Error) {
       // Check if it's a network error
       if (error.message.includes('Failed to fetch')) {
-        throw new Error('Unable to connect to the server. Please check your internet connection.');
+        throw errorWithCause(
+          'Unable to connect to the server. Please check your internet connection.',
+          error
+        );
       }
 
       if (error.message.trim().length > 0) {
-        throw new Error(error.message);
+        throw errorWithCause(error.message, error);
       }
     }
 
     // Generic error fallback
-    throw new Error('Registration failed. Please try again.');
+    throw errorWithCause('Registration failed. Please try again.', error);
   }
 }
 
