@@ -6,7 +6,6 @@ import {
   IconWallet,
   IconTag,
   IconBuildingStore,
-  IconSettings,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -205,45 +204,11 @@ export function BottomNavigation() {
                             }}
                             style={{ padding: '8px 12px' }}
                           />
-                          <Divider />
                         </>
                       );
                     })()}
 
-                    {(() => {
-                      const route = '/settings';
-                      const active = location.pathname === route;
-                      return (
-                        <>
-                          <NavLink
-                            label={t('layout.navigation.settings')}
-                            leftSection={
-                              <ThemeIcon
-                                variant={active ? 'light' : 'transparent'}
-                                color={active ? 'cyan' : 'gray'}
-                                size="lg"
-                                radius="md"
-                              >
-                                <IconSettings size={22} />
-                              </ThemeIcon>
-                            }
-                            onClick={() => {
-                              navigate(route);
-                              close();
-                            }}
-                            variant="light"
-                            styles={{
-                              label: {
-                                color: active ? 'var(--mantine-color-cyan-6)' : 'var(--mantine-color-dimmed)',
-                                fontSize: 14,
-                                fontWeight: 500,
-                              },
-                            }}
-                            style={{ padding: '8px 12px' }}
-                          />
-                        </>
-                      );
-                    })()}
+                    {/* Settings intentionally removed from mobile More popover per request */}
                   </Stack>
                 </Popover.Dropdown>
               </Popover>
