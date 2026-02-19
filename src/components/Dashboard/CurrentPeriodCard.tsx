@@ -92,6 +92,7 @@ export const CurrentPeriodCard = ({
   );
 
   const totalBudgetFormatted = new Money(totalBudget, currency).format(i18n.language);
+  const actualSpendFormatted = new Money(actualSpend, currency).format(i18n.language);
   const remainingFormatted = new Money(remaining, currency).format(i18n.language);
   const projectedSpendFormatted = new Money(projectedSpend, currency).format(i18n.language);
 
@@ -99,7 +100,7 @@ export const CurrentPeriodCard = ({
     <Paper className={styles.card} p="xl" withBorder>
       <img src={piggyLogo} className={styles.pigMark} alt="" />
       <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
-      <Text className={styles.periodAmount}>{remainingFormatted}</Text>
+      <Text className={styles.periodAmount}>{actualSpendFormatted}</Text>
       <Text className={styles.periodMeta}>of {totalBudgetFormatted}</Text>
       <Text className={styles.periodRemaining}>
         {monthProgress.remainingDays} days remaining. {remainingFormatted} remaining in this period.

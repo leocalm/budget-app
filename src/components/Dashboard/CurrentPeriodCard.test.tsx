@@ -68,10 +68,11 @@ describe('CurrentPeriodCard', () => {
       />
     );
 
-    expect(screen.getByText('€320.00 remaining')).toBeInTheDocument();
-    expect(screen.getByText('68% used • 10 days remaining')).toBeInTheDocument();
-    expect(screen.getByText('Total budget')).toBeInTheDocument();
-    expect(screen.getByText('Total actual spend')).toBeInTheDocument();
+    expect(screen.getByText('€680.00')).toBeInTheDocument();
+    expect(screen.getByText('of €1,000.00')).toBeInTheDocument();
+    expect(
+      screen.getByText('10 days remaining. €320.00 remaining in this period.')
+    ).toBeInTheDocument();
     expect(screen.getByText('Projected spend at current pace: €1,020.00')).toBeInTheDocument();
   });
 });

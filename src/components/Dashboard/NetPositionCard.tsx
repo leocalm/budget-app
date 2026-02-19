@@ -57,8 +57,17 @@ export const NetPositionCard = ({
 
   const segmentWidths = computeSegmentWidths();
 
+  let testId = 'net-position-active';
+  if (isError) {
+    testId = 'net-position-error';
+  } else if (isLoading) {
+    testId = 'net-position-loading';
+  } else if (data?.accountCount === 0) {
+    testId = 'net-position-empty';
+  }
+
   return (
-    <Paper className={styles.wireframeCard} withBorder>
+    <Paper className={styles.wireframeCard} withBorder data-testid={testId}>
       <Text component="h2">{t('dashboard.netPosition.title')}</Text>
 
       {isError && (
