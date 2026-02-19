@@ -581,6 +581,7 @@
 
 .archivedContent {
   border-top: 1px dashed var(--border-medium);
+  overflow: visible;
 }
 
 .managementRow {
@@ -747,13 +748,15 @@
   .managementGroup,
   .managementGroupArchived,
   .group {
-    border: none;
+    border: none !important;
     background: transparent !important;
-    overflow: visible;
+    overflow: visible !important;
   }
 
   .archivedShell {
     background: transparent !important;
+    border: none !important;
+    overflow: visible !important;
   }
 
   .groupHeader {

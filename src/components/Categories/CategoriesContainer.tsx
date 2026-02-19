@@ -254,12 +254,8 @@ export function CategoriesContainer() {
             </nav>
           </div>
           {viewMode === 'management' && (
-            <Button
-              leftSection={<IconPlus size={16} />}
-              onClick={openCreate}
-              className={styles.addButton}
-            >
-              <span className={styles.desktopAddLabel}>{t('categories.actions.addCategory')}</span>
+            <Button onClick={openCreate} className={styles.addButton}>
+              <span className={styles.desktopAddLabel}>+ {t('categories.actions.addCategory')}</span>
               <span className={styles.mobileAddLabel}>+</span>
             </Button>
           )}
