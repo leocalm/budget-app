@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Group, Paper, Skeleton, Text } from '@mantine/core';
+import piggyLogo from '@/assets/icons/png/gradient/piggy-pulse.png';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { MonthlyBurnIn, MonthProgress } from '@/types/dashboard';
 import { Money } from '@/types/money';
@@ -44,15 +45,14 @@ export const CurrentPeriodCard = ({
   if (isError) {
     return (
       <Paper className={styles.card} p="xl" withBorder>
-        <Stack gap="sm">
-          <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
-          <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.error')}</Text>
-          <Group>
-            <Button size="xs" variant="light" onClick={onRetry}>
-              {t('states.error.retry')}
-            </Button>
-          </Group>
-        </Stack>
+        <img src={piggyLogo} className={styles.pigMark} alt="" />
+        <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
+        <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.error')}</Text>
+        <Group mt="sm">
+          <Button size="xs" variant="light" onClick={onRetry}>
+            {t('states.error.retry')}
+          </Button>
+        </Group>
       </Paper>
     );
   }
@@ -60,17 +60,13 @@ export const CurrentPeriodCard = ({
   if (isLoading) {
     return (
       <Paper className={styles.card} p="xl" withBorder>
-        <Stack gap="md">
-          <Skeleton height={16} width={140} radius="md" />
-          <Skeleton height={40} width="40%" radius="md" />
-          <Skeleton height={18} width={180} radius="md" />
-          <Skeleton height={8} width="100%" radius="xl" />
-          <Group grow>
-            <Skeleton height={56} radius="md" />
-            <Skeleton height={56} radius="md" />
-          </Group>
-          <Skeleton height={16} width={260} radius="md" />
-        </Stack>
+        <img src={piggyLogo} className={styles.pigMark} alt="" />
+        <Skeleton height={16} width={140} radius="md" mb="sm" />
+        <Skeleton height={48} width="40%" radius="md" mb="xs" />
+        <Skeleton height={18} width={120} radius="md" mb="xs" />
+        <Skeleton height={16} width={240} radius="md" mb="md" />
+        <Skeleton height={10} width="100%" radius="xl" mb="md" />
+        <Skeleton height={16} width={280} radius="md" />
       </Paper>
     );
   }
@@ -78,10 +74,9 @@ export const CurrentPeriodCard = ({
   if (!selectedPeriodId || !monthlyBurnIn || !monthProgress) {
     return (
       <Paper className={styles.card} p="xl" withBorder>
-        <Stack gap="sm">
-          <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
-          <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.empty')}</Text>
-        </Stack>
+        <img src={piggyLogo} className={styles.pigMark} alt="" />
+        <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
+        <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.empty')}</Text>
       </Paper>
     );
   }
@@ -97,56 +92,24 @@ export const CurrentPeriodCard = ({
   );
 
   const totalBudgetFormatted = new Money(totalBudget, currency).format(i18n.language);
-  const actualSpendFormatted = new Money(actualSpend, currency).format(i18n.language);
   const remainingFormatted = new Money(remaining, currency).format(i18n.language);
   const projectedSpendFormatted = new Money(projectedSpend, currency).format(i18n.language);
 
   return (
     <Paper className={styles.card} p="xl" withBorder>
-      <Stack gap="md">
-        <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
-
-        <Text className={styles.heroValue}>
-          {t('dashboard.currentPeriod.hero.remaining', {
-            amount: remainingFormatted,
-          })}
-        </Text>
-
-        <Text className={styles.heroMeta}>
-          {t('dashboard.currentPeriod.hero.meta', {
-            percent: percentUsed,
-            days: monthProgress.remainingDays,
-          })}
-        </Text>
-
-        <div className={styles.progressTrack} role="presentation" aria-hidden="true">
-          <div
-            className={styles.progressFill}
-            style={{ width: `${Math.min(percentUsed, 100)}%` }}
-          />
-        </div>
-
-        <div className={styles.metricsGrid}>
-          <div>
-            <Text className={styles.metricLabel}>
-              {t('dashboard.currentPeriod.metrics.totalBudget')}
-            </Text>
-            <Text className={styles.metricValue}>{totalBudgetFormatted}</Text>
-          </div>
-          <div>
-            <Text className={styles.metricLabel}>
-              {t('dashboard.currentPeriod.metrics.actualSpend')}
-            </Text>
-            <Text className={styles.metricValue}>{actualSpendFormatted}</Text>
-          </div>
-        </div>
-
-        <Text className={styles.projection}>
-          {t('dashboard.currentPeriod.projection', {
-            amount: projectedSpendFormatted,
-          })}
-        </Text>
-      </Stack>
+      <img src={piggyLogo} className={styles.pigMark} alt="" />
+      <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
+      <Text className={styles.periodAmount}>{remainingFormatted}</Text>
+      <Text className={styles.periodMeta}>of {totalBudgetFormatted}</Text>
+      <Text className={styles.periodRemaining}>
+        {monthProgress.remainingDays} days remaining. {remainingFormatted} remaining in this period.
+      </Text>
+      <div className={styles.progressBar} role="presentation" aria-hidden="true">
+        <div className={styles.progressFill} style={{ width: `${Math.min(percentUsed, 100)}%` }} />
+      </div>
+      <Text className={styles.periodProjection}>
+        Projected spend at current pace: {projectedSpendFormatted}
+      </Text>
     </Paper>
   );
 };

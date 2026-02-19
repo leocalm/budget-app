@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Paper, Skeleton, Stack, Text } from '@mantine/core';
 import { BudgetStability } from '@/types/dashboard';
 import styles from './Dashboard.module.css';
 
@@ -20,82 +20,77 @@ export function BudgetStabilityCard({
 
   const isEmpty = !data || data.totalClosedPeriods < 1;
 
-  return (
-    <Paper
-      className={styles.chartCard}
-      shadow="md"
-      radius="lg"
-      p="xl"
-      withBorder
-      style={{
-        background: 'var(--bg-card)',
-        borderColor: 'var(--border-medium)',
-      }}
-    >
-      <Stack gap="md">
-        <Text fw={600} size="lg">
-          {t('dashboard.stability.title')}
-        </Text>
+  const recentPeriods = data ? data.recentClosedPeriods.slice(0, 6) : [];
+  const outsideToleranceCount = recentPeriods.filter((p) => p.isOutsideTolerance).length;
+  const recentPeriodCount = recentPeriods.length;
 
-        {isError ? (
-          <Stack gap="xs" align="flex-start">
-            <Text size="sm" c="dimmed">
-              {t('dashboard.stability.error')}
-            </Text>
-            <Button variant="subtle" size="xs" onClick={onRetry}>
-              {t('dashboard.stability.retry')}
-            </Button>
-          </Stack>
-        ) : isLoading ? (
-          <Stack gap="sm">
-            <Skeleton height={46} width="40%" />
-            <Skeleton height={18} width="75%" />
-            <Group gap={8}>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <Skeleton
-                  key={`budget-stability-dot-loading-${index}`}
-                  circle
-                  height={12}
-                  width={12}
-                />
-              ))}
-            </Group>
-            <Skeleton height={16} width="45%" />
-          </Stack>
-        ) : isEmpty ? (
-          <Text size="sm" c="dimmed">
-            {t('dashboard.stability.empty')}
+  return (
+    <Paper className={styles.wireframeCard} withBorder>
+      <Text component="h2">{t('dashboard.stability.title')}</Text>
+
+      {isError ? (
+        <Stack gap="xs" align="flex-start">
+          <Text className={styles.meta}>{t('dashboard.stability.error')}</Text>
+          <Button variant="subtle" size="xs" onClick={onRetry}>
+            {t('dashboard.stability.retry')}
+          </Button>
+        </Stack>
+      ) : isLoading ? (
+        <Stack gap="sm">
+          <Skeleton height={46} width="40%" />
+          <Skeleton height={18} width="75%" />
+          <div className={styles.stabilityStrip}>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Skeleton
+                key={`budget-stability-block-loading-${index}`}
+                height={16}
+                width={14}
+                radius="md"
+              />
+            ))}
+          </div>
+          <Skeleton height={16} width="45%" />
+        </Stack>
+      ) : isEmpty ? (
+        <Text className={styles.meta}>{t('dashboard.stability.empty')}</Text>
+      ) : (
+        <>
+          <Text className={styles.valueHero}>{Math.round(data.withinTolerancePercentage)}%</Text>
+          <Text className={styles.meta}>
+            {t('dashboard.stability.withinRangeCount', {
+              within: data.periodsWithinTolerance,
+              total: data.totalClosedPeriods,
+            })}
           </Text>
-        ) : (
-          <Stack gap="sm">
-            <Text
-              className={styles.stabilityValue}
-            >{`${Math.round(data.withinTolerancePercentage)}%`}</Text>
-            <Text size="sm" c="dimmed">
-              {t('dashboard.stability.withinRangeCount', {
-                within: data.periodsWithinTolerance,
-                total: data.totalClosedPeriods,
-              })}
-            </Text>
-            <Group gap={8}>
-              {data.recentClosedPeriods.slice(0, 6).map((period) => (
+          <div className={styles.stabilityStrip}>
+            {recentPeriods.map((period) => {
+              const isOutside = period.isOutsideTolerance;
+              let blockClass = styles.block;
+              if (isOutside) {
+                blockClass += ` ${styles.blockOutside}`;
+              }
+              // No current period indicator in data
+              return (
                 <span
                   key={period.periodId}
-                  className={`${styles.stabilityDot} ${period.isOutsideTolerance ? styles.stabilityDotFilled : ''}`}
+                  className={blockClass}
                   aria-label={
                     period.isOutsideTolerance
                       ? t('dashboard.stability.dots.outside')
                       : t('dashboard.stability.dots.within')
                   }
                 />
-              ))}
-            </Group>
-            <Text size="xs" c="dimmed">
-              {t('dashboard.stability.lastClosedPeriodsLabel')}
-            </Text>
-          </Stack>
-        )}
-      </Stack>
+              );
+            })}
+          </div>
+          <Text className={styles.meta}>
+            {t('dashboard.stability.outsideToleranceCount', {
+              outside: outsideToleranceCount,
+              total: recentPeriodCount,
+            })}
+          </Text>
+        </>
+      )}
     </Paper>
   );
 }

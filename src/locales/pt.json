@@ -746,7 +746,8 @@
     "more": "Página Mais"
   },
   "dashboard": {
-    "title": "Painel Financeiro",
+    "title": "Painel",
+    "subtitle": "Posição atual, desvio e trajetória do período.",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -806,6 +807,8 @@
     "netPosition": {
       "title": "Posição Líquida",
       "changeThisPeriod": "{{amount}} neste período",
+      "acrossAccounts": "Em {{count}} contas",
+      "lastUpdated": "Atualizado há {{time}}",
       "breakdownLiquid": "Líquido {{amount}}",
       "breakdownProtected": "Protegido {{amount}}",
       "breakdownDebt": "Dívida {{amount}}",
@@ -864,6 +867,7 @@
     "stability": {
       "title": "Estabilidade do Orçamento",
       "withinRangeCount": "{{within}} de {{total}} períodos dentro da faixa",
+      "outsideToleranceCount": "{{outside}} dos últimos {{total}} períodos fechados estavam fora da tolerância.",
       "lastClosedPeriodsLabel": "Últimos 6 períodos fechados",
       "empty": "Ainda não há períodos fechados",
       "error": "Não foi possível carregar a estabilidade do orçamento.",

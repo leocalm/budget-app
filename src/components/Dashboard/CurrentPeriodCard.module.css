@@ -3,59 +3,49 @@
   border-radius: 20px;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card) 90%),
-    color-mix(in srgb, var(--accent-purple) 8%, var(--bg-card) 92%)
+    color-mix(in srgb, var(--accent-primary) 12%, var(--bg-card) 88%),
+    color-mix(in srgb, var(--accent-purple) 9%, var(--bg-card) 91%)
   );
-  box-shadow: 0 10px 30px rgb(20 22 26 / 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
 .label {
-  font-size: 13px;
-  font-weight: 600;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-secondary);
-  line-height: 1.3;
 }
 
-.heroValue {
-  font-size: clamp(28px, 2.3vw, 32px);
+.periodAmount {
+  margin: 14px 0 0;
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
   font-weight: 700;
-  line-height: 1.1;
   color: var(--text-primary);
 }
 
-.heroMeta {
+.periodMeta {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.periodRemaining,
+.periodProjection {
+  margin-top: 8px;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  line-height: 1.3;
+  color: var(--text-muted);
 }
 
-.metricsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-.metricLabel {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  line-height: 1.3;
-}
-
-.metricValue {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.progressTrack {
-  width: 100%;
-  height: 8px;
+.progressBar {
+  margin-top: 16px;
+  height: 10px;
   border-radius: 999px;
+  background: color-mix(in srgb, var(--border-subtle) 85%, var(--bg-card) 15%);
   overflow: hidden;
-  background: color-mix(in srgb, var(--border-soft) 82%, var(--bg-card) 18%);
 }
 
 .progressFill {
@@ -65,21 +55,24 @@
   transition: width 0.2s ease;
 }
 
-.projection {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-  line-height: 1.3;
-}
-
 .stateText {
   font-size: 14px;
   color: var(--text-secondary);
 }
 
-@media (min-width: 900px) {
-  .metricsGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.pigMark {
+  position: absolute;
+  top: -40px;
+  right: -36px;
+  width: 220px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+@media (min-width: 860px) {
+  .pigMark {
+    top: -70px;
+    right: -60px;
+    width: 330px;
   }
 }

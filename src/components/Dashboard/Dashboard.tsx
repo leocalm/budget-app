@@ -1,32 +1,20 @@
-import React, { useMemo } from 'react';
-import { IconArrowRight } from '@tabler/icons-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Box, Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Box, Paper, Stack, Text, Title } from '@mantine/core';
 import { ApiError } from '@/api/errors';
 import { ActiveOverlayBanner } from '@/components/Dashboard/ActiveOverlayBanner';
-import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCard';
 import { BudgetStabilityCard } from '@/components/Dashboard/BudgetStabilityCard';
 import { CurrentPeriodCard } from '@/components/Dashboard/CurrentPeriodCard';
 import { NetPositionCard } from '@/components/Dashboard/NetPositionCard';
-import { RecentTransactionsCard } from '@/components/Dashboard/RecentTransactionsCard';
-import { StatCard } from '@/components/Dashboard/StatCard';
-import { TopCategoriesChart } from '@/components/Dashboard/TopCategoriesChart';
-import { UI } from '@/constants';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useCurrentBudgetPeriod } from '@/hooks/useBudget';
 import {
-  useBudgetPerDay,
   useBudgetStability,
   useMonthlyBurnIn,
   useMonthProgress,
   useNetPosition,
-  useRecentTransactions,
-  useSpentPerCategory,
 } from '@/hooks/useDashboard';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { SpentPerCategory } from '@/types/dashboard';
-import { formatCurrency } from '@/utils/currency';
 import styles from './Dashboard.module.css';
 
 interface DashboardProps {
@@ -91,8 +79,6 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     : t('dashboard.locked.requirement.noActivePeriod');
   const lockedConfigureLabel = t('dashboard.locked.configure');
 
-  const { data: spentPerCategory, isLoading: isSpentPerCategoryLoading } =
-    useSpentPerCategory(selectedPeriodId);
   const {
     data: monthlyBurnIn,
     isLoading: isMonthlyBurnInLoading,
@@ -105,9 +91,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     error: monthProgressError,
     refetch: refetchMonthProgress,
   } = useMonthProgress(selectedPeriodId);
-  const { data: budgetPerDay, isLoading: isBudgetPerDayLoading } =
-    useBudgetPerDay(selectedPeriodId);
-  const { data: recentTransactions } = useRecentTransactions(selectedPeriodId);
+
   const {
     data: netPosition,
     isLoading: isNetPositionLoading,
@@ -120,27 +104,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     isError: isBudgetStabilityError,
     refetch: refetchBudgetStability,
   } = useBudgetStability({ enabled: !isPeriodMissing });
-  const { data: accounts } = useAccounts(selectedPeriodId);
 
-  // Calculate derived values from dashboard data
-  const remainingBudget = useMemo(() => {
-    if (!monthlyBurnIn) {
-      return 0;
-    }
-    return monthlyBurnIn.totalBudget - monthlyBurnIn.spentBudget;
-  }, [monthlyBurnIn]);
-
-  const avgDailySpend = useMemo(() => {
-    if (!monthlyBurnIn || monthlyBurnIn.currentDay === 0) {
-      return 0;
-    }
-    return monthlyBurnIn.spentBudget / monthlyBurnIn.currentDay;
-  }, [monthlyBurnIn]);
-
-  const totalAssets = 0;
-  const daysPassedPercentage = monthProgress?.daysPassedPercentage || 0;
-  const daysUntilReset = monthProgress?.remainingDays || 0;
-  const budgetLimit = monthlyBurnIn?.totalBudget || 0;
   const hasCurrentPeriodError = Boolean(monthlyBurnInError || monthProgressError);
   const isCurrentPeriodLoading =
     selectedPeriodId !== null &&
@@ -152,74 +116,41 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   };
 
   // Format currency using global settings
-  const format = (cents: number): string => formatCurrency(cents, globalCurrency, i18n.language);
-
-  // Get top 5 categories
-  const topCategories: SpentPerCategory[] = useMemo(() => {
-    if (!spentPerCategory) {
-      return [];
-    }
-    return spentPerCategory.slice(0, UI.DASHBOARD_TOP_CATEGORIES);
-  }, [spentPerCategory]);
 
   if (isLocked) {
     return (
       <Box className={styles.dashboardRoot}>
-        <Stack gap="xl" component="div">
-          <Group justify="space-between" align="center" pb="md" className={styles.dashboardHeader}>
+        <Stack gap="md" component="div">
+          <Stack gap="xs" pb="md" className={styles.dashboardHeader}>
             <Title order={1} className={`${styles.dashboardTitle} brand-text brand-glow`}>
               {t('dashboard.title')}
             </Title>
-          </Group>
-
-          <div className={styles.statsGrid}>
-            <LockedDashboardCard
-              title={t('dashboard.stats.remainingBudget.label')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-            <LockedDashboardCard
-              title={t('dashboard.stats.totalAssets.label')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-            <LockedDashboardCard
-              title={t('dashboard.stats.avgDailySpend.label')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-            <LockedDashboardCard
-              title={t('dashboard.stats.monthProgress.label')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-          </div>
-
-          <div className={styles.chartsSection}>
-            <LockedDashboardCard
-              title={t('dashboard.charts.balanceOverTime.title')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-            <LockedDashboardCard
-              title={t('dashboard.charts.topCategories.title')}
-              status={lockedStatus}
-              requirement={lockedRequirement}
-              configureLabel={lockedConfigureLabel}
-            />
-          </div>
+            <Text size="sm" c="dimmed">
+              {t('dashboard.subtitle')}
+            </Text>
+          </Stack>
 
           <LockedDashboardCard
-            title={t('dashboard.recentActivity.title')}
+            title={t('dashboard.currentPeriod.title')}
             status={lockedStatus}
             requirement={lockedRequirement}
             configureLabel={lockedConfigureLabel}
           />
+
+          <div className={styles.lowerGrid}>
+            <LockedDashboardCard
+              title={t('dashboard.stability.title')}
+              status={lockedStatus}
+              requirement={lockedRequirement}
+              configureLabel={lockedConfigureLabel}
+            />
+            <LockedDashboardCard
+              title={t('dashboard.netPosition.title')}
+              status={lockedStatus}
+              requirement={lockedRequirement}
+              configureLabel={lockedConfigureLabel}
+            />
+          </div>
         </Stack>
       </Box>
     );
@@ -229,11 +160,14 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     <Box className={styles.dashboardRoot}>
       <Stack gap="xl" component="div">
         {/* Dashboard Header */}
-        <Group justify="space-between" align="center" pb="md" className={styles.dashboardHeader}>
+        <Stack gap="xs" pb="md" className={styles.dashboardHeader}>
           <Title order={1} className={`${styles.dashboardTitle} brand-text brand-glow`}>
             {t('dashboard.title')}
           </Title>
-        </Group>
+          <Text size="sm" c="dimmed">
+            {t('dashboard.subtitle')}
+          </Text>
+        </Stack>
 
         <ActiveOverlayBanner />
 
@@ -246,133 +180,26 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
           onRetry={retryCurrentPeriod}
         />
 
-        {/* Stats Grid */}
-        <div className={styles.statsGrid}>
-          {/* Remaining Budget - Featured Card */}
-          <StatCard
-            icon={() => <span style={{ fontSize: 18 }}>💰</span>}
-            label={t('dashboard.stats.remainingBudget.label')}
-            value={format(remainingBudget)}
-            meta={t('dashboard.stats.remainingBudget.meta', { limit: format(budgetLimit) })}
-            trend={{ direction: 'down', value: '12%', positive: false }}
-            featured
-            loading={isMonthlyBurnInLoading}
+        <div className={styles.lowerGrid}>
+          <BudgetStabilityCard
+            data={budgetStability}
+            isLoading={isBudgetStabilityLoading}
+            isError={isBudgetStabilityError}
+            onRetry={() => {
+              void refetchBudgetStability();
+            }}
           />
-
-          {/* Total Assets */}
-          <StatCard
-            icon={() => <span style={{ fontSize: 18 }}>💳</span>}
-            label={t('dashboard.stats.totalAssets.label')}
-            value={format(totalAssets)}
-            trend={{ direction: 'up', value: '8%', positive: true }}
-            loading={false}
-          />
-
-          {/* Avg Daily Spend */}
-          <StatCard
-            icon={() => <span style={{ fontSize: 18 }}>📊</span>}
-            label={t('dashboard.stats.avgDailySpend.label')}
-            value={format(avgDailySpend)}
-            meta={t('dashboard.stats.avgDailySpend.meta')}
-            loading={isMonthlyBurnInLoading}
-          />
-
-          {/* Month Progress */}
-          <StatCard
-            icon={() => <span style={{ fontSize: 18 }}>📈</span>}
-            label={t('dashboard.stats.monthProgress.label')}
-            value={`${Math.round(daysPassedPercentage)}%`}
-            meta={
-              daysUntilReset === 1
-                ? t('dashboard.stats.monthProgress.metaSingular', { days: daysUntilReset })
-                : t('dashboard.stats.monthProgress.meta', { days: daysUntilReset })
-            }
-            loading={isMonthProgressLoading}
+          <NetPositionCard
+            data={netPosition}
+            isLoading={isNetPositionLoading}
+            isError={isNetPositionError}
+            onRetry={() => {
+              void refetchNetPosition();
+            }}
+            currency={globalCurrency}
+            locale={i18n.language}
           />
         </div>
-
-        <NetPositionCard
-          data={netPosition}
-          isLoading={isNetPositionLoading}
-          isError={isNetPositionError}
-          onRetry={() => {
-            void refetchNetPosition();
-          }}
-          currency={globalCurrency}
-          locale={i18n.language}
-        />
-
-        {/* Charts Section */}
-        <div className={styles.chartsSection}>
-          {/* Balance Line Chart */}
-          <BalanceLineChartCard
-            data={budgetPerDay || []}
-            accounts={accounts || []}
-            isLoading={isBudgetPerDayLoading}
-          />
-
-          {/* Top Categories Chart */}
-          <Stack gap="md">
-            <BudgetStabilityCard
-              data={budgetStability}
-              isLoading={isBudgetStabilityLoading}
-              isError={isBudgetStabilityError}
-              onRetry={() => {
-                void refetchBudgetStability();
-              }}
-            />
-
-            <Paper
-              className={styles.chartCard}
-              shadow="md"
-              radius="lg"
-              p="xl"
-              withBorder
-              style={{
-                background: 'var(--bg-card)',
-                borderColor: 'var(--border-medium)',
-              }}
-            >
-              <Group justify="space-between" mb="xl">
-                <Text fw={600} size="lg">
-                  {t('dashboard.charts.topCategories.title')}
-                </Text>
-              </Group>
-
-              <TopCategoriesChart data={topCategories} isLoading={isSpentPerCategoryLoading} />
-            </Paper>
-          </Stack>
-        </div>
-
-        {/* Recent Activity */}
-        <Paper
-          shadow="md"
-          radius="lg"
-          p="xl"
-          withBorder
-          style={{
-            background: 'var(--bg-card)',
-            borderColor: 'var(--border-medium)',
-          }}
-        >
-          <Group justify="space-between" mb="md">
-            <Text fw={600} size="lg">
-              {t('dashboard.recentActivity.title')}
-            </Text>
-            <Button
-              component={Link}
-              to="/transactions"
-              variant="subtle"
-              size="xs"
-              rightSection={<IconArrowRight size={14} />}
-              className={styles.viewAllBtn}
-            >
-              {t('dashboard.recentActivity.viewAll')}
-            </Button>
-          </Group>
-
-          <RecentTransactionsCard data={recentTransactions || []} />
-        </Paper>
       </Stack>
     </Box>
   );

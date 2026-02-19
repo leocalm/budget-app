@@ -835,7 +835,8 @@
     }
   },
   "dashboard": {
-    "title": "Financial Dashboard",
+    "title": "Dashboard",
+    "subtitle": "Current position, deviation, and period trajectory.",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -895,6 +896,8 @@
     "netPosition": {
       "title": "Net Position",
       "changeThisPeriod": "{{amount}} this period",
+      "acrossAccounts": "Across {{count}} accounts",
+      "lastUpdated": "Last updated {{time}} ago",
       "breakdownLiquid": "Liquid {{amount}}",
       "breakdownProtected": "Protected {{amount}}",
       "breakdownDebt": "Debt {{amount}}",
@@ -953,6 +956,7 @@
     "stability": {
       "title": "Budget Stability",
       "withinRangeCount": "{{within}} of {{total}} periods within range",
+      "outsideToleranceCount": "{{outside}} of the last {{total}} closed periods were outside tolerance.",
       "lastClosedPeriodsLabel": "Last 6 closed periods",
       "empty": "No closed periods yet",
       "error": "Could not load budget stability.",
