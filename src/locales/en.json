@@ -846,7 +846,23 @@
         "notConfigured": "Set up a budget period to display dashboard data.",
         "noActivePeriod": "Create or adjust periods so one period is active today."
       },
-      "configure": "Configure"
+      "period": {
+        "title": "Period Model",
+        "requirement": "Define automatic or manual period model",
+        "requirementNoActive": "Create or adjust periods so one period is active today."
+      },
+      "accounts": {
+        "title": "Accounts",
+        "status": "No accounts created",
+        "requirement": "Add at least one asset account"
+      },
+      "categories": {
+        "title": "Categories",
+        "status": "Incomplete",
+        "requirement": "Add one Incoming and one Outgoing category"
+      },
+      "configure": "Configure",
+      "unlockedBanner": "Structure complete. Dashboard unlocked."
     },
     "currentPeriod": {
       "title": "Current Period",
@@ -871,7 +887,7 @@
     },
     "overlayBanner": {
       "remaining": "{{amount}} left • {{days}} days",
-      "over": "{{amount}} over • {{days}} days",
+      "over": "-{{amount}} • {{days}} days",
       "noCap": "No cap configured • {{days}} days",
       "moreCount": "+{{count}}",
       "dismiss": "Dismiss overlay banner"
@@ -1185,7 +1201,7 @@
   "categories": {
     "header": {
       "title": "Categories",
-      "subtitle": "Organize your transactions into meaningful groups."
+      "subtitle": "Review budgeted, actual, and variance amounts for the selected period."
     },
     "actions": {
       "addCategory": "Add Category"
@@ -1195,6 +1211,27 @@
       "outgoing": "Spending",
       "incoming": "Income",
       "transfer": "Transfer"
+    },
+    "diagnostics": {
+      "sections": {
+        "budgeted": "Budgeted categories",
+        "budgetedSubtitle": "Budgeted, actual, and variance values by category.",
+        "unbudgeted": "Unbudgeted categories",
+        "unbudgetedSubtitle": "Actual spend and share of total unbudgeted spend."
+      },
+      "labels": {
+        "budgeted": "Budgeted",
+        "actual": "Actual",
+        "variance": "Variance",
+        "used": "Used",
+        "projectedAtCurrentPace": "Projected at current pace",
+        "shareOfTotalSpend": "Share of total spend",
+        "lastThreePeriods": "Last 3 periods"
+      },
+      "empty": {
+        "budgeted": "No budgeted categories",
+        "unbudgeted": "No unbudgeted spending"
+      }
     },
     "empty": {
       "addButton": "Add Category"

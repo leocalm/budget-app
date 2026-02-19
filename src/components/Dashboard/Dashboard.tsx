@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Box, Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { ApiError } from '@/api/errors';
-import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
+import { PeriodContextStrip } from '@/components/BudgetPeriodSelector';
 import { ActiveOverlayBanner } from '@/components/Dashboard/ActiveOverlayBanner';
 import { BalanceLineChartCard } from '@/components/Dashboard/BalanceLineChartCard';
 import { BudgetStabilityCard } from '@/components/Dashboard/BudgetStabilityCard';
@@ -167,11 +167,12 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     return (
       <Box className={styles.dashboardRoot}>
         <Stack gap="xl" component="div">
+          <PeriodContextStrip />
+
           <Group justify="space-between" align="center" pb="md" className={styles.dashboardHeader}>
             <Title order={1} className={`${styles.dashboardTitle} brand-text brand-glow`}>
               {t('dashboard.title')}
             </Title>
-            <PeriodHeaderControl />
           </Group>
 
           <div className={styles.statsGrid}>
@@ -230,12 +231,13 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
   return (
     <Box className={styles.dashboardRoot}>
       <Stack gap="xl" component="div">
+        <PeriodContextStrip />
+
         {/* Dashboard Header */}
         <Group justify="space-between" align="center" pb="md" className={styles.dashboardHeader}>
           <Title order={1} className={`${styles.dashboardTitle} brand-text brand-glow`}>
             {t('dashboard.title')}
           </Title>
-          <PeriodHeaderControl />
         </Group>
 
         <ActiveOverlayBanner />
