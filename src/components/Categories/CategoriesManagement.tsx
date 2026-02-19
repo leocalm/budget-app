@@ -181,7 +181,7 @@ function CategoryRow({
   const canAddSubcategory = !isChild && !isArchived;
 
   return (
-    <div className={`${styles.row} ${styles.managementRow} ${isChild ? styles.childRow : ''}`}>
+    <div className={`${styles.managementRow} ${isChild ? styles.childRow : ''}`}>
       <div className={styles.identity}>
         <div className={styles.categoryIcon}>{category.icon || '📁'}</div>
         <div className={styles.nameWrap}>
