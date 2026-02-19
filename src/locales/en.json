@@ -836,7 +836,6 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "subtitle": "Current position, deviation, and period trajectory.",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -869,7 +868,7 @@
       "title": "Current Period",
       "hero": {
         "remaining": "{{amount}} remaining",
-        "meta": "{{percent}}% used \u2022 {{days}} days remaining"
+        "meta": "{{percent}}% used • {{days}} days remaining"
       },
       "metrics": {
         "totalBudget": "Total budget",
@@ -896,14 +895,14 @@
     "netPosition": {
       "title": "Net Position",
       "changeThisPeriod": "{{amount}} this period",
-      "acrossAccounts": "Across {{count}} accounts",
-      "lastUpdated": "Last updated {{time}} ago",
       "breakdownLiquid": "Liquid {{amount}}",
       "breakdownProtected": "Protected {{amount}}",
       "breakdownDebt": "Debt {{amount}}",
       "empty": "No accounts available.",
       "error": "Could not load net position.",
-      "retry": "Retry"
+      "retry": "Retry",
+      "acrossAccounts": "Across {{count}} accounts",
+      "lastUpdated": "Last updated {{time}} ago"
     },
     "stats": {
       "remainingBudget": {
@@ -956,7 +955,6 @@
     "stability": {
       "title": "Budget Stability",
       "withinRangeCount": "{{within}} of {{total}} periods within range",
-      "outsideToleranceCount": "{{outside}} of the last {{total}} closed periods were outside tolerance.",
       "lastClosedPeriodsLabel": "Last 6 closed periods",
       "empty": "No closed periods yet",
       "error": "Could not load budget stability.",
@@ -964,8 +962,10 @@
       "dots": {
         "outside": "Outside tolerance",
         "within": "Within tolerance"
-      }
-    }
+      },
+      "outsideToleranceCount": "{{outside}} of the last {{total}} closed periods were outside tolerance."
+    },
+    "subtitle": "Current position, deviation, and period trajectory."
   },
   "states": {
     "contract": {
@@ -1207,6 +1207,10 @@
       "title": "Categories",
       "subtitle": "Diagnostic view of category-level position and deviation."
     },
+    "modeSwitch": {
+      "overview": "Overview",
+      "management": "Management"
+    },
     "actions": {
       "addCategory": "Add Category"
     },
@@ -1230,7 +1234,14 @@
         "used": "Used",
         "projectedAtCurrentPace": "Projected at current pace",
         "shareOfTotalSpend": "Share of total spend",
-        "lastThreePeriods": "Last 3 periods"
+        "lastThreePeriods": "Last 3 periods",
+        "summary": "Summary",
+        "elapsedInPeriod": "Elapsed in period",
+        "period": "Period",
+        "varianceLabel": "{{spentBudgetLabel}} of {{totalBudgetLabel}} · Variance {{varianceLabel}}",
+        "noData": "No data",
+        "withinTolerance": "Within tolerance",
+        "outsideTolerance": "Outside tolerance"
       },
       "empty": {
         "budgeted": "No budgeted categories",

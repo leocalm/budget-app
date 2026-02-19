@@ -23,10 +23,10 @@ export function CategoryStabilityDots({ history }: CategoryStabilityDotsProps) {
           }`}
           aria-label={
             isWithinTolerance === undefined
-              ? 'No data'
+              ? t('categories.diagnostics.labels.noData')
               : isWithinTolerance
-                ? 'Within tolerance'
-                : 'Outside tolerance'
+                ? t('categories.diagnostics.labels.withinTolerance')
+                : t('categories.diagnostics.labels.outsideTolerance')
           }
         />
       ))}

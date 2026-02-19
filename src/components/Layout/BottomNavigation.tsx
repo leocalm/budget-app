@@ -1,4 +1,4 @@
-import { ComponentType, Fragment } from 'react';
+import React, { ComponentType } from 'react';
 import {
   IconArrowsExchange,
   IconBuildingStore,
@@ -143,8 +143,9 @@ export function BottomNavigation() {
                       const Icon = menuItem.icon;
                       const isLast = index === moreMenuItems.length - 1;
                       return (
-                        <Fragment key={menuItem.route}>
+                        <React.Fragment key={menuItem.route}>
                           <NavLink
+                            key={menuItem.route}
                             label={t(menuItem.labelKey)}
                             leftSection={
                               <ThemeIcon
@@ -173,7 +174,7 @@ export function BottomNavigation() {
                             style={{ padding: '8px 12px' }}
                           />
                           {!isLast && <Divider key={`divider-${menuItem.route}`} />}
-                        </Fragment>
+                        </React.Fragment>
                       );
                     })}
                   </Stack>

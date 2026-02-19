@@ -112,7 +112,9 @@ export function BudgetedDiagnosticRow({
             </Text>
           </div>
           <div className={styles.diagnosticMetricRow}>
-            <Text className={styles.diagnosticMetricLabel}>% Used</Text>
+            <Text className={styles.diagnosticMetricLabel}>
+              {t('categories.diagnostics.labels.used')}
+            </Text>
             <Text className={styles.diagnosticMetricValue} component="strong">
               {usagePercentageLabel}
             </Text>

@@ -101,11 +101,21 @@ export function CategoriesContainer() {
             </Title>
             <Text className={styles.categoriesSubtitle}>{t('categories.header.subtitle')}</Text>
             <nav className={styles.modeSwitch} aria-label="Categories page mode">
-              <button type="button" className={`${styles.modePill} ${styles.modePillActive}`}>
-                Overview
+              <button
+                type="button"
+                className={`${styles.modePill} ${styles.modePillActive}`}
+                tabIndex={0}
+                aria-label={t('categories.modeSwitch.overview')}
+              >
+                {t('categories.modeSwitch.overview')}
               </button>
-              <button type="button" className={styles.modePill}>
-                Management
+              <button
+                type="button"
+                className={styles.modePill}
+                tabIndex={0}
+                aria-label={t('categories.modeSwitch.management')}
+              >
+                {t('categories.modeSwitch.management')}
               </button>
             </nav>
           </div>

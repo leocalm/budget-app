@@ -747,7 +747,6 @@
   },
   "dashboard": {
     "title": "Painel",
-    "subtitle": "Posição atual, desvio e trajetória do período.",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -777,19 +776,19 @@
       "unlockedBanner": "Estrutura completa. Painel desbloqueado."
     },
     "currentPeriod": {
-      "title": "Per\u00edodo Atual",
+      "title": "Período Atual",
       "hero": {
         "remaining": "{{amount}} restante",
-        "meta": "{{percent}}% usado \u2022 {{days}} dias restantes"
+        "meta": "{{percent}}% usado • {{days}} dias restantes"
       },
       "metrics": {
-        "totalBudget": "Or\u00e7amento total",
+        "totalBudget": "Orçamento total",
         "actualSpend": "Total gasto"
       },
       "projection": "Gasto projetado no ritmo atual: {{amount}}",
       "states": {
-        "empty": "Nenhum per\u00edodo selecionado.",
-        "error": "N\u00e3o foi poss\u00edvel carregar os valores do per\u00edodo atual."
+        "empty": "Nenhum período selecionado.",
+        "error": "Não foi possível carregar os valores do período atual."
       }
     },
     "noPeriod": {
@@ -807,14 +806,14 @@
     "netPosition": {
       "title": "Posição Líquida",
       "changeThisPeriod": "{{amount}} neste período",
-      "acrossAccounts": "Em {{count}} contas",
-      "lastUpdated": "Atualizado há {{time}}",
       "breakdownLiquid": "Líquido {{amount}}",
       "breakdownProtected": "Protegido {{amount}}",
       "breakdownDebt": "Dívida {{amount}}",
       "empty": "Nenhuma conta disponível.",
       "error": "Não foi possível carregar a posição líquida.",
-      "retry": "Tentar novamente"
+      "retry": "Tentar novamente",
+      "acrossAccounts": "Em {{count}} contas",
+      "lastUpdated": "Atualizado há {{time}}"
     },
     "stats": {
       "remainingBudget": {
@@ -867,7 +866,6 @@
     "stability": {
       "title": "Estabilidade do Orçamento",
       "withinRangeCount": "{{within}} de {{total}} períodos dentro da faixa",
-      "outsideToleranceCount": "{{outside}} dos últimos {{total}} períodos fechados estavam fora da tolerância.",
       "lastClosedPeriodsLabel": "Últimos 6 períodos fechados",
       "empty": "Ainda não há períodos fechados",
       "error": "Não foi possível carregar a estabilidade do orçamento.",
@@ -875,8 +873,10 @@
       "dots": {
         "outside": "Fora da tolerância",
         "within": "Dentro da tolerância"
-      }
-    }
+      },
+      "outsideToleranceCount": "{{outside}} dos últimos {{total}} períodos fechados estavam fora da tolerância."
+    },
+    "subtitle": "Posição atual, desvio e trajetória do período."
   },
   "vendors": {
     "title": "Fornecedores",
@@ -1181,6 +1181,10 @@
       "title": "Categorias",
       "subtitle": "Visão diagnóstica da posição e desvio por categoria."
     },
+    "modeSwitch": {
+      "overview": "Visão Geral",
+      "management": "Gerenciamento"
+    },
     "actions": {
       "addCategory": "Adicionar Categoria"
     },
@@ -1204,7 +1208,14 @@
         "used": "Uso",
         "projectedAtCurrentPace": "Projeção no ritmo atual",
         "shareOfTotalSpend": "Participação no gasto total",
-        "lastThreePeriods": "Últimos 3 períodos"
+        "lastThreePeriods": "Últimos 3 períodos",
+        "summary": "Resumo",
+        "elapsedInPeriod": "Tempo decorrido no período",
+        "period": "Período",
+        "varianceLabel": "{{spentBudgetLabel}} de {{totalBudgetLabel}} · Variação {{varianceLabel}}",
+        "noData": "Sem dados",
+        "withinTolerance": "Dentro da tolerância",
+        "outsideTolerance": "Fora da tolerância"
       },
       "empty": {
         "budgeted": "Nenhuma categoria orçada",

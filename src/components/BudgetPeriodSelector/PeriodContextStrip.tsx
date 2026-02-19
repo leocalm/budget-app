@@ -42,7 +42,9 @@ export function PeriodContextStrip() {
     >
       <div className={classes.periodContextGrid}>
         <div className={classes.periodContextBlock}>
-          <Text className={classes.periodContextMetricLabel}>Period</Text>
+          <Text className={classes.periodContextMetricLabel}>
+            {t('periodContext.labels.period')}
+          </Text>
           {isLoading && selectedPeriodId ? (
             <Skeleton height={22} width={140} radius="sm" />
           ) : (
@@ -51,7 +53,9 @@ export function PeriodContextStrip() {
         </div>
 
         <div className={classes.periodContextBlock}>
-          <Text className={classes.periodContextMetricLabel}>Elapsed in period</Text>
+          <Text className={classes.periodContextMetricLabel}>
+            {t('periodContext.labels.elapsedInPeriod')}
+          </Text>
           <div
             className={classes.periodContextProgressTrack}
             role="progressbar"
@@ -68,12 +72,18 @@ export function PeriodContextStrip() {
         </div>
 
         <div className={classes.periodContextBlock}>
-          <Text className={classes.periodContextMetricLabel}>Summary</Text>
+          <Text className={classes.periodContextMetricLabel}>
+            {t('periodContext.labels.summary')}
+          </Text>
           {isLoading && selectedPeriodId ? (
             <Skeleton height={22} width={220} radius="sm" />
           ) : (
             <Text className={classes.periodContextSummaryValue}>
-              {spentBudgetLabel} of {totalBudgetLabel} · Variance {varianceLabel}
+              {t('periodContext.labels.varianceLabel', {
+                spentBudgetLabel,
+                totalBudgetLabel,
+                varianceLabel,
+              })}
             </Text>
           )}
         </div>

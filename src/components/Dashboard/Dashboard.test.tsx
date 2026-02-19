@@ -65,6 +65,10 @@ vi.mock('@/hooks/useAccounts', () => ({
   useAccounts: () => useAccountsMock(),
 }));
 
+vi.mock('@/components/BudgetPeriodSelector', () => ({
+  PeriodContextStrip: () => <div>PeriodContextStrip</div>,
+}));
+
 vi.mock('@/components/Dashboard/ActiveOverlayBanner', () => ({
   ActiveOverlayBanner: () => <div>ActiveOverlayBanner</div>,
 }));
@@ -111,10 +115,10 @@ describe('Dashboard locked state', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getAllByText('Status: Not configured')).toHaveLength(3);
+    expect(screen.getAllByText('Status: Not configured')).toHaveLength(7);
 
     const configureLinks = screen.getAllByRole('link', { name: 'Configure' });
-    expect(configureLinks).toHaveLength(3);
+    expect(configureLinks).toHaveLength(7);
     configureLinks.forEach((link) => {
       expect(link).toHaveAttribute('href', '/periods');
     });
@@ -149,8 +153,8 @@ describe('Dashboard locked state', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getAllByText('Status: No active period')).toHaveLength(3);
-    expect(screen.getAllByRole('link', { name: 'Configure' })).toHaveLength(3);
+    expect(screen.getAllByText('Status: No active period')).toHaveLength(7);
+    expect(screen.getAllByRole('link', { name: 'Configure' })).toHaveLength(7);
   });
 
   it('prioritizes not configured status over no active period when both are true', () => {
@@ -182,7 +186,7 @@ describe('Dashboard locked state', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getAllByText('Status: Not configured')).toHaveLength(3);
+    expect(screen.getAllByText('Status: Not configured')).toHaveLength(7);
     expect(screen.queryByText('Status: No active period')).not.toBeInTheDocument();
   });
 });
