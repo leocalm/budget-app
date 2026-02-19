@@ -14,6 +14,17 @@ vi.mock('@/context/BudgetContext', () => ({
 
 vi.mock('@/hooks/useCategories', () => ({
   useCategoriesDiagnostic: (...args: unknown[]) => useCategoriesDiagnosticMock(...args),
+  useCategoriesManagement: () => ({
+    data: null,
+    isLoading: false,
+    isError: false,
+    refetch: vi.fn(),
+  }),
+  useCreateCategory: () => ({ mutateAsync: vi.fn() }),
+  useUpdateCategory: () => ({ mutateAsync: vi.fn() }),
+  useDeleteCategory: () => ({ mutateAsync: vi.fn() }),
+  useArchiveCategory: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useRestoreCategory: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
 
 vi.mock('@/hooks/useDisplayCurrency', () => ({
@@ -22,14 +33,6 @@ vi.mock('@/hooks/useDisplayCurrency', () => ({
 
 vi.mock('@/components/BudgetPeriodSelector', () => ({
   PeriodContextStrip: () => <div>PeriodContextStrip</div>,
-}));
-
-vi.mock('./CreateCategoryForm', () => ({
-  CreateCategoryForm: ({ onCategoryCreated }: { onCategoryCreated?: () => void }) => (
-    <button type="button" onClick={onCategoryCreated}>
-      Create form
-    </button>
-  ),
 }));
 
 describe('CategoriesContainer diagnostics layout', () => {

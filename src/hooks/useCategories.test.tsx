@@ -153,6 +153,8 @@ describe('useCategories', () => {
       icon: '🍔',
       parentId: null,
       categoryType: 'Outgoing',
+      isArchived: false,
+      description: null,
     });
 
     const { result } = renderHook(() => useCreateCategory(null), { wrapper });
@@ -196,6 +198,8 @@ describe('useCategories', () => {
       icon: '🍔',
       parentId: null,
       categoryType: 'Outgoing',
+      isArchived: false,
+      description: null,
     });
 
     const { result } = renderHook(() => useUpdateCategory(null), { wrapper });
@@ -242,6 +246,8 @@ describe('useCategories', () => {
         icon: '🍔',
         parentId: null,
         categoryType: 'Outgoing',
+        isArchived: false,
+        description: null,
       },
     });
 
@@ -333,6 +339,8 @@ describe('useCategories', () => {
             usedInPeriod: 10000,
             differenceVsAveragePercentage: 5,
             transactionCount: 10,
+            isArchived: false,
+            description: null,
           },
         ],
         nextCursor: 'cursor-1',

@@ -1,5 +1,6 @@
 import {
   CategoriesDiagnosticResponse,
+  CategoriesManagementListResponse,
   CategoriesPage,
   CategoryRequest,
   CategoryResponse,
@@ -80,7 +81,7 @@ function parseCategoriesPageResponse(response: unknown): CategoriesPage {
     }
   }
 
-  return { categories: [], nextCursor };
+  return { categories: [], nextCursor: null };
 }
 
 export interface FetchCategoriesPageParams {
@@ -128,4 +129,17 @@ export async function updateCategory(
   payload: CategoryRequest
 ): Promise<CategoryResponse> {
   return apiPut<CategoryResponse, CategoryRequest>(`/api/categories/${id}`, payload);
+}
+
+// Management view endpoints
+export async function fetchCategoriesForManagement(): Promise<CategoriesManagementListResponse> {
+  return apiGet<CategoriesManagementListResponse>('/api/categories/management');
+}
+
+export async function archiveCategory(id: string): Promise<CategoryResponse> {
+  return apiPost<CategoryResponse, void>(`/api/categories/${id}/archive`);
+}
+
+export async function restoreCategory(id: string): Promise<CategoryResponse> {
+  return apiPost<CategoryResponse, void>(`/api/categories/${id}/restore`);
 }

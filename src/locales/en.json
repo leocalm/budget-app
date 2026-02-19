@@ -1205,7 +1205,8 @@
   "categories": {
     "header": {
       "title": "Categories",
-      "subtitle": "Diagnostic view of category-level position and deviation."
+      "subtitle": "Diagnostic view of category-level position and deviation.",
+      "subtitleManagement": "Define and organize your budgeting structure."
     },
     "modeSwitch": {
       "overview": "Overview",
@@ -1251,6 +1252,92 @@
     "empty": {
       "addButton": "Add Category"
     },
+    "management": {
+      "search": "Search categories...",
+      "searchPlaceholder": "Search categories...",
+      "emptySection": "No categories in this section.",
+      "noResults": "No categories match your search.",
+      "emptyMessage": "Create your first category to organize incoming and outgoing transactions. This space will fill as your period structure takes shape.",
+      "transactionCount": "{{count}} transaction",
+      "transactionCount_other": "{{count}} transactions",
+      "typeLabel": "Type: {{type}}",
+      "sections": {
+        "incoming": "Incoming",
+        "outgoing": "Outgoing",
+        "archived": "Archived"
+      },
+      "status": {
+        "active": "Active",
+        "archived": "Archived"
+      },
+      "actions": {
+        "edit": "Edit",
+        "archive": "Archive",
+        "restore": "Restore",
+        "delete": "Delete",
+        "subcategory": "Subcategory"
+      },
+      "empty": {
+        "title": "No categories defined yet.",
+        "message": "Create your first category to organize incoming and outgoing transactions.",
+        "cta": "Add Category"
+      },
+      "error": {
+        "title": "Categories could not be loaded.",
+        "message": "Your existing structure is unchanged. Retry to load categories and actions."
+      }
+    },
+    "form": {
+      "createTitle": "Create Category",
+      "editTitle": "Edit Category",
+      "subcategoryTitle": "Create Subcategory",
+      "nameLabel": "Category Name",
+      "namePlaceholder": "e.g. Rent, Groceries",
+      "typeLabel": "Type",
+      "typeLocked": "Type cannot be changed after the first transaction exists.",
+      "iconLabel": "Icon (optional)",
+      "iconPlaceholder": "Example: house",
+      "descriptionLabel": "Description (optional)",
+      "descriptionPlaceholder": "Short structural description",
+      "parentLabel": "Parent",
+      "create": "Create Category",
+      "errors": {
+        "nameMinLength": "Name must have at least 2 characters",
+        "submit": "Failed to save category"
+      }
+    },
+    "confirm": {
+      "archive": {
+        "title": "Archive Category",
+        "impact": "This will archive {{name}}. Historical transactions remain unchanged.",
+        "action": "Archive",
+        "note": "Archived categories cannot be used for new transactions."
+      },
+      "archiveBlocked": {
+        "title": "Archive Category",
+        "impact": "{{name}} has {{count}} active subcategories. Archive subcategories first.",
+        "ok": "OK",
+        "hint": "You must archive all subcategories before archiving a parent category."
+      },
+      "delete": {
+        "title": "Delete Category",
+        "impact": "This will permanently delete {{name}}. This action cannot be undone.",
+        "action": "Delete",
+        "note": "This category has no transactions and no subcategories."
+      },
+      "restore": {
+        "title": "Restore Category",
+        "impact": "This will restore {{name}} to active status.",
+        "action": "Restore"
+      }
+    },
+    "success": {
+      "created": "Category created successfully",
+      "updated": "Category updated successfully",
+      "archived": "Category archived. History remains unchanged.",
+      "restored": "Category restored successfully",
+      "deleted": "Category removed from structure."
+    },
     "forms": {
       "fields": {
         "name": {
@@ -1293,6 +1380,14 @@
       "Outgoing": "Spending",
       "Incoming": "Income",
       "Transfer": "Transfer"
+    }
+  },
+  "periodContext": {
+    "labels": {
+      "period": "Period",
+      "elapsedInPeriod": "Elapsed in period",
+      "summary": "Summary",
+      "varianceLabel": "{{spentBudgetLabel}} of {{totalBudgetLabel}} · Variance {{varianceLabel}}"
     }
   }
 }

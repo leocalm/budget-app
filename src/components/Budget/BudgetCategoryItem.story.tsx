@@ -28,6 +28,8 @@ const mockCategory = {
     color: '#4CAF50',
     parentId: null,
     categoryType: 'Outgoing' as const,
+    isArchived: false,
+    description: null,
   },
   budgetedValue: 50000, // €500.00 in cents
 };

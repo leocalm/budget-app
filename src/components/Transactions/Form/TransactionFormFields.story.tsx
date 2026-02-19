@@ -57,6 +57,8 @@ const mockCategories: CategoryResponse[] = [
     icon: 'shopping-cart',
     parentId: null,
     categoryType: 'Outgoing',
+    isArchived: false,
+    description: null,
   },
 ];
 

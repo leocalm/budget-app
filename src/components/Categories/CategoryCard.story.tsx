@@ -22,6 +22,8 @@ const groceriesCategory = {
   color: '#4CAF50',
   parentId: null,
   categoryType: 'Outgoing' as const,
+  isArchived: false,
+  description: null,
 };
 
 const salaryCategory = {
@@ -31,6 +33,8 @@ const salaryCategory = {
   color: '#2196F3',
   parentId: null,
   categoryType: 'Incoming' as const,
+  isArchived: false,
+  description: null,
 };
 
 const transferCategory = {
@@ -40,6 +44,8 @@ const transferCategory = {
   color: '#FF9800',
   parentId: null,
   categoryType: 'Transfer' as const,
+  isArchived: false,
+  description: null,
 };
 
 export const Outgoing: Story = {

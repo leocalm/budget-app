@@ -6,12 +6,15 @@ import {
   updateBudgetCategory,
 } from '@/api/budget';
 import {
+  archiveCategory,
   createCategory,
   deleteCategory,
   fetchCategories,
   fetchCategoriesDiagnostic,
+  fetchCategoriesForManagement,
   fetchCategoriesPage,
   fetchUnbudgetedCategories,
+  restoreCategory,
   updateCategory,
 } from '@/api/category';
 import { BudgetCategoryRequest, BudgetCategoryUpdateRequest } from '@/types/budget';
@@ -172,5 +175,47 @@ export const useGlobalCategories = () => {
   return useQuery({
     queryKey: queryKeys.categories(null),
     queryFn: () => fetchCategories(null),
+  });
+};
+
+/**
+ * Fetches categories for the management view (grouped by Incoming, Outgoing, Archived).
+ */
+export const useCategoriesManagement = () => {
+  return useQuery({
+    queryKey: queryKeys.categoriesManagement(),
+    queryFn: fetchCategoriesForManagement,
+  });
+};
+
+/**
+ * Archive a category (soft delete).
+ */
+export const useArchiveCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: archiveCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+    },
+  });
+};
+
+/**
+ * Restore an archived category.
+ */
+export const useRestoreCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: restoreCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+    },
   });
 };

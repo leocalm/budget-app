@@ -52,6 +52,8 @@ export const mockCategories: CategoryResponse[] = [
     categoryType: 'Outgoing',
     color: '#ff6b9d',
     parentId: null,
+    isArchived: false,
+    description: null,
   },
   {
     id: 'cat-in-1',
@@ -60,6 +62,8 @@ export const mockCategories: CategoryResponse[] = [
     categoryType: 'Incoming',
     color: '#00ffa3',
     parentId: null,
+    isArchived: false,
+    description: null,
   },
   {
     id: 'cat-tr-1',
@@ -68,6 +72,8 @@ export const mockCategories: CategoryResponse[] = [
     categoryType: 'Transfer',
     color: '#00d4ff',
     parentId: null,
+    isArchived: false,
+    description: null,
   },
 ];
 

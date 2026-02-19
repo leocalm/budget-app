@@ -36,6 +36,8 @@ const mockCategory: CategoryResponse = {
   icon: 'shopping-cart',
   parentId: null,
   categoryType: 'Outgoing',
+  isArchived: false,
+  description: null,
 };
 
 const mockVendor: Vendor = { id: 'v1', name: 'Supermarket' };

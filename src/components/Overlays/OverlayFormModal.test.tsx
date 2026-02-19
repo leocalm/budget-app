@@ -83,6 +83,8 @@ describe('OverlayFormModal', () => {
           usedInPeriod: 0,
           differenceVsAveragePercentage: 0,
           transactionCount: 0,
+          isArchived: false,
+          description: null,
         },
       ],
     });

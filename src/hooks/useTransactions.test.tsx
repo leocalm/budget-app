@@ -90,6 +90,8 @@ describe('useTransactions', () => {
           color: '#000000',
           parentId: null,
           categoryType: 'Outgoing',
+          isArchived: false,
+          description: null,
         },
         fromAccount: {
           id: 'acc-1',
@@ -203,6 +205,8 @@ describe('useTransactions', () => {
         color: '#333333',
         parentId: null,
         categoryType: 'Outgoing',
+        isArchived: false,
+        description: null,
       },
       fromAccount: {
         id: 'acc-1',
@@ -259,6 +263,8 @@ describe('useTransactions', () => {
         color: '#444444',
         parentId: null,
         categoryType: 'Outgoing',
+        isArchived: false,
+        description: null,
       },
       fromAccount: {
         id: 'acc-2',
@@ -315,6 +321,8 @@ describe('useTransactions', () => {
         color: '#555555',
         parentId: null,
         categoryType: 'Outgoing',
+        isArchived: false,
+        description: null,
       },
       fromAccount: {
         id: 'acc-3',

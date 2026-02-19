@@ -18,6 +18,7 @@ export function ToastViewport() {
               left: UI.TOAST_MOBILE_SIDE_MARGIN_PX,
               right: UI.TOAST_MOBILE_SIDE_MARGIN_PX,
               bottom: UI.TOAST_MOBILE_BOTTOM_OFFSET_PX,
+              pointerEvents: 'none',
             }
           : undefined
       }

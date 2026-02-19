@@ -54,6 +54,8 @@ const mockCategory: CategoryResponse = {
   icon: '🍔',
   parentId: null,
   categoryType: 'Outgoing',
+  isArchived: false,
+  description: null,
 };
 
 const mockVendor: Vendor = { id: 'v1', name: "McDonald's" };
@@ -81,6 +83,8 @@ const incomeTransaction: TransactionResponse = {
     icon: '💰',
     parentId: null,
     categoryType: 'Incoming',
+    isArchived: false,
+    description: null,
   },
   fromAccount: mockAccount,
   toAccount: null,
@@ -99,6 +103,8 @@ const transferTransaction: TransactionResponse = {
     icon: '💸',
     parentId: null,
     categoryType: 'Transfer',
+    isArchived: false,
+    description: null,
   },
   fromAccount: mockAccount,
   toAccount: {

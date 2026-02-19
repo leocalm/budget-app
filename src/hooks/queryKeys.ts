@@ -26,6 +26,7 @@ export const queryKeys = {
     periodId === undefined
       ? (['categoriesDiagnostic'] as const)
       : (['categoriesDiagnostic', periodId] as const),
+  categoriesManagement: () => ['categoriesManagement'] as const,
   budgetedCategories: () => ['budgetedCategories'] as const,
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,
 
