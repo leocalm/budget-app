@@ -45,11 +45,7 @@ interface ArchiveBlockedDialogProps {
   category: CategoryManagementRow | null;
 }
 
-export function ArchiveBlockedDialog({
-  opened,
-  onClose,
-  category,
-}: ArchiveBlockedDialogProps) {
+export function ArchiveBlockedDialog({ opened, onClose, category }: ArchiveBlockedDialogProps) {
   const { t } = useTranslation();
 
   return (
@@ -60,8 +56,8 @@ export function ArchiveBlockedDialog({
         name: category?.name,
         count: category?.activeChildrenCount ?? 0,
       })}
-      safeActionLabel={t('categories.confirm.archiveBlocked.ok')}
-      actionLabel=""
+      safeActionLabel={t('common.cancel')}
+      actionLabel={t('categories.confirm.archiveBlocked.ok')}
       onClose={onClose}
       onAction={onClose}
       blockClose={false}

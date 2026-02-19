@@ -37,7 +37,14 @@ function CategoriesDiagnosticsSkeleton() {
   );
 }
 
-export function CategoriesOverview() {
+interface CategoriesOverviewProps {
+  emptyAction?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
+export function CategoriesOverview({ emptyAction }: CategoriesOverviewProps) {
   const { t } = useTranslation();
 
   const { selectedPeriodId } = useBudgetPeriodSelection();
@@ -97,6 +104,7 @@ export function CategoriesOverview() {
         isEmpty={budgetedDiagnostics.length === 0 && unbudgetedDiagnostics.length === 0}
         emptyItemsLabel={t('states.contract.items.categories')}
         emptyMessage={t('states.empty.categories.message')}
+        emptyAction={emptyAction}
       >
         <div className={styles.diagnosticsLayout}>
           <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>

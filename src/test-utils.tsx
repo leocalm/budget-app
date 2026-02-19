@@ -29,9 +29,7 @@ const renderWithProviders = (ui: React.ReactElement, options?: RenderOptions) =>
  * Creates a mock CategoryResponse with default values for new required fields.
  * Use this in tests and stories to avoid repeating isArchived and description.
  */
-export function createMockCategory(
-  overrides: Partial<CategoryResponse> = {}
-): CategoryResponse {
+export function createMockCategory(overrides: Partial<CategoryResponse> = {}): CategoryResponse {
   return {
     id: 'test-category-id',
     name: 'Test Category',

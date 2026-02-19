@@ -3,6 +3,7 @@
  * Shows Incoming, Outgoing, and Archived sections with parent/child hierarchy
  */
 import { Fragment, useMemo, useState } from 'react';
+import { IconChevronDown, IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
   Badge,
@@ -16,8 +17,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconChevronDown, IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
-import { CategoryManagementRow, CategoriesManagementListResponse } from '@/types/category';
+import { CategoriesManagementListResponse, CategoryManagementRow } from '@/types/category';
 import styles from './Categories.module.css';
 
 interface CategoryManagementSectionProps {
@@ -50,9 +50,37 @@ function CategoryManagementSection({
 
   // Filter and organize categories with hierarchy
   const { parents, childrenByParent } = useMemo(() => {
-    const filtered = searchQuery
-      ? categories.filter((c) => c.name.toLowerCase().includes(searchQuery.toLowerCase()))
-      : categories;
+    const normalizedQuery = searchQuery?.trim().toLowerCase();
+
+    let filtered: CategoryManagementRow[];
+
+    if (normalizedQuery) {
+      // Find direct matches by name
+      const directMatches = categories.filter((c) =>
+        c.name.toLowerCase().includes(normalizedQuery)
+      );
+
+      // Build lookup for all categories by id so we can include parents of matches
+      const byId = new Map<string, CategoryManagementRow>(categories.map((c) => [c.id, c]));
+
+      const allMatchesById = new Map<string, CategoryManagementRow>();
+
+      directMatches.forEach((c) => {
+        allMatchesById.set(c.id, c);
+
+        // Include parent of matching child
+        if (c.parentId) {
+          const parent = byId.get(c.parentId);
+          if (parent) {
+            allMatchesById.set(parent.id, parent);
+          }
+        }
+      });
+
+      filtered = Array.from(allMatchesById.values());
+    } else {
+      filtered = categories;
+    }
 
     const parents = filtered.filter((c) => !c.parentId);
     const childrenByParent: Record<string, CategoryManagementRow[]> = {};
@@ -75,12 +103,24 @@ function CategoryManagementSection({
     return { parents, childrenByParent };
   }, [categories, searchQuery]);
 
+  // Show empty section message instead of hiding the section
   if (parents.length === 0 && !isArchived) {
-    return null;
+    return (
+      <Paper radius="lg" className={styles.managementGroup}>
+        <div className={styles.groupHeader}>
+          <Text className={styles.groupTitle}>{title}</Text>
+        </div>
+        <div className={styles.groupEmpty}>
+          {searchQuery
+            ? t('categories.management.noResults')
+            : t('categories.management.emptySection')}
+        </div>
+      </Paper>
+    );
   }
 
   return (
-    <Paper radius="lg" className={isArchived ? styles.archivedShell : styles.group}>
+    <Paper radius="lg" className={isArchived ? styles.archivedShell : styles.managementGroup}>
       {isArchived ? (
         <>
           <button
@@ -103,16 +143,30 @@ function CategoryManagementSection({
           <Collapse in={!collapsed}>
             <div className={styles.archivedContent}>
               {parents.map((parent) => (
-                <CategoryRow
-                  key={parent.id}
-                  category={parent}
-                  isArchived
-                  onEdit={onEdit}
-                  onArchive={onArchive}
-                  onRestore={onRestore}
-                  onDelete={onDelete}
-                  onAddSubcategory={onAddSubcategory}
-                />
+                <Fragment key={parent.id}>
+                  <CategoryRow
+                    category={parent}
+                    isArchived
+                    onEdit={onEdit}
+                    onArchive={onArchive}
+                    onRestore={onRestore}
+                    onDelete={onDelete}
+                    onAddSubcategory={onAddSubcategory}
+                  />
+                  {childrenByParent[parent.id]?.map((child) => (
+                    <CategoryRow
+                      key={child.id}
+                      category={child}
+                      isChild
+                      isArchived
+                      onEdit={onEdit}
+                      onArchive={onArchive}
+                      onRestore={onRestore}
+                      onDelete={onDelete}
+                      onAddSubcategory={onAddSubcategory}
+                    />
+                  ))}
+                </Fragment>
               ))}
             </div>
           </Collapse>
@@ -197,12 +251,16 @@ function CategoryRow({
       <div className={styles.meta}>
         {isArchived && (
           <Badge variant="light" size="sm" className={styles.typeChip}>
-            {t('categories.management.typeLabel', { type: category.categoryType })}
+            {t('categories.management.typeLabel', {
+              type: t(`categories.types.${category.categoryType}`),
+            })}
           </Badge>
         )}
         {!isArchived && !isChild && (
           <Badge variant="light" size="sm" className={styles.typeChip}>
-            {category.categoryType}
+            {t('categories.management.typeLabel', {
+              type: t(`categories.types.${category.categoryType}`),
+            })}
           </Badge>
         )}
         <Text className={styles.txCount}>

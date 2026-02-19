@@ -1,7 +1,7 @@
 /**
  * CategoryFormModal - Modal/Drawer for creating and editing categories
  */
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Select, Stack, Text, Textarea, TextInput } from '@mantine/core';
 import { FormOverlay } from '@/components/Overlays/FormOverlay';
@@ -38,6 +38,14 @@ const DEFAULT_COLORS = [
   '#85C1E9',
 ];
 
+interface InitialValues {
+  name: string;
+  color: string;
+  icon: string;
+  description: string;
+  categoryType: CategoryType;
+}
+
 export function CategoryFormModal({
   opened,
   onClose,
@@ -54,45 +62,67 @@ export function CategoryFormModal({
   const [categoryType, setCategoryType] = useState<CategoryType>('Outgoing');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [initialValues, setInitialValues] = useState<InitialValues | null>(null);
 
   // Reset form when modal opens
   useEffect(() => {
     if (opened) {
+      let nextName: string;
+      let nextColor: string;
+      let nextIcon: string;
+      let nextDescription: string;
+      let nextCategoryType: CategoryType;
+
       if (mode === 'edit' && category) {
-        setName(category.name);
-        setColor(category.color || DEFAULT_COLORS[0]);
-        setIcon(category.icon || '');
-        setDescription(category.description || '');
-        setCategoryType(category.categoryType);
+        nextName = category.name;
+        nextColor = category.color || DEFAULT_COLORS[0];
+        nextIcon = category.icon || '';
+        nextDescription = category.description || '';
+        nextCategoryType = category.categoryType;
       } else if (mode === 'subcategory' && parentCategory) {
-        setName('');
-        setColor(DEFAULT_COLORS[Math.floor(Math.random() * DEFAULT_COLORS.length)]);
-        setIcon('');
-        setDescription('');
-        setCategoryType(parentCategory.categoryType);
+        nextName = '';
+        nextColor = DEFAULT_COLORS[Math.floor(Math.random() * DEFAULT_COLORS.length)];
+        nextIcon = '';
+        nextDescription = '';
+        nextCategoryType = parentCategory.categoryType;
       } else {
         // Create mode
-        setName('');
-        setColor(DEFAULT_COLORS[Math.floor(Math.random() * DEFAULT_COLORS.length)]);
-        setIcon('');
-        setDescription('');
-        setCategoryType('Outgoing');
+        nextName = '';
+        nextColor = DEFAULT_COLORS[Math.floor(Math.random() * DEFAULT_COLORS.length)];
+        nextIcon = '';
+        nextDescription = '';
+        nextCategoryType = 'Outgoing';
       }
+
+      setName(nextName);
+      setColor(nextColor);
+      setIcon(nextIcon);
+      setDescription(nextDescription);
+      setCategoryType(nextCategoryType);
+      setInitialValues({
+        name: nextName,
+        color: nextColor,
+        icon: nextIcon,
+        description: nextDescription,
+        categoryType: nextCategoryType,
+      });
       setError(null);
     }
   }, [opened, mode, category, parentCategory]);
 
   const isDirty = useMemo(() => {
-    if (mode === 'edit' && category) {
-      return (
-        name !== category.name ||
-        color !== category.color ||
-        icon !== (category.icon || '') ||
-        description !== (category.description || '')
-      );
+    if (!opened || !initialValues) {
+      return false;
     }
-    return name.trim() !== '' || icon !== '' || description !== '';
-  }, [mode, category, name, color, icon, description]);
+
+    return (
+      name !== initialValues.name ||
+      color !== initialValues.color ||
+      icon !== initialValues.icon ||
+      description !== initialValues.description ||
+      categoryType !== initialValues.categoryType
+    );
+  }, [opened, initialValues, name, color, icon, description, categoryType]);
 
   const handleSubmit = async () => {
     if (name.trim().length < 2) {
@@ -104,11 +134,19 @@ export function CategoryFormModal({
     setError(null);
 
     try {
+      // Determine parentId based on mode
+      let parentId: string | null = null;
+      if (mode === 'subcategory' && parentCategory) {
+        parentId = parentCategory.id;
+      } else if (mode === 'edit' && category) {
+        parentId = category.parentId ?? null;
+      }
+
       await onSubmit({
         name: name.trim(),
         color,
         icon: icon.trim() || '📁',
-        parentId: mode === 'subcategory' && parentCategory ? parentCategory.id : null,
+        parentId,
         categoryType,
         description: description.trim() || null,
       });
@@ -168,20 +206,26 @@ export function CategoryFormModal({
           <Select
             label={t('categories.form.typeLabel')}
             value={categoryType}
-            onChange={(value) => setCategoryType(value as CategoryType)}
+            onChange={(value) => {
+              if (value !== null) {
+                setCategoryType(value as CategoryType);
+              }
+            }}
             data={[
-              { value: 'Incoming', label: 'Incoming' },
-              { value: 'Outgoing', label: 'Outgoing' },
+              { value: 'Incoming', label: t('categories.types.Incoming') },
+              { value: 'Outgoing', label: t('categories.types.Outgoing') },
             ]}
             disabled={mode === 'subcategory'}
           />
         )}
 
-        {mode === 'edit' && category?.globalTransactionCount && category.globalTransactionCount > 0 && (
-          <Text size="xs" c="dimmed">
-            {t('categories.form.typeLocked')}
-          </Text>
-        )}
+        {mode === 'edit' &&
+          category?.globalTransactionCount &&
+          category.globalTransactionCount > 0 && (
+            <Text size="xs" c="dimmed">
+              {t('categories.form.typeLocked')}
+            </Text>
+          )}
 
         <TextInput
           label={t('categories.form.iconLabel')}

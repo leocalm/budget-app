@@ -23,6 +23,8 @@ const categories = [
     usedInPeriod: 0,
     differenceVsAveragePercentage: 0,
     transactionCount: 0,
+    isArchived: false,
+    description: null,
   },
   {
     id: 'category-2',
@@ -34,6 +36,8 @@ const categories = [
     usedInPeriod: 0,
     differenceVsAveragePercentage: 0,
     transactionCount: 0,
+    isArchived: false,
+    description: null,
   },
 ];
 

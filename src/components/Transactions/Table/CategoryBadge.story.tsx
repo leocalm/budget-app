@@ -18,6 +18,11 @@ const meta: Meta<typeof CategoryBadge> = {
 export default meta;
 type Story = StoryObj<typeof CategoryBadge>;
 
+const baseCategory = {
+  isArchived: false,
+  description: null,
+};
+
 export const Comida: Story = {
   args: {
     category: {
@@ -27,6 +32,7 @@ export const Comida: Story = {
       icon: '🍔',
       parentId: null,
       categoryType: 'Outgoing',
+      ...baseCategory,
     },
   },
 };
@@ -40,6 +46,7 @@ export const Farmacia: Story = {
       icon: '💊',
       parentId: null,
       categoryType: 'Outgoing',
+      ...baseCategory,
     },
   },
 };
@@ -53,6 +60,7 @@ export const Mercado: Story = {
       icon: '🛒',
       parentId: null,
       categoryType: 'Outgoing',
+      ...baseCategory,
     },
   },
 };
@@ -66,6 +74,7 @@ export const Transfer: Story = {
       icon: '💸',
       parentId: null,
       categoryType: 'Transfer',
+      ...baseCategory,
     },
   },
 };
@@ -79,6 +88,7 @@ export const Income: Story = {
       icon: '💰',
       parentId: null,
       categoryType: 'Incoming',
+      ...baseCategory,
     },
   },
 };
@@ -94,6 +104,7 @@ export const AllVariants: Story = {
           icon: '🍔',
           parentId: null,
           categoryType: 'Outgoing',
+          ...baseCategory,
         }}
       />
       <CategoryBadge
@@ -104,6 +115,7 @@ export const AllVariants: Story = {
           icon: '💊',
           parentId: null,
           categoryType: 'Outgoing',
+          ...baseCategory,
         }}
       />
       <CategoryBadge
@@ -114,6 +126,7 @@ export const AllVariants: Story = {
           icon: '🎁',
           parentId: null,
           categoryType: 'Outgoing',
+          ...baseCategory,
         }}
       />
       <CategoryBadge
@@ -124,6 +137,7 @@ export const AllVariants: Story = {
           icon: '💸',
           parentId: null,
           categoryType: 'Transfer',
+          ...baseCategory,
         }}
       />
       <CategoryBadge
@@ -134,6 +148,7 @@ export const AllVariants: Story = {
           icon: '💰',
           parentId: null,
           categoryType: 'Incoming',
+          ...baseCategory,
         }}
       />
     </Group>

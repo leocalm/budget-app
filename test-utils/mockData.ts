@@ -1,5 +1,4 @@
 import { AccountResponse, CurrencyResponse } from '@/types/account';
-import { CategoryResponse } from '@/types/category';
 
 export const mockCurrency: CurrencyResponse = {
   id: 'usd',
@@ -20,17 +19,5 @@ export const createMockAccount = (overrides?: Partial<AccountResponse>): Account
   balancePerDay: [],
   balanceChangeThisPeriod: 0,
   transactionCount: 0,
-  ...overrides,
-});
-
-export const createMockCategory = (overrides?: Partial<CategoryResponse>): CategoryResponse => ({
-  id: '1',
-  name: 'Test Category',
-  color: '#00d4ff',
-  icon: '🏷️',
-  parentId: null,
-  categoryType: 'Outgoing',
-  isArchived: false,
-  description: null,
   ...overrides,
 });

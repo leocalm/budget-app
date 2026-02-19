@@ -22,4 +22,3 @@ export {
   DeleteConfirmDialog,
   RestoreConfirmDialog,
 } from './CategoryConfirmDialogs';
-
