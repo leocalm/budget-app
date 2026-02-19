@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@mantine/core';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
@@ -42,21 +41,11 @@ export function UnbudgetedDiagnosticList({ rows }: UnbudgetedDiagnosticListProps
           className={styles.unbudgetedRow}
           data-testid={`unbudgeted-row-${row.id}`}
         >
-          <div className={styles.unbudgetedIdentity}>
-            <span
-              className={styles.unbudgetedIcon}
-              style={
-                row.color ? ({ '--diagnostic-row-color': row.color } as CSSProperties) : undefined
-              }
-              aria-hidden="true"
-            >
-              {row.icon}
-            </span>
-            <Text className={styles.unbudgetedName}>{row.name}</Text>
-          </div>
-
+          <Text className={styles.unbudgetedName}>{row.name}</Text>
           <div className={styles.unbudgetedValues}>
-            <Text className={styles.unbudgetedAmount}>{format(row.spentValue)}</Text>
+            <Text className={styles.unbudgetedAmount} component="strong">
+              {format(row.spentValue)}
+            </Text>
             <Text className={styles.unbudgetedShare}>{`${row.sharePercentage.toFixed(1)}%`}</Text>
           </div>
         </article>

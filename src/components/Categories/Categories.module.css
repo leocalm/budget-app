@@ -1,14 +1,3 @@
-/* ── Add Button gradient ── */
-.addButton {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border: none;
-  box-shadow: var(--shadow-reflective-glow);
-}
-
-.addButton:hover {
-  box-shadow: var(--shadow-reflective-glow);
-}
-
 /* ── Filter Tabs ── */
 .filterTabs {
   background: var(--bg-card);
@@ -241,38 +230,66 @@
   margin-top: var(--spacing-s);
 }
 
-.addButtonIcon {
-  display: inline-block;
-  font-size: 16px;
-  margin-right: 4px;
+.modeSwitch {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-medium);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  padding: 4px;
+}
+
+.modePill {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  line-height: 1;
+}
+
+.modePillActive {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border-color: color-mix(in srgb, var(--accent-primary) 38%, var(--border-medium) 62%);
 }
 
 .diagnosticsLayout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: var(--spacing-l);
+  grid-template-columns: 1fr;
 }
 
 .budgetedSection,
 .unbudgetedSection {
   background: var(--bg-card);
   border-color: var(--border-medium);
+  border-radius: 16px;
 }
 
 .sectionHeader {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
 }
 
 .sectionTitle {
-  font-size: var(--type-diagnostic-name-size);
+  margin: 0;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
 
 .sectionSubtitle {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 12px;
+  margin: 0;
 }
 
 .sectionEmpty {
@@ -281,132 +298,120 @@
 }
 
 .diagnosticRow {
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-md);
-  background: var(--bg-elevated);
-  padding: 12px;
+  border-bottom: 1px solid var(--border-medium);
+  padding: 16px 0;
 }
 
-.diagnosticIdentity {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  gap: var(--spacing-s);
+.diagnosticRow:last-child {
+  border-bottom: 0;
 }
 
-.diagnosticIcon {
-  align-items: center;
-  background: color-mix(in srgb, var(--diagnostic-row-color, var(--accent-primary)) 18%, transparent);
-  border-radius: 10px;
-  display: inline-flex;
-  font-size: 18px;
-  height: 32px;
-  justify-content: center;
-  width: 32px;
+.diagnosticMain {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
 .diagnosticName {
-  font-size: var(--type-diagnostic-name-size);
-  font-weight: var(--type-diagnostic-name-weight);
+  font-size: 15px;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.diagnosticValues {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: var(--spacing-m);
-  flex-wrap: wrap;
-}
-
-.diagnosticMetric {
-  display: flex;
-  flex-direction: column;
-  min-width: 92px;
-  text-align: right;
-}
-
-.diagnosticMetricLabel {
-  color: var(--text-secondary);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.diagnosticMetricValue {
-  font-size: var(--type-diagnostic-metric-size);
-  font-family: var(--mantine-font-family-monospace);
-  font-weight: var(--type-diagnostic-metric-weight);
-  line-height: 1.2;
-}
-
-.diagnosticVarianceValue {
-  font-size: var(--type-diagnostic-variance-size);
-  font-family: var(--mantine-font-family-monospace);
-  font-weight: var(--type-diagnostic-variance-weight);
-  line-height: 1.2;
-}
-
 .diagnosticProgressWrap {
-  margin-top: var(--spacing-s);
+  margin-top: 10px;
+}
+
+.diagnosticProgressRail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .diagnosticProgressTrack {
-  background: var(--bg-card);
+  flex: 1;
+  background: var(--border-medium);
   border-radius: 999px;
-  height: var(--progress-diagnostic-height);
-  overflow: visible;
-  position: relative;
+  height: 6px;
+  overflow: hidden;
 }
 
-.diagnosticProgressMarker {
-  background: var(--text-tertiary);
-  height: 10px;
-  left: calc(100% - 1px);
-  position: absolute;
-  top: -2px;
-  width: 2px;
+.diagnosticProgressOverflow {
+  width: 40px;
+  height: 6px;
+  border-radius: 999px;
 }
 
 .diagnosticProgressFill {
   background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-radius: 999px;
   height: 100%;
-  max-width: calc(100% + var(--progress-diagnostic-overflow-width));
 }
 
-.categoryStability {
+.diagnosticProjection {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.diagnosticMetrics {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.diagnosticMetricRow {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-s);
-  margin-top: var(--spacing-s);
+  gap: 12px;
 }
 
-.categoryStabilityLabel {
-  color: var(--text-secondary);
-  font-size: 11px;
+.diagnosticMetricLabel {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.diagnosticMetricValue {
+  font-size: 13px;
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.diagnosticVarianceValue {
+  font-size: 13px;
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.diagnosticEditButton {
+  margin-top: var(--spacing-s);
+  justify-self: end;
 }
 
 .categoryStabilityDots {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  margin-top: 8px;
 }
 
 .categoryStabilityDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1px solid var(--text-secondary);
+  border: 2px solid var(--border-medium);
   background: transparent;
 }
 
 .categoryStabilityDotFilled {
-  background: var(--text-secondary);
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
 }
 
 .categoryStabilityEmpty {
@@ -418,63 +423,41 @@
 .unbudgetedList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
 .unbudgetedRow {
-  align-items: center;
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
+  border-bottom: 1px solid var(--border-medium);
   display: flex;
   justify-content: space-between;
-  gap: var(--spacing-s);
-  padding: 10px;
-  background: var(--bg-elevated);
-}
-
-.unbudgetedIdentity {
-  align-items: center;
-  display: flex;
-  gap: var(--spacing-s);
-  min-width: 0;
-}
-
-.unbudgetedIcon {
-  align-items: center;
-  background: color-mix(in srgb, var(--diagnostic-row-color, var(--accent-primary)) 16%, transparent);
-  border-radius: 8px;
-  display: inline-flex;
-  font-size: 16px;
-  height: 28px;
-  justify-content: center;
-  width: 28px;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 13px;
 }
 
 .unbudgetedName {
-  font-size: var(--type-diagnostic-name-size);
-  font-weight: var(--type-diagnostic-name-weight);
+  font-size: 13px;
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.unbudgetedValues {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+.unbudgetedAmount {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
 }
 
-.unbudgetedAmount {
-  font-family: var(--mantine-font-family-monospace);
-  font-size: var(--type-diagnostic-metric-size);
-  font-weight: var(--type-diagnostic-metric-weight);
+.unbudgetedValues {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .unbudgetedShare {
+  font-size: 13px;
   color: var(--text-secondary);
-  font-size: 12px;
-  font-family: var(--mantine-font-family-monospace);
 }
 
 .unbudgetedEmpty {
@@ -482,23 +465,23 @@
   font-size: 13px;
 }
 
-@media (max-width: 992px) {
-  .diagnosticsLayout {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 768px) {
   .categoriesRoot {
     padding: var(--spacing-l);
   }
 
-  .diagnosticValues {
-    justify-content: flex-start;
+  .diagnosticMetricRow {
+    gap: 8px;
   }
 
-  .diagnosticMetric {
-    min-width: 0;
-    text-align: left;
+  .unbudgetedRow {
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 860px) {
+  .diagnosticMain {
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
   }
 }

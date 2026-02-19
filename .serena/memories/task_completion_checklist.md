@@ -1,1 +1,0 @@
-Before finishing code changes, run at least scoped verification requested for the task. For standard completion in this repo: run `yarn typecheck` and relevant `yarn vitest` suites; for full pre-commit run `yarn test`. Ensure formatting/lint conventions are preserved and do not modify unrelated files.

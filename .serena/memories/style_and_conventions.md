@@ -1,1 +1,0 @@
-Use TypeScript-first patterns and avoid `any`. Keep API hooks in `src/hooks` and use centralized `queryKeys` from `src/hooks/queryKeys.ts`. Follow existing naming and module patterns. Frontend uses camelCase, backend payloads/response mapping are handled centrally by API client. Keep UI and data-layer concerns separated.

@@ -1201,7 +1201,7 @@
   "categories": {
     "header": {
       "title": "Categories",
-      "subtitle": "Review budgeted, actual, and variance amounts for the selected period."
+      "subtitle": "Diagnostic view of category-level position and deviation."
     },
     "actions": {
       "addCategory": "Add Category"

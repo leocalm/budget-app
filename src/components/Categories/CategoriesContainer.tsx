@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
-  Button,
   Drawer,
   Modal,
   Paper,
@@ -17,10 +16,8 @@ import { PeriodContextStrip } from '@/components/BudgetPeriodSelector';
 import { StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategoriesDiagnostic } from '@/hooks/useCategories';
-import { CategoryResponse } from '@/types/category';
 import { BudgetedDiagnosticRow } from './BudgetedDiagnosticRow';
 import { CreateCategoryForm } from './CreateCategoryForm';
-import { EditCategoryForm } from './EditCategoryForm';
 import { UnbudgetedDiagnosticItem, UnbudgetedDiagnosticList } from './UnbudgetedDiagnosticList';
 import styles from './Categories.module.css';
 
@@ -54,9 +51,7 @@ export function CategoriesContainer() {
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
-  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
 
   const {
     data: diagnostics,
@@ -71,7 +66,6 @@ export function CategoriesContainer() {
       name: row.name,
       icon: row.icon,
       color: row.color,
-      category: row as CategoryResponse,
       budgetedValue: row.budgetedValue,
       spentValue: row.actualValue,
       varianceValue: row.varianceValue,
@@ -97,34 +91,27 @@ export function CategoriesContainer() {
     void refetchDiagnostics();
   };
 
-  const onEditCategory = (category: CategoryResponse) => {
-    setSelectedCategory(category);
-    openEdit();
-  };
-
-  const onEditClosed = () => {
-    closeEdit();
-    setSelectedCategory(null);
-  };
-
   return (
     <Box className={styles.categoriesRoot}>
       <Stack gap="xl">
-        <PeriodContextStrip />
-
         <div className={styles.categoriesHeader}>
           <div>
             <Title order={1} className={styles.categoriesTitle}>
               {t('categories.header.title')}
             </Title>
             <Text className={styles.categoriesSubtitle}>{t('categories.header.subtitle')}</Text>
+            <nav className={styles.modeSwitch} aria-label="Categories page mode">
+              <button type="button" className={`${styles.modePill} ${styles.modePillActive}`}>
+                Overview
+              </button>
+              <button type="button" className={styles.modePill}>
+                Management
+              </button>
+            </nav>
           </div>
-
-          <Button className={styles.addButton} size="md" onClick={openCreate}>
-            <span className={styles.addButtonIcon}>+</span>
-            {t('categories.actions.addCategory')}
-          </Button>
         </div>
+
+        <PeriodContextStrip />
 
         <StateRenderer
           variant="page"
@@ -161,7 +148,7 @@ export function CategoriesContainer() {
                     {t('categories.diagnostics.empty.budgeted')}
                   </Text>
                 ) : (
-                  <Stack gap="sm">
+                  <Stack gap={0}>
                     {budgetedDiagnostics.map((row) => (
                       <BudgetedDiagnosticRow
                         key={row.id}
@@ -174,7 +161,6 @@ export function CategoriesContainer() {
                         varianceValue={row.varianceValue}
                         progressPercentage={row.progressPercentage}
                         stabilityHistory={row.stabilityHistory}
-                        onEdit={() => onEditCategory(row.category)}
                       />
                     ))}
                   </Stack>
@@ -187,9 +173,6 @@ export function CategoriesContainer() {
                 <div className={styles.sectionHeader}>
                   <Text className={styles.sectionTitle}>
                     {t('categories.diagnostics.sections.unbudgeted')}
-                  </Text>
-                  <Text className={styles.sectionSubtitle}>
-                    {t('categories.diagnostics.sections.unbudgetedSubtitle')}
                   </Text>
                 </div>
 
@@ -212,51 +195,19 @@ export function CategoriesContainer() {
                 selectedPeriodId={selectedPeriodId}
               />
             </Drawer>
-
-            <Drawer
-              opened={editOpened}
-              onClose={onEditClosed}
-              title={t('categories.modal.editTitle')}
-              position="bottom"
-            >
-              {selectedCategory && (
-                <EditCategoryForm
-                  category={selectedCategory}
-                  onUpdated={onEditClosed}
-                  selectedPeriodId={selectedPeriodId}
-                />
-              )}
-            </Drawer>
           </>
         ) : (
-          <>
-            <Modal
-              opened={createOpened}
-              onClose={closeCreate}
-              title={t('categories.modal.createTitle')}
-              centered
-            >
-              <CreateCategoryForm
-                onCategoryCreated={closeCreate}
-                selectedPeriodId={selectedPeriodId}
-              />
-            </Modal>
-
-            <Modal
-              opened={editOpened}
-              onClose={onEditClosed}
-              title={t('categories.modal.editTitle')}
-              centered
-            >
-              {selectedCategory && (
-                <EditCategoryForm
-                  category={selectedCategory}
-                  onUpdated={onEditClosed}
-                  selectedPeriodId={selectedPeriodId}
-                />
-              )}
-            </Modal>
-          </>
+          <Modal
+            opened={createOpened}
+            onClose={closeCreate}
+            title={t('categories.modal.createTitle')}
+            centered
+          >
+            <CreateCategoryForm
+              onCategoryCreated={closeCreate}
+              selectedPeriodId={selectedPeriodId}
+            />
+          </Modal>
         )}
       </Stack>
     </Box>

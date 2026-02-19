@@ -1,1 +1,0 @@
-PiggyPulse App is the frontend for personal finance/budget management. It is a React + TypeScript SPA built with Vite and Mantine UI. It communicates with the backend via a centralized API client that converts camelCase<->snake_case and uses cookie-based auth. State management uses React Query for server state and local React state where appropriate.

@@ -1175,7 +1175,7 @@
   "categories": {
     "header": {
       "title": "Categorias",
-      "subtitle": "Revise valores orçados, realizados e variação no período selecionado."
+      "subtitle": "Visão diagnóstica da posição e desvio por categoria."
     },
     "actions": {
       "addCategory": "Adicionar Categoria"

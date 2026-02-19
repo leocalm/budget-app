@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
-import { render, screen, userEvent } from '@/test-utils';
+import { render, screen } from '@/test-utils';
 import { CategoriesContainer } from './CategoriesContainer';
 
 const useCategoriesDiagnosticMock = vi.hoisted(() => vi.fn());
@@ -28,14 +28,6 @@ vi.mock('./CreateCategoryForm', () => ({
   CreateCategoryForm: ({ onCategoryCreated }: { onCategoryCreated?: () => void }) => (
     <button type="button" onClick={onCategoryCreated}>
       Create form
-    </button>
-  ),
-}));
-
-vi.mock('./EditCategoryForm', () => ({
-  EditCategoryForm: ({ onUpdated }: { onUpdated?: () => void }) => (
-    <button type="button" onClick={onUpdated}>
-      Edit form
     </button>
   ),
 }));
@@ -159,19 +151,7 @@ describe('CategoriesContainer diagnostics layout', () => {
     expect(screen.getByText('72.2%')).toBeInTheDocument();
   });
 
-  it('opens create category modal when Add Category is clicked', async () => {
-    const user = userEvent.setup();
-
-    renderPage();
-
-    await user.click(screen.getAllByRole('button', { name: /\+?Add Category/ })[0]);
-
-    expect(await screen.findByRole('button', { name: 'Create form' })).toBeInTheDocument();
-  });
-
-  it('opens edit category modal when edit button is clicked', async () => {
-    const user = userEvent.setup();
-
+  it('does not render edit action in budgeted rows', () => {
     useCategoriesDiagnosticMock.mockReturnValue({
       data: {
         periodSummary: {
@@ -210,8 +190,6 @@ describe('CategoriesContainer diagnostics layout', () => {
 
     renderPage();
 
-    await user.click(screen.getByRole('button', { name: 'Edit' }));
-
-    expect(await screen.findByRole('button', { name: 'Edit form' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument();
   });
 });

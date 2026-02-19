@@ -65,10 +65,6 @@ vi.mock('@/hooks/useAccounts', () => ({
   useAccounts: () => useAccountsMock(),
 }));
 
-vi.mock('@/components/BudgetPeriodSelector', () => ({
-  PeriodContextStrip: () => <div>PeriodContextStrip</div>,
-}));
-
 vi.mock('@/components/Dashboard/ActiveOverlayBanner', () => ({
   ActiveOverlayBanner: () => <div>ActiveOverlayBanner</div>,
 }));
@@ -115,7 +111,6 @@ describe('Dashboard locked state', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('PeriodContextStrip')).toBeInTheDocument();
     expect(screen.getAllByText('Status: Not configured')).toHaveLength(7);
 
     const configureLinks = screen.getAllByRole('link', { name: 'Configure' });

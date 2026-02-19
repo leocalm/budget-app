@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { formatCurrency } from '@/utils/currency';
 import { CategoryStabilityDots } from './CategoryStabilityDots';
@@ -18,7 +18,6 @@ export interface BudgetedDiagnosticRowProps {
   varianceValue: number;
   progressPercentage: number;
   stabilityHistory: boolean[];
-  onEdit?: () => void;
 }
 
 function normalizePercentage(value: number) {
@@ -32,80 +31,94 @@ function normalizePercentage(value: number) {
 export function BudgetedDiagnosticRow({
   id,
   name,
-  icon,
-  color,
+  icon: _icon,
+  color: _color,
   budgetedValue,
   spentValue,
   varianceValue,
   progressPercentage,
   stabilityHistory,
-  onEdit,
 }: BudgetedDiagnosticRowProps) {
   const { t, i18n } = useTranslation();
   const currency = useDisplayCurrency();
 
   const normalizedProgress = normalizePercentage(progressPercentage);
-  const progressFillWidth =
+  const baseProgressWidth = `${Math.min(normalizedProgress, 100)}%`;
+  const overflowProgressWidth =
     normalizedProgress <= 100
-      ? `${normalizedProgress}%`
-      : `calc(100% + ${Math.min(((normalizedProgress - 100) / 100) * PROGRESS_OVERFLOW_CAP_PX, PROGRESS_OVERFLOW_CAP_PX)}px)`;
+      ? '0px'
+      : `${Math.min(((normalizedProgress - 100) / 100) * PROGRESS_OVERFLOW_CAP_PX, PROGRESS_OVERFLOW_CAP_PX)}px`;
+  const usagePercentageLabel = `${normalizedProgress.toFixed(1)}%`;
 
   const format = (amountInCents: number) => formatCurrency(amountInCents, currency, i18n.language);
 
   return (
     <article className={styles.diagnosticRow} data-testid={`budgeted-row-${id}`}>
-      <Group justify="space-between" align="flex-start" wrap="nowrap" gap="md">
-        <div className={styles.diagnosticIdentity}>
-          <span
-            className={styles.diagnosticIcon}
-            style={color ? ({ '--diagnostic-row-color': color } as CSSProperties) : undefined}
-            aria-hidden="true"
-          >
-            {icon}
-          </span>
+      <div className={styles.diagnosticMain}>
+        <div>
           <Text className={styles.diagnosticName}>{name}</Text>
+
+          <div className={styles.diagnosticProgressWrap}>
+            <div className={styles.diagnosticProgressRail}>
+              <div className={styles.diagnosticProgressTrack}>
+                <div
+                  className={styles.diagnosticProgressFill}
+                  style={{ width: baseProgressWidth }}
+                />
+              </div>
+              <div className={styles.diagnosticProgressOverflow}>
+                <div
+                  className={styles.diagnosticProgressFill}
+                  style={
+                    {
+                      width: overflowProgressWidth,
+                      maxWidth: `${PROGRESS_OVERFLOW_CAP_PX}px`,
+                    } as CSSProperties
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+          <Text className={styles.diagnosticProjection}>
+            {t('categories.diagnostics.labels.actual')}: {format(spentValue)}
+          </Text>
+          <CategoryStabilityDots history={stabilityHistory} />
         </div>
 
-        <div className={styles.diagnosticValues}>
-          <div className={styles.diagnosticMetric}>
+        <div className={styles.diagnosticMetrics}>
+          <div className={styles.diagnosticMetricRow}>
             <Text className={styles.diagnosticMetricLabel}>
               {t('categories.diagnostics.labels.budgeted')}
             </Text>
-            <Text className={styles.diagnosticMetricValue}>{format(budgetedValue)}</Text>
+            <Text className={styles.diagnosticMetricValue} component="strong">
+              {format(budgetedValue)}
+            </Text>
           </div>
-          <div className={styles.diagnosticMetric}>
+          <div className={styles.diagnosticMetricRow}>
             <Text className={styles.diagnosticMetricLabel}>
               {t('categories.diagnostics.labels.actual')}
             </Text>
-            <Text className={styles.diagnosticMetricValue}>{format(spentValue)}</Text>
+            <Text className={styles.diagnosticMetricValue} component="strong">
+              {format(spentValue)}
+            </Text>
           </div>
-          <div className={styles.diagnosticMetric}>
+          <div className={styles.diagnosticMetricRow}>
             <Text className={styles.diagnosticMetricLabel}>
               {t('categories.diagnostics.labels.variance')}
             </Text>
-            <Text className={styles.diagnosticVarianceValue}>{format(varianceValue)}</Text>
+            <Text className={styles.diagnosticVarianceValue} component="strong">
+              {format(varianceValue)}
+            </Text>
           </div>
-          {onEdit ? (
-            <Button
-              variant="subtle"
-              size="xs"
-              onClick={onEdit}
-              title={t('categories.card.actions.edit')}
-            >
-              {t('categories.card.actions.edit')}
-            </Button>
-          ) : null}
-        </div>
-      </Group>
-
-      <div className={styles.diagnosticProgressWrap}>
-        <div className={styles.diagnosticProgressTrack}>
-          <div className={styles.diagnosticProgressMarker} aria-hidden="true" />
-          <div className={styles.diagnosticProgressFill} style={{ width: progressFillWidth }} />
+          <div className={styles.diagnosticMetricRow}>
+            <Text className={styles.diagnosticMetricLabel}>% Used</Text>
+            <Text className={styles.diagnosticMetricValue} component="strong">
+              {usagePercentageLabel}
+            </Text>
+          </div>
         </div>
       </div>
-
-      <CategoryStabilityDots history={stabilityHistory} />
     </article>
   );
 }
