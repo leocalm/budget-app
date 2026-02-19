@@ -729,7 +729,8 @@
   }
 
   .managementGroup,
-  .managementGroupArchived {
+  .managementGroupArchived,
+  .group {
     border: none;
     background: transparent;
   }

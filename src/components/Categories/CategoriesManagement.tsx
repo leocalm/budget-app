@@ -80,7 +80,7 @@ function CategoryManagementSection({
   }
 
   return (
-    <Paper withBorder radius="lg" className={isArchived ? styles.archivedShell : styles.group}>
+    <Paper radius="lg" className={isArchived ? styles.archivedShell : styles.group}>
       {isArchived ? (
         <>
           <button
