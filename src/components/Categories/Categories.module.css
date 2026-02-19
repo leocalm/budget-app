@@ -495,10 +495,18 @@
   width: 100%;
 }
 
-.managementGroup {
-  background: var(--bg-card);
+.group {
   border: 1px solid var(--border-medium);
   border-radius: 16px;
+  background: var(--bg-card);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.managementGroup {
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  background: var(--bg-card);
   overflow: hidden;
 }
 

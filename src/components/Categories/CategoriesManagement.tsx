@@ -119,7 +119,9 @@ function CategoryManagementSection({
         </>
       ) : (
         <>
-          <Text className={styles.groupTitle}>{title}</Text>
+          <div className={styles.groupHeader}>
+            <Text className={styles.groupTitle}>{title}</Text>
+          </div>
           <Stack gap={0}>
             {parents.map((parent) => (
               <div key={parent.id}>
