@@ -835,7 +835,7 @@
     }
   },
   "dashboard": {
-    "title": "Financial Dashboard",
+    "title": "Dashboard",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -868,7 +868,7 @@
       "title": "Current Period",
       "hero": {
         "remaining": "{{amount}} remaining",
-        "meta": "{{percent}}% used \u2022 {{days}} days remaining"
+        "meta": "{{percent}}% used • {{days}} days remaining"
       },
       "metrics": {
         "totalBudget": "Total budget",
@@ -900,7 +900,9 @@
       "breakdownDebt": "Debt {{amount}}",
       "empty": "No accounts available.",
       "error": "Could not load net position.",
-      "retry": "Retry"
+      "retry": "Retry",
+      "acrossAccounts": "Across {{count}} accounts",
+      "lastUpdated": "Last updated {{time}} ago"
     },
     "stats": {
       "remainingBudget": {
@@ -960,8 +962,10 @@
       "dots": {
         "outside": "Outside tolerance",
         "within": "Within tolerance"
-      }
-    }
+      },
+      "outsideToleranceCount": "{{outside}} of the last {{total}} closed periods were outside tolerance."
+    },
+    "subtitle": "Current position, deviation, and period trajectory."
   },
   "states": {
     "contract": {

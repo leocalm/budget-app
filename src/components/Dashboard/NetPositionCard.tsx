@@ -1,6 +1,5 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Paper, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyResponse } from '@/types/account';
 import { NetPosition } from '@/types/dashboard';
 import { Money } from '@/types/money';
@@ -38,79 +37,116 @@ export const NetPositionCard = ({
 }: NetPositionCardProps) => {
   const { t } = useTranslation();
 
+  const computeSegmentWidths = () => {
+    if (!data) {
+      return { liquid: 0, protected: 0, debt: 0 };
+    }
+    const liquidAbs = Math.abs(data.liquidBalance);
+    const protectedAbs = Math.abs(data.protectedBalance);
+    const debtAbs = Math.abs(data.debtBalance);
+    const total = liquidAbs + protectedAbs + debtAbs;
+    if (total === 0) {
+      return { liquid: 0, protected: 0, debt: 0 };
+    }
+    return {
+      liquid: (liquidAbs / total) * 100,
+      protected: (protectedAbs / total) * 100,
+      debt: (debtAbs / total) * 100,
+    };
+  };
+
+  const segmentWidths = computeSegmentWidths();
+
+  let testId = 'net-position-active';
+  if (isError) {
+    testId = 'net-position-error';
+  } else if (isLoading) {
+    testId = 'net-position-loading';
+  } else if (data?.accountCount === 0) {
+    testId = 'net-position-empty';
+  }
+
   return (
-    <Paper
-      className={styles.netPositionCard}
-      shadow="md"
-      radius="lg"
-      p="xl"
-      withBorder
-      style={{
-        background: 'var(--bg-card)',
-        borderColor: 'var(--border-medium)',
-      }}
-    >
-      <Text fw={600} size="lg" mb="md">
-        {t('dashboard.netPosition.title')}
-      </Text>
+    <Paper className={styles.wireframeCard} withBorder data-testid={testId}>
+      <Text component="h2">{t('dashboard.netPosition.title')}</Text>
 
       {isError && (
-        <Group justify="space-between" align="center" wrap="wrap" data-testid="net-position-error">
-          <Text size="sm" c="dimmed">
-            {t('dashboard.netPosition.error')}
-          </Text>
-          <Button variant="default" size="xs" onClick={onRetry}>
+        <Stack gap="xs" align="flex-start">
+          <Text className={styles.meta}>{t('dashboard.netPosition.error')}</Text>
+          <Button variant="subtle" size="xs" onClick={onRetry}>
             {t('dashboard.netPosition.retry')}
           </Button>
-        </Group>
+        </Stack>
       )}
 
       {!isError && isLoading && (
-        <Stack gap="sm" data-testid="net-position-loading">
-          <Skeleton height={38} width="45%" />
-          <Skeleton height={18} width="35%" />
-          <Group gap="xl" mt="xs">
-            <Skeleton height={16} width={140} />
-            <Skeleton height={16} width={160} />
-            <Skeleton height={16} width={150} />
-          </Group>
+        <Stack gap="sm">
+          <div className={styles.netGrid}>
+            <div>
+              <Skeleton height={46} width="60%" />
+              <Skeleton height={18} width="40%" mt="sm" />
+            </div>
+            <div>
+              <Skeleton height={16} width={100} />
+              <Skeleton height={16} width={80} mt="xs" />
+            </div>
+          </div>
+          <Skeleton height={6} width="100%" radius="xl" mt="md" />
+          <Skeleton height={16} width="70%" />
         </Stack>
       )}
 
       {!isError && !isLoading && data?.accountCount === 0 && (
-        <Text size="sm" c="dimmed" data-testid="net-position-empty">
-          {t('dashboard.netPosition.empty')}
-        </Text>
+        <Text className={styles.meta}>{t('dashboard.netPosition.empty')}</Text>
       )}
 
       {!isError && !isLoading && data && data.accountCount > 0 && (
-        <Stack gap="sm" data-testid="net-position-active">
-          <Text fw={700} size="2rem" ff="monospace">
-            {formatMoney(data.totalNetPosition, currency, locale)}
-          </Text>
-          <Text size="sm" c="dimmed">
-            {t('dashboard.netPosition.changeThisPeriod', {
-              amount: formatSignedMoney(data.changeThisPeriod, currency, locale),
+        <>
+          <div className={styles.netGrid}>
+            <div>
+              <Text className={styles.valueHero}>
+                {formatMoney(data.totalNetPosition, currency, locale)}
+              </Text>
+              <Text className={styles.meta}>
+                {t('dashboard.netPosition.changeThisPeriod', {
+                  amount: formatSignedMoney(data.changeThisPeriod, currency, locale),
+                })}
+              </Text>
+            </div>
+            <div className={styles.netRight}>
+              <div>{t('dashboard.netPosition.acrossAccounts', { count: data.accountCount })}</div>
+              {/* TODO: Add last updated timestamp when available */}
+              {/* <div>{t('dashboard.netPosition.lastUpdated', { time: '2h' })}</div> */}
+            </div>
+          </div>
+          <div className={styles.netDistribution}>
+            <span
+              className={`${styles.segment} ${styles.liquid}`}
+              style={{ width: `${segmentWidths.liquid}%` }}
+            />
+            <span
+              className={`${styles.segment} ${styles.protected}`}
+              style={{ width: `${segmentWidths.protected}%` }}
+            />
+            <span
+              className={`${styles.segment} ${styles.debt}`}
+              style={{ width: `${segmentWidths.debt}%` }}
+            />
+          </div>
+          <Text className={styles.meta}>
+            {t('dashboard.netPosition.breakdownLiquid', {
+              amount: formatMoney(data.liquidBalance, currency, locale),
+            })}
+            {' · '}
+            {t('dashboard.netPosition.breakdownProtected', {
+              amount: formatMoney(data.protectedBalance, currency, locale),
+            })}
+            {' · '}
+            {t('dashboard.netPosition.breakdownDebt', {
+              amount: formatMoney(data.debtBalance, currency, locale),
             })}
           </Text>
-          <Group gap="xl" mt="xs" wrap="wrap" className={styles.netPositionBreakdown}>
-            <Text size="sm" c="dimmed">
-              {t('dashboard.netPosition.breakdownLiquid', {
-                amount: formatMoney(data.liquidBalance, currency, locale),
-              })}
-            </Text>
-            <Text size="sm" c="dimmed">
-              {t('dashboard.netPosition.breakdownProtected', {
-                amount: formatMoney(data.protectedBalance, currency, locale),
-              })}
-            </Text>
-            <Text size="sm" c="dimmed">
-              {t('dashboard.netPosition.breakdownDebt', {
-                amount: formatMoney(data.debtBalance, currency, locale),
-              })}
-            </Text>
-          </Group>
-        </Stack>
+        </>
       )}
     </Paper>
   );

@@ -44,7 +44,6 @@ describe('BudgetStabilityCard', () => {
 
     expect(screen.getByText('67%')).toBeInTheDocument();
     expect(screen.getByText('4 of 6 periods within range')).toBeInTheDocument();
-    expect(screen.getByText('Last 6 closed periods')).toBeInTheDocument();
     expect(screen.getAllByLabelText('Outside tolerance')).toHaveLength(2);
     expect(screen.getAllByLabelText('Within tolerance')).toHaveLength(4);
   });

@@ -746,7 +746,7 @@
     "more": "Página Mais"
   },
   "dashboard": {
-    "title": "Painel Financeiro",
+    "title": "Painel",
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -776,19 +776,19 @@
       "unlockedBanner": "Estrutura completa. Painel desbloqueado."
     },
     "currentPeriod": {
-      "title": "Per\u00edodo Atual",
+      "title": "Período Atual",
       "hero": {
         "remaining": "{{amount}} restante",
-        "meta": "{{percent}}% usado \u2022 {{days}} dias restantes"
+        "meta": "{{percent}}% usado • {{days}} dias restantes"
       },
       "metrics": {
-        "totalBudget": "Or\u00e7amento total",
+        "totalBudget": "Orçamento total",
         "actualSpend": "Total gasto"
       },
       "projection": "Gasto projetado no ritmo atual: {{amount}}",
       "states": {
-        "empty": "Nenhum per\u00edodo selecionado.",
-        "error": "N\u00e3o foi poss\u00edvel carregar os valores do per\u00edodo atual."
+        "empty": "Nenhum período selecionado.",
+        "error": "Não foi possível carregar os valores do período atual."
       }
     },
     "noPeriod": {
@@ -811,7 +811,9 @@
       "breakdownDebt": "Dívida {{amount}}",
       "empty": "Nenhuma conta disponível.",
       "error": "Não foi possível carregar a posição líquida.",
-      "retry": "Tentar novamente"
+      "retry": "Tentar novamente",
+      "acrossAccounts": "Em {{count}} contas",
+      "lastUpdated": "Atualizado há {{time}}"
     },
     "stats": {
       "remainingBudget": {
@@ -871,8 +873,10 @@
       "dots": {
         "outside": "Fora da tolerância",
         "within": "Dentro da tolerância"
-      }
-    }
+      },
+      "outsideToleranceCount": "{{outside}} dos últimos {{total}} períodos fechados estavam fora da tolerância."
+    },
+    "subtitle": "Posição atual, desvio e trajetória do período."
   },
   "vendors": {
     "title": "Fornecedores",

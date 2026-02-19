@@ -385,3 +385,119 @@
     padding: 12px 0;
   }
 }
+
+/* ── Lower Grid Layout ── */
+.lowerGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .lowerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── Wireframe Card Styles ── */
+.wireframeCard {
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  background: var(--bg-card);
+  padding: 22px;
+}
+
+.wireframeCard h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.valueHero {
+  margin: 16px 0 0;
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.meta {
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.stabilityStrip {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.block {
+  width: 14px;
+  height: 16px;
+  border-radius: 6px;
+  background: var(--border-subtle);
+}
+
+.block.outside {
+  background: var(--accent-purple);
+}
+
+.block.current {
+  background: transparent;
+  border: 2px solid var(--accent-primary);
+}
+
+.netGrid {
+  margin-top: 14px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+.netRight {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.netDistribution {
+  margin-top: 14px;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  background: color-mix(in srgb, var(--border-subtle) 82%, var(--bg-card) 18%);
+}
+
+.segment {
+  height: 100%;
+}
+
+.segment.liquid,
+.liquid {
+  background: var(--accent-primary);
+  opacity: 0.68;
+}
+
+.segment.protected,
+.protected {
+  background: var(--accent-purple);
+  opacity: 0.6;
+}
+
+.segment.debt,
+.debt {
+  background: color-mix(in srgb, var(--accent-purple) 70%, var(--border-subtle) 30%);
+  opacity: 0.5;
+}
+
+/* Desktop styles */
+@media (min-width: 860px) {
+  .netGrid {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}
