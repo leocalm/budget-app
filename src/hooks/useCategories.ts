@@ -9,6 +9,7 @@ import {
   createCategory,
   deleteCategory,
   fetchCategories,
+  fetchCategoriesDiagnostic,
   fetchCategoriesPage,
   fetchUnbudgetedCategories,
   updateCategory,
@@ -42,6 +43,14 @@ export const useInfiniteCategories = (selectedPeriodId: string | null) => {
   });
 };
 
+export const useCategoriesDiagnostic = (selectedPeriodId: string | null) => {
+  return useQuery({
+    queryKey: queryKeys.categoriesDiagnostic(selectedPeriodId),
+    queryFn: () => fetchCategoriesDiagnostic(selectedPeriodId!),
+    enabled: Boolean(selectedPeriodId),
+  });
+};
+
 export const useDeleteCategory = (selectedPeriodId: string | null) => {
   const queryClient = useQueryClient();
 
@@ -52,6 +61,7 @@ export const useDeleteCategory = (selectedPeriodId: string | null) => {
         queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
     },
@@ -68,6 +78,7 @@ export const useCreateCategory = (selectedPeriodId: string | null) => {
         queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
     },
@@ -86,6 +97,7 @@ export const useUpdateCategory = (selectedPeriodId: string | null) => {
           queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
         }),
         queryClient.invalidateQueries({ queryKey: queryKeys.categories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
       ]);
@@ -109,6 +121,7 @@ export const useCreateBudgetCategory = () => {
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
       ]);
     },
   });
@@ -130,6 +143,7 @@ export const useDeleteBudgetCategory = () => {
       await Promise.all([
         queryClient.refetchQueries({ queryKey: queryKeys.unbudgetedCategories() }),
         queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() }),
+        queryClient.refetchQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
       ]);
     },
   });
@@ -142,7 +156,21 @@ export const useUpdateBudgetCategory = () => {
     mutationFn: ({ id, payload }: { id: string; payload: BudgetCategoryUpdateRequest }) =>
       updateBudgetCategory(id, payload),
     onSuccess: async () => {
-      await Promise.all([queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() })]);
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() }),
+        queryClient.refetchQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
+      ]);
     },
+  });
+};
+
+/**
+ * Fetches all categories globally (no period filter) for dashboard prerequisite checks.
+ * Used to determine whether Incoming + Outgoing categories exist.
+ */
+export const useGlobalCategories = () => {
+  return useQuery({
+    queryKey: queryKeys.categories(null),
+    queryFn: () => fetchCategories(null),
   });
 };

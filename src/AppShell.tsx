@@ -1,5 +1,6 @@
 import { AppShell, Group, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 import { BottomNavigation } from '@/components/Layout/BottomNavigation';
 import { Logo } from '@/components/Layout/Logo';
 import { Sidebar } from '@/components/Layout/Sidebar';
@@ -33,7 +34,10 @@ export function BasicAppShell({ children }: { children: React.ReactNode }) {
               {pageTitle}
             </Text>
           )}
-          <UserMenu variant="topbar" />
+          <Group gap="sm" align="center" wrap="nowrap" justify="flex-end">
+            {!isMobile && <PeriodHeaderControl />}
+            <UserMenu variant="topbar" />
+          </Group>
         </Group>
       </AppShell.Header>
 

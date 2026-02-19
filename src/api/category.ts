@@ -1,4 +1,5 @@
 import {
+  CategoriesDiagnosticResponse,
   CategoriesPage,
   CategoryRequest,
   CategoryResponse,
@@ -105,6 +106,13 @@ export async function fetchCategoriesPage({
   const query = searchParams.toString();
   const response = await apiGetRaw<unknown>(`/api/categories?${query}`);
   return parseCategoriesPageResponse(response);
+}
+
+export async function fetchCategoriesDiagnostic(
+  selectedPeriodId: string
+): Promise<CategoriesDiagnosticResponse> {
+  const query = new URLSearchParams({ period_id: selectedPeriodId }).toString();
+  return apiGet<CategoriesDiagnosticResponse>(`/api/categories/diagnostics?${query}`);
 }
 
 export async function createCategory(payload: CategoryRequest): Promise<CategoryResponse> {

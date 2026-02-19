@@ -38,10 +38,21 @@ export interface NetPosition {
   accountCount: number;
 }
 
-export interface BudgetStabilityPeriod {
+export interface CategoryStabilityDot {
   periodId: string;
   isOutsideTolerance: boolean;
 }
+
+export interface PeriodContextSummary {
+  totalBudget: number;
+  spentBudget: number;
+  remainingBudget: number;
+  daysInPeriod: number;
+  remainingDays: number;
+  daysPassedPercentage: number;
+}
+
+export interface BudgetStabilityPeriod extends CategoryStabilityDot {}
 
 export interface BudgetStability {
   withinTolerancePercentage: number;

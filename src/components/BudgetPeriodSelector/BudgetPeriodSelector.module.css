@@ -125,6 +125,60 @@
   background: var(--text-tertiary);
 }
 
+.periodContextStrip {
+  background: var(--surface);
+  border-color: var(--border-soft);
+}
+
+.periodContextGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+.periodContextBlock {
+  min-width: 0;
+}
+
+.periodContextMetricLabel {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.periodContextMainValue {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.periodContextSummaryValue {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.periodContextProgressTrack {
+  margin-top: 6px;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.periodContextProgressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+}
+
 @media (max-width: 768px) {
   .headerControl {
     width: 100%;
@@ -133,5 +187,13 @@
   .triggerLabel,
   .triggerMeta {
     max-width: 140px;
+  }
+}
+
+@media (min-width: 860px) {
+  .periodContextGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    column-gap: 20px;
   }
 }

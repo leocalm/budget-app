@@ -757,7 +757,23 @@
         "notConfigured": "Configure um período de orçamento para exibir dados no painel.",
         "noActivePeriod": "Crie ou ajuste períodos para que um período esteja ativo hoje."
       },
-      "configure": "Configurar"
+      "period": {
+        "title": "Modelo de Período",
+        "requirement": "Defina um modelo de período automático ou manual",
+        "requirementNoActive": "Crie ou ajuste períodos para que um período esteja ativo hoje."
+      },
+      "accounts": {
+        "title": "Contas",
+        "status": "Nenhuma conta criada",
+        "requirement": "Adicione pelo menos uma conta de ativo"
+      },
+      "categories": {
+        "title": "Categorias",
+        "status": "Incompleto",
+        "requirement": "Adicione uma categoria Receita e uma categoria Despesa"
+      },
+      "configure": "Configurar",
+      "unlockedBanner": "Estrutura completa. Painel desbloqueado."
     },
     "currentPeriod": {
       "title": "Per\u00edodo Atual",
@@ -782,7 +798,7 @@
     },
     "overlayBanner": {
       "remaining": "{{amount}} restante • {{days}} dias",
-      "over": "{{amount}} acima • {{days}} dias",
+      "over": "-{{amount}} • {{days}} dias",
       "noCap": "Sem limite definido • {{days}} dias",
       "moreCount": "+{{count}}",
       "dismiss": "Dispensar banner de overlay"
@@ -1159,7 +1175,11 @@
   "categories": {
     "header": {
       "title": "Categorias",
-      "subtitle": "Organize suas transações em grupos significativos."
+      "subtitle": "Visão diagnóstica da posição e desvio por categoria."
+    },
+    "modeSwitch": {
+      "overview": "Visão Geral",
+      "management": "Gerenciamento"
     },
     "actions": {
       "addCategory": "Adicionar Categoria"
@@ -1169,6 +1189,34 @@
       "outgoing": "Gastos",
       "incoming": "Entradas",
       "transfer": "Transferências"
+    },
+    "diagnostics": {
+      "sections": {
+        "budgeted": "Categorias orçadas",
+        "budgetedSubtitle": "Valores orçados, realizados e variação por categoria.",
+        "unbudgeted": "Categorias sem orçamento",
+        "unbudgetedSubtitle": "Gasto realizado e participação no total sem orçamento."
+      },
+      "labels": {
+        "budgeted": "Orçado",
+        "actual": "Realizado",
+        "variance": "Variação",
+        "used": "Uso",
+        "projectedAtCurrentPace": "Projeção no ritmo atual",
+        "shareOfTotalSpend": "Participação no gasto total",
+        "lastThreePeriods": "Últimos 3 períodos",
+        "summary": "Resumo",
+        "elapsedInPeriod": "Tempo decorrido no período",
+        "period": "Período",
+        "varianceLabel": "{{spentBudgetLabel}} de {{totalBudgetLabel}} · Variação {{varianceLabel}}",
+        "noData": "Sem dados",
+        "withinTolerance": "Dentro da tolerância",
+        "outsideTolerance": "Fora da tolerância"
+      },
+      "empty": {
+        "budgeted": "Nenhuma categoria orçada",
+        "unbudgeted": "Sem gastos sem orçamento"
+      }
     },
     "empty": {
       "addButton": "Adicionar Categoria"

@@ -10,9 +10,6 @@ const useMonthlyBurnInMock = vi.hoisted(() => vi.fn());
 const useMonthProgressMock = vi.hoisted(() => vi.fn());
 const useBudgetPerDayMock = vi.hoisted(() => vi.fn());
 const useRecentTransactionsMock = vi.hoisted(() => vi.fn());
-const useTotalAssetsMock = vi.hoisted(() => vi.fn());
-const useNetPositionMock = vi.hoisted(() => vi.fn());
-const useBudgetStabilityMock = vi.hoisted(() => vi.fn());
 const useAccountsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('react-i18next', () => ({
@@ -60,9 +57,8 @@ vi.mock('@/hooks/useDashboard', () => ({
   useMonthProgress: () => useMonthProgressMock(),
   useBudgetPerDay: () => useBudgetPerDayMock(),
   useRecentTransactions: () => useRecentTransactionsMock(),
-  useTotalAssets: () => useTotalAssetsMock(),
-  useNetPosition: () => useNetPositionMock(),
-  useBudgetStability: () => useBudgetStabilityMock(),
+  useBudgetStability: () => ({ data: null, isLoading: false, isError: false, refetch: vi.fn() }),
+  useNetPosition: () => ({ data: null, isLoading: false, isError: false, refetch: vi.fn() }),
 }));
 
 vi.mock('@/hooks/useAccounts', () => ({
@@ -70,7 +66,7 @@ vi.mock('@/hooks/useAccounts', () => ({
 }));
 
 vi.mock('@/components/BudgetPeriodSelector', () => ({
-  PeriodHeaderControl: () => <div>PeriodHeaderControl</div>,
+  PeriodContextStrip: () => <div>PeriodContextStrip</div>,
 }));
 
 vi.mock('@/components/Dashboard/ActiveOverlayBanner', () => ({
@@ -97,14 +93,21 @@ describe('Dashboard locked state', () => {
   it('renders all dashboard cards as locked when no period is configured', () => {
     useCurrentBudgetPeriodMock.mockReturnValue({ data: null, error: null, isFetched: false });
     useSpentPerCategoryMock.mockReturnValue({ data: [], isLoading: false });
-    useMonthlyBurnInMock.mockReturnValue({ data: null, isLoading: false });
-    useMonthProgressMock.mockReturnValue({ data: null, isLoading: false });
+    useMonthlyBurnInMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+    useMonthProgressMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
-    useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
-    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
-    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
@@ -128,14 +131,21 @@ describe('Dashboard locked state', () => {
       error: new ApiError('Not found', 404, '/api/budget_period/current'),
     });
     useSpentPerCategoryMock.mockReturnValue({ data: [], isLoading: false });
-    useMonthlyBurnInMock.mockReturnValue({ data: null, isLoading: false });
-    useMonthProgressMock.mockReturnValue({ data: null, isLoading: false });
+    useMonthlyBurnInMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+    useMonthProgressMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
-    useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
-    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
-    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
@@ -154,14 +164,21 @@ describe('Dashboard locked state', () => {
       error: new ApiError('Not found', 404, '/api/budget_period/current'),
     });
     useSpentPerCategoryMock.mockReturnValue({ data: [], isLoading: false });
-    useMonthlyBurnInMock.mockReturnValue({ data: null, isLoading: false });
-    useMonthProgressMock.mockReturnValue({ data: null, isLoading: false });
+    useMonthlyBurnInMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+    useMonthProgressMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
-    useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
-    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
-    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
