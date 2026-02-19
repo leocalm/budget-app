@@ -22,6 +22,10 @@ export const queryKeys = {
   categoriesInfinite: (periodId?: string | null, pageSize = 50) =>
     ['categories', periodId, 'infinite', pageSize] as const,
   category: (id: string) => ['category', id] as const,
+  categoriesDiagnostic: (periodId?: string | null) =>
+    periodId === undefined
+      ? (['categoriesDiagnostic'] as const)
+      : (['categoriesDiagnostic', periodId] as const),
   budgetedCategories: () => ['budgetedCategories'] as const,
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,
 

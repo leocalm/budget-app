@@ -5,66 +5,96 @@ import {
   Button,
   Drawer,
   Modal,
-  SimpleGrid,
+  Paper,
+  Skeleton,
   Stack,
-  Tabs,
   Text,
+  Title,
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { CardSkeleton, StateRenderer } from '@/components/Utils';
+import { PeriodContextStrip } from '@/components/BudgetPeriodSelector';
+import { StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useDeleteCategory, useInfiniteCategories } from '@/hooks/useCategories';
-import { CategoryResponse, CategoryType } from '@/types/category';
-import { PageHeader } from '../Transactions/PageHeader';
-import { CategoryCard } from './CategoryCard';
+import { useCategoriesDiagnostic } from '@/hooks/useCategories';
+import { CategoryResponse } from '@/types/category';
+import { BudgetedDiagnosticRow } from './BudgetedDiagnosticRow';
 import { CreateCategoryForm } from './CreateCategoryForm';
 import { EditCategoryForm } from './EditCategoryForm';
+import { UnbudgetedDiagnosticItem, UnbudgetedDiagnosticList } from './UnbudgetedDiagnosticList';
 import styles from './Categories.module.css';
 
-type CategoryTypeFilter = 'all' | CategoryType;
+function CategoriesDiagnosticsSkeleton() {
+  return (
+    <div className={styles.diagnosticsLayout}>
+      <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>
+        <Stack gap="sm">
+          <Skeleton height={24} width="40%" radius="sm" />
+          <Skeleton height={88} radius="md" />
+          <Skeleton height={88} radius="md" />
+          <Skeleton height={88} radius="md" />
+        </Stack>
+      </Paper>
+
+      <Paper withBorder radius="lg" p="lg" className={styles.unbudgetedSection}>
+        <Stack gap="sm">
+          <Skeleton height={24} width="55%" radius="sm" />
+          <Skeleton height={60} radius="md" />
+          <Skeleton height={60} radius="md" />
+          <Skeleton height={60} radius="md" />
+        </Stack>
+      </Paper>
+    </div>
+  );
+}
 
 export function CategoriesContainer() {
   const { t } = useTranslation();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const showFilters = false;
 
-  // Get selected budget period from context
   const { selectedPeriodId } = useBudgetPeriodSelection();
-
-  const {
-    data: paginatedCategories,
-    isLoading,
-    isError,
-    refetch,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteCategories(selectedPeriodId);
-  const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
-  const deleteMutation = useDeleteCategory(selectedPeriodId);
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
 
-  const categories = useMemo(
-    () => paginatedCategories?.pages.flatMap((page) => page.categories) ?? [],
-    [paginatedCategories]
-  );
+  const {
+    data: diagnostics,
+    isLoading: isDiagnosticsQueryLoading,
+    isError: hasDiagnosticsError,
+    refetch: refetchDiagnostics,
+  } = useCategoriesDiagnostic(selectedPeriodId);
 
-  const filteredCategories = useMemo(() => {
-    if (!categories) {
-      return [];
-    }
-    if (typeFilter === 'all') {
-      return categories;
-    }
-    return categories.filter((c) => c.categoryType === typeFilter);
-  }, [categories, typeFilter]);
+  const budgetedDiagnostics = useMemo(() => {
+    return (diagnostics?.budgetedRows ?? []).map((row) => ({
+      id: row.id,
+      name: row.name,
+      icon: row.icon,
+      color: row.color,
+      category: row as CategoryResponse,
+      budgetedValue: row.budgetedValue,
+      spentValue: row.actualValue,
+      varianceValue: row.varianceValue,
+      progressPercentage: row.progressBasisPoints / 100,
+      stabilityHistory: row.recentClosedPeriods.map((period) => !period.isOutsideTolerance),
+    }));
+  }, [diagnostics]);
 
-  const onDeleteCategory = (id: string) => {
-    deleteMutation.mutate(id);
+  const unbudgetedDiagnostics = useMemo<UnbudgetedDiagnosticItem[]>(() => {
+    return (diagnostics?.unbudgetedRows ?? []).map((row) => ({
+      id: row.id,
+      name: row.name,
+      icon: row.icon,
+      color: row.color,
+      spentValue: row.actualValue,
+      sharePercentage: row.shareOfTotalBasisPoints / 100,
+    }));
+  }, [diagnostics]);
+
+  const isDiagnosticsLoading = selectedPeriodId !== null && isDiagnosticsQueryLoading;
+
+  const retryDiagnostics = () => {
+    void refetchDiagnostics();
   };
 
   const onEditCategory = (category: CategoryResponse) => {
@@ -77,91 +107,36 @@ export function CategoriesContainer() {
     setSelectedCategory(null);
   };
 
-  // Count categories by type
-  const categoryCounts = useMemo(() => {
-    if (!categories) {
-      return { all: 0, Outgoing: 0, Incoming: 0, Transfer: 0 };
-    }
-    return {
-      all: categories.length,
-      Outgoing: categories.filter((c) => c.categoryType === 'Outgoing').length,
-      Incoming: categories.filter((c) => c.categoryType === 'Incoming').length,
-      Transfer: categories.filter((c) => c.categoryType === 'Transfer').length,
-    };
-  }, [categories]);
-
   return (
-    <Box
-      style={{
-        maxWidth: '1100px',
-        margin: '0 auto',
-        padding: 'var(--spacing-2xl)',
-      }}
-    >
+    <Box className={styles.categoriesRoot}>
       <Stack gap="xl">
-        {/* Header */}
-        <PageHeader
-          title={t('categories.header.title')}
-          subtitle={t('categories.header.subtitle')}
-          actions={
-            <Button className={styles.addButton} size="md" onClick={openCreate}>
-              <span style={{ fontSize: '16px', marginRight: '4px' }}>+</span>
-              {t('categories.actions.addCategory')}
-            </Button>
-          }
-        />
+        <PeriodContextStrip />
 
-        {/* Filter Tabs */}
-        {showFilters && (
-          <Tabs
-            value={typeFilter}
-            onChange={(value) => setTypeFilter(value as CategoryTypeFilter)}
-            classNames={{
-              root: styles.filterTabs,
-              tab: styles.filterTab,
-            }}
-          >
-            <Tabs.List style={{ display: 'flex', gap: '8px' }}>
-              <Tabs.Tab value="all">
-                {t('categories.tabs.all')}{' '}
-                <span className={styles.filterCount}>{categoryCounts.all}</span>
-              </Tabs.Tab>
-              <Tabs.Tab value="Outgoing">
-                {t('categories.tabs.outgoing')}{' '}
-                <span className={styles.filterCount}>{categoryCounts.Outgoing}</span>
-              </Tabs.Tab>
-              <Tabs.Tab value="Incoming">
-                {t('categories.tabs.incoming')}{' '}
-                <span className={styles.filterCount}>{categoryCounts.Incoming}</span>
-              </Tabs.Tab>
-              <Tabs.Tab value="Transfer">
-                {t('categories.tabs.transfer')}{' '}
-                <span className={styles.filterCount}>{categoryCounts.Transfer}</span>
-              </Tabs.Tab>
-            </Tabs.List>
-          </Tabs>
-        )}
+        <div className={styles.categoriesHeader}>
+          <div>
+            <Title order={1} className={styles.categoriesTitle}>
+              {t('categories.header.title')}
+            </Title>
+            <Text className={styles.categoriesSubtitle}>{t('categories.header.subtitle')}</Text>
+          </div>
 
-        {/* Categories Grid */}
+          <Button className={styles.addButton} size="md" onClick={openCreate}>
+            <span className={styles.addButtonIcon}>+</span>
+            {t('categories.actions.addCategory')}
+          </Button>
+        </div>
+
         <StateRenderer
           variant="page"
           isLocked={selectedPeriodId === null}
           lockMessage={t('states.locked.message.periodRequired')}
           lockAction={{ label: t('states.locked.configure'), to: '/periods' }}
-          hasError={isError}
+          hasError={hasDiagnosticsError}
           errorMessage={t('states.error.loadFailed.message')}
-          onRetry={() => {
-            void refetch();
-          }}
-          isLoading={isLoading}
-          loadingSkeleton={
-            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg" w="100%">
-              {[0, 1, 2, 3, 4, 5, 6, 7].map((item) => (
-                <CardSkeleton key={item} />
-              ))}
-            </SimpleGrid>
-          }
-          isEmpty={filteredCategories.length === 0}
+          onRetry={retryDiagnostics}
+          isLoading={isDiagnosticsLoading}
+          loadingSkeleton={<CategoriesDiagnosticsSkeleton />}
+          isEmpty={budgetedDiagnostics.length === 0 && unbudgetedDiagnostics.length === 0}
           emptyItemsLabel={t('states.contract.items.categories')}
           emptyMessage={t('states.empty.categories.message')}
           emptyAction={{
@@ -169,71 +144,59 @@ export function CategoriesContainer() {
             onClick: openCreate,
           }}
         >
-          <>
-            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="lg">
-              {filteredCategories.map((category) => {
-                const trendPercentage = Math.abs(category.differenceVsAveragePercentage);
-                const trend =
-                  trendPercentage > 0
-                    ? {
-                        direction:
-                          category.differenceVsAveragePercentage > 0
-                            ? ('up' as const)
-                            : ('down' as const),
-                        percentage: trendPercentage,
-                      }
-                    : undefined;
+          <div className={styles.diagnosticsLayout}>
+            <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>
+              <Stack gap="md">
+                <div className={styles.sectionHeader}>
+                  <Text className={styles.sectionTitle}>
+                    {t('categories.diagnostics.sections.budgeted')}
+                  </Text>
+                  <Text className={styles.sectionSubtitle}>
+                    {t('categories.diagnostics.sections.budgetedSubtitle')}
+                  </Text>
+                </div>
 
-                return (
-                  <CategoryCard
-                    key={category.id}
-                    category={category}
-                    monthlySpent={category.usedInPeriod}
-                    transactionCount={category.transactionCount}
-                    trend={trend}
-                    onEdit={onEditCategory}
-                    onDelete={onDeleteCategory}
-                  />
-                );
-              })}
-            </SimpleGrid>
+                {budgetedDiagnostics.length === 0 ? (
+                  <Text className={styles.sectionEmpty}>
+                    {t('categories.diagnostics.empty.budgeted')}
+                  </Text>
+                ) : (
+                  <Stack gap="sm">
+                    {budgetedDiagnostics.map((row) => (
+                      <BudgetedDiagnosticRow
+                        key={row.id}
+                        id={row.id}
+                        name={row.name}
+                        icon={row.icon}
+                        color={row.color}
+                        budgetedValue={row.budgetedValue}
+                        spentValue={row.spentValue}
+                        varianceValue={row.varianceValue}
+                        progressPercentage={row.progressPercentage}
+                        stabilityHistory={row.stabilityHistory}
+                        onEdit={() => onEditCategory(row.category)}
+                      />
+                    ))}
+                  </Stack>
+                )}
+              </Stack>
+            </Paper>
 
-            {(hasNextPage || isFetchingNextPage) && (
-              <Box
-                style={{
-                  padding: '12px 16px 20px',
-                  textAlign: 'center',
-                }}
-              >
-                <Text size="sm" c="dimmed">
-                  {isFetchingNextPage ? t('states.loading.default') : ''}
-                </Text>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (hasNextPage && !isFetchingNextPage) {
-                      void fetchNextPage();
-                    }
-                  }}
-                  style={{
-                    marginTop: '8px',
-                    padding: '10px 24px',
-                    background: 'var(--accent-primary)',
-                    color: 'var(--mono-black)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontWeight: 600,
-                    cursor: isFetchingNextPage ? 'not-allowed' : 'pointer',
-                    opacity: isFetchingNextPage ? 0.6 : 1,
-                    transition: 'all 0.2s ease',
-                  }}
-                  disabled={isFetchingNextPage}
-                >
-                  {isFetchingNextPage ? t('states.loading.default') : t('common.loadMore')}
-                </button>
-              </Box>
-            )}
-          </>
+            <Paper withBorder radius="lg" p="lg" className={styles.unbudgetedSection}>
+              <Stack gap="md">
+                <div className={styles.sectionHeader}>
+                  <Text className={styles.sectionTitle}>
+                    {t('categories.diagnostics.sections.unbudgeted')}
+                  </Text>
+                  <Text className={styles.sectionSubtitle}>
+                    {t('categories.diagnostics.sections.unbudgetedSubtitle')}
+                  </Text>
+                </div>
+
+                <UnbudgetedDiagnosticList rows={unbudgetedDiagnostics} />
+              </Stack>
+            </Paper>
+          </div>
         </StateRenderer>
 
         {isMobile ? (
@@ -249,6 +212,7 @@ export function CategoriesContainer() {
                 selectedPeriodId={selectedPeriodId}
               />
             </Drawer>
+
             <Drawer
               opened={editOpened}
               onClose={onEditClosed}
@@ -277,6 +241,7 @@ export function CategoriesContainer() {
                 selectedPeriodId={selectedPeriodId}
               />
             </Modal>
+
             <Modal
               opened={editOpened}
               onClose={onEditClosed}

@@ -1,12 +1,9 @@
-import type { ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
 import { render, screen, userEvent } from '@/test-utils';
 import { CategoriesContainer } from './CategoriesContainer';
 
-const useCategoriesMock = vi.hoisted(() => vi.fn());
-const useInfiniteCategoriesMock = vi.hoisted(() => vi.fn());
-const useDeleteCategoryMock = vi.hoisted(() => vi.fn());
+const useCategoriesDiagnosticMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/context/BudgetContext', () => ({
   useBudgetPeriodSelection: () => ({
@@ -16,9 +13,15 @@ vi.mock('@/context/BudgetContext', () => ({
 }));
 
 vi.mock('@/hooks/useCategories', () => ({
-  useCategories: (...args: unknown[]) => useCategoriesMock(...args),
-  useInfiniteCategories: (...args: unknown[]) => useInfiniteCategoriesMock(...args),
-  useDeleteCategory: () => useDeleteCategoryMock(),
+  useCategoriesDiagnostic: (...args: unknown[]) => useCategoriesDiagnosticMock(...args),
+}));
+
+vi.mock('@/hooks/useDisplayCurrency', () => ({
+  useDisplayCurrency: () => ({ currency: 'EUR', decimalPlaces: 2 }),
+}));
+
+vi.mock('@/components/BudgetPeriodSelector', () => ({
+  PeriodContextStrip: () => <div>PeriodContextStrip</div>,
 }));
 
 vi.mock('./CreateCategoryForm', () => ({
@@ -37,35 +40,26 @@ vi.mock('./EditCategoryForm', () => ({
   ),
 }));
 
-vi.mock('../Transactions/PageHeader', () => ({
-  PageHeader: ({
-    title,
-    subtitle,
-    actions,
-  }: {
-    title: string;
-    subtitle: string;
-    actions?: ReactNode;
-  }) => (
-    <div>
-      <h1>{title}</h1>
-      <p>{subtitle}</p>
-      {actions}
-    </div>
-  ),
-}));
-
-describe('CategoriesContainer', () => {
+describe('CategoriesContainer diagnostics layout', () => {
   beforeEach(() => {
-    useCategoriesMock.mockReset();
-    useInfiniteCategoriesMock.mockReset();
-    useDeleteCategoryMock.mockReset();
-    useDeleteCategoryMock.mockReturnValue({ mutate: vi.fn() });
-    useInfiniteCategoriesMock.mockReturnValue({
-      data: { pages: [] },
-      fetchNextPage: vi.fn(),
-      hasNextPage: false,
-      isFetchingNextPage: false,
+    useCategoriesDiagnosticMock.mockReset();
+
+    useCategoriesDiagnosticMock.mockReturnValue({
+      data: {
+        periodSummary: {
+          totalBudget: 100000,
+          spentBudget: 25000,
+          remainingBudget: 75000,
+          daysInPeriod: 30,
+          remainingDays: 20,
+          daysPassedPercentage: 33,
+        },
+        budgetedRows: [],
+        unbudgetedRows: [],
+      },
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
     });
   });
 
@@ -77,38 +71,100 @@ describe('CategoriesContainer', () => {
     );
   };
 
-  it('opens create category modal when Add Category is clicked', async () => {
-    const user = userEvent.setup();
-
-    useInfiniteCategoriesMock.mockReturnValue({
+  it('renders diagnostics sections and sorts unbudgeted rows by spend', () => {
+    useCategoriesDiagnosticMock.mockReturnValue({
       data: {
-        pages: [
+        periodSummary: {
+          totalBudget: 100000,
+          spentBudget: 18000,
+          remainingBudget: 82000,
+          daysInPeriod: 30,
+          remainingDays: 18,
+          daysPassedPercentage: 40,
+        },
+        budgetedRows: [
           {
-            categories: [
-              {
-                id: 'category-1',
-                name: 'Food',
-                color: '#00d4ff',
-                icon: '🍔',
-                parentId: null,
-                categoryType: 'Outgoing',
-                usedInPeriod: 0,
-                differenceVsAveragePercentage: 0,
-                transactionCount: 0,
-              },
+            id: 'category-food',
+            name: 'Food',
+            color: '#00d4ff',
+            icon: '🍔',
+            parentId: null,
+            categoryType: 'Outgoing',
+            budgetedValue: 12000,
+            actualValue: 9000,
+            varianceValue: -3000,
+            progressBasisPoints: 7500,
+            recentClosedPeriods: [
+              { periodId: 'p1', isOutsideTolerance: false },
+              { periodId: 'p2', isOutsideTolerance: true },
+              { periodId: 'p3', isOutsideTolerance: false },
             ],
-            nextCursor: null,
+          },
+          {
+            id: 'category-utilities',
+            name: 'Utilities',
+            color: '#228be6',
+            icon: '💡',
+            parentId: null,
+            categoryType: 'Outgoing',
+            budgetedValue: 4000,
+            actualValue: 2500,
+            varianceValue: -1500,
+            progressBasisPoints: 6250,
+            recentClosedPeriods: [
+              { periodId: 'p1', isOutsideTolerance: false },
+              { periodId: 'p2', isOutsideTolerance: false },
+            ],
+          },
+        ],
+        unbudgetedRows: [
+          {
+            id: 'category-gifts',
+            name: 'Gifts',
+            color: '#ff8787',
+            icon: '🎁',
+            parentId: null,
+            categoryType: 'Outgoing',
+            actualValue: 6500,
+            shareOfTotalBasisPoints: 7222,
+          },
+          {
+            id: 'category-other',
+            name: 'Other',
+            color: '#94d82d',
+            icon: '🧾',
+            parentId: null,
+            categoryType: 'Outgoing',
+            actualValue: 2500,
+            shareOfTotalBasisPoints: 2778,
           },
         ],
       },
-      fetchNextPage: vi.fn(),
-      hasNextPage: false,
-      isFetchingNextPage: false,
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
     });
 
     renderPage();
 
-    await user.click(screen.getByRole('button', { name: /\+?Add Category/ }));
+    expect(screen.getByText('PeriodContextStrip')).toBeInTheDocument();
+    expect(screen.getByText('Budgeted categories')).toBeInTheDocument();
+    expect(screen.getByText('Unbudgeted categories')).toBeInTheDocument();
+
+    expect(screen.getByTestId('budgeted-row-category-food')).toBeInTheDocument();
+    expect(screen.getByTestId('budgeted-row-category-utilities')).toBeInTheDocument();
+
+    const unbudgetedRows = screen.getAllByTestId(/unbudgeted-row-/);
+    expect(unbudgetedRows[0]).toHaveAttribute('data-testid', 'unbudgeted-row-category-gifts');
+    expect(screen.getByText('72.2%')).toBeInTheDocument();
+  });
+
+  it('opens create category modal when Add Category is clicked', async () => {
+    const user = userEvent.setup();
+
+    renderPage();
+
+    await user.click(screen.getAllByRole('button', { name: /\+?Add Category/ })[0]);
 
     expect(await screen.findByRole('button', { name: 'Create form' })).toBeInTheDocument();
   });
@@ -116,35 +172,45 @@ describe('CategoriesContainer', () => {
   it('opens edit category modal when edit button is clicked', async () => {
     const user = userEvent.setup();
 
-    useInfiniteCategoriesMock.mockReturnValue({
+    useCategoriesDiagnosticMock.mockReturnValue({
       data: {
-        pages: [
+        periodSummary: {
+          totalBudget: 100000,
+          spentBudget: 18000,
+          remainingBudget: 82000,
+          daysInPeriod: 30,
+          remainingDays: 18,
+          daysPassedPercentage: 40,
+        },
+        budgetedRows: [
           {
-            categories: [
-              {
-                id: 'category-1',
-                name: 'Food',
-                color: '#00d4ff',
-                icon: '🍔',
-                parentId: null,
-                categoryType: 'Outgoing',
-                usedInPeriod: 0,
-                differenceVsAveragePercentage: 0,
-                transactionCount: 0,
-              },
+            id: 'category-food',
+            name: 'Food',
+            color: '#00d4ff',
+            icon: '🍔',
+            parentId: null,
+            categoryType: 'Outgoing',
+            budgetedValue: 12000,
+            actualValue: 9000,
+            varianceValue: -3000,
+            progressBasisPoints: 7500,
+            recentClosedPeriods: [
+              { periodId: 'p1', isOutsideTolerance: false },
+              { periodId: 'p2', isOutsideTolerance: false },
+              { periodId: 'p3', isOutsideTolerance: false },
             ],
-            nextCursor: null,
           },
         ],
+        unbudgetedRows: [],
       },
-      fetchNextPage: vi.fn(),
-      hasNextPage: false,
-      isFetchingNextPage: false,
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
     });
 
     renderPage();
 
-    await user.click(screen.getByTitle('Edit'));
+    await user.click(screen.getByRole('button', { name: 'Edit' }));
 
     expect(await screen.findByRole('button', { name: 'Edit form' })).toBeInTheDocument();
   });

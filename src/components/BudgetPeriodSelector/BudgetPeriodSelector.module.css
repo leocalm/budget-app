@@ -125,6 +125,78 @@
   background: var(--text-tertiary);
 }
 
+.periodContextStrip {
+  position: sticky;
+  top: calc(60px + var(--spacing-s));
+  z-index: 30;
+  margin-bottom: var(--spacing-xl);
+  background: color-mix(in srgb, var(--bg-card) 88%, transparent);
+  border-color: var(--border-medium);
+  backdrop-filter: blur(6px);
+}
+
+.periodContextTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-l);
+  flex-wrap: wrap;
+}
+
+.periodContextSelectorWrap {
+  flex: 0 0 280px;
+  min-width: 240px;
+}
+
+.periodContextSummary {
+  flex: 1;
+  min-width: 320px;
+  justify-content: flex-end;
+}
+
+.periodContextMetric {
+  min-width: 0;
+}
+
+.periodContextMetricLabel {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.periodContextMetricValue {
+  font-size: var(--type-diagnostic-metric-size);
+  font-weight: var(--type-diagnostic-metric-weight);
+  font-family: var(--mantine-font-family-monospace);
+  line-height: 1.2;
+}
+
+.periodContextProgressWrap {
+  margin-top: var(--spacing-s);
+}
+
+.periodContextProgressTrack {
+  width: 100%;
+  height: var(--progress-diagnostic-height);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+
+.periodContextProgressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+}
+
+.periodContextRangeLabel {
+  margin-top: var(--spacing-s);
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
 @media (max-width: 768px) {
   .headerControl {
     width: 100%;
@@ -133,5 +205,26 @@
   .triggerLabel,
   .triggerMeta {
     max-width: 140px;
+  }
+
+  .periodContextStrip {
+    top: calc(60px + 4px);
+  }
+
+  .periodContextSelectorWrap {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .periodContextSummary {
+    min-width: 0;
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--spacing-m);
+    flex-wrap: wrap;
+  }
+
+  .periodContextMetric {
+    flex: 1 1 calc(50% - var(--spacing-m));
   }
 }
