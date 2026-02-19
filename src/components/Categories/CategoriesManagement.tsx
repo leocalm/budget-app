@@ -2,7 +2,7 @@
  * CategoriesManagement - The management view for categories
  * Shows Incoming, Outgoing, and Archived sections with parent/child hierarchy
  */
-import { useState, useMemo } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Badge,
@@ -122,9 +122,9 @@ function CategoryManagementSection({
           <div className={styles.groupHeader}>
             <Text className={styles.groupTitle}>{title}</Text>
           </div>
-          <Stack gap={0}>
+          <div className={styles.groupContent}>
             {parents.map((parent) => (
-              <div key={parent.id}>
+              <Fragment key={parent.id}>
                 <CategoryRow
                   category={parent}
                   onEdit={onEdit}
@@ -145,9 +145,9 @@ function CategoryManagementSection({
                     onAddSubcategory={onAddSubcategory}
                   />
                 ))}
-              </div>
+              </Fragment>
             ))}
-          </Stack>
+          </div>
         </>
       )}
     </Paper>
@@ -181,7 +181,7 @@ function CategoryRow({
   const canAddSubcategory = !isChild && !isArchived;
 
   return (
-    <div className={`${styles.managementRow} ${isChild ? styles.childRow : ''}`}>
+    <div className={`${styles.row} ${styles.managementRow} ${isChild ? styles.childRow : ''}`}>
       <div className={styles.identity}>
         <div className={styles.categoryIcon}>{category.icon || '📁'}</div>
         <div className={styles.nameWrap}>
