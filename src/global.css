@@ -224,3 +224,12 @@ body {
     --type-reflective-label-size: 13px;
   }
 }
+
+/* Fix Mantine Notifications blocking pointer events on mobile */
+.m_b37d9ac7.mantine-Notifications-root {
+  pointer-events: none;
+}
+
+.m_b37d9ac7.mantine-Notifications-root .mantine-Notification-root {
+  pointer-events: auto;
+}
