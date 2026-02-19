@@ -11,6 +11,8 @@ const useMonthProgressMock = vi.hoisted(() => vi.fn());
 const useBudgetPerDayMock = vi.hoisted(() => vi.fn());
 const useRecentTransactionsMock = vi.hoisted(() => vi.fn());
 const useTotalAssetsMock = vi.hoisted(() => vi.fn());
+const useNetPositionMock = vi.hoisted(() => vi.fn());
+const useBudgetStabilityMock = vi.hoisted(() => vi.fn());
 const useAccountsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('react-i18next', () => ({
@@ -59,6 +61,8 @@ vi.mock('@/hooks/useDashboard', () => ({
   useBudgetPerDay: () => useBudgetPerDayMock(),
   useRecentTransactions: () => useRecentTransactionsMock(),
   useTotalAssets: () => useTotalAssetsMock(),
+  useNetPosition: () => useNetPositionMock(),
+  useBudgetStability: () => useBudgetStabilityMock(),
 }));
 
 vi.mock('@/hooks/useAccounts', () => ({
@@ -99,6 +103,8 @@ describe('Dashboard locked state', () => {
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
+    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
+    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
@@ -128,6 +134,8 @@ describe('Dashboard locked state', () => {
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
+    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
+    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
@@ -152,6 +160,8 @@ describe('Dashboard locked state', () => {
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useTotalAssetsMock.mockReturnValue({ data: { totalAssets: 0 }, isLoading: false });
     useAccountsMock.mockReturnValue({ data: [] });
+    useNetPositionMock.mockReturnValue({ data: null, isLoading: false });
+    useBudgetStabilityMock.mockReturnValue({ data: null, isLoading: false });
 
     render(
       <MemoryRouter>
