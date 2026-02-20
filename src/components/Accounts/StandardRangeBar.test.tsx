@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { buildStandardRangeModel } from './StandardRangeBar';
 
 const DECIMAL_PLACES = 2; // USD / EUR (unit = 100 cents)
@@ -71,11 +71,7 @@ describe('buildStandardRangeModel', () => {
   it('flat history (all equal): range expanded by one currency unit', () => {
     const model = buildStandardRangeModel({
       currentBalance: 50000,
-      balancePerDay: [
-        { balance: 50000 },
-        { balance: 50000 },
-        { balance: 50000 },
-      ],
+      balancePerDay: [{ balance: 50000 }, { balance: 50000 }, { balance: 50000 }],
       decimalPlaces: DECIMAL_PLACES,
     });
 

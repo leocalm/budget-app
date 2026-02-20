@@ -58,7 +58,6 @@ test.describe('Categories Management - Mobile', () => {
       await expect(authenticatedPage.locator('h2:has-text("Edit Category")')).toBeVisible();
     } else {
       // No categories - check empty state
-      console.log('No categories found to test edit action');
     }
   });
 });

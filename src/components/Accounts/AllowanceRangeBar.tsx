@@ -27,9 +27,7 @@ export function buildAllowanceRangeModel(params: {
   const histHigh = Math.max(...base);
 
   const projected =
-    params.nextTransferAmount == null
-      ? null
-      : params.currentBalance + params.nextTransferAmount;
+    params.nextTransferAmount == null ? null : params.currentBalance + params.nextTransferAmount;
 
   let low = Math.min(histLow, 0, projected ?? params.currentBalance);
   let high = Math.max(histHigh, 0, projected ?? params.currentBalance);
@@ -41,7 +39,9 @@ export function buildAllowanceRangeModel(params: {
   }
 
   const toPercent = (value: number): number => {
-    if (high <= low) return 50;
+    if (high <= low) {
+      return 50;
+    }
     const raw = ((value - low) / (high - low)) * 100;
     return Math.min(100, Math.max(0, raw));
   };

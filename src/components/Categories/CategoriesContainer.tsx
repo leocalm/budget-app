@@ -60,13 +60,9 @@ export function CategoriesContainer() {
   const restoreMutation = useRestoreCategory();
 
   const handleCreateCategory = async (data: CategoryRequest) => {
-    try {
-      await createMutation.mutateAsync(data);
-      toast.success({ message: t('categories.success.created') });
-      closeCreate();
-    } catch (error) {
-      console.error('Failed to create category', error);
-    }
+    await createMutation.mutateAsync(data);
+    toast.success({ message: t('categories.success.created') });
+    closeCreate();
   };
 
   const handleEditCategory = (category: CategoryManagementRow) => {
@@ -78,13 +74,9 @@ export function CategoriesContainer() {
     if (!editingCategory) {
       return;
     }
-    try {
-      await updateMutation.mutateAsync({ id: editingCategory.id, payload: data });
-      toast.success({ message: t('categories.success.updated') });
-      closeEdit();
-    } catch (error) {
-      console.error('Failed to update category', error);
-    }
+    await updateMutation.mutateAsync({ id: editingCategory.id, payload: data });
+    toast.success({ message: t('categories.success.updated') });
+    closeEdit();
   };
 
   const handleArchiveCategory = (category: CategoryManagementRow) => {
@@ -106,7 +98,6 @@ export function CategoriesContainer() {
       closeArchiveConfirm();
       setActionCategory(null);
     } catch (error) {
-      console.error('Failed to archive category', error);
       toast.error({ message: t('categories.errors.archiveFailed') });
     }
   };
@@ -126,7 +117,6 @@ export function CategoriesContainer() {
       closeRestoreConfirm();
       setActionCategory(null);
     } catch (error) {
-      console.error('Failed to restore category', error);
       toast.error({ message: t('categories.errors.restoreFailed') });
     }
   };
@@ -146,7 +136,6 @@ export function CategoriesContainer() {
       closeDeleteConfirm();
       setActionCategory(null);
     } catch (error) {
-      console.error('Failed to delete category', error);
       toast.error({ message: t('categories.errors.deleteFailed') });
     }
   };
@@ -157,13 +146,9 @@ export function CategoriesContainer() {
   };
 
   const handleCreateSubcategorySubmit = async (data: CategoryRequest) => {
-    try {
-      await createMutation.mutateAsync(data);
-      toast.success({ message: t('categories.success.created') });
-      closeSubcategory();
-    } catch (error) {
-      console.error('Failed to create subcategory', error);
-    }
+    await createMutation.mutateAsync(data);
+    toast.success({ message: t('categories.success.created') });
+    closeSubcategory();
   };
 
   return (

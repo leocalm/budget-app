@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { buildAllowanceRangeModel } from './AllowanceRangeBar';
 
 const DECIMAL_PLACES = 2; // USD / EUR (unit = 100 cents)

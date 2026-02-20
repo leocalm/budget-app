@@ -64,8 +64,17 @@ export function StandardRangeBar({ account }: { account: AccountResponse }) {
     decimalPlaces: account.currency.decimalPlaces,
   });
 
-  const { low, high, current, currentPct, zeroPct, isAboveHigh, isBelowLow, aboveDelta, belowDelta } =
-    model;
+  const {
+    low,
+    high,
+    current,
+    currentPct,
+    zeroPct,
+    isAboveHigh,
+    isBelowLow,
+    aboveDelta,
+    belowDelta,
+  } = model;
 
   const ariaStatus = isAboveHigh
     ? t('accounts.overview.standardBar.ariaAboveHigh', {
@@ -101,9 +110,7 @@ export function StandardRangeBar({ account }: { account: AccountResponse }) {
       </Text>
 
       <Box className={styles.track} role="img" aria-label={ariaLabel}>
-        {zeroPct !== null && (
-          <span className={styles.zeroMarker} style={{ left: `${zeroPct}%` }} />
-        )}
+        {zeroPct !== null && <span className={styles.zeroMarker} style={{ left: `${zeroPct}%` }} />}
         <span className={styles.currentMarker} style={{ left: `${currentPct}%` }} />
       </Box>
 

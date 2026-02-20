@@ -25,7 +25,6 @@ const ACCOUNT_GROUPS: AccountGroup[] = [
   { key: 'debt', labelKey: 'accounts.overview.groups.debtSection', types: ['CreditCard'] },
 ];
 
-
 function AllowanceAccountRow({ account }: { account: AccountResponse }) {
   const { t } = useTranslation();
   const projected =
@@ -179,7 +178,8 @@ export function AccountsOverview() {
     [accounts]
   );
   const savingsTotal = useMemo(
-    () => accounts.filter((a) => a.accountType === 'Savings').reduce((sum, a) => sum + a.balance, 0),
+    () =>
+      accounts.filter((a) => a.accountType === 'Savings').reduce((sum, a) => sum + a.balance, 0),
     [accounts]
   );
   const debtTotal = useMemo(
@@ -211,9 +211,7 @@ export function AccountsOverview() {
       {/* Net Position */}
       <Box className={styles.netPositionBlock}>
         <Group gap={8} mb={4}>
-          <Text className={styles.netPositionLabel}>
-            {t('accounts.overview.netPosition')}
-          </Text>
+          <Text className={styles.netPositionLabel}>{t('accounts.overview.netPosition')}</Text>
           <Tooltip label={t('accounts.overview.netPositionTooltip')}>
             <Text size="xs" c="dimmed" style={{ cursor: 'help' }}>
               ⓘ
@@ -229,12 +227,14 @@ export function AccountsOverview() {
             <Group gap="lg">
               {liquidTotal > 0 && primaryCurrency && (
                 <Text size="xs" c="dimmed">
-                  {t('accounts.overview.groups.liquid')} {formatCurrency(liquidTotal, primaryCurrency)}
+                  {t('accounts.overview.groups.liquid')}{' '}
+                  {formatCurrency(liquidTotal, primaryCurrency)}
                 </Text>
               )}
               {savingsTotal > 0 && primaryCurrency && (
                 <Text size="xs" c="dimmed">
-                  {t('accounts.overview.groups.savings')} {formatCurrency(savingsTotal, primaryCurrency)}
+                  {t('accounts.overview.groups.savings')}{' '}
+                  {formatCurrency(savingsTotal, primaryCurrency)}
                 </Text>
               )}
               {debtTotal !== 0 && primaryCurrency && (

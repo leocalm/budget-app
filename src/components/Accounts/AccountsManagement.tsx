@@ -41,7 +41,9 @@ function AccountManagementRow({
     <Box className={`${styles.mgmtRow} ${account.isArchived ? styles.mgmtRowArchived : ''}`}>
       {/* Icon frame */}
       <Box className={styles.mgmtIconFrame}>
-        <Box component="span" className={styles.mgmtIconEmoji}>{account.icon}</Box>
+        <Box component="span" className={styles.mgmtIconEmoji}>
+          {account.icon}
+        </Box>
       </Box>
 
       {/* Name + meta */}
@@ -297,7 +299,9 @@ export function AccountsManagement() {
       {/* Archived section */}
       {archivedAccounts.length > 0 && (
         <Box className={styles.mgmtSection}>
-          <Text className={styles.mgmtSectionHeader}>{t('accounts.management.archivedSection')}</Text>
+          <Text className={styles.mgmtSectionHeader}>
+            {t('accounts.management.archivedSection')}
+          </Text>
           {archivedAccounts.map((account) => (
             <AccountManagementRow
               key={account.id}
