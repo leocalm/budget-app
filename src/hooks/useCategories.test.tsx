@@ -9,18 +9,22 @@ import {
   updateBudgetCategory,
 } from '@/api/budget';
 import {
+  archiveCategory,
   createCategory,
   deleteCategory,
   fetchCategories,
   fetchCategoriesDiagnostic,
+  fetchCategoriesForManagement,
   fetchCategoriesPage,
   fetchUnbudgetedCategories,
+  restoreCategory,
   updateCategory,
 } from '@/api/category';
 import type { BudgetCategoryRequest, BudgetCategoryUpdateRequest } from '@/types/budget';
 import type { CategoryRequest } from '@/types/category';
 import { queryKeys } from './queryKeys';
 import {
+  useArchiveCategory,
   useBudgetedCategories,
   useCategories,
   useCategoriesDiagnostic,
@@ -29,6 +33,7 @@ import {
   useDeleteBudgetCategory,
   useDeleteCategory,
   useInfiniteCategories,
+  useRestoreCategory,
   useUnbudgetedCategories,
   useUpdateBudgetCategory,
   useUpdateCategory,
@@ -42,12 +47,15 @@ vi.mock('@/api/budget', () => ({
 }));
 
 vi.mock('@/api/category', () => ({
+  archiveCategory: vi.fn(),
   createCategory: vi.fn(),
   deleteCategory: vi.fn(),
   fetchCategories: vi.fn(),
   fetchCategoriesDiagnostic: vi.fn(),
+  fetchCategoriesForManagement: vi.fn(),
   fetchCategoriesPage: vi.fn(),
   fetchUnbudgetedCategories: vi.fn(),
+  restoreCategory: vi.fn(),
   updateCategory: vi.fn(),
 }));
 
@@ -55,12 +63,15 @@ const mockCreateBudgetCategory = vi.mocked(createBudgetCategory);
 const mockDeleteBudgetCategory = vi.mocked(deleteBudgetCategory);
 const mockFetchBudgetCategories = vi.mocked(fetchBudgetCategories);
 const mockUpdateBudgetCategory = vi.mocked(updateBudgetCategory);
+const mockArchiveCategory = vi.mocked(archiveCategory);
 const mockCreateCategory = vi.mocked(createCategory);
 const mockDeleteCategory = vi.mocked(deleteCategory);
 const mockFetchCategories = vi.mocked(fetchCategories);
 const mockFetchCategoriesDiagnostic = vi.mocked(fetchCategoriesDiagnostic);
+const mockFetchCategoriesForManagement = vi.mocked(fetchCategoriesForManagement);
 const mockFetchCategoriesPage = vi.mocked(fetchCategoriesPage);
 const mockFetchUnbudgeted = vi.mocked(fetchUnbudgetedCategories);
+const mockRestoreCategory = vi.mocked(restoreCategory);
 const mockUpdateCategory = vi.mocked(updateCategory);
 
 const createWrapper = () => {
@@ -82,6 +93,7 @@ const createWrapper = () => {
 
 describe('useCategories', () => {
   beforeEach(() => {
+    mockArchiveCategory.mockReset();
     mockCreateBudgetCategory.mockReset();
     mockDeleteBudgetCategory.mockReset();
     mockFetchBudgetCategories.mockReset();
@@ -90,8 +102,10 @@ describe('useCategories', () => {
     mockDeleteCategory.mockReset();
     mockFetchCategories.mockReset();
     mockFetchCategoriesDiagnostic.mockReset();
+    mockFetchCategoriesForManagement.mockReset();
     mockFetchCategoriesPage.mockReset();
     mockFetchUnbudgeted.mockReset();
+    mockRestoreCategory.mockReset();
     mockUpdateCategory.mockReset();
   });
 
@@ -172,6 +186,7 @@ describe('useCategories', () => {
     expect(mockCreateCategory).toHaveBeenCalledWith(payload);
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categories() });
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesManagement() });
   });
 
   it('invalidates categories after delete', async () => {
@@ -186,6 +201,7 @@ describe('useCategories', () => {
     expect(mockDeleteCategory.mock.calls[0]?.[0]).toBe('category-1');
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categories() });
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesManagement() });
   });
 
   it('invalidates categories after update', async () => {
@@ -217,6 +233,7 @@ describe('useCategories', () => {
     expect(mockUpdateCategory).toHaveBeenCalledWith('category-1', payload);
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categories() });
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesManagement() });
   });
 
   it('fetches unbudgeted categories', async () => {
@@ -310,6 +327,54 @@ describe('useCategories', () => {
     expect(mockUpdateBudgetCategory).toHaveBeenCalledWith('budget-category-1', payload);
     expect(refetchSpy).toHaveBeenCalledWith({ queryKey: queryKeys.budgetedCategories() });
     expect(refetchSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
+  });
+
+  it('invalidates categoriesManagement, categories, and categoriesDiagnostic after archive', async () => {
+    const { wrapper, queryClient } = createWrapper();
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+    mockArchiveCategory.mockResolvedValue({
+      id: 'category-1',
+      name: 'Food',
+      color: '#000000',
+      icon: '🍔',
+      parentId: null,
+      categoryType: 'Outgoing',
+      isArchived: true,
+      description: null,
+    });
+
+    const { result } = renderHook(() => useArchiveCategory(), { wrapper });
+
+    await result.current.mutateAsync('category-1');
+
+    expect(mockArchiveCategory.mock.calls[0]?.[0]).toBe('category-1');
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesManagement() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categories() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
+  });
+
+  it('invalidates categoriesManagement, categories, and categoriesDiagnostic after restore', async () => {
+    const { wrapper, queryClient } = createWrapper();
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+    mockRestoreCategory.mockResolvedValue({
+      id: 'category-1',
+      name: 'Food',
+      color: '#000000',
+      icon: '🍔',
+      parentId: null,
+      categoryType: 'Outgoing',
+      isArchived: false,
+      description: null,
+    });
+
+    const { result } = renderHook(() => useRestoreCategory(), { wrapper });
+
+    await result.current.mutateAsync('category-1');
+
+    expect(mockRestoreCategory.mock.calls[0]?.[0]).toBe('category-1');
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesManagement() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categories() });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: queryKeys.categoriesDiagnostic() });
   });
 
   it('does not fetch paginated categories when the period id is null', async () => {

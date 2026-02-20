@@ -4,7 +4,7 @@
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--accent-primary) 12%, var(--bg-card) 88%),
-    color-mix(in srgb, var(--accent-purple) 9%, var(--bg-card) 91%)
+    color-mix(in srgb, var(--accent-secondary) 9%, var(--bg-card) 91%)
   );
   position: relative;
   overflow: hidden;
@@ -64,7 +64,7 @@
   position: absolute;
   top: -40px;
   right: -36px;
-  width: 220px;
+  width: 620px;
   opacity: 0.03;
   pointer-events: none;
 }
@@ -73,6 +73,6 @@
   .pigMark {
     top: -70px;
     right: -60px;
-    width: 330px;
+    width: 530px;
   }
 }

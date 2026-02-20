@@ -14,9 +14,14 @@
 .dashboardTitle {
   font-size: var(--type-reflective-hero-size);
   font-weight: var(--type-reflective-hero-weight);
-  font-family: var(--font-title);
+  font-family: var(--font-title), serif;
   letter-spacing: -0.02em;
   margin: 0 !important;
+}
+
+.dashboardSubtitle {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--text-secondary);
 }
 
 /* ── Stats Grid Layout ── */
@@ -500,4 +505,8 @@
     grid-template-columns: 1fr auto;
     align-items: end;
   }
+}
+
+.period-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--surface) 88%), color-mix(in srgb, var(--accent-secondary) 9%, var(--surface) 91%));
 }

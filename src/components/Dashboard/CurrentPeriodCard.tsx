@@ -101,15 +101,20 @@ export const CurrentPeriodCard = ({
       <img src={piggyLogo} className={styles.pigMark} alt="" />
       <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
       <Text className={styles.periodAmount}>{actualSpendFormatted}</Text>
-      <Text className={styles.periodMeta}>of {totalBudgetFormatted}</Text>
+      <Text className={styles.periodMeta}>
+        {t('dashboard.currentPeriod.of', { totalBudgetFormatted })}
+      </Text>
       <Text className={styles.periodRemaining}>
-        {monthProgress.remainingDays} days remaining. {remainingFormatted} remaining in this period.
+        {t('dashboard.currentPeriod.remainingDays', {
+          remainingDays: monthProgress.remainingDays,
+          remainingFormatted,
+        })}
       </Text>
       <div className={styles.progressBar} role="presentation" aria-hidden="true">
         <div className={styles.progressFill} style={{ width: `${Math.min(percentUsed, 100)}%` }} />
       </div>
       <Text className={styles.periodProjection}>
-        Projected spend at current pace: {projectedSpendFormatted}
+        {t('dashboard.currentPeriod.projectedSpend', { projectedSpendFormatted })}
       </Text>
     </Paper>
   );

@@ -789,7 +789,10 @@
       "states": {
         "empty": "Nenhum período selecionado.",
         "error": "Não foi possível carregar os valores do período atual."
-      }
+      },
+      "of": "de {{totalBudgetFormatted}}",
+      "remainingDays": "{{remainingDays}} dias restando. {{remainingFormatted}} ainda neste período.",
+      "projectedSpend": "Gasto projetado com o ritmo atual: {{projectedSpendFormatted}}"
     },
     "noPeriod": {
       "title": "Você está em uma lacuna de período",

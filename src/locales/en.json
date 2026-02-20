@@ -878,7 +878,10 @@
       "states": {
         "empty": "No period selected.",
         "error": "Unable to load current period values."
-      }
+      },
+      "of": "of {{totalBudgetFormatted}}",
+      "remainingDays": "{{remainingDays}} days remaining. {{remainingFormatted}} remaining in this period.",
+      "projectedSpend": "Projected spend at current pace: {{projectedSpendFormatted}}"
     },
     "noPeriod": {
       "title": "You are in a period gap",

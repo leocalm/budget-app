@@ -106,55 +106,53 @@ export function CategoriesOverview({ emptyAction }: CategoriesOverviewProps) {
         emptyMessage={t('states.empty.categories.message')}
         emptyAction={emptyAction}
       >
-        <div className={styles.diagnosticsLayout}>
-          <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>
-            <Stack gap="md">
-              <div className={styles.sectionHeader}>
-                <Text className={styles.sectionTitle}>
-                  {t('categories.diagnostics.sections.budgeted')}
-                </Text>
-                <Text className={styles.sectionSubtitle}>
-                  {t('categories.diagnostics.sections.budgetedSubtitle')}
-                </Text>
-              </div>
+        <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>
+          <Stack gap="md">
+            <div className={styles.sectionHeader}>
+              <Text className={styles.sectionTitle}>
+                {t('categories.diagnostics.sections.budgeted')}
+              </Text>
+              <Text className={styles.sectionSubtitle}>
+                {t('categories.diagnostics.sections.budgetedSubtitle')}
+              </Text>
+            </div>
 
-              {budgetedDiagnostics.length === 0 ? (
-                <Text className={styles.sectionEmpty}>
-                  {t('categories.diagnostics.empty.budgeted')}
-                </Text>
-              ) : (
-                <Stack gap={0}>
-                  {budgetedDiagnostics.map((row) => (
-                    <BudgetedDiagnosticRow
-                      key={row.id}
-                      id={row.id}
-                      name={row.name}
-                      icon={row.icon}
-                      color={row.color}
-                      budgetedValue={row.budgetedValue}
-                      spentValue={row.spentValue}
-                      varianceValue={row.varianceValue}
-                      progressPercentage={row.progressPercentage}
-                      stabilityHistory={row.stabilityHistory}
-                    />
-                  ))}
-                </Stack>
-              )}
-            </Stack>
-          </Paper>
+            {budgetedDiagnostics.length === 0 ? (
+              <Text className={styles.sectionEmpty}>
+                {t('categories.diagnostics.empty.budgeted')}
+              </Text>
+            ) : (
+              <Stack gap={0}>
+                {budgetedDiagnostics.map((row) => (
+                  <BudgetedDiagnosticRow
+                    key={row.id}
+                    id={row.id}
+                    name={row.name}
+                    icon={row.icon}
+                    color={row.color}
+                    budgetedValue={row.budgetedValue}
+                    spentValue={row.spentValue}
+                    varianceValue={row.varianceValue}
+                    progressPercentage={row.progressPercentage}
+                    stabilityHistory={row.stabilityHistory}
+                  />
+                ))}
+              </Stack>
+            )}
+          </Stack>
+        </Paper>
 
-          <Paper withBorder radius="lg" p="lg" className={styles.unbudgetedSection}>
-            <Stack gap="md">
-              <div className={styles.sectionHeader}>
-                <Text className={styles.sectionTitle}>
-                  {t('categories.diagnostics.sections.unbudgeted')}
-                </Text>
-              </div>
+        <Paper withBorder radius="lg" p="lg" className={styles.unbudgetedSection}>
+          <Stack gap="md">
+            <div className={styles.sectionHeader}>
+              <Text className={styles.sectionTitle}>
+                {t('categories.diagnostics.sections.unbudgeted')}
+              </Text>
+            </div>
 
-              <UnbudgetedDiagnosticList rows={unbudgetedDiagnostics} />
-            </Stack>
-          </Paper>
-        </div>
+            <UnbudgetedDiagnosticList rows={unbudgetedDiagnostics} />
+          </Stack>
+        </Paper>
       </StateRenderer>
     </Stack>
   );
