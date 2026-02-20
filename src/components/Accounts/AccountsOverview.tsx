@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Box, Group, Loader, Progress, Stack, Text, Tooltip } from '@mantine/core';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useInfiniteAccounts } from '@/hooks/useAccounts';
-import { AccountResponse, AccountType, CurrencyResponse } from '@/types/account';
+import { AccountResponse, AccountType } from '@/types/account';
 import { formatCurrency } from '@/utils/currency';
+import { AllowanceRangeBar } from './AllowanceRangeBar';
+import { StandardRangeBar } from './StandardRangeBar';
 import styles from './Accounts.module.css';
 
 type AccountGroup = {
@@ -23,22 +25,6 @@ const ACCOUNT_GROUPS: AccountGroup[] = [
   { key: 'debt', labelKey: 'accounts.overview.groups.debtSection', types: ['CreditCard'] },
 ];
 
-function PeriodChange({ amount, currency }: { amount: number; currency: CurrencyResponse }) {
-  const { t } = useTranslation();
-  if (amount === 0) {
-    return null;
-  }
-  const arrow = amount > 0 ? '↑' : '↓';
-  const abs = Math.abs(amount);
-  return (
-    <Text size="xs" c={amount > 0 ? 'teal' : 'red'}>
-      {t('accounts.overview.periodChange', {
-        arrow,
-        amount: formatCurrency(abs, currency),
-      })}
-    </Text>
-  );
-}
 
 function AllowanceAccountRow({ account }: { account: AccountResponse }) {
   const { t } = useTranslation();
@@ -56,10 +42,12 @@ function AllowanceAccountRow({ account }: { account: AccountResponse }) {
         </Text>
       </Group>
 
-      <Stack gap={6}>
+      <AllowanceRangeBar account={account} />
+
+      <Stack gap={6} mt={16}>
         <Group justify="space-between">
           <Text size="sm" c="dimmed">
-            {t('accounts.overview.allowanceCard.thisPeriod')}
+            {t('accounts.overview.allowanceCard.netChangeThisPeriod')}
           </Text>
           <Text fw={600} size="sm">
             {formatCurrency(account.balanceChangeThisPeriod, account.currency)}
@@ -77,7 +65,7 @@ function AllowanceAccountRow({ account }: { account: AccountResponse }) {
         </Group>
         <Group justify="space-between">
           <Text size="sm" c="dimmed">
-            {t('accounts.overview.allowanceCard.projectedAfterTransfer')}
+            {t('accounts.overview.allowanceCard.balanceAfterNextTransfer')}
           </Text>
           <Text fw={600} size="sm">
             {projected != null
@@ -119,17 +107,15 @@ function AllowanceGroupSection({ accounts }: { accounts: AccountResponse[] }) {
 function StandardAccountRow({ account }: { account: AccountResponse }) {
   return (
     <Box className={styles.accountRow}>
-      <Group justify="space-between" align="flex-start">
-        <div>
-          <Text fw={700} size="lg" c="var(--text-primary)">
-            {account.name}
-          </Text>
-          <PeriodChange amount={account.balanceChangeThisPeriod} currency={account.currency} />
-        </div>
+      <Group justify="space-between" mb={12}>
+        <Text fw={700} size="lg" c="var(--text-primary)">
+          {account.name}
+        </Text>
         <Text fw={700} size="lg" c="var(--text-primary)">
           {formatCurrency(account.balance, account.currency)}
         </Text>
       </Group>
+      <StandardRangeBar account={account} />
     </Box>
   );
 }

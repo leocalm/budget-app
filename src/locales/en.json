@@ -787,10 +787,35 @@
         "debtSection": "Debt Accounts"
       },
       "allowanceCard": {
-        "thisPeriod": "This Period",
+        "netChangeThisPeriod": "Net change this period",
         "nextTransfer": "Next Transfer",
-        "projectedAfterTransfer": "Projected After Transfer",
+        "balanceAfterNextTransfer": "Balance after next transfer",
         "notSet": "Not set"
+      },
+      "standardBar": {
+        "rangeLabel": "30-day closing balance range",
+        "low": "Low {{value}}",
+        "high": "High {{value}}",
+        "current": "Current {{value}}",
+        "zero": "Zero",
+        "withinRange": "Current is within this account's 30-day closing range.",
+        "aboveHigh": "Current is above 30-day high by {{amount}}.",
+        "belowLow": "Current is below 30-day low by {{amount}}.",
+        "netChangeThisPeriod": "Net change this period",
+        "ariaLabel": "30-day closing range: low {{low}}, high {{high}}, current {{current}}. {{status}}",
+        "ariaWithinRange": "Within range.",
+        "ariaAboveHigh": "Above high by {{amount}}.",
+        "ariaBelowLow": "Below low by {{amount}}."
+      },
+      "allowanceBar": {
+        "rangeLabel": "30-day closing balance range",
+        "boundsNote": "Bounds include historical min/max plus zero and projected balance.",
+        "low": "Low {{value}}",
+        "high": "High {{value}}",
+        "current": "Current {{value}}",
+        "afterNextTransfer": "After next transfer {{value}}",
+        "zero": "Zero",
+        "ariaLabel": "30-day balance range. Low: {{low}}, Current: {{current}}, High: {{high}}"
       },
       "periodChange": "{{arrow}} {{amount}} this period"
     },

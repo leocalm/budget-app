@@ -1,0 +1,73 @@
+/* ── Track ── */
+.track {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg-elevated, #e9ecef);
+  overflow: visible;
+}
+
+/* ── Zero marker: thin vertical line through the track ── */
+.zeroMarker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--text-muted, dimgray);
+  border-radius: 1px;
+  transform: translateX(-50%);
+}
+
+/* ── Current marker: solid filled dot ── */
+.currentMarker {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 2px solid var(--bg-card, #fff);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px var(--accent-primary);
+}
+
+/* ── Projected marker: outlined dot ── */
+.projectedMarker {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-card, #fff);
+  border: 2px solid var(--accent-primary);
+  transform: translate(-50%, -50%);
+}
+
+/* ── Legend dots (mirrors the track markers) ── */
+.legendDotCurrent {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.legendDotProjected {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.legendZeroLine {
+  display: inline-block;
+  width: 2px;
+  height: 12px;
+  border-radius: 1px;
+  background: var(--text-muted, dimgray);
+  flex-shrink: 0;
+}
