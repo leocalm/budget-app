@@ -67,6 +67,7 @@ export const useDeleteCategory = (selectedPeriodId: string | null) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
     },
   });
 };
@@ -84,6 +85,7 @@ export const useCreateCategory = (selectedPeriodId: string | null) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
       queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
       queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
     },
   });
 };
@@ -103,6 +105,7 @@ export const useUpdateCategory = (selectedPeriodId: string | null) => {
         queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() }),
       ]);
     },
   });
@@ -125,6 +128,7 @@ export const useCreateBudgetCategory = () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() }),
       ]);
     },
   });
@@ -147,6 +151,7 @@ export const useDeleteBudgetCategory = () => {
         queryClient.refetchQueries({ queryKey: queryKeys.unbudgetedCategories() }),
         queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.refetchQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() }),
       ]);
     },
   });
@@ -162,6 +167,7 @@ export const useUpdateBudgetCategory = () => {
       await Promise.all([
         queryClient.refetchQueries({ queryKey: queryKeys.budgetedCategories() }),
         queryClient.refetchQueries({ queryKey: queryKeys.categoriesDiagnostic() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() }),
       ]);
     },
   });
