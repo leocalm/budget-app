@@ -15,7 +15,7 @@ import styles from './Categories.module.css';
 
 function CategoriesDiagnosticsSkeleton() {
   return (
-    <div className={styles.diagnosticsLayout}>
+    <>
       <Paper withBorder radius="lg" p="lg" className={styles.budgetedSection}>
         <Stack gap="sm">
           <Skeleton height={24} width="40%" radius="sm" />
@@ -33,7 +33,7 @@ function CategoriesDiagnosticsSkeleton() {
           <Skeleton height={60} radius="md" />
         </Stack>
       </Paper>
-    </div>
+    </>
   );
 }
 
