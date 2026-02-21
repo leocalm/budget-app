@@ -1378,7 +1378,8 @@
     },
     "modeSwitch": {
       "overview": "Visão Geral",
-      "management": "Gerenciamento"
+      "management": "Gerenciamento",
+      "targets": "Metas"
     },
     "actions": {
       "addCategory": "Adicionar Categoria"
@@ -1462,6 +1463,81 @@
       "Outgoing": "Gastos",
       "Incoming": "Entradas",
       "Transfer": "Transferências"
+    }
+  },
+  "categoryTargets": {
+    "context": {
+      "period": "Período",
+      "currentPositionLabel": "Posição Atual",
+      "currentPosition": "{{set}} definidas",
+      "categoriesLabel": "Categorias com Metas",
+      "categoriesWithTargets": "{{targeted}} de {{total}} categorias ativas",
+      "periodProgress": "Progresso do Período",
+      "elapsed": "decorrido",
+      "hint": "As metas são inicializadas a partir do período anterior. Os valores são inseridos como positivos. A direção é derivada do tipo de categoria."
+    },
+    "sections": {
+      "outgoing": "Categorias de Gastos",
+      "incoming": "Categorias de Entradas",
+      "excluded": "Categorias Excluídas da Atribuição de Metas"
+    },
+    "headers": {
+      "category": "Categoria",
+      "previousTarget": "Meta Anterior",
+      "currentTarget": "Meta Atual",
+      "projectedVariance": "Variação Projetada",
+      "targetScope": "Escopo da Meta",
+      "targetStatus": "Status da Meta",
+      "reason": "Motivo",
+      "action": "Ação"
+    },
+    "row": {
+      "parentCategory": "Categoria pai",
+      "noTargetYet": "Nenhuma meta definida ainda",
+      "archived": "Arquivada",
+      "hiddenFromTargets": "Oculta da atribuição de novas metas",
+      "unavailable": "Indisponível",
+      "systemManaged": "Categoria gerenciada pelo sistema",
+      "userExclusion": "Exclusão marcada pelo usuário",
+      "noReason": ""
+    },
+    "status": {
+      "excluded": "Excluída"
+    },
+    "actions": {
+      "markExcluded": "Marcar como excluída",
+      "includeInTargets": "Incluir nas metas",
+      "systemRule": "Regra do sistema"
+    },
+    "hints": {
+      "markExcluded": {
+        "prefix": "Use",
+        "suffix": "quando uma categoria deve permanecer fora do acompanhamento de metas neste período."
+      }
+    },
+    "footer": {
+      "unsaved": "{{count}} alteração(ões) não salva(s).",
+      "noChanges": "Sem alterações não salvas.",
+      "reset": "Redefinir",
+      "save": "Salvar metas",
+      "keyboardHint": "Teclado: Tab move campo a campo; Enter no último valor salva; Escape fecha sobreposições."
+    },
+    "states": {
+      "locked": "Selecione um período orçamentário para gerenciar as metas de categoria.",
+      "lockAction": "Ir para Períodos",
+      "error": "Falha ao carregar as metas de categoria. Tente novamente.",
+      "emptyTitle": "Nenhuma categoria ainda",
+      "emptyMessage": "Crie categorias na aba Gerenciamento para começar a definir metas."
+    },
+    "success": {
+      "saved": "Metas salvas com sucesso.",
+      "excluded": "Categoria excluída das metas.",
+      "included": "Categoria incluída nas metas."
+    },
+    "errors": {
+      "saveFailed": "Falha ao salvar as metas. Tente novamente.",
+      "excludeFailed": "Falha ao excluir a categoria.",
+      "includeFailed": "Falha ao incluir a categoria."
     }
   }
 }
