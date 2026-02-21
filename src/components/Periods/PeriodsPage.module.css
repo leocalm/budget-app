@@ -5,6 +5,10 @@
   position: relative;
 }
 
+.headerRow {
+  align-items: flex-start;
+}
+
 .loadingState {
   align-items: center;
   display: flex;
@@ -15,7 +19,23 @@
 .section {
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
+  background: var(--bg-card);
   padding: 20px;
+}
+
+.scheduleSection {
+  display: grid;
+  gap: 10px;
+}
+
+.currentSection {
+  background: linear-gradient(180deg, rgb(0, 212, 255, 0.05), transparent 45%);
+  border-color: rgb(0, 212, 255, 0.3);
+}
+
+.upcomingSection,
+.pastSection {
+  background: var(--bg-card);
 }
 
 .scheduleCard {
@@ -48,6 +68,10 @@
   background: var(--bg-card);
 }
 
+.periodCardCompact {
+  padding: 14px;
+}
+
 .currentCard {
   background: linear-gradient(135deg, rgb(0, 212, 255, 0.12) 0%, rgb(180, 122, 255, 0.08) 100%);
   border-color: rgb(0, 212, 255, 0.35);
@@ -64,11 +88,9 @@
   padding-top: 10px;
 }
 
-.fab {
-  bottom: 24px;
-  position: sticky;
-  width: fit-content;
-  z-index: 3;
+.metaRowCompact {
+  margin-top: 2px;
+  padding-top: 8px;
 }
 
 @media (max-width: 768px) {
@@ -76,11 +98,12 @@
     padding: 12px;
   }
 
-  .section {
-    padding: 14px;
+  .headerRow {
+    align-items: stretch;
+    flex-direction: column;
   }
 
-  .fab {
-    margin-left: auto;
+  .section {
+    padding: 14px;
   }
 }

@@ -74,6 +74,13 @@ describe('PeriodFormModal', () => {
     const user = userEvent.setup();
     renderModal();
 
+    expect(screen.getByRole('heading', { name: /Create Budget Period/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/Period boundaries are structural and can reclassify transactions\./i)
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Period Setup/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /End Rule/i })).toBeInTheDocument();
+
     fireEvent.change(screen.getByLabelText(/Start Date/i), { target: { value: '2026-03-01' } });
     fireEvent.change(screen.getByRole('textbox', { name: /^Duration$/i }), {
       target: { value: '2' },

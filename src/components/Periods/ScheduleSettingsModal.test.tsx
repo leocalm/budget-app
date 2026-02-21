@@ -18,6 +18,14 @@ describe('ScheduleSettingsModal', () => {
   it('shows warnings when editing an existing schedule', () => {
     render(<ScheduleSettingsModal opened onClose={vi.fn()} schedule={activeSchedule} />);
 
+    expect(screen.getByRole('heading', { name: /Period Schedule Settings/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Generation Rules/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Weekend Policy/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Naming Policy/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/Policy changes only affect new or regenerable periods\./i)
+    ).toBeInTheDocument();
+
     expect(screen.getByText(/Important/i)).toBeInTheDocument();
     expect(screen.getByText(/Current period will not be affected/i)).toBeInTheDocument();
     expect(screen.getByText(/Past periods will remain unchanged/i)).toBeInTheDocument();
