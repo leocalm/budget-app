@@ -19,9 +19,9 @@ describe('ScheduleSettingsModal', () => {
     render(<ScheduleSettingsModal opened onClose={vi.fn()} schedule={activeSchedule} />);
 
     expect(screen.getByRole('heading', { name: /Period Schedule Settings/i })).toBeInTheDocument();
-    expect(screen.getByText(/Generation Rules/i)).toBeInTheDocument();
-    expect(screen.getByText(/Weekend Policy/i)).toBeInTheDocument();
-    expect(screen.getByText(/Naming Policy/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Generation Rules/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Weekend Policy/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Naming Policy/i })).toBeInTheDocument();
     expect(
       screen.getByText(/Policy changes only affect new or regenerable periods\./i)
     ).toBeInTheDocument();

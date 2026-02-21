@@ -27,6 +27,7 @@ import {
   WeekendAdjustment,
 } from '@/types/budget';
 import classes from './ScheduleSettingsModal.module.css';
+import sharedClasses from './ModalSectionShared.module.css';
 
 interface ScheduleSettingsModalProps {
   opened: boolean;
@@ -200,8 +201,10 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         </Alert>
       )}
 
-      <div className={classes.sectionCard}>
-        <Text fw={700}>{t('periods.schedule.sectionTitles.generationRules')}</Text>
+      <div className={sharedClasses.sectionCard}>
+        <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+          {t('periods.schedule.sectionTitles.generationRules')}
+        </Text>
         <Group grow>
           <NumberInput
             min={1}
@@ -250,8 +253,10 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         </Group>
       </div>
 
-      <div className={classes.sectionCard}>
-        <Text fw={700}>{t('periods.schedule.sectionTitles.weekendPolicy')}</Text>
+      <div className={sharedClasses.sectionCard}>
+        <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+          {t('periods.schedule.sectionTitles.weekendPolicy')}
+        </Text>
         <Group grow>
           <Select
             label={t('periods.schedule.saturdayAdjustment')}
@@ -286,8 +291,10 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
         </Group>
       </div>
 
-      <div className={classes.sectionCard}>
-        <Text fw={700}>{t('periods.schedule.sectionTitles.namingPolicy')}</Text>
+      <div className={sharedClasses.sectionCard}>
+        <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+          {t('periods.schedule.sectionTitles.namingPolicy')}
+        </Text>
         <TextInput
           label={t('periods.schedule.namePattern')}
           value={values.namePattern}
@@ -299,7 +306,7 @@ export function ScheduleSettingsModal({ opened, onClose, schedule }: ScheduleSet
           {t('periods.schedule.policyNote')}
         </Text>
 
-        <div className={classes.previewCard}>
+        <div className={sharedClasses.previewCard}>
           <Group gap="xs" mb={6}>
             <IconCalendarStats size={16} />
             <Text fw={700}>{t('periods.schedule.preview')}</Text>

@@ -2,22 +2,6 @@
   padding-top: 4px;
 }
 
-.sectionCard {
-  border: 1px solid var(--border-medium);
-  border-radius: 12px;
-  background: var(--bg-elevated);
-  padding: 14px;
-  display: grid;
-  gap: 12px;
-}
-
-.previewCard {
-  border: 1px solid var(--border-medium);
-  border-radius: 10px;
-  background: var(--bg-primary);
-  padding: 12px;
-}
-
 .footerActions {
   padding-top: 4px;
 }

@@ -18,6 +18,7 @@ import { useCreateBudgetPeriod, useUpdateBudgetPeriod } from '@/hooks/useBudget'
 import { toast } from '@/lib/toast';
 import { BudgetPeriod, PeriodDurationUnit } from '@/types/budget';
 import classes from './PeriodFormModal.module.css';
+import sharedClasses from './ModalSectionShared.module.css';
 
 interface PeriodFormModalProps {
   opened: boolean;
@@ -243,8 +244,10 @@ export function PeriodFormModal({
             </Alert>
           )}
 
-          <div className={classes.sectionCard}>
-            <Text fw={700}>{t('periods.modal.sectionTitles.setup')}</Text>
+          <div className={sharedClasses.sectionCard}>
+            <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+              {t('periods.modal.sectionTitles.setup')}
+            </Text>
             <Text size="sm" c="dimmed">
               {t('periods.modal.structuralNote')}
             </Text>
@@ -288,8 +291,10 @@ export function PeriodFormModal({
             </Group>
           </div>
 
-          <div className={classes.sectionCard}>
-            <Text fw={700}>{t('periods.modal.sectionTitles.endRule')}</Text>
+          <div className={sharedClasses.sectionCard}>
+            <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+              {t('periods.modal.sectionTitles.endRule')}
+            </Text>
             <SegmentedControl
               value={values.endDateMode}
               onChange={(value) =>
@@ -316,7 +321,7 @@ export function PeriodFormModal({
                 required
               />
             ) : (
-              <div className={classes.previewCard}>
+              <div className={sharedClasses.previewCard}>
                 <Text size="xs" c="dimmed">
                   {t('periods.modal.calculatedEndDate')}
                 </Text>
@@ -325,8 +330,10 @@ export function PeriodFormModal({
             )}
           </div>
 
-          <div className={classes.sectionCard}>
-            <Text fw={700}>{t('periods.modal.sectionTitles.naming')}</Text>
+          <div className={sharedClasses.sectionCard}>
+            <Text component="h3" fw={700} className={sharedClasses.sectionHeading}>
+              {t('periods.modal.sectionTitles.naming')}
+            </Text>
             <TextInput
               label={t('periods.modal.periodName')}
               placeholder={t('periods.modal.periodNamePlaceholder')}
