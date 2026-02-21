@@ -5,6 +5,10 @@ import { CategoriesContainer } from './CategoriesContainer';
 
 const useCategoriesDiagnosticMock = vi.hoisted(() => vi.fn());
 
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => vi.fn(),
+}));
+
 vi.mock('@/context/BudgetContext', () => ({
   useBudgetPeriodSelection: () => ({
     selectedPeriodId: 'period-1',

@@ -1,0 +1,410 @@
+/* ── Root Layout ── */
+.targetsRoot {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: var(--spacing-2xl);
+}
+
+.targetsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-l);
+  flex-wrap: wrap;
+}
+
+.targetsTitle {
+  font-size: var(--type-reflective-hero-size);
+  font-weight: var(--type-reflective-hero-weight);
+  letter-spacing: -0.02em;
+  margin: 0;
+  font-family: var(--font-title);
+}
+
+.targetsSubtitle {
+  color: var(--text-secondary);
+  font-size: var(--type-diagnostic-name-size);
+  margin-top: var(--spacing-s);
+}
+
+/* ── Period Context Card ── */
+.contextCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.contextGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contextBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contextLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.contextValue {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contextHint {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.contextProgressTrack {
+  height: 6px;
+  background: var(--border-medium);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.contextProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.contextProgressLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Mode Switch (copied from Categories) ── */
+.modeSwitch {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-medium);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  padding: 4px;
+}
+
+.modePill {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modePillActive {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border-color: color-mix(in srgb, var(--accent-primary) 38%, var(--border-medium) 62%);
+}
+
+/* ── Section Tables ── */
+.sectionGroup {
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ── Table Header ── */
+.tableHeader {
+  display: grid;
+  grid-template-columns: minmax(160px, 2fr) 100px minmax(100px, 1.2fr) 100px 140px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.tableHeaderLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ── Target Row ── */
+.targetRow {
+  display: grid;
+  grid-template-columns: minmax(160px, 2fr) 100px minmax(100px, 1.2fr) 100px 140px;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.targetRow:last-child {
+  border-bottom: none;
+}
+
+.targetRowArchived {
+  opacity: 0.55;
+}
+
+.categoryCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.categoryNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.categoryName {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.archivedBadge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 1px 6px;
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+}
+
+.categoryMeta {
+  font-size: 12px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.previousTarget {
+  font-size: 14px;
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.targetInput {
+  width: 100%;
+}
+
+.targetInputPrefix {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.varianceValue {
+  font-size: 14px;
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 700;
+}
+
+.variancePositive {
+  color: var(--accent-secondary);
+}
+
+.varianceNegative {
+  color: var(--accent-primary);
+}
+
+.varianceNeutral {
+  color: var(--text-muted);
+}
+
+.scopeAction {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.unavailableLabel {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Excluded Categories Table ── */
+.excludedGroup {
+  border: 1px solid var(--border-medium);
+  border-radius: 16px;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.excludedHeader {
+  display: grid;
+  grid-template-columns: minmax(160px, 2fr) 100px 1fr 120px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.excludedRow {
+  display: grid;
+  grid-template-columns: minmax(160px, 2fr) 100px 1fr 120px;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.excludedRow:last-child {
+  border-bottom: none;
+}
+
+.excludedStatus {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.excludedReason {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.systemRule {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ── Footer Actions ── */
+.footerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border-medium);
+  margin-top: 8px;
+}
+
+.footerHint {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.keyboardHint {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding-top: 8px;
+}
+
+.markExcludedHint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-medium);
+}
+
+.markExcludedHintBold {
+  font-weight: 700;
+}
+
+.unsavedLabel {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ── Mobile Responsiveness ── */
+@media (max-width: 768px) {
+  .targetsRoot {
+    padding: var(--spacing-l);
+  }
+
+  .contextGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+  .tableHeader {
+    display: none;
+  }
+
+  .targetRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-medium);
+    border-radius: 12px;
+    background: var(--bg-card);
+    margin-bottom: 8px;
+  }
+
+  .targetRow:last-child {
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .excludedHeader {
+    display: none;
+  }
+
+  .excludedRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-medium);
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .excludedRow:last-child {
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .sectionGroup,
+  .excludedGroup {
+    border: none !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+}
