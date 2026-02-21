@@ -229,6 +229,29 @@
   margin-left: auto;
 }
 
+/* ── Mobile layout ── */
+@media (max-width: em(768)) {
+  .mgmtRow {
+    flex-wrap: wrap;
+  }
+
+  .mgmtBalanceColumn {
+    flex-basis: 100%;
+    min-width: unset;
+  }
+
+  .mgmtStatusColumn {
+    flex-basis: 100%;
+    min-width: unset;
+  }
+
+  .mgmtActionsColumn {
+    flex-basis: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+}
+
 /* ── Add Button gradient ── */
 .addButton {
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
