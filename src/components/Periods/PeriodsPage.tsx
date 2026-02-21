@@ -319,7 +319,7 @@ export function PeriodsPage() {
           <Text c="dimmed">{t('periods.page.description')}</Text>
         </Stack>
 
-        <Button onClick={openCreateModal}>{t('periods.createPeriod')}</Button>
+        {!schedule && <Button onClick={openCreateModal}>{t('periods.createPeriod')}</Button>}
       </Group>
 
       {schedule ? (

@@ -82,7 +82,7 @@ describe('PeriodsPage', () => {
     renderPeriodsPage();
 
     expect(screen.getByRole('heading', { name: /Budget Periods/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Create Period/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Create Period/i })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Edit Schedule/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Current Period/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /^Schedule$/i })).toBeInTheDocument();
@@ -95,8 +95,9 @@ describe('PeriodsPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Toggle past periods/i }));
 
-    expect(screen.getAllByRole('link', { name: /^View$/i }).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Auto-generated/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: /^View budget period$/i }).length).toBeGreaterThan(0);
+    expect(screen.getByText(/^Auto$/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Auto-generated/i)).not.toBeInTheDocument();
   });
 
   it('shows detailed warnings when disabling schedule', async () => {
