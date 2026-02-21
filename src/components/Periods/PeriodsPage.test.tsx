@@ -59,6 +59,16 @@ vi.mock('@/hooks/useBudget', async () => {
   };
 });
 
+vi.mock('@/hooks/useDisplayCurrency', () => ({
+  useDisplayCurrency: () => ({
+    id: 'cur-jpy',
+    name: 'Japanese Yen',
+    symbol: '¥',
+    currency: 'JPY',
+    decimalPlaces: 0,
+  }),
+}));
+
 describe('PeriodsPage', () => {
   beforeEach(() => {
     vi.mocked(useBudget.useBudgetPeriods).mockReturnValue({ data: mockPeriods, isLoading: false } as any);
@@ -125,5 +135,26 @@ describe('PeriodsPage', () => {
     expect(
       await screen.findByText(/Convert periods with transactions to manual periods/i)
     ).toBeInTheDocument();
+  });
+
+  it('formats gap transaction amounts using display currency settings', () => {
+    vi.mocked(useBudget.useBudgetPeriodGaps).mockReturnValue({
+      data: {
+        unassignedCount: 1,
+        transactions: [
+          {
+            id: 'gap-tx-1',
+            description: 'Coffee',
+            occurredAt: new Date().toISOString(),
+            amount: 1234,
+          },
+        ],
+      },
+      isLoading: false,
+    } as any);
+
+    renderPeriodsPage();
+
+    expect(screen.getByText(/(?:¥|￥)\s?1,234/)).toBeInTheDocument();
   });
 });

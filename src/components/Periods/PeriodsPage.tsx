@@ -31,8 +31,10 @@ import {
   useDeleteBudgetPeriodSchedule,
   useUpdateBudgetPeriod,
 } from '@/hooks/useBudget';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { toast } from '@/lib/toast';
 import { BudgetPeriod, BudgetPeriodGaps } from '@/types/budget';
+import { formatCurrency } from '@/utils/currency';
 import { PeriodCard } from './PeriodCard';
 import { PeriodFormModal } from './PeriodFormModal';
 import { ScheduleSettingsModal } from './ScheduleSettingsModal';
@@ -97,7 +99,8 @@ const overlapsAnyPeriod = (
 };
 
 export function PeriodsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const globalCurrency = useDisplayCurrency();
   const { data: periods = [], isLoading: isLoadingPeriods } = useBudgetPeriods();
   const { data: schedule, isLoading: isLoadingSchedule } = useBudgetPeriodSchedule();
   const { data: gaps, isLoading: isLoadingGaps } = useBudgetPeriodGaps();
@@ -409,9 +412,7 @@ export function PeriodsPage() {
                   {dayjs(transaction.occurredAt).format('MMM D')} - {transaction.description}
                 </Text>
                 <Text size="sm" fw={700}>
-                  {new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(
-                    transaction.amount / 100
-                  )}
+                  {formatCurrency(transaction.amount, globalCurrency, i18n.language)}
                 </Text>
               </Group>
             ))}
