@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { CategoryTargets } from '@/components/CategoryTargets';
 import {
   useArchiveCategory,
   useCategoriesManagement,
@@ -23,7 +24,7 @@ import {
 import { CategoryFormModal } from './CategoryFormModal';
 import styles from './Categories.module.css';
 
-type ViewMode = 'overview' | 'management';
+type ViewMode = 'overview' | 'management' | 'targets';
 
 export function CategoriesContainer() {
   const { t } = useTranslation();
@@ -162,7 +163,9 @@ export function CategoriesContainer() {
             <Text className={styles.categoriesSubtitle}>
               {viewMode === 'overview'
                 ? t('categories.header.subtitle')
-                : t('categories.header.subtitleManagement')}
+                : viewMode === 'management'
+                  ? t('categories.header.subtitleManagement')
+                  : t('categories.header.subtitleTargets')}
             </Text>
             <nav className={styles.modeSwitch} aria-label="Categories page mode">
               <button
@@ -183,6 +186,15 @@ export function CategoriesContainer() {
               >
                 {t('categories.modeSwitch.management')}
               </button>
+              <button
+                type="button"
+                className={`${styles.modePill} ${viewMode === 'targets' ? styles.modePillActive : ''}`}
+                tabIndex={0}
+                aria-label={t('categories.modeSwitch.targets')}
+                onClick={() => setViewMode('targets')}
+              >
+                {t('categories.modeSwitch.targets')}
+              </button>
             </nav>
           </div>
           {viewMode === 'management' && (
@@ -202,7 +214,7 @@ export function CategoriesContainer() {
               onClick: openCreate,
             }}
           />
-        ) : (
+        ) : viewMode === 'management' ? (
           <CategoriesManagement
             data={managementData}
             isLoading={isManagementLoading}
@@ -214,6 +226,8 @@ export function CategoriesContainer() {
             onDelete={handleDeleteCategory}
             onAddSubcategory={handleCreateSubcategory}
           />
+        ) : (
+          <CategoryTargets />
         )}
 
         <CategoryFormModal

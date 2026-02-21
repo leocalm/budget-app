@@ -76,6 +76,9 @@ export const queryKeys = {
   totalAssets: () => ['totalAssets'] as const,
   netPosition: (periodId?: string | null) => ['netPosition', periodId] as const,
   budgetStability: () => ['budgetStability'] as const,
+
+  // Category Targets
+  categoryTargets: (periodId?: string | null) => ['categoryTargets', periodId] as const,
 };
 
 export type QueryKey = readonly (string | number | undefined | null)[];

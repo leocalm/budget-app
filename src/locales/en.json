@@ -1387,11 +1387,13 @@
     "header": {
       "title": "Categories",
       "subtitle": "Diagnostic view of category-level position and deviation.",
-      "subtitleManagement": "Define and organize your budgeting structure."
+      "subtitleManagement": "Define and organize your budgeting structure.",
+      "subtitleTargets": "Set spending targets and track budget adherence per category."
     },
     "modeSwitch": {
       "overview": "Overview",
-      "management": "Management"
+      "management": "Management",
+      "targets": "Targets"
     },
     "actions": {
       "addCategory": "Add Category"
@@ -1569,6 +1571,81 @@
       "elapsedInPeriod": "Elapsed in period",
       "summary": "Summary",
       "varianceLabel": "{{spentBudgetLabel}} of {{totalBudgetLabel}} · Variance {{varianceLabel}}"
+    }
+  },
+  "categoryTargets": {
+    "context": {
+      "period": "Period",
+      "currentPositionLabel": "Current Position",
+      "currentPosition": "{{set}} set",
+      "categoriesLabel": "Categories with Targets",
+      "categoriesWithTargets": "{{targeted}} of {{total}} active categories",
+      "periodProgress": "Period Progress",
+      "elapsed": "elapsed",
+      "hint": "Targets are initialized from the previous period. Amounts are entered as positive values. Direction is derived from category type."
+    },
+    "sections": {
+      "outgoing": "Outgoing Categories",
+      "incoming": "Incoming Categories",
+      "excluded": "Categories Excluded from Target Assignment"
+    },
+    "headers": {
+      "category": "Category",
+      "previousTarget": "Previous Target",
+      "currentTarget": "Current Target",
+      "projectedVariance": "Projected Variance",
+      "targetScope": "Target Scope",
+      "targetStatus": "Target Status",
+      "reason": "Reason",
+      "action": "Action"
+    },
+    "row": {
+      "parentCategory": "Parent category",
+      "noTargetYet": "No target defined yet",
+      "archived": "Archived",
+      "hiddenFromTargets": "Hidden from new target assignment",
+      "unavailable": "Unavailable",
+      "systemManaged": "System-managed category",
+      "userExclusion": "User-marked exclusion",
+      "noReason": ""
+    },
+    "status": {
+      "excluded": "Excluded"
+    },
+    "actions": {
+      "markExcluded": "Mark as excluded",
+      "includeInTargets": "Include in targets",
+      "systemRule": "System rule"
+    },
+    "hints": {
+      "markExcluded": {
+        "prefix": "Use",
+        "suffix": "when a category should remain outside target tracking for this period."
+      }
+    },
+    "footer": {
+      "unsaved": "{{count}} unsaved change(s).",
+      "noChanges": "No unsaved changes.",
+      "reset": "Reset",
+      "save": "Save targets",
+      "keyboardHint": "Keyboard: Tab moves field to field; Enter on the final amount saves; Escape closes overlays."
+    },
+    "states": {
+      "locked": "Select a budget period to manage category targets.",
+      "lockAction": "Go to Periods",
+      "error": "Failed to load category targets. Please try again.",
+      "emptyTitle": "No categories yet",
+      "emptyMessage": "Create categories in the Management tab to start setting targets."
+    },
+    "success": {
+      "saved": "Targets saved successfully.",
+      "excluded": "Category excluded from targets.",
+      "included": "Category included in targets."
+    },
+    "errors": {
+      "saveFailed": "Failed to save targets. Please try again.",
+      "excludeFailed": "Failed to exclude category.",
+      "includeFailed": "Failed to include category."
     }
   }
 }
