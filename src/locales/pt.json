@@ -722,6 +722,12 @@
       },
       "manualEndDate": "Data Final Manual",
       "calculatedEndDate": "Data Final Calculada",
+      "structuralNote": "Os limites do período são estruturais e podem reclassificar transações.",
+      "sectionTitles": {
+        "setup": "Configuração do Período",
+        "endRule": "Regra de Encerramento",
+        "naming": "Nomeação"
+      },
       "periodName": "Nome do Período",
       "periodNamePlaceholder": "ex.: Março 2026",
       "copyBudgets": "Copiar orçamentos do período anterior",
@@ -762,6 +768,12 @@
         "monday": "Mover para segunda-feira"
       },
       "namePattern": "Padrão de Nome",
+      "sectionTitles": {
+        "generationRules": "Regras de Geração",
+        "weekendPolicy": "Política de Fim de Semana",
+        "namingPolicy": "Política de Nomeação"
+      },
+      "policyNote": "Alterações de política afetam apenas períodos novos ou regeneráveis.",
       "preview": "Pré-visualização do Agendamento",
       "previewSummary": "Começa no dia {{startDay}}, duração de {{durationValue}} {{durationUnit}}, sábado: {{saturday}}, domingo: {{sunday}}, exemplo de nome: {{previewName}}, gera {{ahead}} períodos à frente.",
       "activeTitle": "Criação Automática Ativada",

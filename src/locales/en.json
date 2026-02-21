@@ -424,6 +424,12 @@
       },
       "manualEndDate": "Manual End Date",
       "calculatedEndDate": "Calculated End Date",
+      "structuralNote": "Period boundaries are structural and can reclassify transactions.",
+      "sectionTitles": {
+        "setup": "Period Setup",
+        "endRule": "End Rule",
+        "naming": "Naming"
+      },
       "periodName": "Period Name",
       "periodNamePlaceholder": "e.g. March 2026",
       "copyBudgets": "Copy budgets from previous period",
@@ -464,6 +470,12 @@
         "monday": "Move to Monday"
       },
       "namePattern": "Name Pattern",
+      "sectionTitles": {
+        "generationRules": "Generation Rules",
+        "weekendPolicy": "Weekend Policy",
+        "namingPolicy": "Naming Policy"
+      },
+      "policyNote": "Policy changes only affect new or regenerable periods.",
       "preview": "Schedule Preview",
       "previewSummary": "Starts on day {{startDay}}, duration {{durationValue}} {{durationUnit}}, Saturday: {{saturday}}, Sunday: {{sunday}}, name example: {{previewName}}, generates {{ahead}} periods ahead.",
       "activeTitle": "Auto-Creation Enabled",

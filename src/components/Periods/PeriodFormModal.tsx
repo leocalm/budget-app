@@ -230,7 +230,7 @@ export function PeriodFormModal({
       closeBlocked={isSubmitting}
     >
       {(requestClose) => (
-        <Stack gap="md">
+        <Stack gap="md" className={classes.modalBody}>
           {isEditMode && (
             <Alert variant="light" color="yellow" icon={<IconAlertTriangle size={16} />}>
               {t('periods.modal.editWarning')}
@@ -243,84 +243,100 @@ export function PeriodFormModal({
             </Alert>
           )}
 
-          <TextInput
-            type="date"
-            label={t('periods.modal.startDate')}
-            value={values.startDate}
-            onChange={(event) => {
-              const startDate = event.currentTarget.value;
-              setValues((current) => ({ ...current, startDate }));
-            }}
-            required
-          />
+          <div className={classes.sectionCard}>
+            <Text fw={700}>{t('periods.modal.sectionTitles.setup')}</Text>
+            <Text size="sm" c="dimmed">
+              {t('periods.modal.structuralNote')}
+            </Text>
 
-          <Group grow align="flex-end">
-            <NumberInput
-              min={1}
-              label={t('periods.modal.duration')}
-              value={values.durationValue}
-              onChange={(value) =>
-                setValues((current) => ({ ...current, durationValue: Number(value) || 1 }))
-              }
-              required
-            />
-            <Select
-              label={t('periods.modal.durationUnit')}
-              value={values.durationUnit}
-              onChange={(value) =>
-                setValues((current) => ({
-                  ...current,
-                  durationUnit: (value as PeriodDurationUnit) || 'months',
-                }))
-              }
-              data={[
-                { label: t('periods.modal.durationUnits.days'), value: 'days' },
-                { label: t('periods.modal.durationUnits.weeks'), value: 'weeks' },
-                { label: t('periods.modal.durationUnits.months'), value: 'months' },
-              ]}
-            />
-          </Group>
-
-          <SegmentedControl
-            value={values.endDateMode}
-            onChange={(value) =>
-              setValues((current) => ({ ...current, endDateMode: value as 'duration' | 'manual' }))
-            }
-            data={[
-              { label: t('periods.modal.endDateModes.duration'), value: 'duration' },
-              { label: t('periods.modal.endDateModes.manual'), value: 'manual' },
-            ]}
-          />
-
-          {values.endDateMode === 'manual' ? (
             <TextInput
               type="date"
-              label={t('periods.modal.manualEndDate')}
-              value={values.manualEndDate}
+              label={t('periods.modal.startDate')}
+              value={values.startDate}
               onChange={(event) => {
-                const manualEndDate = event.currentTarget.value;
-                setValues((current) => ({ ...current, manualEndDate }));
+                const startDate = event.currentTarget.value;
+                setValues((current) => ({ ...current, startDate }));
               }}
               required
             />
-          ) : (
-            <div className={classes.previewCard}>
-              <Text size="xs" c="dimmed">
-                {t('periods.modal.calculatedEndDate')}
-              </Text>
-              <Text fw={700}>{selectedEndDateDisplay}</Text>
-            </div>
-          )}
 
-          <TextInput
-            label={t('periods.modal.periodName')}
-            placeholder={t('periods.modal.periodNamePlaceholder')}
-            value={values.name}
-            onChange={(event) => {
-              const name = event.currentTarget.value;
-              setValues((current) => ({ ...current, name }));
-            }}
-          />
+            <Group grow align="flex-end">
+              <NumberInput
+                min={1}
+                label={t('periods.modal.duration')}
+                value={values.durationValue}
+                onChange={(value) =>
+                  setValues((current) => ({ ...current, durationValue: Number(value) || 1 }))
+                }
+                required
+              />
+              <Select
+                label={t('periods.modal.durationUnit')}
+                value={values.durationUnit}
+                onChange={(value) =>
+                  setValues((current) => ({
+                    ...current,
+                    durationUnit: (value as PeriodDurationUnit) || 'months',
+                  }))
+                }
+                data={[
+                  { label: t('periods.modal.durationUnits.days'), value: 'days' },
+                  { label: t('periods.modal.durationUnits.weeks'), value: 'weeks' },
+                  { label: t('periods.modal.durationUnits.months'), value: 'months' },
+                ]}
+              />
+            </Group>
+          </div>
+
+          <div className={classes.sectionCard}>
+            <Text fw={700}>{t('periods.modal.sectionTitles.endRule')}</Text>
+            <SegmentedControl
+              value={values.endDateMode}
+              onChange={(value) =>
+                setValues((current) => ({
+                  ...current,
+                  endDateMode: value as 'duration' | 'manual',
+                }))
+              }
+              data={[
+                { label: t('periods.modal.endDateModes.duration'), value: 'duration' },
+                { label: t('periods.modal.endDateModes.manual'), value: 'manual' },
+              ]}
+            />
+
+            {values.endDateMode === 'manual' ? (
+              <TextInput
+                type="date"
+                label={t('periods.modal.manualEndDate')}
+                value={values.manualEndDate}
+                onChange={(event) => {
+                  const manualEndDate = event.currentTarget.value;
+                  setValues((current) => ({ ...current, manualEndDate }));
+                }}
+                required
+              />
+            ) : (
+              <div className={classes.previewCard}>
+                <Text size="xs" c="dimmed">
+                  {t('periods.modal.calculatedEndDate')}
+                </Text>
+                <Text fw={700}>{selectedEndDateDisplay}</Text>
+              </div>
+            )}
+          </div>
+
+          <div className={classes.sectionCard}>
+            <Text fw={700}>{t('periods.modal.sectionTitles.naming')}</Text>
+            <TextInput
+              label={t('periods.modal.periodName')}
+              placeholder={t('periods.modal.periodNamePlaceholder')}
+              value={values.name}
+              onChange={(event) => {
+                const name = event.currentTarget.value;
+                setValues((current) => ({ ...current, name }));
+              }}
+            />
+          </div>
 
           <Group justify="flex-end" mt="sm">
             <Button variant="subtle" onClick={requestClose} disabled={isSubmitting}>
