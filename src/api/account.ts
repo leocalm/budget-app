@@ -169,7 +169,7 @@ export async function fetchAccountTransactions(
   if (cursor) {
     params.set('cursor', cursor);
   }
-  return apiGet<AccountTransactionsPage>(`/api/accounts/${accountId}/transactions?${params}`);
+  return apiGetRaw<AccountTransactionsPage>(`/api/accounts/${accountId}/transactions?${params}`);
 }
 
 export async function fetchAccountContext(

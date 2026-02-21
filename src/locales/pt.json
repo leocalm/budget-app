@@ -593,6 +593,45 @@
       "restoreFailed": "Falha ao restaurar conta",
       "deleteFailed": "Falha ao excluir conta",
       "adjustBalanceFailed": "Falha ao ajustar saldo inicial"
+    },
+    "detail": {
+      "balanceHistory": {
+        "title": "Histórico de Saldo",
+        "rangePeriod": "Período",
+        "range30d": "30d",
+        "range90d": "90d",
+        "range1y": "1a",
+        "seriesBalance": "Saldo"
+      },
+      "periodFlow": {
+        "title": "Fluxo do Período",
+        "inflows": "Entradas",
+        "outflows": "Saídas",
+        "net": "Líquido"
+      },
+      "context": {
+        "toggle": "Contexto",
+        "categoryImpact": "Impacto por Categoria",
+        "stability": "Estabilidade",
+        "closedPositive": "Fechou positivo em {{positive}} de {{total}} períodos",
+        "avgClosingBalance": "Saldo médio de fechamento: {{value}}",
+        "highestClosingBalance": "Maior saldo de fechamento: {{value}}",
+        "lowestClosingBalance": "Menor saldo de fechamento: {{value}}",
+        "largestOutflow": "Maior saída avulsa: {{value}} ({{category}})"
+      },
+      "transactions": {
+        "title": "Transações",
+        "filterAll": "Todas",
+        "filterIn": "Entradas",
+        "filterOut": "Saídas",
+        "empty": "Nenhuma transação neste período.",
+        "colDate": "Data",
+        "colDescription": "Descrição",
+        "colCategory": "Categoria",
+        "colAmount": "Valor",
+        "colBalance": "Saldo",
+        "loadMore": "Carregar mais"
+      }
     }
   },
   "transactionsPage": {

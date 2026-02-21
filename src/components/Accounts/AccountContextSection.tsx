@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Collapse,
   Divider,
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export function AccountContextSection({ accountId, periodId, currency }: Props) {
+  const { t } = useTranslation();
   const [opened, setOpened] = useState(false);
   const [everOpened, setEverOpened] = useState(false);
 
@@ -40,7 +42,7 @@ export function AccountContextSection({ accountId, periodId, currency }: Props) 
       <Divider mb="md" />
       <UnstyledButton onClick={handleToggle}>
         <Text size="sm" tt="uppercase" c="dimmed">
-          Context {opened ? '▴' : '▾'}
+          {t('accounts.detail.context.toggle')} {opened ? '▴' : '▾'}
         </Text>
       </UnstyledButton>
       <Collapse in={opened}>
@@ -50,7 +52,7 @@ export function AccountContextSection({ accountId, periodId, currency }: Props) 
           <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={56} mt="xl">
             <div>
               <Text size="xs" tt="uppercase" c="dimmed" mb="xs">
-                Category Impact
+                {t('accounts.detail.context.categoryImpact')}
               </Text>
               {data?.categoryImpact.map((item) => (
                 <div key={item.categoryName} style={{ marginBottom: 12 }}>
@@ -66,21 +68,31 @@ export function AccountContextSection({ accountId, periodId, currency }: Props) 
             </div>
             <div>
               <Text size="xs" tt="uppercase" c="dimmed" mb="xs">
-                Stability
+                {t('accounts.detail.context.stability')}
               </Text>
               {data && (
                 <Text size="sm" c="dimmed" style={{ lineHeight: 1.8 }}>
-                  Closed positive in {data.stability.periodsClosedPositive} of{' '}
-                  {data.stability.periodsEvaluated} periods
+                  {t('accounts.detail.context.closedPositive', {
+                    positive: data.stability.periodsClosedPositive,
+                    total: data.stability.periodsEvaluated,
+                  })}
                   <br />
-                  Average closing balance: {fmt(data.stability.avgClosingBalance)}
+                  {t('accounts.detail.context.avgClosingBalance', {
+                    value: fmt(data.stability.avgClosingBalance),
+                  })}
                   <br />
-                  Highest closing balance: {fmt(data.stability.highestClosingBalance)}
+                  {t('accounts.detail.context.highestClosingBalance', {
+                    value: fmt(data.stability.highestClosingBalance),
+                  })}
                   <br />
-                  Lowest closing balance: {fmt(data.stability.lowestClosingBalance)}
+                  {t('accounts.detail.context.lowestClosingBalance', {
+                    value: fmt(data.stability.lowestClosingBalance),
+                  })}
                   <br />
-                  Largest single outflow: {fmt(data.stability.largestSingleOutflow)} (
-                  {data.stability.largestSingleOutflowCategory})
+                  {t('accounts.detail.context.largestOutflow', {
+                    value: fmt(data.stability.largestSingleOutflow),
+                    category: data.stability.largestSingleOutflowCategory,
+                  })}
                 </Text>
               )}
             </div>

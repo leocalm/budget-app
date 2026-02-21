@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SimpleGrid, Skeleton, Text } from '@mantine/core';
 import { AccountDetail, CurrencyResponse } from '@/types/account';
 import { formatCurrency } from '@/utils/currency';
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export function PeriodFlow({ detail, currency, isLoading }: Props) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return <Skeleton height={80} mb="xl" />;
   }
@@ -16,15 +19,15 @@ export function PeriodFlow({ detail, currency, isLoading }: Props) {
   const fmt = (cents: number) => (currency ? formatCurrency(cents, currency) : '—');
 
   const rows = [
-    { label: 'Inflows', value: detail?.inflows ?? 0 },
-    { label: 'Outflows', value: detail?.outflows ?? 0 },
-    { label: 'Net', value: detail?.net ?? 0, bold: true },
+    { label: t('accounts.detail.periodFlow.inflows'), value: detail?.inflows ?? 0 },
+    { label: t('accounts.detail.periodFlow.outflows'), value: detail?.outflows ?? 0 },
+    { label: t('accounts.detail.periodFlow.net'), value: detail?.net ?? 0, bold: true },
   ];
 
   return (
     <div style={{ marginBottom: 36 }}>
       <Text size="xs" tt="uppercase" c="dimmed" mb="xs">
-        Period Flow
+        {t('accounts.detail.periodFlow.title')}
       </Text>
       {rows.map(({ label, value, bold }) => (
         <SimpleGrid key={label} cols={2} style={{ marginBottom: 4 }}>

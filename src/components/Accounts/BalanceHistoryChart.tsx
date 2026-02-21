@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AreaChart } from '@mantine/charts';
 import { Paper, SegmentedControl, Skeleton, Text } from '@mantine/core';
 import { useAccountBalanceHistory } from '@/hooks/useAccountBalanceHistory';
@@ -14,12 +15,14 @@ interface Props {
 }
 
 export function BalanceHistoryChart({ accountId, periodId, currency }: Props) {
+  const { t } = useTranslation();
   const [range, setRange] = useState<Range>('period');
   const { data, isLoading } = useAccountBalanceHistory(accountId, range, periodId);
 
+  const seriesLabel = t('accounts.detail.balanceHistory.seriesBalance');
   const chartData = (data ?? []).map((p) => ({
     date: p.date,
-    Balance: p.balance,
+    [seriesLabel]: p.balance,
   }));
 
   return (
@@ -32,16 +35,16 @@ export function BalanceHistoryChart({ accountId, periodId, currency }: Props) {
           marginBottom: 16,
         }}
       >
-        <Text fw={500}>Balance History</Text>
+        <Text fw={500}>{t('accounts.detail.balanceHistory.title')}</Text>
         <SegmentedControl
           size="xs"
           value={range}
           onChange={(v) => setRange(v as Range)}
           data={[
-            { label: 'Period', value: 'period' },
-            { label: '30d', value: '30d' },
-            { label: '90d', value: '90d' },
-            { label: '1y', value: '1y' },
+            { label: t('accounts.detail.balanceHistory.rangePeriod'), value: 'period' },
+            { label: t('accounts.detail.balanceHistory.range30d'), value: '30d' },
+            { label: t('accounts.detail.balanceHistory.range90d'), value: '90d' },
+            { label: t('accounts.detail.balanceHistory.range1y'), value: '1y' },
           ]}
         />
       </div>
@@ -52,7 +55,7 @@ export function BalanceHistoryChart({ accountId, periodId, currency }: Props) {
           h={260}
           data={chartData}
           dataKey="date"
-          series={[{ name: 'Balance', color: 'indigo.6' }]}
+          series={[{ name: seriesLabel, color: 'indigo.6' }]}
           curveType="linear"
           referenceLines={[{ y: 0, color: 'gray.4', label: '' }]}
           valueFormatter={(v) => (currency ? formatCurrency(v, currency) : String(v))}

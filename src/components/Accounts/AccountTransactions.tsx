@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Skeleton, Table, Text } from '@mantine/core';
 import { useAccountTransactions } from '@/hooks/useAccountTransactions';
 import { AccountTransaction, CurrencyResponse } from '@/types/account';
@@ -13,11 +14,12 @@ interface Props {
 }
 
 export function AccountTransactions({ accountId, periodId, currency }: Props) {
+  const { t } = useTranslation();
   const [txType, setTxType] = useState<FlowFilter>('all');
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useAccountTransactions(accountId, periodId, txType);
 
-  const transactions = data?.pages.flatMap((p) => p.data) ?? [];
+  const transactions = data?.pages.flatMap((p) => p.data ?? []) ?? [];
 
   const fmt = (cents: number) => (currency ? formatCurrency(cents, currency) : '—');
 
@@ -35,7 +37,7 @@ export function AccountTransactions({ accountId, periodId, currency }: Props) {
       }}
     >
       <Text size="xs" tt="uppercase" c="dimmed" mb="md">
-        Transactions
+        {t('accounts.detail.transactions.title')}
       </Text>
 
       <Group gap="xs" mb="md">
@@ -46,7 +48,11 @@ export function AccountTransactions({ accountId, periodId, currency }: Props) {
             variant={txType === f ? 'outline' : 'subtle'}
             onClick={() => setTxType(f)}
           >
-            {f === 'all' ? 'All' : f === 'in' ? 'Inflows' : 'Outflows'}
+            {f === 'all'
+              ? t('accounts.detail.transactions.filterAll')
+              : f === 'in'
+                ? t('accounts.detail.transactions.filterIn')
+                : t('accounts.detail.transactions.filterOut')}
           </Button>
         ))}
       </Group>
@@ -55,17 +61,17 @@ export function AccountTransactions({ accountId, periodId, currency }: Props) {
         <Skeleton height={200} />
       ) : transactions.length === 0 ? (
         <Text c="dimmed" ta="center" py="xl">
-          No transactions in this period.
+          {t('accounts.detail.transactions.empty')}
         </Text>
       ) : (
         <Table>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Date</Table.Th>
-              <Table.Th>Description</Table.Th>
-              <Table.Th>Category</Table.Th>
-              <Table.Th ta="right">Amount</Table.Th>
-              <Table.Th ta="right">Balance</Table.Th>
+              <Table.Th>{t('accounts.detail.transactions.colDate')}</Table.Th>
+              <Table.Th>{t('accounts.detail.transactions.colDescription')}</Table.Th>
+              <Table.Th>{t('accounts.detail.transactions.colCategory')}</Table.Th>
+              <Table.Th ta="right">{t('accounts.detail.transactions.colAmount')}</Table.Th>
+              <Table.Th ta="right">{t('accounts.detail.transactions.colBalance')}</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
@@ -108,7 +114,7 @@ export function AccountTransactions({ accountId, periodId, currency }: Props) {
           mt="md"
           fullWidth
         >
-          Load more
+          {t('accounts.detail.transactions.loadMore')}
         </Button>
       )}
     </div>

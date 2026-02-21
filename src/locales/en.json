@@ -895,6 +895,45 @@
       "restoreFailed": "Failed to restore account",
       "deleteFailed": "Failed to delete account",
       "adjustBalanceFailed": "Failed to adjust starting balance"
+    },
+    "detail": {
+      "balanceHistory": {
+        "title": "Balance History",
+        "rangePeriod": "Period",
+        "range30d": "30d",
+        "range90d": "90d",
+        "range1y": "1y",
+        "seriesBalance": "Balance"
+      },
+      "periodFlow": {
+        "title": "Period Flow",
+        "inflows": "Inflows",
+        "outflows": "Outflows",
+        "net": "Net"
+      },
+      "context": {
+        "toggle": "Context",
+        "categoryImpact": "Category Impact",
+        "stability": "Stability",
+        "closedPositive": "Closed positive in {{positive}} of {{total}} periods",
+        "avgClosingBalance": "Average closing balance: {{value}}",
+        "highestClosingBalance": "Highest closing balance: {{value}}",
+        "lowestClosingBalance": "Lowest closing balance: {{value}}",
+        "largestOutflow": "Largest single outflow: {{value}} ({{category}})"
+      },
+      "transactions": {
+        "title": "Transactions",
+        "filterAll": "All",
+        "filterIn": "Inflows",
+        "filterOut": "Outflows",
+        "empty": "No transactions in this period.",
+        "colDate": "Date",
+        "colDescription": "Description",
+        "colCategory": "Category",
+        "colAmount": "Amount",
+        "colBalance": "Balance",
+        "loadMore": "Load more"
+      }
     }
   },
   "vendors": {
