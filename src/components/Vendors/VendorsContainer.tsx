@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Collapse,
-  Divider,
   Group,
   Paper,
   Skeleton,
@@ -266,7 +265,7 @@ export function VendorsContainer() {
             </Text>
           </UnstyledButton>
           <Collapse in={archivedOpen}>
-            <Divider style={{ borderStyle: 'dashed' }} />
+            <Box style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }} />
             <Stack gap={0}>
               {archivedVendors.map((vendor) => (
                 <VendorCard
