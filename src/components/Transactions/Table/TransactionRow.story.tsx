@@ -59,7 +59,7 @@ const mockCategory: CategoryResponse = {
   description: null,
 };
 
-const mockVendor: Vendor = { id: 'v1', name: "McDonald's" };
+const mockVendor: Vendor = { id: 'v1', name: "McDonald's", archived: false };
 
 const regularTransaction: TransactionResponse = {
   id: 't1',
@@ -89,7 +89,7 @@ const incomeTransaction: TransactionResponse = {
   },
   fromAccount: mockAccount,
   toAccount: null,
-  vendor: { id: 'v2', name: 'Company Inc.' },
+  vendor: { id: 'v2', name: 'Company Inc.', archived: false },
 };
 
 const transferTransaction: TransactionResponse = {

@@ -46,13 +46,13 @@ const vendors = [
     id: 'vendor-1',
     name: 'Airline Co',
     transactionCount: 0,
-    isArchived: false,
+    archived: false,
   },
   {
     id: 'vendor-2',
     name: 'Hotel Group',
     transactionCount: 0,
-    isArchived: false,
+    archived: false,
   },
 ];
 

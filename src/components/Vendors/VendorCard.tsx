@@ -19,7 +19,7 @@ export function VendorCard({
   onDelete,
   onArchive,
   onRestore,
-  onViewTransactions,
+  onViewTransactions: _onViewTransactions,
 }: VendorCardProps) {
   const isMobile = useMediaQuery('(max-width: 48em)');
   const { t } = useTranslation();

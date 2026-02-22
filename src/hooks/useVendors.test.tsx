@@ -73,7 +73,13 @@ describe('useVendors', () => {
   it('fetches vendors when a period id is provided', async () => {
     const { wrapper } = createWrapper();
     const response: VendorWithStats[] = [
-      { id: 'ven-1', name: 'Shop 1', transactionCount: 5, lastUsedAt: '2025-01-01' },
+      {
+        id: 'ven-1',
+        name: 'Shop 1',
+        transactionCount: 5,
+        lastUsedAt: '2025-01-01',
+        archived: false,
+      },
     ];
 
     mockFetchVendors.mockResolvedValueOnce(response);
@@ -104,11 +110,11 @@ describe('useVendors', () => {
 
     mockFetchVendorsPage
       .mockResolvedValueOnce({
-        items: [{ id: 'ven-1', name: 'Shop 1', transactionCount: 5 }],
+        items: [{ id: 'ven-1', name: 'Shop 1', transactionCount: 5, archived: false }],
         nextCursor: 'cursor-1',
       })
       .mockResolvedValueOnce({
-        items: [{ id: 'ven-2', name: 'Shop 2', transactionCount: 3 }],
+        items: [{ id: 'ven-2', name: 'Shop 2', transactionCount: 3, archived: false }],
         nextCursor: null,
       });
 
@@ -157,6 +163,7 @@ describe('useVendors', () => {
     mockCreateVendor.mockResolvedValue({
       id: 'ven-2',
       name: 'New Shop',
+      archived: false,
     });
 
     const { result } = renderHook(() => useCreateVendor(), { wrapper });
@@ -175,6 +182,7 @@ describe('useVendors', () => {
     mockUpdateVendor.mockResolvedValue({
       id: 'ven-1',
       name: 'Updated Shop',
+      archived: false,
     });
 
     const { result } = renderHook(() => useUpdateVendor(), { wrapper });

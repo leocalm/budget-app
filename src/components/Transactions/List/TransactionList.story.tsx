@@ -41,7 +41,7 @@ const mockCategory: CategoryResponse = {
   description: null,
 };
 
-const mockVendor: Vendor = { id: 'v1', name: 'Supermarket' };
+const mockVendor: Vendor = { id: 'v1', name: 'Supermarket', archived: false };
 
 const mockTransactions: TransactionResponse[] = [
   {
@@ -68,7 +68,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v2', name: 'Employer' },
+    vendor: { id: 'v2', name: 'Employer', archived: false },
   },
 ];
 

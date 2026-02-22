@@ -1075,7 +1075,7 @@
   },
   "vendors": {
     "title": "Fornecedores",
-    "subtitle": "Gerencie seus fornecedores de transações",
+    "subtitle": "Rastreie onde ocorrem as transações",
     "addVendor": "Adicionar Fornecedor",
     "editVendor": "Editar Fornecedor",
     "deleteVendor": "Excluir Fornecedor",
@@ -1115,8 +1115,17 @@
       "deleted": "Fornecedor excluído com sucesso"
     },
     "empty": {
-      "title": "Ainda não há fornecedores",
-      "subtitle": "Adicione seu primeiro fornecedor para rastrear onde seu dinheiro vai"
+      "title": "Nenhum fornecedor ainda.",
+      "message": "Crie fornecedores manualmente ou deixe-os aparecer a partir de transações."
+    },
+    "activeSection": "Fornecedores Ativos ({{count}})",
+    "archivedSection": "Arquivados ({{count}})",
+    "noSearchResults": "Nenhum fornecedor corresponde sua pesquisa",
+    "loadMore": "Carregar mais",
+    "error": {
+      "title": "Não foi possível carregar os fornecedores agora.",
+      "message": "O histórico de fornecedores permanece inalterado. Tente novamente para restaurar a visualização de gerenciamento.",
+      "retry": "Tentar novamente"
     },
     "card": {
       "stats": {

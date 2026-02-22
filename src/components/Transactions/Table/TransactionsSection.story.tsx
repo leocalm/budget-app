@@ -60,7 +60,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v1', name: 'Hema' },
+    vendor: { id: 'v1', name: 'Hema', archived: false },
   },
   {
     id: 't2',
@@ -79,7 +79,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v2', name: 'Etos' },
+    vendor: { id: 'v2', name: 'Etos', archived: false },
   },
   {
     id: 't3',
@@ -98,7 +98,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v3', name: 'Netflix' },
+    vendor: { id: 'v3', name: 'Netflix', archived: false },
   },
   {
     id: 't4',
@@ -117,7 +117,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v4', name: 'Albert Heijn' },
+    vendor: { id: 'v4', name: 'Albert Heijn', archived: false },
   },
   {
     id: 't5',
@@ -167,7 +167,7 @@ const mockTransactions: TransactionResponse[] = [
     },
     fromAccount: mockAccount,
     toAccount: null,
-    vendor: { id: 'v5', name: 'McDonalds' },
+    vendor: { id: 'v5', name: 'McDonalds', archived: false },
   },
 ];
 

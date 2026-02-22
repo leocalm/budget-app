@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Stack, Text, TextInput, Textarea } from '@mantine/core';
+import { Button, Group, Stack, Text, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import { useCreateVendor, useUpdateVendor } from '@/hooks/useVendors';

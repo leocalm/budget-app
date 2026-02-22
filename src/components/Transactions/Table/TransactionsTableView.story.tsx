@@ -59,7 +59,7 @@ const InteractiveTransactionsWrapper = () => {
       return existing;
     }
 
-    const created: Vendor = { id: `ven-${Date.now()}`, name };
+    const created: Vendor = { id: `ven-${Date.now()}`, name, archived: false };
     setVendors((prev) => [created, ...prev]);
     return created;
   };
@@ -123,7 +123,7 @@ export const Loading: Story = {
     vendors: initialVendors,
     createTransaction: async () => undefined,
     deleteTransaction: async () => undefined,
-    createVendor: async () => ({ id: 'ven-x', name: 'Temp' }),
+    createVendor: async () => ({ id: 'ven-x', name: 'Temp', archived: false }),
   },
 };
 
@@ -140,6 +140,6 @@ export const ErrorStory: Story = {
     vendors: initialVendors,
     createTransaction: async () => undefined,
     deleteTransaction: async () => undefined,
-    createVendor: async () => ({ id: 'ven-x', name: 'Temp' }),
+    createVendor: async () => ({ id: 'ven-x', name: 'Temp', archived: false }),
   },
 };

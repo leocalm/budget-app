@@ -18,7 +18,7 @@ describe('vendor api', () => {
 
   it('creates a vendor via /api/vendors', async () => {
     const payload: VendorInput = { name: 'Coffee Shop' };
-    const response: Vendor = { id: 'ven-1', name: 'Coffee Shop' };
+    const response: Vendor = { id: 'ven-1', name: 'Coffee Shop', archived: false };
 
     const apiPostMock = vi.mocked(apiPost);
     apiPostMock.mockResolvedValueOnce(response);
@@ -29,7 +29,7 @@ describe('vendor api', () => {
 
   it('updates a vendor via /api/vendors/:id', async () => {
     const payload: VendorInput = { name: 'Corner Store' };
-    const response: Vendor = { id: 'ven-2', name: 'Corner Store' };
+    const response: Vendor = { id: 'ven-2', name: 'Corner Store', archived: false };
 
     const apiPutMock = vi.mocked(apiPut);
     apiPutMock.mockResolvedValueOnce(response);
@@ -40,8 +40,20 @@ describe('vendor api', () => {
 
   it('fetches paginated vendors with cursor', async () => {
     const vendors: VendorWithStats[] = [
-      { id: 'ven-1', name: 'Shop 1', transactionCount: 5, lastUsedAt: '2025-01-01' },
-      { id: 'ven-2', name: 'Shop 2', transactionCount: 3, lastUsedAt: '2025-01-02' },
+      {
+        id: 'ven-1',
+        name: 'Shop 1',
+        transactionCount: 5,
+        lastUsedAt: '2025-01-01',
+        archived: false,
+      },
+      {
+        id: 'ven-2',
+        name: 'Shop 2',
+        transactionCount: 3,
+        lastUsedAt: '2025-01-02',
+        archived: false,
+      },
     ];
 
     const mockResponse = {
@@ -65,7 +77,9 @@ describe('vendor api', () => {
   });
 
   it('parses array response from paginated vendors endpoint', async () => {
-    const vendors: VendorWithStats[] = [{ id: 'ven-1', name: 'Shop 1', transactionCount: 5 }];
+    const vendors: VendorWithStats[] = [
+      { id: 'ven-1', name: 'Shop 1', transactionCount: 5, archived: false },
+    ];
 
     const apiGetRawMock = vi.mocked(apiGetRaw);
     apiGetRawMock.mockResolvedValueOnce(vendors as unknown);
@@ -76,7 +90,9 @@ describe('vendor api', () => {
   });
 
   it('parses payload.items structure from paginated vendors endpoint', async () => {
-    const vendors: VendorWithStats[] = [{ id: 'ven-1', name: 'Shop 1', transactionCount: 5 }];
+    const vendors: VendorWithStats[] = [
+      { id: 'ven-1', name: 'Shop 1', transactionCount: 5, archived: false },
+    ];
 
     const mockResponse = {
       items: vendors,

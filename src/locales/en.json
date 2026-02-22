@@ -951,7 +951,7 @@
   },
   "vendors": {
     "title": "Vendors",
-    "subtitle": "Manage your transaction vendors",
+    "subtitle": "Track where transactions occur",
     "addVendor": "Add Vendor",
     "editVendor": "Edit Vendor",
     "deleteVendor": "Delete Vendor",
@@ -991,8 +991,17 @@
       "deleted": "Vendor deleted successfully"
     },
     "empty": {
-      "title": "No vendors yet",
-      "subtitle": "Add your first vendor to track where your money goes"
+      "title": "No vendors yet.",
+      "message": "Create vendors manually or let them appear from transactions."
+    },
+    "activeSection": "Active Vendors ({{count}})",
+    "archivedSection": "Archived ({{count}})",
+    "noSearchResults": "No vendors match your search",
+    "loadMore": "Load more",
+    "error": {
+      "title": "Vendors could not be loaded right now.",
+      "message": "Vendor history remains unchanged. Retry to restore the management view.",
+      "retry": "Retry"
     },
     "card": {
       "stats": {

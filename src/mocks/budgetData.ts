@@ -79,7 +79,7 @@ export const mockCategories: CategoryResponse[] = [
   },
 ];
 
-export const initialVendors: Vendor[] = [{ id: 'ven-1', name: 'Supermarket' }];
+export const initialVendors: Vendor[] = [{ id: 'ven-1', name: 'Supermarket', archived: false }];
 
 export const initialTransactions: TransactionResponse[] = [
   {

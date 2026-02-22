@@ -63,7 +63,7 @@ const mockCategories: CategoryResponse[] = [
   },
 ];
 
-const mockVendors: Vendor[] = [{ id: 'v1', name: 'Supermarket' }];
+const mockVendors: Vendor[] = [{ id: 'v1', name: 'Supermarket', archived: false }];
 
 const accountsByName = new Map(mockAccounts.map((a) => [a.name, a]));
 const categoriesByName = new Map(mockCategories.map((c) => [c.name, c]));
