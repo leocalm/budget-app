@@ -1004,6 +1004,10 @@
         "edit": "Edit Vendor",
         "delete": "Delete Vendor"
       },
+      "edit": "Edit",
+      "archive": "Archive",
+      "restore": "Restore",
+      "delete": "Delete",
       "transactionCount": "{{count}} transaction",
       "transactionCount_plural": "{{count}} transactions"
     },
