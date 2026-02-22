@@ -1,2 +1,2 @@
-export { TransactionList } from './TransactionList';
 export { MobileTransactionCard } from './MobileTransactionCard';
+export { MobileTransactionsList } from './MobileTransactionsList';

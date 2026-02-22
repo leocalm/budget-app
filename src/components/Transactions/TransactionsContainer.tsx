@@ -1,275 +1,79 @@
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Box, Modal } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Stack } from '@mantine/core';
+import type { TransactionFilterParams } from '@/api/transaction';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
-import { useBudgetPeriods } from '@/hooks/useBudget';
 import { useCategories } from '@/hooks/useCategories';
 import {
+  useCreateTransactionFromRequest,
   useDeleteTransaction,
   useInfiniteTransactions,
   useUpdateTransaction,
 } from '@/hooks/useTransactions';
-import { useCreateVendor, useVendors } from '@/hooks/useVendors';
-import { TransactionRequest, TransactionResponse } from '@/types/transaction';
-import { convertDisplayToCents } from '@/utils/currency';
-import { formatDateForApi } from '@/utils/date';
-import { EditFormValues, EditTransactionForm, QuickAddTransaction } from './Form';
-import { PageHeader } from './PageHeader';
-import { TransactionStats } from './Stats';
-import { TransactionFilters, TransactionsSection, TransactionTypeFilter } from './Table';
+import { useVendors } from '@/hooks/useVendors';
+import { TransactionsPageView } from './TransactionsPageView';
 
 export function TransactionsContainer() {
-  const { t } = useTranslation();
   // State for filters
-  const [typeFilter, setTypeFilter] = useState<TransactionTypeFilter>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const showFilters = false; // Filters temporarily hidden until backend supports them
-
-  // Modal state for editing
-  const [editingTransaction, setEditingTransaction] = useState<TransactionResponse | null>(null);
-  const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
+  const [filters, setFilters] = useState<TransactionFilterParams>({ direction: 'all' });
 
   // Get selected budget period from context
   const { selectedPeriodId } = useBudgetPeriodSelection();
 
   // Data Fetching
   const {
-    data: paginatedTransactions,
+    data: infiniteData,
+    isLoading: txLoading,
+    isError: txError,
+    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteTransactions(selectedPeriodId);
-  const { data: periods } = useBudgetPeriods();
+  } = useInfiniteTransactions(selectedPeriodId, filters);
+
   const { data: accounts = [] } = useAccounts(selectedPeriodId);
   const { data: categories = [] } = useCategories(selectedPeriodId);
   const { data: vendors = [] } = useVendors(selectedPeriodId);
 
   const transactions = useMemo(
-    () => paginatedTransactions?.pages.flatMap((page) => page.transactions) ?? [],
-    [paginatedTransactions]
+    () => infiniteData?.pages.flatMap((p) => p.transactions) ?? undefined,
+    [infiniteData]
   );
 
-  // Find the selected period from periods list
-  const selectedPeriod = useMemo(() => {
-    if (!periods || !selectedPeriodId) {
-      return null;
-    }
-    return periods.find((p) => p.id === selectedPeriodId) || null;
-  }, [periods, selectedPeriodId]);
-
   // Mutations
-  const deleteTransactionMutation = useDeleteTransaction(selectedPeriodId);
-  const updateTransactionMutation = useUpdateTransaction(selectedPeriodId);
-  const createVendorMutation = useCreateVendor();
-
-  // Client-side filtering
-  const filteredTransactions = useMemo(() => {
-    if (!transactions) {
-      return [];
-    }
-
-    return transactions.filter((tx) => {
-      // Filter by Type
-      if (typeFilter !== 'all' && tx.category.categoryType !== typeFilter) {
-        return false;
-      }
-
-      // Filter by Search
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        const matchesDesc = tx.description?.toLowerCase().includes(query);
-        const matchesVendor = tx.vendor?.name.toLowerCase().includes(query);
-        const matchesCategory = tx.category.name.toLowerCase().includes(query);
-        const matchesAmount = tx.amount.toString().includes(query);
-
-        if (!matchesDesc && !matchesVendor && !matchesCategory && !matchesAmount) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [transactions, typeFilter, searchQuery]);
-
-  // Calculate Stats
-  const stats = useMemo(() => {
-    return filteredTransactions.reduce(
-      (acc, tx) => {
-        if (tx.category.categoryType === 'Incoming') {
-          acc.income += tx.amount;
-          acc.balance += tx.amount;
-        } else if (tx.category.categoryType === 'Outgoing') {
-          acc.expenses += tx.amount;
-          acc.balance -= tx.amount;
-        }
-        return acc;
-      },
-      { income: 0, expenses: 0, balance: 0 }
-    );
-  }, [filteredTransactions]);
-
-  // Handle edit transaction
-  const handleEdit = (transaction: TransactionResponse) => {
-    setEditingTransaction(transaction);
-    openEditModal();
-  };
-
-  // Handle save edited transaction
-  const handleSaveEdit = async (values: EditFormValues) => {
-    if (!editingTransaction) {
-      return;
-    }
-
-    // Find or create vendor
-    let vendorId: string | undefined = undefined;
-    if (values.vendorName.trim()) {
-      const existingVendor = vendors.find(
-        (v) => v.name.toLowerCase() === values.vendorName.toLowerCase()
-      );
-      if (existingVendor) {
-        vendorId = existingVendor.id;
-      } else {
-        const newVendor = await createVendorMutation.mutateAsync({
-          name: values.vendorName.trim(),
-        });
-        vendorId = newVendor.id;
-      }
-    }
-
-    const transactionData: TransactionRequest = {
-      description: values.description.trim(),
-      amount: convertDisplayToCents(values.amount),
-      occurredAt: formatDateForApi(values.occurredAt!),
-      categoryId: values.categoryId,
-      fromAccountId: values.fromAccountId,
-      toAccountId: values.categoryType === 'Transfer' ? values.toAccountId : undefined,
-      vendorId,
-    };
-
-    await updateTransactionMutation.mutateAsync({
-      id: editingTransaction.id,
-      data: transactionData,
-    });
-
-    closeEditModal();
-    setEditingTransaction(null);
-  };
-
-  // Handle delete transaction
-  const handleDelete = async (id: string) => {
-    // eslint-disable-next-line no-alert
-    if (window.confirm(t('transactions.container.confirmDelete'))) {
-      await deleteTransactionMutation.mutateAsync(id);
-    }
-  };
-
-  // Get period display name
-  const periodName = useMemo(() => {
-    if (!selectedPeriod?.startDate) {
-      return t('transactions.container.thisPeriod');
-    }
-    const start = new Date(selectedPeriod.endDate);
-    return start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  }, [selectedPeriod, t]);
+  const createMutation = useCreateTransactionFromRequest(selectedPeriodId);
+  const updateMutation = useUpdateTransaction(selectedPeriodId);
+  const deleteMutation = useDeleteTransaction(selectedPeriodId);
 
   return (
-    <Box
+    <div
       style={{
-        maxWidth: '1100px',
+        maxWidth: '1400px',
         margin: '0 auto',
         padding: 'var(--spacing-2xl)',
       }}
     >
-      {/* Page Header */}
-      <PageHeader
-        title={t('transactions.container.title')}
-        subtitle={t('transactions.container.subtitle')}
-      />
-
-      {/* Quick Add Transaction Form */}
-      <QuickAddTransaction />
-
-      {/* Stats Summary */}
-      <TransactionStats income={stats.income} expenses={stats.expenses} balance={stats.balance} />
-
-      {/* Filters (hidden until backend filtering is ready) */}
-      {showFilters && (
-        <TransactionFilters
-          typeFilter={typeFilter}
-          onTypeFilterChange={setTypeFilter}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+      <Stack gap="md" w="100%">
+        <TransactionsPageView
+          transactions={transactions}
+          isLocked={selectedPeriodId === null}
+          isLoading={txLoading}
+          isError={txError}
+          onRetry={() => void refetch()}
+          insertEnabled={selectedPeriodId !== null}
+          accounts={accounts}
+          categories={categories}
+          vendors={vendors}
+          filters={filters}
+          onFiltersChange={setFilters}
+          createTransaction={(payload) => createMutation.mutateAsync(payload)}
+          updateTransaction={(id, payload) => updateMutation.mutateAsync({ id, data: payload })}
+          deleteTransaction={(id) => deleteMutation.mutateAsync(id)}
+          hasNextPage={hasNextPage}
+          isFetchingMore={isFetchingNextPage}
+          onLoadMore={() => void fetchNextPage()}
         />
-      )}
-
-      {/* Transactions Section */}
-      <TransactionsSection
-        transactions={filteredTransactions}
-        period={periodName}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        hasMore={Boolean(hasNextPage)}
-        isLoadingMore={isFetchingNextPage}
-        onLoadMore={() => {
-          if (hasNextPage && !isFetchingNextPage) {
-            void fetchNextPage();
-          }
-        }}
-      />
-
-      {/* Edit Modal */}
-      <Modal
-        opened={editModalOpened}
-        onClose={() => {
-          closeEditModal();
-          setEditingTransaction(null);
-        }}
-        title={t('transactions.container.editTitle')}
-        size="lg"
-        styles={{
-          header: {
-            background: 'var(--bg-card)',
-            borderBottom: '1px solid var(--border-medium)',
-          },
-          title: {
-            fontSize: '24px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-          },
-          content: {
-            background: 'var(--bg-card)',
-          },
-          body: {
-            padding: 'var(--spacing-xl)',
-          },
-          close: {
-            color: 'var(--text-tertiary)',
-            '&:hover': {
-              background: 'var(--bg-elevated)',
-              color: 'var(--accent-primary)',
-            },
-          },
-        }}
-      >
-        {editingTransaction && (
-          <EditTransactionForm
-            transaction={editingTransaction}
-            accounts={accounts}
-            categories={categories}
-            vendors={vendors}
-            onSave={handleSaveEdit}
-            onCancel={() => {
-              closeEditModal();
-              setEditingTransaction(null);
-            }}
-            isPending={updateTransactionMutation.isPending}
-          />
-        )}
-      </Modal>
-    </Box>
+      </Stack>
+    </div>
   );
 }

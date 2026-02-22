@@ -1,10 +1,21 @@
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ActionIcon, Group, Loader, Paper, Stack, Text, ThemeIcon, Title } from '@mantine/core';
-import { TransactionList } from '@/components/Transactions';
+import {
+  ActionIcon,
+  Badge,
+  Group,
+  Loader,
+  Paper,
+  Stack,
+  Table,
+  Text,
+  ThemeIcon,
+  Title,
+} from '@mantine/core';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategories } from '@/hooks/useCategories';
 import { useDeleteTransaction, useTransactions } from '@/hooks/useTransactions';
+import { convertCentsToDisplay } from '@/utils/currency';
 import { getIcon } from '@/utils/IconMap';
 
 export function CategoryDetailPage() {
@@ -63,10 +74,38 @@ export function CategoryDetailPage() {
         </Group>
 
         {categoryTransactions.length > 0 ? (
-          <TransactionList
-            transactions={categoryTransactions}
-            deleteTransaction={(txId) => deleteTransactionMutation.mutateAsync(txId)}
-          />
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Date</Table.Th>
+                <Table.Th>Description</Table.Th>
+                <Table.Th>Amount</Table.Th>
+                <Table.Th ta="right">Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {categoryTransactions.map((tx) => (
+                <Table.Tr key={tx.id}>
+                  <Table.Td>{tx.occurredAt}</Table.Td>
+                  <Table.Td>{tx.description}</Table.Td>
+                  <Table.Td>
+                    <Badge size="sm">{convertCentsToDisplay(tx.amount)}</Badge>
+                  </Table.Td>
+                  <Table.Td ta="right">
+                    <ActionIcon
+                      color="red"
+                      size="sm"
+                      variant="subtle"
+                      onClick={() => void deleteTransactionMutation.mutateAsync(tx.id)}
+                      aria-label="Delete"
+                    >
+                      🗑️
+                    </ActionIcon>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
         ) : (
           <Text c="dimmed" ta="center" py="xl">
             No transactions found for this category.

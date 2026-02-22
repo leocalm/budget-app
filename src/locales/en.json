@@ -2,6 +2,9 @@
   "common": {
     "save": "Save",
     "cancel": "Cancel",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "delete": "Delete",
     "success": "Success",
     "error": "Error",
     "info": "Info",
@@ -222,13 +225,19 @@
     },
     "list": {
       "date": "Date",
+      "notes": "Notes",
       "descriptionVendor": "Description / Vendor",
       "category": "Category",
+      "account": "Account",
       "accounts": "Accounts (From → To)",
+      "vendor": "Vendor",
       "amount": "Amount",
       "row": {
         "transferDescription": "Internal Transfer"
       }
+    },
+    "ledger": {
+      "confirmDelete": "Delete this transaction?"
     },
     "stats": {
       "totalIncome": "Total Income",
@@ -243,7 +252,18 @@
       "dateRange": "Date Range",
       "accountAll": "Account: All",
       "categoryAll": "Category: All",
-      "amountAll": "Amount: All"
+      "amountAll": "Amount: All",
+      "direction": "Direction",
+      "accounts": "Accounts",
+      "categories": "Categories",
+      "vendors": "Vendors",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "allAccounts": "All accounts",
+      "allCategories": "All categories",
+      "allVendors": "All vendors",
+      "clearAll": "Clear filters",
+      "title": "Filters"
     },
     "section": {
       "showing": "Showing {{count}} transactions in {{period}}",
@@ -255,6 +275,7 @@
     "tableView": {
       "addTransaction": "Add Transaction",
       "createTransaction": "Create Transaction",
+      "batchEntry": "Batch Entry",
       "error": {
         "load": "Error loading transactions"
       }
@@ -266,6 +287,20 @@
       "subtitle": "Review and manage your financial activity for the selected period.",
       "editTitle": "Edit Transaction",
       "editing": "Editing"
+    },
+    "modal": {
+      "addTitle": "Add Transaction",
+      "editTitle": "Edit Transaction"
+    },
+    "batch": {
+      "notesPlaceholder": "Notes",
+      "categoryPlaceholder": "Category",
+      "accountPlaceholder": "Account",
+      "fromAccount": "From",
+      "toAccount": "To",
+      "vendorPlaceholder": "Vendor",
+      "save": "Save",
+      "saveError": "Failed to save transaction"
     }
   },
   "budget": {

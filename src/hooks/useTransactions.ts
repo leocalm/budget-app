@@ -6,6 +6,7 @@ import {
   fetchTransactions,
   fetchTransactionsPage,
   updateTransaction,
+  type TransactionFilterParams,
 } from '@/api/transaction';
 import { Transaction, TransactionRequest } from '@/types/transaction';
 import { queryKeys } from './queryKeys';
@@ -20,14 +21,18 @@ export const useTransactions = (selectedPeriodId: string | null) => {
   });
 };
 
-export const useInfiniteTransactions = (selectedPeriodId: string | null) => {
+export const useInfiniteTransactions = (
+  selectedPeriodId: string | null,
+  filters?: TransactionFilterParams
+) => {
   return useInfiniteQuery({
-    queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+    queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE, filters),
     queryFn: ({ pageParam }) =>
       fetchTransactionsPage({
         selectedPeriodId,
         cursor: pageParam,
         pageSize: TRANSACTIONS_PAGE_SIZE,
+        filters,
       }),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
@@ -42,7 +47,7 @@ export const useDeleteTransaction = (selectedPeriodId: string | null) => {
     mutationFn: deleteTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+        queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
@@ -67,7 +72,7 @@ export const useCreateTransaction = (selectedPeriodId: string | null) => {
     mutationFn: (newTransaction: Transaction) => createTransaction(newTransaction),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+        queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
@@ -93,7 +98,7 @@ export const useCreateTransactionFromRequest = (selectedPeriodId: string | null)
       createTransactionFromRequest(newTransaction),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+        queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
@@ -119,7 +124,7 @@ export const useUpdateTransaction = (selectedPeriodId: string | null) => {
       updateTransaction(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.transactionsInfinite(selectedPeriodId, TRANSACTIONS_PAGE_SIZE),
+        queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
