@@ -266,6 +266,10 @@
       "subtitle": "Review and manage your financial activity for the selected period.",
       "editTitle": "Edit Transaction",
       "editing": "Editing"
+    },
+    "modal": {
+      "addTitle": "Add Transaction",
+      "editTitle": "Edit Transaction"
     }
   },
   "budget": {
