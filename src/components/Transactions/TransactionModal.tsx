@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '@mantine/core';
-import { QuickAddTransaction } from './Form/QuickAddTransaction';
-import { EditTransactionForm, type EditFormValues } from './Form/EditTransactionForm';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
+import { EditTransactionForm, type EditFormValues } from './Form/EditTransactionForm';
+import { QuickAddTransaction } from './Form/QuickAddTransaction';
 
 interface TransactionModalProps {
   opened: boolean;

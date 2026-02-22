@@ -15,8 +15,11 @@ export const queryKeys = {
 
   // Transactions
   transactions: (periodId?: string | null) => ['transactions', periodId] as const,
-  transactionsInfinite: (periodId?: string | null, pageSize = 50, filters?: TransactionFilterParams) =>
-    ['transactions', periodId, 'infinite', pageSize, filters] as const,
+  transactionsInfinite: (
+    periodId?: string | null,
+    pageSize = 50,
+    filters?: TransactionFilterParams
+  ) => ['transactions', periodId, 'infinite', pageSize, filters] as const,
   transaction: (id: string) => ['transaction', id] as const,
 
   // Categories

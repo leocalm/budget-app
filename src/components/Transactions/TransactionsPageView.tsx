@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
+import { IconPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
-  Affix,
   ActionIcon,
-  Box,
+  Affix,
   Button,
   Drawer,
   Group,
@@ -12,22 +12,21 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { IconPlus } from '@tabler/icons-react';
+import type { TransactionFilterParams } from '@/api/transaction';
 import { StateRenderer, TransactionListSkeleton } from '@/components/Utils';
+import { useCreateVendor } from '@/hooks/useVendors';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
-import type { TransactionFilterParams } from '@/api/transaction';
+import { convertDisplayToCents } from '@/utils/currency';
+import { formatDateForApi } from '@/utils/date';
 import type { EditFormValues } from './Form/EditTransactionForm';
-import { TransactionFilters } from './TransactionFilters';
-import { TransactionsLedger } from './TransactionsLedger';
-import { TransactionModal } from './TransactionModal';
 import { MobileTransactionCard } from './List/MobileTransactionCard';
 import { PageHeader } from './PageHeader';
-import { formatDateForApi } from '@/utils/date';
-import { convertDisplayToCents } from '@/utils/currency';
-import { useCreateVendor } from '@/hooks/useVendors';
+import { TransactionFilters } from './TransactionFilters';
+import { TransactionModal } from './TransactionModal';
+import { TransactionsLedger } from './TransactionsLedger';
 
 export interface TransactionsPageViewProps {
   transactions: TransactionResponse[] | undefined;
@@ -73,11 +72,15 @@ export const TransactionsPageView = ({
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   const [batchMode, setBatchMode] = useState(false);
-  const [modalState, setModalState] = useState<{ open: boolean; transaction: TransactionResponse | null }>({
+  const [modalState, setModalState] = useState<{
+    open: boolean;
+    transaction: TransactionResponse | null;
+  }>({
     open: false,
     transaction: null,
   });
-  const [mobileFilterDrawer, { open: openMobileFilter, close: closeMobileFilter }] = useDisclosure(false);
+  const [mobileFilterDrawer, { open: openMobileFilter, close: closeMobileFilter }] =
+    useDisclosure(false);
 
   const createVendorMutation = useCreateVendor();
 
@@ -198,7 +201,14 @@ export const TransactionsPageView = ({
             <Affix position={{ bottom: 80, right: 20 }}>
               <Transition transition="slide-up" mounted={insertEnabled}>
                 {(styles) => (
-                  <ActionIcon color="blue" radius="xl" size={56} style={styles} onClick={openAdd} variant="filled">
+                  <ActionIcon
+                    color="blue"
+                    radius="xl"
+                    size={56}
+                    style={styles}
+                    onClick={openAdd}
+                    variant="filled"
+                  >
                     <IconPlus size={24} />
                   </ActionIcon>
                 )}

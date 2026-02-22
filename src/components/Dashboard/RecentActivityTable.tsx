@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Group, Paper, Table, Text } from '@mantine/core';
-import { TransactionRow } from '@/components/Transactions';
+import { Badge, Button, Group, Paper, Table, Text } from '@mantine/core';
 import { TransactionResponse } from '@/types/transaction';
+import { convertCentsToDisplay } from '@/utils/currency';
 
 interface RecentActivityTableProps {
   transactions: TransactionResponse[];
@@ -61,7 +61,23 @@ export function RecentActivityTable({ transactions, onViewAll }: RecentActivityT
         </Table.Thead>
         <Table.Tbody>
           {transactions.map((t) => (
-            <TransactionRow key={t.id} transaction={t} onEdit={() => {}} onDelete={() => {}} />
+            <Table.Tr key={t.id}>
+              <Table.Td>{t.occurredAt}</Table.Td>
+              <Table.Td>
+                <Text size="sm">{t.description || t.vendor?.name || '-'}</Text>
+              </Table.Td>
+              <Table.Td>
+                <Badge size="sm" color={t.category.color}>
+                  {t.category.icon} {t.category.name}
+                </Badge>
+              </Table.Td>
+              <Table.Td>
+                <Text size="sm">{t.fromAccount.name}</Text>
+              </Table.Td>
+              <Table.Td ta="right">
+                <Text size="sm">{convertCentsToDisplay(t.amount)}</Text>
+              </Table.Td>
+            </Table.Tr>
           ))}
         </Table.Tbody>
       </Table>

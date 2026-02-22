@@ -1,6 +1,6 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { fetchTransactionsPage } from './transaction';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as client from './client';
+import { fetchTransactionsPage } from './transaction';
 
 vi.mock('./client', () => ({ apiGetRaw: vi.fn() }));
 const mockApiGetRaw = vi.mocked(client.apiGetRaw);

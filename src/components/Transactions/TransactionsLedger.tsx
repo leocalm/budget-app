@@ -1,15 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Badge,
-  Button,
-  Group,
-  ScrollArea,
-  Table,
-  Text,
-} from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import { ActionIcon, Badge, Button, Group, ScrollArea, Table, Text } from '@mantine/core';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionRequest, TransactionResponse } from '@/types/transaction';
@@ -31,11 +23,15 @@ interface TransactionsLedgerProps {
   onLoadMore?: () => void;
 }
 
-function groupByDate(transactions: TransactionResponse[]): Array<{ date: string; items: TransactionResponse[] }> {
+function groupByDate(
+  transactions: TransactionResponse[]
+): Array<{ date: string; items: TransactionResponse[] }> {
   const map = new Map<string, TransactionResponse[]>();
   for (const tx of transactions) {
     const d = tx.occurredAt.slice(0, 10);
-    if (!map.has(d)) map.set(d, []);
+    if (!map.has(d)) {
+      map.set(d, []);
+    }
     map.get(d)!.push(tx);
   }
   return Array.from(map.entries()).map(([date, items]) => ({ date, items }));
@@ -45,7 +41,9 @@ function formatAmount(tx: TransactionResponse): string {
   const isIncoming = tx.category.categoryType === 'Incoming';
   const isTransfer = tx.category.categoryType === 'Transfer';
   const display = convertCentsToDisplay(tx.amount).toFixed(2);
-  if (isTransfer) return display;
+  if (isTransfer) {
+    return display;
+  }
   return isIncoming ? `+${display}` : `−${display}`;
 }
 
@@ -75,14 +73,24 @@ export const TransactionsLedger = ({
   return (
     <ScrollArea offsetScrollbars h="calc(100vh - 280px)">
       <Table verticalSpacing="sm" highlightOnHover striped="even">
-        <Table.Thead style={{ position: 'sticky', top: 0, background: 'var(--bg-card)', zIndex: 1, boxShadow: '0 1px 0 var(--mantine-color-default-border)' }}>
+        <Table.Thead
+          style={{
+            position: 'sticky',
+            top: 0,
+            background: 'var(--bg-card)',
+            zIndex: 1,
+            boxShadow: '0 1px 0 var(--mantine-color-default-border)',
+          }}
+        >
           <Table.Tr>
             <Table.Th w={110}>{t('transactions.list.date')}</Table.Th>
             <Table.Th>{t('transactions.list.notes')}</Table.Th>
             <Table.Th w={180}>{t('transactions.list.category')}</Table.Th>
             <Table.Th w={220}>{t('transactions.list.account')}</Table.Th>
             <Table.Th w={150}>{t('transactions.list.vendor')}</Table.Th>
-            <Table.Th w={120} ta="right">{t('transactions.list.amount')}</Table.Th>
+            <Table.Th w={120} ta="right">
+              {t('transactions.list.amount')}
+            </Table.Th>
             <Table.Th w={80} />
           </Table.Tr>
         </Table.Thead>
@@ -99,8 +107,13 @@ export const TransactionsLedger = ({
           {groups.map(({ date, items }) => (
             <React.Fragment key={date}>
               <Table.Tr>
-                <Table.Td colSpan={7} style={{ background: 'var(--bg-elevated)', padding: '4px 16px' }}>
-                  <Text size="xs" fw={600} c="dimmed">{date}</Text>
+                <Table.Td
+                  colSpan={7}
+                  style={{ background: 'var(--bg-elevated)', padding: '4px 16px' }}
+                >
+                  <Text size="xs" fw={600} c="dimmed">
+                    {date}
+                  </Text>
                 </Table.Td>
               </Table.Tr>
               {items.map((tx) => {
@@ -112,10 +125,18 @@ export const TransactionsLedger = ({
                       </Table.Td>
                       <Table.Td colSpan={2}>
                         <Group gap="xs" justify="flex-end">
-                          <Button size="xs" variant="subtle" onClick={() => setConfirmDeleteId(null)}>
+                          <Button
+                            size="xs"
+                            variant="subtle"
+                            onClick={() => setConfirmDeleteId(null)}
+                          >
                             {t('common.cancel')}
                           </Button>
-                          <Button size="xs" variant="subtle" onClick={() => void handleDelete(tx.id)}>
+                          <Button
+                            size="xs"
+                            variant="subtle"
+                            onClick={() => void handleDelete(tx.id)}
+                          >
                             {t('common.confirm')}
                           </Button>
                         </Group>
@@ -137,7 +158,9 @@ export const TransactionsLedger = ({
                     </Table.Td>
                     <Table.Td>
                       {isTransfer ? (
-                        <Text size="sm" c="dimmed">→ {tx.toAccount?.name ?? ''}</Text>
+                        <Text size="sm" c="dimmed">
+                          → {tx.toAccount?.name ?? ''}
+                        </Text>
                       ) : (
                         <Badge size="sm" variant="light" color={tx.category.color}>
                           {tx.category.icon} {tx.category.name}
@@ -148,24 +171,39 @@ export const TransactionsLedger = ({
                       <Text size="sm">{tx.fromAccount.name}</Text>
                     </Table.Td>
                     <Table.Td>
-                      <Text size="sm" c="dimmed">{tx.vendor?.name ?? ''}</Text>
+                      <Text size="sm" c="dimmed">
+                        {tx.vendor?.name ?? ''}
+                      </Text>
                     </Table.Td>
                     <Table.Td ta="right">
-                      <Text size="sm" c={amountColor} fw={500}>{formatAmount(tx)}</Text>
+                      <Text size="sm" c={amountColor} fw={500}>
+                        {formatAmount(tx)}
+                      </Text>
                     </Table.Td>
                     <Table.Td>
                       <Group gap={4} justify="flex-end">
-                        <ActionIcon size="sm" variant="subtle" onClick={() => onEdit(tx)} aria-label={t('common.edit')}>
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          onClick={() => onEdit(tx)}
+                          aria-label={t('common.edit')}
+                        >
                           <IconPencil size={14} />
                         </ActionIcon>
-                        <ActionIcon size="sm" variant="subtle" onClick={() => setConfirmDeleteId(tx.id)} aria-label={t('common.delete')}>
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          onClick={() => setConfirmDeleteId(tx.id)}
+                          aria-label={t('common.delete')}
+                        >
                           <IconTrash size={14} />
                         </ActionIcon>
                       </Group>
                     </Table.Td>
                   </Table.Tr>
                 );
-              })}</React.Fragment>
+              })}
+            </React.Fragment>
           ))}
         </Table.Tbody>
       </Table>

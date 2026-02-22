@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+import { IconCheck } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
@@ -9,17 +10,15 @@ import {
   Table,
   TextInput,
 } from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { useCreateVendor } from '@/hooks/useVendors';
+import { toast } from '@/lib/toast';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionRequest } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
 import { convertDisplayToCents } from '@/utils/currency';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { useCreateVendor } from '@/hooks/useVendors';
-import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { toast } from '@/lib/toast';
 
 interface BatchEntryRowProps {
   accounts: AccountResponse[];
@@ -43,7 +42,6 @@ const today = () => new Date().toISOString().slice(0, 10);
 export const BatchEntryRow = ({ accounts, categories, vendors, onSave }: BatchEntryRowProps) => {
   const { t } = useTranslation();
   const globalCurrency = useDisplayCurrency();
-  const { selectedPeriodId } = useBudgetPeriodSelection();
   const createVendorMutation = useCreateVendor();
   const categoryRef = useRef<HTMLInputElement>(null);
 
@@ -58,10 +56,16 @@ export const BatchEntryRow = ({ accounts, categories, vendors, onSave }: BatchEn
       amount: '',
     },
     validate: {
-      occurredAt: (v) => (!v ? t('transactions.quickAddTransaction.error.occurredAt.required') : null),
-      categoryId: (v) => (!v ? t('transactions.quickAddTransaction.error.category.required') : null),
-      fromAccountId: (v) => (!v ? t('transactions.quickAddTransaction.error.fromAccount.required') : null),
-      amount: (v) => (v === '' || Number(v) <= 0 ? t('transactions.quickAddTransaction.error.amount.greaterThanZero') : null),
+      occurredAt: (v) =>
+        !v ? t('transactions.quickAddTransaction.error.occurredAt.required') : null,
+      categoryId: (v) =>
+        !v ? t('transactions.quickAddTransaction.error.category.required') : null,
+      fromAccountId: (v) =>
+        !v ? t('transactions.quickAddTransaction.error.fromAccount.required') : null,
+      amount: (v) =>
+        v === '' || Number(v) <= 0
+          ? t('transactions.quickAddTransaction.error.amount.greaterThanZero')
+          : null,
       toAccountId: (v, vals) => {
         const cat = categories.find((c) => c.id === vals.categoryId);
         if (cat?.categoryType === 'Transfer' && !v) {
@@ -78,12 +82,16 @@ export const BatchEntryRow = ({ accounts, categories, vendors, onSave }: BatchEn
   const handleSubmit = form.onSubmit(async (values) => {
     let vendorId: string | undefined;
     if (!isTransfer && values.vendorName.trim()) {
-      const existing = vendors.find((v) => v.name.toLowerCase() === values.vendorName.toLowerCase());
+      const existing = vendors.find(
+        (v) => v.name.toLowerCase() === values.vendorName.toLowerCase()
+      );
       if (existing) {
         vendorId = existing.id;
       } else {
         try {
-          const created = await createVendorMutation.mutateAsync({ name: values.vendorName.trim() });
+          const created = await createVendorMutation.mutateAsync({
+            name: values.vendorName.trim(),
+          });
           vendorId = created.id;
         } catch {
           return;
@@ -114,7 +122,11 @@ export const BatchEntryRow = ({ accounts, categories, vendors, onSave }: BatchEn
       }));
       setTimeout(() => categoryRef.current?.focus(), 50);
     } catch {
-      toast.error({ title: t('common.error'), message: t('transactions.batch.saveError'), nonCritical: true });
+      toast.error({
+        title: t('common.error'),
+        message: t('transactions.batch.saveError'),
+        nonCritical: true,
+      });
     }
   });
 

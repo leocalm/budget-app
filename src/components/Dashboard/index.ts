@@ -12,7 +12,6 @@ export { TopCategoriesChart } from './TopCategoriesChart';
 // Card components
 export { MonthProgressCard } from './MonthProgressCard';
 export { MonthlyBurnRate } from './MonthlyBurnRate';
-export { RecentTransactionsCard } from './RecentTransactionsCard';
 export { RemainingBudgetCard } from './RemainingBudgetCard';
 export { StatCard } from './StatCard';
 

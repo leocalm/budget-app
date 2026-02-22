@@ -1,20 +1,17 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
+import type { TransactionFilterParams } from '@/api/transaction';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
 import {
-  useCreateTransaction,
+  useCreateTransactionFromRequest,
   useDeleteTransaction,
   useInfiniteTransactions,
   useUpdateTransaction,
 } from '@/hooks/useTransactions';
 import { useVendors } from '@/hooks/useVendors';
-import type { TransactionFilterParams } from '@/api/transaction';
-import { TransactionRequest } from '@/types/transaction';
 import { TransactionsPageView } from './TransactionsPageView';
-
-const TRANSACTIONS_PAGE_SIZE = 50;
 
 export function TransactionsContainer() {
   // State for filters
@@ -44,12 +41,12 @@ export function TransactionsContainer() {
   );
 
   // Mutations
-  const createMutation = useCreateTransaction(selectedPeriodId);
+  const createMutation = useCreateTransactionFromRequest(selectedPeriodId);
   const updateMutation = useUpdateTransaction(selectedPeriodId);
   const deleteMutation = useDeleteTransaction(selectedPeriodId);
 
   return (
-    <Box
+    <div
       style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -77,6 +74,6 @@ export function TransactionsContainer() {
           onLoadMore={() => void fetchNextPage()}
         />
       </Stack>
-    </Box>
+    </div>
   );
 }

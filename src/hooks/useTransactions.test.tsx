@@ -184,16 +184,11 @@ describe('useTransactions', () => {
     mockFetchTransactionsPage.mockResolvedValue({ transactions: [], nextCursor: null });
 
     const filters: TransactionFilterParams = { direction: 'Outgoing' };
-    const { result } = renderHook(
-      () => useInfiniteTransactions('period-1', filters),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useInfiniteTransactions('period-1', filters), { wrapper });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(mockFetchTransactionsPage).toHaveBeenCalledWith(
-      expect.objectContaining({ filters })
-    );
+    expect(mockFetchTransactionsPage).toHaveBeenCalledWith(expect.objectContaining({ filters }));
   });
 
   it('invalidates transactions after delete', async () => {

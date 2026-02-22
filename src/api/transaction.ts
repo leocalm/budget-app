@@ -120,8 +120,12 @@ export async function fetchTransactionsPage({
     if (filters.vendorIds?.length) {
       filters.vendorIds.forEach((id) => searchParams.append('vendor_id', id));
     }
-    if (filters.dateFrom) searchParams.set('date_from', filters.dateFrom);
-    if (filters.dateTo) searchParams.set('date_to', filters.dateTo);
+    if (filters.dateFrom) {
+      searchParams.set('date_from', filters.dateFrom);
+    }
+    if (filters.dateTo) {
+      searchParams.set('date_to', filters.dateTo);
+    }
   }
 
   const query = searchParams.toString();

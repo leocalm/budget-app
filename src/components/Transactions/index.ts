@@ -8,29 +8,16 @@ export { PageHeader, type PageHeaderProps } from './PageHeader';
 // Table components
 export {
   TransactionsTable,
-  TransactionsTableContainer,
-  TransactionsTableView,
-  TransactionRow,
-  TransactionFilters,
-  TransactionsSection,
-  TransactionGroup,
   CategoryBadge,
   AccountBadge,
   ActionButtons,
-  groupTransactionsByDate,
-  type TransactionsTableProps,
-  type TransactionsTableViewProps,
-  type TransactionRowProps,
-  type TransactionTypeFilter,
-  type TransactionsSectionProps,
-  type TransactionGroupProps,
   type CategoryBadgeProps,
   type AccountBadgeProps,
   type ActionButtonsProps,
 } from './Table';
 
 // List components
-export { TransactionList, MobileTransactionCard } from './List';
+export { MobileTransactionCard } from './List';
 
 // Form components
 export {

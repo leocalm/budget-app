@@ -1,7 +1,15 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Group, MultiSelect, SegmentedControl, Stack, Text, TextInput } from '@mantine/core';
 import { IconFilter } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  Group,
+  MultiSelect,
+  SegmentedControl,
+  Stack,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import type { TransactionFilterParams } from '@/api/transaction';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
