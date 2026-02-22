@@ -2,6 +2,7 @@
  * Centralized React Query key management
  * Single source of truth for all query keys used across the application
  */
+import type { TransactionFilterParams } from '@/api/transaction';
 
 export const queryKeys = {
   // Vendors
@@ -14,8 +15,8 @@ export const queryKeys = {
 
   // Transactions
   transactions: (periodId?: string | null) => ['transactions', periodId] as const,
-  transactionsInfinite: (periodId?: string | null, pageSize = 50) =>
-    ['transactions', periodId, 'infinite', pageSize] as const,
+  transactionsInfinite: (periodId?: string | null, pageSize = 50, filters?: TransactionFilterParams) =>
+    ['transactions', periodId, 'infinite', pageSize, filters] as const,
   transaction: (id: string) => ['transaction', id] as const,
 
   // Categories

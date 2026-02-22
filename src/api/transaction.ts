@@ -13,6 +13,15 @@ export async function fetchTransactions(
   return apiGet<TransactionResponse[]>(`/api/transactions${query}`);
 }
 
+export interface TransactionFilterParams {
+  accountIds?: string[];
+  categoryIds?: string[];
+  direction?: 'Incoming' | 'Outgoing' | 'Transfer' | 'all';
+  vendorIds?: string[];
+  dateFrom?: string | null;
+  dateTo?: string | null;
+}
+
 function toOptionalString(value: unknown): string | null {
   return typeof value === 'string' && value.length > 0 ? value : null;
 }
@@ -79,20 +88,40 @@ export interface FetchTransactionsPageParams {
   selectedPeriodId: string | null;
   cursor?: string | null;
   pageSize?: number;
+  filters?: TransactionFilterParams;
 }
 
 export async function fetchTransactionsPage({
   selectedPeriodId,
   cursor,
   pageSize = 50,
+  filters,
 }: FetchTransactionsPageParams): Promise<TransactionsPage> {
   const searchParams = new URLSearchParams();
   if (selectedPeriodId) {
     searchParams.set('period_id', selectedPeriodId);
   }
-  searchParams.set('page_size', String(pageSize));
+  searchParams.set('limit', String(pageSize));
   if (cursor) {
     searchParams.set('cursor', cursor);
+  }
+
+  // Serialize filters into query string
+  if (filters) {
+    if (filters.accountIds?.length) {
+      filters.accountIds.forEach((id) => searchParams.append('account_id', id));
+    }
+    if (filters.categoryIds?.length) {
+      filters.categoryIds.forEach((id) => searchParams.append('category_id', id));
+    }
+    if (filters.direction && filters.direction !== 'all') {
+      searchParams.set('direction', filters.direction);
+    }
+    if (filters.vendorIds?.length) {
+      filters.vendorIds.forEach((id) => searchParams.append('vendor_id', id));
+    }
+    if (filters.dateFrom) searchParams.set('date_from', filters.dateFrom);
+    if (filters.dateTo) searchParams.set('date_to', filters.dateTo);
   }
 
   const query = searchParams.toString();
