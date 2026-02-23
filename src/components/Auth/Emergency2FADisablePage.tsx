@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconAlertCircle, IconCheck, IconShieldOff } from '@tabler/icons-react';
+import { IconShieldOff } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
@@ -9,7 +9,6 @@ import {
   Button,
   Center,
   Group,
-  Paper,
   Text,
   TextInput,
   Title,
@@ -17,6 +16,7 @@ import {
 import { useForm } from '@mantine/form';
 import { confirmEmergencyDisable, requestEmergencyDisable } from '@/api/twoFactor';
 import { toast } from '@/lib/toast';
+import { AuthCard, AuthMessage } from './AuthCard';
 
 export function Emergency2FADisablePage() {
   const { t } = useTranslation();
@@ -79,10 +79,7 @@ export function Emergency2FADisablePage() {
 
   if (success) {
     return (
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <Center>
-          <IconCheck size={64} color="green" />
-        </Center>
+      <AuthCard>
         <Title order={2} ta="center" mt="md" mb={20}>
           {token ? '2FA Disabled Successfully' : 'Request Sent'}
         </Title>
@@ -99,34 +96,23 @@ export function Emergency2FADisablePage() {
             </Center>
           </Anchor>
         </Group>
-      </Paper>
+      </AuthCard>
     );
   }
 
   // Confirm flow (with token)
   if (token) {
     return (
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+      <AuthCard>
         <Title order={2} ta="center" mt="md" mb={20}>
           <IconShieldOff size={32} style={{ marginBottom: 8 }} />
           <br />
           Disable Two-Factor Authentication
         </Title>
 
-        {error && (
-          <Alert
-            icon={<IconAlertCircle size={16} />}
-            title="Error"
-            color="red"
-            variant="light"
-            mb="md"
-          >
-            {error}
-          </Alert>
-        )}
+        <AuthMessage message={error} />
 
         <Alert
-          icon={<IconAlertCircle size={16} />}
           title="Warning"
           color="yellow"
           variant="light"
@@ -159,31 +145,20 @@ export function Emergency2FADisablePage() {
             </Center>
           </Anchor>
         </Group>
-      </Paper>
+      </AuthCard>
     );
   }
 
   // Request flow (no token)
   return (
-    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+    <AuthCard>
       <Title order={2} ta="center" mt="md" mb={20}>
         Emergency 2FA Disable
       </Title>
 
-      {error && (
-        <Alert
-          icon={<IconAlertCircle size={16} />}
-          title="Error"
-          color="red"
-          variant="light"
-          mb="md"
-        >
-          {error}
-        </Alert>
-      )}
+      <AuthMessage message={error} />
 
       <Alert
-        icon={<IconAlertCircle size={16} />}
         title="Lost Access?"
         color="blue"
         variant="light"
@@ -219,6 +194,6 @@ export function Emergency2FADisablePage() {
           </Center>
         </Anchor>
       </Group>
-    </Paper>
+    </AuthCard>
   );
 }
