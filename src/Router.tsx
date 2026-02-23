@@ -88,7 +88,7 @@ const ForgotPasswordPage = lazy(() =>
   }))
 );
 const ResetPasswordPage = lazy(() =>
-  import('./pages/ResetPassword.page').then((module) => ({
+  import('./components/Auth/ResetPasswordPage').then((module) => ({
     default: module.ResetPasswordPage,
   }))
 );

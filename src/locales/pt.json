@@ -91,40 +91,31 @@
       }
     },
     "resetPassword": {
-      "title": "Redefina sua senha",
-      "validating": "Validando link de redefinição...",
-      "pleaseWait": "Por favor, aguarde enquanto verificamos seu link de redefinição.",
-      "resettingFor": "Redefinindo senha para:",
+      "title": "Criar nova senha",
+      "validating": "Verificando link de redefinição\u2026",
       "newPasswordLabel": "Nova senha",
-      "newPasswordPlaceholder": "Digite a nova senha",
+      "newPasswordPlaceholder": "Criar senha",
       "confirmPasswordLabel": "Confirmar senha",
-      "confirmPasswordPlaceholder": "Confirme a nova senha",
-      "resetPassword": "Redefinir senha",
+      "confirmPasswordPlaceholder": "Repetir senha",
+      "resetPassword": "Atualizar senha",
+      "updating": "Atualizando\u2026",
       "backToLogin": "Voltar para o login",
       "requestNew": "Solicitar novo link de redefinição",
+      "hint": {
+        "minLength": "Use pelo menos 12 caracteres.",
+        "variety": "Inclua letras e números."
+      },
       "validation": {
-        "passwordMinLength": "A senha deve ter pelo menos 8 caracteres",
+        "passwordMinLength": "A senha deve ter pelo menos 12 caracteres",
         "passwordWeak": "A senha é muito fraca. Por favor, use uma senha mais forte.",
         "passwordsDoNotMatch": "As senhas não correspondem"
       },
-      "strength": {
-        "weak": "Fraca",
-        "fair": "Razoável",
-        "good": "Boa",
-        "strong": "Forte"
-      },
       "success": {
-        "title": "Senha redefinida com sucesso!",
-        "message": "Sua senha foi redefinida com sucesso. Redirecionando para o login..."
-      },
-      "invalid": {
-        "title": "Link de redefinição inválido"
+        "message": "Senha atualizada com sucesso. Redirecionando para o login."
       },
       "errors": {
-        "title": "Erro",
         "noToken": "Nenhum token de redefinição encontrado. Por favor, solicite uma nova redefinição de senha.",
-        "invalidToken": "Este link de redefinição de senha é inválido ou expirou. Por favor, solicite um novo.",
-        "validationFailed": "Falha ao validar token de redefinição",
+        "invalidToken": "O link de redefinição não é mais válido. Solicite um novo.",
         "generic": "Falha ao redefinir senha"
       }
     },

@@ -107,40 +107,31 @@
       }
     },
     "resetPassword": {
-      "title": "Reset your password",
-      "validating": "Validating reset link...",
-      "pleaseWait": "Please wait while we verify your reset link.",
-      "resettingFor": "Resetting password for:",
+      "title": "Create new password",
+      "validating": "Verifying reset link\u2026",
       "newPasswordLabel": "New password",
-      "newPasswordPlaceholder": "Enter new password",
+      "newPasswordPlaceholder": "Create password",
       "confirmPasswordLabel": "Confirm password",
-      "confirmPasswordPlaceholder": "Confirm new password",
-      "resetPassword": "Reset password",
+      "confirmPasswordPlaceholder": "Repeat password",
+      "resetPassword": "Update password",
+      "updating": "Updating\u2026",
       "backToLogin": "Back to login",
       "requestNew": "Request new reset link",
+      "hint": {
+        "minLength": "Use at least 12 characters.",
+        "variety": "Include letters and numbers."
+      },
       "validation": {
-        "passwordMinLength": "Password must be at least 8 characters",
+        "passwordMinLength": "Password must be at least 12 characters",
         "passwordWeak": "Password is too weak. Please use a stronger password.",
         "passwordsDoNotMatch": "Passwords do not match"
       },
-      "strength": {
-        "weak": "Weak",
-        "fair": "Fair",
-        "good": "Good",
-        "strong": "Strong"
-      },
       "success": {
-        "title": "Password reset successful!",
-        "message": "Your password has been reset successfully. Redirecting to login..."
-      },
-      "invalid": {
-        "title": "Invalid reset link"
+        "message": "Password updated successfully. Redirecting to login."
       },
       "errors": {
-        "title": "Error",
         "noToken": "No reset token found. Please request a new password reset.",
-        "invalidToken": "This password reset link is invalid or has expired. Please request a new one.",
-        "validationFailed": "Failed to validate reset token",
+        "invalidToken": "Reset link is no longer valid. Request a new one.",
         "generic": "Failed to reset password"
       }
     },
