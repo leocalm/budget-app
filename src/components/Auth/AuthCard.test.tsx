@@ -29,18 +29,18 @@ describe('AuthCard', () => {
 
 describe('AuthMessage', () => {
   it('renders message text', () => {
-    wrap(<AuthMessage variant="error" message="Something went wrong." />);
+    wrap(<AuthMessage message="Something went wrong." />);
     expect(screen.getByText('Something went wrong.')).toBeInTheDocument();
   });
 
-  it('has role="alert"', () => {
-    wrap(<AuthMessage variant="error" message="Error." />);
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+  it('has role="status"', () => {
+    wrap(<AuthMessage message="Error." />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
   it('renders nothing when message is null', () => {
-    const { container } = wrap(<AuthMessage variant="error" message={null} />);
-    // Should not render an alert element when message is null
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    const { container } = wrap(<AuthMessage message={null} />);
+    // Should not render a status element when message is null
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });

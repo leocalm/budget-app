@@ -30,20 +30,15 @@ export function AuthCard({ tagline, children }: AuthCardProps) {
 }
 
 interface AuthMessageProps {
-  variant: 'error' | 'success' | 'info';
   message: string | null;
 }
 
 export function AuthMessage({ message }: AuthMessageProps) {
-  if (!message) {
-    return null;
-  }
-
   return (
-    <Transition mounted={true} transition="fade" duration={150}>
+    <Transition mounted={!!message} transition="fade" duration={150}>
       {(styles) => (
         <Text
-          role="alert"
+          role="status"
           aria-live="polite"
           size="sm"
           c="dimmed"
