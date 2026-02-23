@@ -1343,35 +1343,117 @@
     "pageTitle": "Configurações",
     "pageDescription": "Gerencie suas preferências e configurações de conta",
     "profile": {
-      "title": "Informações do Perfil",
-      "description": "Atualize seus dados pessoais",
+      "title": "Perfil",
+      "description": "Dados de identidade",
+      "nameLabel": "Nome",
+      "emailLabel": "E-mail",
+      "timezoneLabel": "Fuso Horário",
+      "currencyLabel": "Moeda Padrão",
+      "editButton": "Editar Perfil",
+      "saveButton": "Salvar",
+      "cancelButton": "Cancelar",
       "fullNameLabel": "Nome Completo",
       "fullNamePlaceholder": "Digite seu nome completo",
-      "emailLabel": "E-mail",
-      "emailPlaceholder": "Digite seu e-mail",
-      "saveButton": "Salvar alterações"
+      "timezonePlaceholder": "Selecione o fuso horário",
+      "currencyPlaceholder": "Selecione a moeda",
+      "noCurrencies": "Nenhuma moeda disponível"
     },
-    "appearance": {
-      "title": "Aparência",
-      "description": "Personalize a aparência do aplicativo",
-      "themeModeLabel": "Modo do Tema",
-      "themeModeDescription": "Escolha seu tema preferido",
-      "themeOptions": {
-        "light": "Claro",
-        "dark": "Escuro",
-        "auto": "Automático (seguir sistema)"
+    "security": {
+      "title": "Segurança",
+      "description": "Controle de acesso e sessões ativas",
+      "passwordLabel": "Senha",
+      "changePasswordButton": "Alterar Senha",
+      "currentPasswordLabel": "Senha Atual",
+      "newPasswordLabel": "Nova Senha",
+      "confirmPasswordLabel": "Confirmar Nova Senha",
+      "passwordsDoNotMatch": "As senhas não coincidem",
+      "twoFactorLabel": "Autenticação de Dois Fatores",
+      "twoFactorEnabled": "Ativada",
+      "twoFactorDisabled": "Desativada",
+      "enableTwoFactorButton": "Ativar 2FA",
+      "disableTwoFactorButton": "Desativar 2FA",
+      "sessionsTitle": "Sessões Ativas",
+      "sessionCurrent": "Atual",
+      "revokeButton": "Revogar",
+      "noSessions": "Nenhuma sessão ativa encontrada",
+      "saveButton": "Salvar",
+      "cancelButton": "Cancelar"
+    },
+    "periodModel": {
+      "title": "Modelo de Período",
+      "description": "Editor de cronograma",
+      "modeLabel": "Modo",
+      "modeAutomatic": "Automático",
+      "modeManual": "Manual",
+      "startDayLabel": "Dia de Início",
+      "durationLabel": "Duração",
+      "generateAheadLabel": "Gerar Antecipado",
+      "saturdayRuleLabel": "Regra de Sábado",
+      "sundayRuleLabel": "Regra de Domingo",
+      "namePatternLabel": "Padrão de Nome",
+      "noSchedule": "Nenhum cronograma configurado",
+      "editButton": "Editar Cronograma",
+      "saveButton": "Salvar",
+      "cancelButton": "Cancelar",
+      "periods": "períodos",
+      "durationUnits": {
+        "days": "Dias",
+        "weeks": "Semanas",
+        "months": "Meses"
+      },
+      "weekendRules": {
+        "keep": "Manter data",
+        "friday": "Mover para sexta",
+        "monday": "Mover para segunda"
       }
     },
     "preferences": {
       "title": "Preferências",
-      "description": "Configurações regionais e do aplicativo",
-      "currencyLabel": "Moeda",
-      "currencyDescription": "Selecione sua moeda preferida para exibição",
-      "currencyPlaceholder": "Selecione a moeda",
+      "description": "Comportamento da interface",
+      "themeLabel": "Tema",
+      "themeOptions": {
+        "light": "Claro",
+        "dark": "Escuro",
+        "auto": "Sistema"
+      },
+      "dateFormatLabel": "Formato de Data",
+      "numberFormatLabel": "Formato de Número",
+      "compactModeLabel": "Modo Compacto",
+      "compactModeDescription": "Mostrar mais itens com menos espaçamento",
       "languageLabel": "Idioma",
       "languageDescription": "Selecione seu idioma preferido",
-      "saveButton": "Salvar preferências",
-      "noCurrencies": "Nenhuma moeda disponível"
+      "saveButton": "Salvar Preferências",
+      "noCurrencies": "Nenhuma moeda disponível",
+      "currencyLabel": "Moeda",
+      "currencyDescription": "Selecione sua moeda preferida para exibição",
+      "currencyPlaceholder": "Selecione a moeda"
+    },
+    "dataExport": {
+      "title": "Dados e Exportação",
+      "description": "Propriedade dos dados do usuário",
+      "exportCsvButton": "Exportar Transações (CSV)",
+      "exportJsonButton": "Exportar Conjunto Completo (JSON)",
+      "exportCsvDescription": "Baixe todas as suas transações como arquivo CSV",
+      "exportJsonDescription": "Baixe seus dados financeiros completos como JSON",
+      "comingSoon": "Recurso de exportação em breve"
+    },
+    "dangerZone": {
+      "title": "Zona de Perigo",
+      "description": "Ações estruturais destrutivas",
+      "resetStructureButton": "Redefinir Estrutura",
+      "resetStructureDescription": "Remover todas as contas, categorias e períodos de orçamento",
+      "deleteAccountButton": "Excluir Conta",
+      "deleteAccountDescription": "Excluir permanentemente sua conta e todos os dados",
+      "resetConfirmTitle": "Redefinir Estrutura",
+      "resetConfirmMessage": "Isso removerá todas as suas contas, categorias, períodos de orçamento e cronogramas. Esta ação não pode ser desfeita.",
+      "resetConfirmPrompt": "Digite REDEFINIR para confirmar",
+      "resetConfirmPlaceholder": "REDEFINIR",
+      "deleteConfirmTitle": "Excluir Conta",
+      "deleteConfirmMessage": "Isso excluirá permanentemente sua conta e todos os dados associados. Esta ação não pode ser desfeita.",
+      "deleteConfirmPrompt": "Digite EXCLUIR para confirmar",
+      "deleteConfirmPlaceholder": "EXCLUIR",
+      "saveButton": "Confirmar",
+      "cancelButton": "Cancelar"
     },
     "notifications": {
       "profile": {
@@ -1381,6 +1463,25 @@
       "preferences": {
         "success": "Preferências salvas com sucesso",
         "error": "Falha ao salvar as preferências. Por favor, tente novamente."
+      },
+      "password": {
+        "success": "Senha alterada com sucesso",
+        "error": "Falha ao alterar senha. Verifique sua senha atual e tente novamente."
+      },
+      "session": {
+        "revokeSuccess": "Sessão revogada com sucesso",
+        "revokeError": "Falha ao revogar sessão"
+      },
+      "periodModel": {
+        "success": "Modelo de período atualizado com sucesso",
+        "error": "Falha ao atualizar modelo de período"
+      },
+      "resetStructure": {
+        "success": "Estrutura redefinida com sucesso",
+        "error": "Falha ao redefinir estrutura"
+      },
+      "deleteAccount": {
+        "error": "Falha ao excluir conta"
       }
     },
     "errors": {

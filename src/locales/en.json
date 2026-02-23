@@ -1390,35 +1390,117 @@
     "pageTitle": "Settings",
     "pageDescription": "Manage your preferences and account settings",
     "profile": {
-      "title": "Profile Information",
-      "description": "Update your personal details",
+      "title": "Profile",
+      "description": "Identity metadata",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "timezoneLabel": "Timezone",
+      "currencyLabel": "Default Currency",
+      "editButton": "Edit Profile",
+      "saveButton": "Save",
+      "cancelButton": "Cancel",
       "fullNameLabel": "Full Name",
       "fullNamePlaceholder": "Enter your full name",
-      "emailLabel": "Email",
-      "emailPlaceholder": "Enter your email",
-      "saveButton": "Save Changes"
+      "timezonePlaceholder": "Select timezone",
+      "currencyPlaceholder": "Select currency",
+      "noCurrencies": "No currencies available"
     },
-    "appearance": {
-      "title": "Appearance",
-      "description": "Customize how the application looks",
-      "themeModeLabel": "Theme Mode",
-      "themeModeDescription": "Choose your preferred theme",
-      "themeOptions": {
-        "light": "Light",
-        "dark": "Dark",
-        "auto": "Auto (follow system)"
+    "security": {
+      "title": "Security",
+      "description": "Access control and active sessions",
+      "passwordLabel": "Password",
+      "changePasswordButton": "Change Password",
+      "currentPasswordLabel": "Current Password",
+      "newPasswordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "twoFactorLabel": "Two-Factor Authentication",
+      "twoFactorEnabled": "Enabled",
+      "twoFactorDisabled": "Disabled",
+      "enableTwoFactorButton": "Enable 2FA",
+      "disableTwoFactorButton": "Disable 2FA",
+      "sessionsTitle": "Active Sessions",
+      "sessionCurrent": "Current",
+      "revokeButton": "Revoke",
+      "noSessions": "No active sessions found",
+      "saveButton": "Save",
+      "cancelButton": "Cancel"
+    },
+    "periodModel": {
+      "title": "Period Model",
+      "description": "Schedule editor",
+      "modeLabel": "Mode",
+      "modeAutomatic": "Automatic",
+      "modeManual": "Manual",
+      "startDayLabel": "Start Day",
+      "durationLabel": "Duration",
+      "generateAheadLabel": "Generate Ahead",
+      "saturdayRuleLabel": "Saturday Rule",
+      "sundayRuleLabel": "Sunday Rule",
+      "namePatternLabel": "Name Pattern",
+      "noSchedule": "No schedule configured",
+      "editButton": "Edit Schedule",
+      "saveButton": "Save",
+      "cancelButton": "Cancel",
+      "periods": "periods",
+      "durationUnits": {
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months"
+      },
+      "weekendRules": {
+        "keep": "Keep date",
+        "friday": "Move to Friday",
+        "monday": "Move to Monday"
       }
     },
     "preferences": {
       "title": "Preferences",
-      "description": "Regional and application settings",
-      "currencyLabel": "Currency",
-      "currencyDescription": "Select your preferred currency for display",
-      "currencyPlaceholder": "Select currency",
+      "description": "Interface behavior",
+      "themeLabel": "Theme",
+      "themeOptions": {
+        "light": "Light",
+        "dark": "Dark",
+        "auto": "System"
+      },
+      "dateFormatLabel": "Date Format",
+      "numberFormatLabel": "Number Format",
+      "compactModeLabel": "Compact Mode",
+      "compactModeDescription": "Show more items with less spacing",
       "languageLabel": "Language",
       "languageDescription": "Select your preferred language",
       "saveButton": "Save Preferences",
-      "noCurrencies": "No currencies available"
+      "noCurrencies": "No currencies available",
+      "currencyLabel": "Currency",
+      "currencyDescription": "Select your preferred currency for display",
+      "currencyPlaceholder": "Select currency"
+    },
+    "dataExport": {
+      "title": "Data & Export",
+      "description": "User data ownership",
+      "exportCsvButton": "Export Transactions (CSV)",
+      "exportJsonButton": "Export Full Dataset (JSON)",
+      "exportCsvDescription": "Download all your transactions as a CSV file",
+      "exportJsonDescription": "Download your complete financial data as JSON",
+      "comingSoon": "Export feature coming soon"
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "description": "Destructive structural actions",
+      "resetStructureButton": "Reset Structure",
+      "resetStructureDescription": "Remove all accounts, categories, and budget periods",
+      "deleteAccountButton": "Delete Account",
+      "deleteAccountDescription": "Permanently delete your account and all data",
+      "resetConfirmTitle": "Reset Structure",
+      "resetConfirmMessage": "This will remove all your accounts, categories, budget periods, and schedules. This action cannot be undone.",
+      "resetConfirmPrompt": "Type RESET to confirm",
+      "resetConfirmPlaceholder": "RESET",
+      "deleteConfirmTitle": "Delete Account",
+      "deleteConfirmMessage": "This will permanently delete your account and all associated data. This action cannot be undone.",
+      "deleteConfirmPrompt": "Type DELETE to confirm",
+      "deleteConfirmPlaceholder": "DELETE",
+      "saveButton": "Confirm",
+      "cancelButton": "Cancel"
     },
     "notifications": {
       "profile": {
@@ -1428,6 +1510,25 @@
       "preferences": {
         "success": "Preferences saved successfully",
         "error": "Failed to save preferences. Please try again."
+      },
+      "password": {
+        "success": "Password changed successfully",
+        "error": "Failed to change password. Please check your current password and try again."
+      },
+      "session": {
+        "revokeSuccess": "Session revoked successfully",
+        "revokeError": "Failed to revoke session"
+      },
+      "periodModel": {
+        "success": "Period model updated successfully",
+        "error": "Failed to update period model"
+      },
+      "resetStructure": {
+        "success": "Structure reset successfully",
+        "error": "Failed to reset structure"
+      },
+      "deleteAccount": {
+        "error": "Failed to delete account"
       }
     },
     "errors": {
