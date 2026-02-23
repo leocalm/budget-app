@@ -16,6 +16,7 @@ import { AuthContext } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
 import { handlers } from './mocks/handlers';
 import { ForgotPasswordPage } from './components/Auth/ForgotPasswordPage';
+import { ResetPasswordPage } from './components/Auth/ResetPasswordPage';
 
 // Mock Auth Context setup
 const mockUser = {
@@ -180,6 +181,9 @@ Register.decorators = [AuthPageDecorator];
 
 export const ForgotPassword = () => <ForgotPasswordPage />;
 ForgotPassword.decorators = [AuthPageDecorator];
+
+export const ResetPassword = () => <ResetPasswordPage />;
+ResetPassword.decorators = [AuthPageDecorator];
 
 export const MSWDebug = () => {
   const [data, setData] = React.useState<any>(null);
