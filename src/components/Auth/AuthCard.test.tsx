@@ -39,7 +39,7 @@ describe('AuthMessage', () => {
   });
 
   it('renders nothing when message is null', () => {
-    const { container } = wrap(<AuthMessage message={null} />);
+    wrap(<AuthMessage message={null} />);
     // Should not render a status element when message is null
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });

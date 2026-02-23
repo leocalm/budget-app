@@ -34,8 +34,10 @@ interface AuthMessageProps {
 }
 
 export function AuthMessage({ message }: AuthMessageProps) {
+  if (!message) return null;
+
   return (
-    <Transition mounted={!!message} transition="fade" duration={150}>
+    <Transition mounted transition="fade" duration={150}>
       {(styles) => (
         <Text
           role="status"
