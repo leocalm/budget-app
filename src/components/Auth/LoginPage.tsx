@@ -15,9 +15,8 @@ import { useForm } from '@mantine/form';
 import { apiPost } from '@/api/client';
 import { ApiError } from '@/api/errors';
 import { useAuth } from '@/context/AuthContext';
+import { sleep } from '@/utils/time';
 import { AuthCard, AuthMessage } from './AuthCard';
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -30,11 +29,13 @@ export function LoginPage() {
   const [requires2FA, setRequires2FA] = useState(false);
   const [twoFactorCode, setTwoFactorCode] = useState('');
 
+  const getRedirectPath = () =>
+    (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard';
+
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+      navigate(getRedirectPath(), { replace: true });
     }
   }, [isAuthenticated, navigate, location]);
 
@@ -74,29 +75,24 @@ export function LoginPage() {
       }
 
       // Navigate to the page user was trying to access, or dashboard
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+      navigate(getRedirectPath(), { replace: true });
     } catch (err) {
       if (err instanceof ApiError && err.status === 428) {
         const data = err.data as { twoFactorRequired?: boolean } | undefined;
         if (data?.twoFactorRequired) {
           setRequires2FA(true);
-          setLoading(false);
-          return;
+          return; // setLoading handled by finally
         }
       }
 
       if (err instanceof ApiError && (err.status === 423 || err.status === 429)) {
-        setLockedMessage("We're temporarily limiting sign-in attempts. Please try again later.");
-        setLoading(false);
-        return;
-      }
-
-      if (requires2FA) {
-        setError('Verification failed. Please try again.');
+        setLockedMessage(t('auth.login.errors.locked', "We're temporarily limiting sign-in attempts. Please try again later."));
+      } else if (requires2FA) {
+        setError(t('auth.login.twoFactor.errors.generic', 'Verification failed. Please try again.'));
       } else {
-        setError("We couldn't sign you in. Please verify your credentials and try again.");
+        setError(t('auth.login.errors.generic', "We couldn't sign you in. Please verify your credentials and try again."));
       }
+    } finally {
       setLoading(false);
     }
   };
@@ -117,7 +113,7 @@ export function LoginPage() {
               {t('auth.login.twoFactor.title', 'Verify your identity')}
             </Text>
             <Text size="sm" c="dimmed" ta="center">
-              Enter your 6-digit verification code from your authenticator app.
+              {t('auth.login.twoFactor.description', 'Enter your 6-digit verification code from your authenticator app.')}
             </Text>
             <Group justify="center">
               <PinInput
@@ -127,7 +123,11 @@ export function LoginPage() {
                 autoFocus
                 value={twoFactorCode}
                 onChange={setTwoFactorCode}
-                onComplete={() => form.onSubmit(handleSubmit)()}
+                onComplete={() => {
+                  if (twoFactorCode.length === 6) {
+                    handleSubmit(form.values);
+                  }
+                }}
                 disabled={loading}
               />
             </Group>
@@ -138,11 +138,11 @@ export function LoginPage() {
               loading={loading}
               disabled={twoFactorCode.length !== 6}
             >
-              {loading ? 'Verifying…' : 'Verify'}
+              {loading ? t('auth.login.twoFactor.verifying', 'Verifying…') : t('auth.login.twoFactor.verify', 'Verify')}
             </Button>
             <Text ta="center" size="sm">
               <Anchor onClick={handleBack} style={{ cursor: 'pointer' }}>
-                Back to login
+                {t('auth.login.twoFactor.back', 'Back to login')}
               </Anchor>
             </Text>
           </Stack>
@@ -179,11 +179,11 @@ export function LoginPage() {
             </Text>
           )}
           <Button fullWidth type="submit" loading={loading}>
-            {loading ? 'Signing in…' : 'Log in'}
+            {loading ? t('auth.login.signingIn', 'Signing in…') : t('auth.login.signIn', 'Log in')}
           </Button>
           <Text ta="center" size="sm">
             <Anchor component={Link} to="/auth/forgot-password">
-              Forgot password?
+              {t('auth.login.forgotPassword', 'Forgot password?')}
             </Anchor>
           </Text>
         </Stack>
