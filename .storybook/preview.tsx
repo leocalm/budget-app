@@ -38,10 +38,10 @@ const preview: Preview = {
     layout: 'fullscreen',
     options: {
       showPanel: false,
-      // Storybook doesn't expose a stable, exported type for storySort args in our setup.
-      // Explicitly type to satisfy TS strict mode.
-      storySort: (a: any, b: any) => a.title.localeCompare(b.title, undefined, { numeric: true }),
     },
+    // Storybook doesn't expose a stable, exported type for storySort args in our setup.
+    // Explicitly type to satisfy TS strict mode.
+    storySort: (a: any, b: any) => a.title.localeCompare(b.title, undefined, { numeric: true }),
     backgrounds: { disable: true },
     interactions: { timeout: 2000 },
   },
