@@ -1,54 +1,82 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Anchor, Box, Button, Center, Group, Paper, Text, TextInput, Title } from '@mantine/core';
+import { Anchor, Button, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { requestPasswordReset } from '@/api/passwordReset';
+import { sleep } from '@/utils/time';
+import { AuthCard, AuthMessage } from './AuthCard';
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+
   const form = useForm({
-    initialValues: {
-      email: '',
-    },
+    initialValues: { email: '' },
     validate: {
       email: (val) =>
-        /^\S+@\S+$/.test(val) ? null : t('auth.forgotPassword.validation.invalidEmail'),
+        /^\S+@\S+$/.test(val)
+          ? null
+          : t('auth.forgotPassword.validation.invalidEmail', 'Invalid email address'),
     },
   });
 
-  const handleSubmit = () => {
-    // TODO: Implement reset logic
+  const successMessage = t(
+    'auth.forgotPassword.success.message',
+    'If the email is registered, you will receive a reset link shortly.'
+  );
+
+  const handleSubmit = async (values: typeof form.values) => {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      await Promise.all([requestPasswordReset(values.email), sleep(400)]);
+    } catch {
+      // Intentionally swallowed — always show the same neutral message
+    } finally {
+      setLoading(false);
+      setSubmitted(true);
+      setMessage(successMessage);
+      form.reset();
+    }
   };
 
   return (
-    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-      <Title order={2} ta="center" mt="md" mb={50}>
-        {t('auth.forgotPassword.title')}
+    <AuthCard>
+      <Title order={2} ta="center">
+        {t('auth.forgotPassword.title', 'Password recovery')}
       </Title>
-      <Text c="dimmed" fz="sm" ta="center">
-        {t('auth.forgotPassword.subtitle')}
+      <Text size="sm" c="dimmed" ta="center">
+        {t(
+          'auth.forgotPassword.description',
+          'Enter your email address. If it is registered, you will receive a reset link.'
+        )}
       </Text>
-
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          label={t('auth.forgotPassword.emailLabel')}
-          placeholder={t('auth.forgotPassword.emailPlaceholder')}
-          required
-          mt="md"
-          {...form.getInputProps('email')}
-        />
-        <Button fullWidth mt="xl" type="submit">
-          {t('auth.forgotPassword.resetPasswordButton')}
-        </Button>
+        <Stack gap="md">
+          <TextInput
+            label={t('auth.forgotPassword.emailLabel', 'Email')}
+            placeholder={t('auth.forgotPassword.emailPlaceholder', 'name@example.com')}
+            required
+            disabled={loading || submitted}
+            {...form.getInputProps('email')}
+          />
+          <Button fullWidth type="submit" loading={loading} disabled={submitted}>
+            {loading
+              ? t('auth.forgotPassword.sending', 'Sending…')
+              : t('auth.forgotPassword.sendResetLink', 'Send link')}
+          </Button>
+        </Stack>
       </form>
-
-      <Group justify="center" mt="lg">
-        <Anchor component={Link} to="/auth/login" size="sm" c="dimmed">
-          <Center inline>
-            <span style={{ fontSize: 12, marginRight: 5 }}>⬅️</span>
-            <Box ml={5}>{t('auth.forgotPassword.backToLogin')}</Box>
-          </Center>
+      <AuthMessage message={message} />
+      <Text size="sm" c="dimmed" ta="center">
+        <Anchor component={Link} to="/auth/login" size="sm">
+          {t('auth.forgotPassword.backToLogin', 'Back to login')}
         </Anchor>
-      </Group>
-    </Paper>
+      </Text>
+    </AuthCard>
   );
 }

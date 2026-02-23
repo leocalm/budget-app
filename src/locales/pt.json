@@ -76,24 +76,18 @@
       }
     },
     "forgotPassword": {
-      "title": "Esqueceu sua senha?",
-      "description": "Digite seu endereço de e-mail e enviaremos um link para redefinir sua senha.",
-      "emailLabel": "Endereço de e-mail",
-      "emailPlaceholder": "seu@email.com",
-      "sendResetLink": "Enviar link de redefinição",
+      "title": "Recuperação de senha",
+      "description": "Digite seu endereço de e-mail. Se estiver registrado, você receberá um link de redefinição.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nome@exemplo.com",
+      "sendResetLink": "Enviar link",
+      "sending": "Enviando…",
       "backToLogin": "Voltar para o login",
-      "noAccountYet": "Não tem uma conta?",
-      "createAccount": "Crie uma",
       "validation": {
         "invalidEmail": "Endereço de e-mail inválido"
       },
       "success": {
-        "title": "E-mail enviado!",
-        "message": "Se o seu endereço de e-mail existir em nosso sistema, você receberá um link de redefinição de senha em breve. Por favor, verifique sua caixa de entrada e pasta de spam."
-      },
-      "errors": {
-        "title": "Erro",
-        "generic": "Falha ao enviar e-mail de redefinição"
+        "message": "Se o e-mail estiver registrado, você receberá um link de redefinição em breve."
       }
     },
     "resetPassword": {

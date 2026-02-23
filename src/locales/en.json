@@ -92,24 +92,18 @@
       }
     },
     "forgotPassword": {
-      "title": "Forgot your password?",
-      "description": "Enter your email address and we'll send you a link to reset your password.",
-      "emailLabel": "Email address",
-      "emailPlaceholder": "your@email.com",
-      "sendResetLink": "Send reset link",
+      "title": "Password recovery",
+      "description": "Enter your email address. If it is registered, you will receive a reset link.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@example.com",
+      "sendResetLink": "Send link",
+      "sending": "Sending…",
       "backToLogin": "Back to login",
-      "noAccountYet": "Don't have an account?",
-      "createAccount": "Create one",
       "validation": {
         "invalidEmail": "Invalid email address"
       },
       "success": {
-        "title": "Email sent!",
-        "message": "If your email address exists in our system, you will receive a password reset link shortly. Please check your inbox and spam folder."
-      },
-      "errors": {
-        "title": "Error",
-        "generic": "Failed to send reset email"
+        "message": "If the email is registered, you will receive a reset link shortly."
       }
     },
     "resetPassword": {

@@ -15,7 +15,7 @@ import { Vendors } from './components/Vendors/Vendors';
 import { AuthContext } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
 import { handlers } from './mocks/handlers';
-import { ForgotPasswordPage } from './pages/ForgotPassword.page';
+import { ForgotPasswordPage } from './components/Auth/ForgotPasswordPage';
 
 // Mock Auth Context setup
 const mockUser = {
