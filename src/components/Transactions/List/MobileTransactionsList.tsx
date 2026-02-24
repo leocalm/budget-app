@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Button, Card, Group, Stack, Text } from '@mantine/core';
+import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { TransactionResponse } from '@/types/transaction';
-import { convertCentsToDisplay } from '@/utils/currency';
 
 interface MobileTransactionsListProps {
   transactions: TransactionResponse[];
@@ -26,21 +26,6 @@ function groupByDate(transactions: TransactionResponse[]): DateGroup[] {
     map.get(d)!.push(tx);
   }
   return Array.from(map.entries()).map(([date, items]) => ({ date, items }));
-}
-
-function formatAmount(tx: TransactionResponse): { display: string; color?: string } {
-  const isIncoming = tx.category.categoryType === 'Incoming';
-  const isTransfer = tx.category.categoryType === 'Transfer';
-  const display = convertCentsToDisplay(tx.amount).toFixed(2);
-
-  if (isTransfer) {
-    return { display, color: undefined };
-  }
-
-  return {
-    display: isIncoming ? `+${display}` : `−${display}`,
-    color: isIncoming ? 'teal' : undefined,
-  };
 }
 
 export const MobileTransactionsList = ({
@@ -106,8 +91,9 @@ export const MobileTransactionsList = ({
                 );
               }
 
+              const isIncoming = tx.category.categoryType === 'Incoming';
               const isTransfer = tx.category.categoryType === 'Transfer';
-              const { display: amountDisplay, color: amountColor } = formatAmount(tx);
+              const amountColor = isTransfer ? undefined : isIncoming ? 'teal' : undefined;
 
               return (
                 <Card key={tx.id} withBorder radius="md" p="sm">
@@ -117,7 +103,8 @@ export const MobileTransactionsList = ({
                       {tx.description || '−'}
                     </Text>
                     <Text size="sm" fw={700} c={amountColor} style={{ whiteSpace: 'nowrap' }}>
-                      {amountDisplay}
+                      {isIncoming && '+'}
+                      <CurrencyValue cents={Math.abs(tx.amount)} />
                     </Text>
                   </Group>
 
