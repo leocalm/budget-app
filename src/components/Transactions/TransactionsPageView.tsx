@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Drawer, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Drawer,
+  Group,
+  Indicator,
+  MultiSelect,
+  SegmentedControl,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { TransactionFilterParams } from '@/api/transaction';
 import { StateRenderer, TransactionListSkeleton } from '@/components/Utils';
@@ -14,7 +25,7 @@ import { formatDateForApi } from '@/utils/date';
 import type { EditFormValues } from './Form/EditTransactionForm';
 import { MobileTransactionsList } from './List/MobileTransactionsList';
 import { PageHeader } from './PageHeader';
-import { TransactionFilters } from './TransactionFilters';
+import { TransactionFilters, useDirectionOptions } from './TransactionFilters';
 import { TransactionModal } from './TransactionModal';
 import { TransactionsLedger } from './TransactionsLedger';
 
@@ -59,6 +70,7 @@ export const TransactionsPageView = ({
 }: TransactionsPageViewProps) => {
   const { t } = useTranslation();
   const theme = useMantineTheme();
+  const directionOptions = useDirectionOptions();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   const [batchMode, setBatchMode] = useState(false);
@@ -130,9 +142,23 @@ export const TransactionsPageView = ({
         </Button>
       )}
       {isMobile && (
-        <ActionIcon variant="subtle" onClick={openMobileFilter}>
-          {/* Filter icon */}
-        </ActionIcon>
+        <Indicator disabled={!(filters.categoryIds?.length ?? 0)} size={6} offset={4}>
+          <ActionIcon variant="subtle" onClick={openMobileFilter}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z" />
+            </svg>
+          </ActionIcon>
+        </Indicator>
       )}
     </Group>
   );
@@ -168,6 +194,19 @@ export const TransactionsPageView = ({
 
         {isMobile ? (
           <>
+            <SegmentedControl
+              size="xs"
+              fullWidth
+              data={directionOptions}
+              value={filters.direction ?? 'all'}
+              onChange={(val) =>
+                onFiltersChange({
+                  ...filters,
+                  direction: val as TransactionFilterParams['direction'],
+                })
+              }
+            />
+
             {transactions && transactions.length > 0 ? (
               <MobileTransactionsList
                 transactions={transactions}
@@ -187,15 +226,29 @@ export const TransactionsPageView = ({
               onClose={closeMobileFilter}
               title={t('transactions.filters.title')}
               position="bottom"
-              size="60%"
+              size="auto"
             >
-              <TransactionFilters
-                filters={filters}
-                onChange={onFiltersChange}
-                accounts={accounts}
-                categories={categories}
-                vendors={vendors}
-              />
+              <Stack gap="md" pb="md">
+                <MultiSelect
+                  label={t('transactions.filters.categories')}
+                  data={categories.map((c) => ({ value: c.id, label: `${c.icon} ${c.name}` }))}
+                  value={filters.categoryIds ?? []}
+                  onChange={(val) => onFiltersChange({ ...filters, categoryIds: val })}
+                  placeholder={t('transactions.filters.allCategories')}
+                  searchable
+                  clearable
+                />
+                {(filters.categoryIds?.length ?? 0) > 0 && (
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    color="gray"
+                    onClick={() => onFiltersChange({ ...filters, categoryIds: [] })}
+                  >
+                    {t('transactions.filters.clearAll')}
+                  </Button>
+                )}
+              </Stack>
             </Drawer>
           </>
         ) : (

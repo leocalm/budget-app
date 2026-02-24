@@ -23,12 +23,15 @@ interface TransactionFiltersProps {
   vendors: Vendor[];
 }
 
-const DIRECTIONS = [
-  { label: 'All', value: 'all' },
-  { label: 'In', value: 'Incoming' },
-  { label: 'Out', value: 'Outgoing' },
-  { label: 'Transfer', value: 'Transfer' },
-];
+export const useDirectionOptions = () => {
+  const { t } = useTranslation();
+  return [
+    { label: t('transactions.filters.allTransactions'), value: 'all' },
+    { label: t('transactions.filters.incoming'), value: 'Incoming' },
+    { label: t('transactions.filters.outgoing'), value: 'Outgoing' },
+    { label: t('transactions.filters.transfers'), value: 'Transfer' },
+  ];
+};
 
 const isEmpty = (f: TransactionFilterParams) =>
   (!f.direction || f.direction === 'all') &&
@@ -46,6 +49,7 @@ export const TransactionFilters = ({
   vendors,
 }: TransactionFiltersProps) => {
   const { t } = useTranslation();
+  const directionOptions = useDirectionOptions();
 
   const set = (patch: Partial<TransactionFilterParams>) => onChange({ ...filters, ...patch });
 
@@ -58,7 +62,7 @@ export const TransactionFilters = ({
           </Text>
           <SegmentedControl
             size="xs"
-            data={DIRECTIONS}
+            data={directionOptions}
             value={filters.direction ?? 'all'}
             onChange={(val) => set({ direction: val as TransactionFilterParams['direction'] })}
           />
