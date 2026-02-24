@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Progress, Stack, Text } from '@mantine/core';
 import { PasswordStrengthResult } from '@/hooks/usePasswordStrength';
 
@@ -6,11 +7,13 @@ interface PasswordStrengthIndicatorProps {
 }
 
 export function PasswordStrengthIndicator({ result }: PasswordStrengthIndicatorProps) {
+  const { t } = useTranslation();
+
   if (!result) {
     return null;
   }
 
-  const colors = ['red', 'orange', 'yellow', 'lime', 'green'];
+  const colors = ['gray', 'gray', 'blue', 'indigo', 'violet'];
   const color = colors[result.score];
 
   return (
@@ -27,7 +30,7 @@ export function PasswordStrengthIndicator({ result }: PasswordStrengthIndicatorP
       {result.suggestions.length > 0 && (
         <Stack gap="xs">
           <Text size="xs" c="dimmed" fw={500}>
-            Suggestions:
+            {t('auth.passwordStrength.suggestions', 'Suggestions:')}
           </Text>
           <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: 'var(--mantine-font-size-xs)' }}>
             {result.suggestions.map((suggestion, index) => (

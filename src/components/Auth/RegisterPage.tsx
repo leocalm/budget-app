@@ -1,22 +1,13 @@
 import { useEffect, useState } from 'react';
-import { IconAlertCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  Alert,
-  Anchor,
-  Button,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Anchor, Button, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { register } from '@/api/auth';
 import { useAuth } from '@/context/AuthContext';
-import { PasswordStrengthResult, usePasswordStrength } from '@/hooks/usePasswordStrength';
+import { usePasswordStrength, type PasswordStrengthResult } from '@/hooks/usePasswordStrength';
+import { sleep } from '@/utils/time';
+import { AuthCard, AuthMessage } from './AuthCard';
 import { PasswordStrengthIndicator } from './PasswordStrengthIndicator';
 
 export function RegisterPage() {
@@ -32,7 +23,8 @@ export function RegisterPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      const from = (location.state as any)?.from?.pathname || '/dashboard';
+      const from =
+        (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard';
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, location]);
@@ -64,11 +56,14 @@ export function RegisterPage() {
     setError(null);
 
     try {
-      await register({
-        name: values.name,
-        email: values.email,
-        password: values.password,
-      });
+      await Promise.all([
+        register({
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        }),
+        sleep(400),
+      ]);
 
       // Hydrate user from cookie-backed endpoint
       const refreshed = await refreshUser(false, false);
@@ -86,23 +81,14 @@ export function RegisterPage() {
   };
 
   return (
-    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-      <Title order={2} ta="center" mt="md" mb={50}>
+    <AuthCard>
+      <Text role="heading" fw={600} size="lg" ta="center">
         {t('auth.register.createAccountTitle')}
-      </Title>
+      </Text>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
-          {error && (
-            <Alert
-              icon={<IconAlertCircle size={16} />}
-              title={t('auth.register.errors.title')}
-              color="red"
-              variant="light"
-            >
-              {error}
-            </Alert>
-          )}
+          <AuthMessage message={error} />
 
           <TextInput
             label={t('auth.register.fullNameLabel')}
@@ -159,6 +145,6 @@ export function RegisterPage() {
           {t('auth.register.login')}
         </Anchor>
       </Text>
-    </Paper>
+    </AuthCard>
   );
 }
