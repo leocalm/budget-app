@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Stack, TextInput } from '@mantine/core';
+import { Button, Group, Stack, Text, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { FormOverlay } from '@/components/Overlays/FormOverlay';
 import { useCreateVendor, useUpdateVendor } from '@/hooks/useVendors';
@@ -20,6 +20,7 @@ export function VendorFormModal({ opened, onClose, vendor }: VendorFormModalProp
   const form = useForm({
     initialValues: {
       name: '',
+      description: '',
     },
     validate: {
       name: (value) => {
@@ -42,23 +43,28 @@ export function VendorFormModal({ opened, onClose, vendor }: VendorFormModalProp
     if (vendor) {
       form.setValues({
         name: vendor.name,
+        description: vendor.description ?? '',
       });
     } else {
       form.reset();
     }
   }, [vendor, opened]);
 
-  const handleSubmit = async (values: { name: string }) => {
+  const handleSubmit = async (values: { name: string; description: string }) => {
     try {
+      const payload = {
+        name: values.name.trim(),
+        description: values.description.trim() || undefined,
+      };
       if (vendor?.id) {
         // Update existing vendor
         await updateMutation.mutateAsync({
           id: vendor.id,
-          data: { name: values.name.trim() },
+          data: payload,
         });
       } else {
         // Create new vendor
-        await createMutation.mutateAsync({ name: values.name.trim() });
+        await createMutation.mutateAsync(payload);
       }
       form.reset();
       onClose();
@@ -87,6 +93,19 @@ export function VendorFormModal({ opened, onClose, vendor }: VendorFormModalProp
               {...form.getInputProps('name')}
               disabled={isLoading}
             />
+
+            <Textarea
+              label={t('vendors.form.descriptionLabel')}
+              placeholder={t('vendors.form.descriptionPlaceholder')}
+              rows={2}
+              {...form.getInputProps('description')}
+              disabled={isLoading}
+            />
+            {vendor && (
+              <Text size="xs" c="dimmed">
+                {t('vendors.form.editNote')}
+              </Text>
+            )}
 
             <Group justify="flex-end" mt="md">
               <Button variant="subtle" onClick={requestClose} disabled={isLoading}>

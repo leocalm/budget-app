@@ -1,9 +1,12 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  archiveVendor,
   createVendor,
   deleteVendor,
+  fetchArchivedVendors,
   fetchVendors,
   fetchVendorsPage,
+  restoreVendor,
   updateVendor,
 } from '@/api/vendor';
 import { VendorInput } from '@/types/vendor';
@@ -67,6 +70,37 @@ export const useDeleteVendor = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
       queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
       queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+    },
+  });
+};
+
+export const useArchivedVendors = () => {
+  return useQuery({
+    queryKey: queryKeys.vendorsArchived(),
+    queryFn: fetchArchivedVendors,
+  });
+};
+
+export const useArchiveVendor = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => archiveVendor(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
+    },
+  });
+};
+
+export const useRestoreVendor = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => restoreVendor(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
     },
   });
 };

@@ -77,10 +77,6 @@ vi.mock('@/components/Dashboard/BalanceLineChartCard', () => ({
   BalanceLineChartCard: () => <div>BalanceLineChartCard</div>,
 }));
 
-vi.mock('@/components/Dashboard/RecentTransactionsCard', () => ({
-  RecentTransactionsCard: () => <div>RecentTransactionsCard</div>,
-}));
-
 vi.mock('@/components/Dashboard/StatCard', () => ({
   StatCard: () => <div>StatCard</div>,
 }));

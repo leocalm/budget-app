@@ -2,6 +2,7 @@
  * Centralized React Query key management
  * Single source of truth for all query keys used across the application
  */
+import type { TransactionFilterParams } from '@/api/transaction';
 
 export const queryKeys = {
   // Vendors
@@ -9,12 +10,16 @@ export const queryKeys = {
   vendors: (periodId?: string | null) => ['vendors', periodId] as const,
   vendorsInfinite: (periodId?: string | null, pageSize = 50) =>
     ['vendors', periodId, 'infinite', pageSize] as const,
+  vendorsArchived: () => ['vendors', 'archived'] as const,
   vendor: (id: string) => ['vendor', id] as const,
 
   // Transactions
   transactions: (periodId?: string | null) => ['transactions', periodId] as const,
-  transactionsInfinite: (periodId?: string | null, pageSize = 50) =>
-    ['transactions', periodId, 'infinite', pageSize] as const,
+  transactionsInfinite: (
+    periodId?: string | null,
+    pageSize = 50,
+    filters?: TransactionFilterParams
+  ) => ['transactions', periodId, 'infinite', pageSize, filters] as const,
   transaction: (id: string) => ['transaction', id] as const,
 
   // Categories
@@ -62,6 +67,10 @@ export const queryKeys = {
 
   // Settings
   settings: () => ['settings'] as const,
+  settingsProfile: () => ['settings', 'profile'] as const,
+  settingsPreferences: () => ['settings', 'preferences'] as const,
+  settingsSessions: () => ['settings', 'sessions'] as const,
+  settingsPeriodModel: () => ['settings', 'period-model'] as const,
 
   // Currencies
   currencies: () => ['currencies'] as const,

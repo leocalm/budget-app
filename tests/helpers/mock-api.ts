@@ -559,6 +559,72 @@ export class MockApiServer {
       return { body: [this.defaultCurrency] };
     }
 
+    if (method === 'GET' && path === '/settings/profile') {
+      return {
+        body: {
+          name: authUser.name,
+          email: authUser.email.replace(/^(.).*@/, '$1***@'),
+          timezone: 'Europe/Amsterdam',
+          default_currency_id: 'currency-eur',
+        },
+      };
+    }
+
+    if (method === 'GET' && path === '/settings/preferences') {
+      return {
+        body: {
+          theme: 'auto',
+          date_format: 'DD/MM/YYYY',
+          number_format: '1,234.56',
+          compact_mode: false,
+        },
+      };
+    }
+
+    if (method === 'GET' && path === '/settings/security/sessions') {
+      return {
+        body: [
+          {
+            id: 'session-current',
+            device_label: 'Chrome on macOS',
+            country: 'Netherlands',
+            created_at: new Date().toISOString(),
+            is_current: true,
+          },
+        ],
+      };
+    }
+
+    if (method === 'GET' && path === '/settings/period-model') {
+      return {
+        body: {
+          period_mode: 'automatic',
+          period_schedule: {
+            start_day: 1,
+            duration_value: 1,
+            duration_unit: 'months',
+            generate_ahead: 6,
+            saturday_adjustment: 'keep',
+            sunday_adjustment: 'keep',
+            name_pattern: '{MONTH} {YEAR}',
+          },
+        },
+      };
+    }
+
+    if (method === 'GET' && path === '/settings') {
+      return {
+        body: {
+          id: 'settings-1',
+          theme: 'auto',
+          language: 'en',
+          default_currency_id: null,
+          budget_stability_tolerance_basis_points: 1000,
+          updated_at: new Date().toISOString(),
+        },
+      };
+    }
+
     if (method === 'DELETE' && path.startsWith('/overlays/')) {
       const id = path.slice('/overlays/'.length);
       if (id) {

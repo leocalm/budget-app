@@ -1,5 +1,5 @@
 import { Vendor, VendorInput, VendorsPage, VendorWithStats } from '@/types/vendor';
-import { apiDelete, apiGet, apiGetRaw, apiPost, apiPut } from './client';
+import { apiDelete, apiGet, apiGetRaw, apiPatch, apiPost, apiPut } from './client';
 
 export async function fetchVendors(periodId?: string | null): Promise<VendorWithStats[]> {
   const url = periodId ? `/api/vendors?period_id=${encodeURIComponent(periodId)}` : '/api/vendors';
@@ -102,4 +102,16 @@ export async function updateVendor(id: string, payload: VendorInput): Promise<Ve
 
 export async function deleteVendor(id: string): Promise<void> {
   return apiDelete(`/api/vendors/${id}`);
+}
+
+export async function fetchArchivedVendors(): Promise<VendorWithStats[]> {
+  return apiGet<VendorWithStats[]>('/api/vendors/with_status?order_by=name&archived=true');
+}
+
+export async function archiveVendor(id: string): Promise<Vendor> {
+  return apiPatch<Vendor>(`/api/vendors/${id}/archive`);
+}
+
+export async function restoreVendor(id: string): Promise<Vendor> {
+  return apiPatch<Vendor>(`/api/vendors/${id}/restore`);
 }

@@ -38,7 +38,7 @@ const mockCategory: CategoryResponse = {
   description: null,
 };
 
-const mockVendor: Vendor = { id: 'v1', name: 'Supermarket' };
+const mockVendor: Vendor = { id: 'v1', name: 'Supermarket', archived: false };
 
 const mockTransaction: TransactionResponse = {
   id: 't1',

@@ -252,13 +252,109 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
-  // --- SETTINGS ---
+  // --- SETTINGS (legacy) ---
   http.get('/api/v1/settings', () => HttpResponse.json(db.settings)),
   http.put('/api/v1/settings', async ({ request }) => {
     const data = (await request.json()) as any;
     db.settings = { ...db.settings, ...data, updatedAt: new Date().toISOString() };
     return HttpResponse.json(db.settings);
   }),
+
+  // --- SETTINGS: PROFILE ---
+  http.get('/api/v1/settings/profile', () =>
+    HttpResponse.json({
+      name: 'Design Team',
+      email: 'd***@example.com',
+      timezone: 'Europe/Amsterdam',
+      defaultCurrencyId: 'cur-1',
+    })
+  ),
+  http.put('/api/v1/settings/profile', async ({ request }) => {
+    const data = (await request.json()) as any;
+    return HttpResponse.json({
+      name: data.name ?? 'Design Team',
+      email: 'd***@example.com',
+      timezone: data.timezone ?? 'Europe/Amsterdam',
+      defaultCurrencyId: data.default_currency_id ?? 'cur-1',
+    });
+  }),
+
+  // --- SETTINGS: PREFERENCES ---
+  http.get('/api/v1/settings/preferences', () =>
+    HttpResponse.json({
+      theme: db.settings.theme,
+      dateFormat: 'DD/MM/YYYY',
+      numberFormat: '1,234.56',
+      compactMode: false,
+    })
+  ),
+  http.put('/api/v1/settings/preferences', async ({ request }) => {
+    const data = (await request.json()) as any;
+    if (data.theme) {
+      db.settings = { ...db.settings, theme: data.theme };
+    }
+    return HttpResponse.json({
+      theme: data.theme ?? db.settings.theme,
+      dateFormat: data.date_format ?? 'DD/MM/YYYY',
+      numberFormat: data.number_format ?? '1,234.56',
+      compactMode: data.compact_mode ?? false,
+    });
+  }),
+
+  // --- SETTINGS: SECURITY ---
+  http.post('/api/v1/settings/security/password', () => new HttpResponse(null, { status: 204 })),
+  http.get('/api/v1/settings/security/sessions', () =>
+    HttpResponse.json([
+      {
+        id: 'session-current',
+        deviceLabel: 'Chrome on macOS',
+        country: 'Netherlands',
+        createdAt: new Date().toISOString(),
+        isCurrent: true,
+      },
+      {
+        id: 'session-2',
+        deviceLabel: 'Firefox on Windows',
+        country: 'Portugal',
+        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        isCurrent: false,
+      },
+    ])
+  ),
+  http.delete(
+    '/api/v1/settings/security/sessions/:id',
+    () => new HttpResponse(null, { status: 204 })
+  ),
+
+  // --- SETTINGS: PERIOD MODEL ---
+  http.get('/api/v1/settings/period-model', () =>
+    HttpResponse.json({
+      periodMode: 'automatic',
+      periodSchedule: {
+        startDay: 1,
+        durationValue: 1,
+        durationUnit: 'months',
+        generateAhead: 6,
+        saturdayAdjustment: 'keep',
+        sundayAdjustment: 'keep',
+        namePattern: '{MONTH} {YEAR}',
+      },
+    })
+  ),
+  http.put('/api/v1/settings/period-model', async ({ request }) => {
+    const data = (await request.json()) as any;
+    return HttpResponse.json(data);
+  }),
+
+  // --- SETTINGS: DANGER ZONE ---
+  http.post(
+    '/api/v1/settings/danger/reset-structure',
+    () => new HttpResponse(null, { status: 204 })
+  ),
+  http.post(
+    '/api/v1/settings/danger/delete-account',
+    () => new HttpResponse(null, { status: 204 })
+  ),
 
   // --- DASHBOARD ---
   http.get('/api/v1/dashboard/recent-transactions', () =>

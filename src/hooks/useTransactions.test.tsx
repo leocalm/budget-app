@@ -9,6 +9,7 @@ import {
   fetchTransactions,
   fetchTransactionsPage,
   updateTransaction,
+  type TransactionFilterParams,
 } from '@/api/transaction';
 import type { Transaction, TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { queryKeys } from './queryKeys';
@@ -176,6 +177,18 @@ describe('useTransactions', () => {
       cursor: 'cursor-1',
       pageSize: 50,
     });
+  });
+
+  it('uses filter in the query key so different filters fetch independently', async () => {
+    const { wrapper } = createWrapper();
+    mockFetchTransactionsPage.mockResolvedValue({ transactions: [], nextCursor: null });
+
+    const filters: TransactionFilterParams = { direction: 'Outgoing' };
+    const { result } = renderHook(() => useInfiniteTransactions('period-1', filters), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(mockFetchTransactionsPage).toHaveBeenCalledWith(expect.objectContaining({ filters }));
   });
 
   it('invalidates transactions after delete', async () => {

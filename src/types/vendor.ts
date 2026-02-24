@@ -1,14 +1,18 @@
 export interface VendorInput {
   name: string;
+  description?: string;
 }
 
 export interface Vendor extends VendorInput {
   id: string;
+  archived: boolean;
 }
 
 export interface VendorWithStats extends Vendor {
+  description?: string;
   transactionCount: number;
   lastUsedAt?: string;
+  archived: boolean;
 }
 
 export interface VendorDeleteError {

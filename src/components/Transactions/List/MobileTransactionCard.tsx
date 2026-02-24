@@ -58,7 +58,10 @@ export const MobileTransactionCard = ({ transaction }: MobileTransactionCardProp
           </div>
         </Group>
         <Text fw={800} size="md" style={{ fontFamily: 'monospace' }} c={amountColor}>
-          <CurrencyValue currency={transaction.fromAccount.currency} cents={transaction.amount} />
+          <CurrencyValue
+            currency={transaction.fromAccount.currency}
+            cents={Math.abs(transaction.amount)}
+          />
         </Text>
       </Group>
     </Card>

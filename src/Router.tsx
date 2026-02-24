@@ -83,12 +83,12 @@ const RegisterPage = lazy(() =>
   }))
 );
 const ForgotPasswordPage = lazy(() =>
-  import('./pages/ForgotPassword.page').then((module) => ({
+  import('./components/Auth/ForgotPasswordPage').then((module) => ({
     default: module.ForgotPasswordPage,
   }))
 );
 const ResetPasswordPage = lazy(() =>
-  import('./pages/ResetPassword.page').then((module) => ({
+  import('./components/Auth/ResetPasswordPage').then((module) => ({
     default: module.ResetPasswordPage,
   }))
 );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Text, Title } from '@mantine/core';
-import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 
 export interface PageHeaderProps {
   title: string;
@@ -60,7 +59,6 @@ export const PageHeader = ({ title, subtitle, actions }: PageHeaderProps) => {
             marginLeft: 'auto',
           }}
         >
-          <PeriodHeaderControl />
           {actions}
         </Box>
       </Box>

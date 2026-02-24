@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { Box, Center, Container } from '@mantine/core';
-import { Logo } from '@/components/Layout/Logo';
+import { Box, Container } from '@mantine/core';
 
 export function AuthLayout() {
   return (
@@ -14,9 +13,6 @@ export function AuthLayout() {
       }}
     >
       <Container size={420} my={40}>
-        <Center mb={30}>
-          <Logo />
-        </Center>
         <Outlet />
       </Container>
     </Box>
