@@ -131,7 +131,7 @@ export const mockAccounts: AccountResponse[] = [
     isArchived: false,
     nextTransferAmount: undefined,
   },
-];;
+];
 
 export const mockCategories: CategoryResponse[] = [
   {
