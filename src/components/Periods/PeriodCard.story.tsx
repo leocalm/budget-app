@@ -31,7 +31,13 @@ export const Current: Story = {
 
 export const Upcoming: Story = {
   args: {
-    period: { ...basePeriod, id: 'per-2', name: 'March 2026', startDate: '2026-03-01', endDate: '2026-03-31' },
+    period: {
+      ...basePeriod,
+      id: 'per-2',
+      name: 'March 2026',
+      startDate: '2026-03-01',
+      endDate: '2026-03-31',
+    },
     status: 'upcoming',
     onEdit: () => {},
     onDelete: () => {},
@@ -40,7 +46,13 @@ export const Upcoming: Story = {
 
 export const Past: Story = {
   args: {
-    period: { ...basePeriod, id: 'per-0', name: 'January 2026', startDate: '2026-01-01', endDate: '2026-01-31' },
+    period: {
+      ...basePeriod,
+      id: 'per-0',
+      name: 'January 2026',
+      startDate: '2026-01-01',
+      endDate: '2026-01-31',
+    },
     status: 'past',
     onEdit: () => {},
     onDelete: () => {},

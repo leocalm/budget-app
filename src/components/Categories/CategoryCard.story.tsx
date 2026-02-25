@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { mockIncomingCategory, mockOutgoingCategory } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockOutgoingCategory, mockIncomingCategory } from '@/mocks/budgetData';
 import { CategoryCard } from './CategoryCard';
 
 const meta: Meta<typeof CategoryCard> = {

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import {
+  initialVendors,
+  mockAccounts,
+  mockCategories,
   mockExpenseTransaction,
   mockIncomeTransaction,
   mockTransferTransaction,
-  mockAccounts,
-  mockCategories,
-  initialVendors,
 } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { EditTransactionForm } from './EditTransactionForm';
 
 const meta: Meta<typeof EditTransactionForm> = {

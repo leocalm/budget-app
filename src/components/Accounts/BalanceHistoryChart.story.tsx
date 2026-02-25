@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { euroCurrency, mockBalanceHistory } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { BalanceHistoryChart } from './BalanceHistoryChart';
 
 const meta: Meta<typeof BalanceHistoryChart> = {
@@ -40,9 +40,7 @@ export const Empty: Story = {
   args: { accountId: 'acc-1', periodId: 'per-1', currency: euroCurrency },
   parameters: {
     msw: {
-      handlers: [
-        http.get('/api/v1/accounts/:id/balance-history', () => HttpResponse.json([])),
-      ],
+      handlers: [http.get('/api/v1/accounts/:id/balance-history', () => HttpResponse.json([]))],
     },
   },
 };

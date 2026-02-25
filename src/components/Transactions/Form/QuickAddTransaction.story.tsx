@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockAccounts, mockCategoryWithStats, mockVendorsWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { QuickAddTransaction } from './QuickAddTransaction';
 
 const meta: Meta<typeof QuickAddTransaction> = {

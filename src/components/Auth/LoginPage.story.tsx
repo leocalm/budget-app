@@ -8,7 +8,13 @@ const meta: Meta<typeof LoginPage> = {
   component: LoginPage,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
-  decorators: [createStoryDecorator({ withBudgetProvider: false, withAuthProvider: 'unauthenticated', padding: false })],
+  decorators: [
+    createStoryDecorator({
+      withBudgetProvider: false,
+      withAuthProvider: 'unauthenticated',
+      padding: false,
+    }),
+  ],
 };
 
 export default meta;
@@ -31,9 +37,7 @@ export const LoginError: Story = {
 export const LoginLoading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.loadingPost('/api/users/login'),
-      ],
+      handlers: [mswHandlers.loadingPost('/api/users/login')],
     },
   },
 };

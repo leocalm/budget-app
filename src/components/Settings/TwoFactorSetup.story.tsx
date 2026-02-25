@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
+import { Button } from '@mantine/core';
 import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { TwoFactorSetup } from './TwoFactorSetup';
 
@@ -19,7 +19,8 @@ const setupHandlers = [
   http.post('/api/v1/two-factor/setup', () =>
     HttpResponse.json({
       secret: 'JBSWY3DPEHPK3PXP',
-      qrCode: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+      qrCode:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
       backupCodes: ['AAAA-BBBB', 'CCCC-DDDD', 'EEEE-FFFF', 'GGGG-HHHH', 'IIII-JJJJ'],
     })
   ),

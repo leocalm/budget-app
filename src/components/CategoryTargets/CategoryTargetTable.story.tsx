@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockCategoryTargets } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { CategoryTargetTable } from './CategoryTargetTable';
 
 const meta: Meta<typeof CategoryTargetTable> = {

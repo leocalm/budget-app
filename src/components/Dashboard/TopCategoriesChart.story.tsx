@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockSpentPerCategory } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { TopCategoriesChart } from './TopCategoriesChart';
 
 const meta: Meta<typeof TopCategoriesChart> = {

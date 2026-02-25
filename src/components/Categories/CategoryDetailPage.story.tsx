@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Route, Routes } from 'react-router-dom';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockCategoryWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { CategoryDetailPage } from './CategoryDetailPage';
 
 const meta: Meta<typeof CategoryDetailPage> = {

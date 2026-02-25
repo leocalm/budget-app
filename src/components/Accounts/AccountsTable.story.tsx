@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockAccounts } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { AccountsTable } from './AccountsTable';
 
 const meta: Meta<typeof AccountsTable> = {

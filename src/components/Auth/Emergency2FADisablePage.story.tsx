@@ -19,9 +19,7 @@ export const Default: Story = {};
 export const RequestLoading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.loadingPost('/api/two-factor/emergency-disable-request'),
-      ],
+      handlers: [mswHandlers.loadingPost('/api/two-factor/emergency-disable-request')],
     },
   },
 };

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockVendorsWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { VendorCard } from './VendorCard';
 
 const meta: Meta<typeof VendorCard> = {

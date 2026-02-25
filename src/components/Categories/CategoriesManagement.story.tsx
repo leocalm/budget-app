@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockCategoriesManagement } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { CategoriesManagement } from './CategoriesManagement';
 
 const meta: Meta<typeof CategoriesManagement> = {

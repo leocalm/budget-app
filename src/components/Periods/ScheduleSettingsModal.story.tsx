@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
+import { Button } from '@mantine/core';
 import { createStoryDecorator } from '@/stories/storyUtils';
 import { ScheduleSettingsModal } from './ScheduleSettingsModal';
 
@@ -27,7 +27,9 @@ const mockSchedule = {
 };
 
 const mutationHandlers = [
-  http.post('/api/v1/budget_period/schedule', () => HttpResponse.json(mockSchedule, { status: 201 })),
+  http.post('/api/v1/budget_period/schedule', () =>
+    HttpResponse.json(mockSchedule, { status: 201 })
+  ),
   http.put('/api/v1/budget_period/schedule', () => HttpResponse.json(mockSchedule)),
   http.delete('/api/v1/budget_period/schedule', () => new HttpResponse(null, { status: 204 })),
 ];

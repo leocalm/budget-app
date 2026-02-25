@@ -31,9 +31,7 @@ export const InvalidToken: Story = {
 export const SubmitLoading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.loadingPost('/api/password-reset/confirm'),
-      ],
+      handlers: [mswHandlers.loadingPost('/api/password-reset/confirm')],
     },
   },
 };

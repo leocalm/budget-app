@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { initialVendors, mockAccounts, mockCategories } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockAccounts, mockCategories, initialVendors } from '@/mocks/budgetData';
 import { TransactionFilters } from './TransactionFilters';
 
 const meta: Meta<typeof TransactionFilters> = {

@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  mockAllowanceAccount,
+  mockBalanceHistory,
+  mockCheckingAccount,
+  mockCreditCardAccount,
+  mockSavingsAccount,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockCheckingAccount, mockSavingsAccount, mockCreditCardAccount, mockAllowanceAccount, mockBalanceHistory } from '@/mocks/budgetData';
 import { AccountCard } from './AccountCard';
 
 const meta: Meta<typeof AccountCard> = {

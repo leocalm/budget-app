@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockMonthlyBurnIn } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { MonthlyBurnRate } from './MonthlyBurnRate';
 
 const meta: Meta<typeof MonthlyBurnRate> = {
@@ -19,13 +19,25 @@ export const Default: Story = {
 
 export const HighBurnRate: Story = {
   args: {
-    data: { ...mockMonthlyBurnIn, spentBudget: 180000, totalBudget: 200000, currentDay: 15, daysInPeriod: 30 },
+    data: {
+      ...mockMonthlyBurnIn,
+      spentBudget: 180000,
+      totalBudget: 200000,
+      currentDay: 15,
+      daysInPeriod: 30,
+    },
   },
 };
 
 export const LowBurnRate: Story = {
   args: {
-    data: { ...mockMonthlyBurnIn, spentBudget: 20000, totalBudget: 200000, currentDay: 15, daysInPeriod: 30 },
+    data: {
+      ...mockMonthlyBurnIn,
+      spentBudget: 20000,
+      totalBudget: 200000,
+      currentDay: 15,
+      daysInPeriod: 30,
+    },
   },
 };
 

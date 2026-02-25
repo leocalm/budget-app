@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
-import piggyIcon from '@/assets/icons/png/gradient/piggy-pulse.png';
 import coinIcon from '@/assets/icons/png/gradient/piggy-pulse-coin.png';
+import piggyIcon from '@/assets/icons/png/gradient/piggy-pulse.png';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { PulseIcon } from './PulseIcon';
 
 const meta: Meta<typeof PulseIcon> = {

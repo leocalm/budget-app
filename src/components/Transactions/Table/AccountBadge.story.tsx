@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  mockAllowanceAccount,
+  mockCheckingAccount,
+  mockCreditCardAccount,
+  mockSavingsAccount,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockCheckingAccount, mockSavingsAccount, mockCreditCardAccount, mockAllowanceAccount } from '@/mocks/budgetData';
 import { AccountBadge } from './AccountBadge';
 
 const meta: Meta<typeof AccountBadge> = {

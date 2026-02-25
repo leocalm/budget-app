@@ -1,11 +1,11 @@
 import React from 'react';
 import { Decorator } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { http, HttpResponse, delay } from 'msw';
-import { BudgetProvider } from '@/context/BudgetContext';
-import { AuthContext } from '@/context/AuthContext';
-import type { User } from '@/api/auth';
+import { delay, http, HttpResponse } from 'msw';
 import { Box } from '@mantine/core';
+import type { User } from '@/api/auth';
+import { AuthContext } from '@/context/AuthContext';
+import { BudgetProvider } from '@/context/BudgetContext';
 
 const MOCK_USER: User = { id: '1', email: 'designer@example.com', name: 'Design Team' };
 
@@ -70,7 +70,13 @@ export const createStoryDecorator = (options: StoryDecoratorOptions = {}): Decor
       []
     );
 
-    const inner = padding ? <Box p="xl"><Story /></Box> : <Story />;
+    const inner = padding ? (
+      <Box p="xl">
+        <Story />
+      </Box>
+    ) : (
+      <Story />
+    );
 
     const withAuth = (node: React.ReactNode) =>
       withAuthProvider ? <MockAuthProvider user={mockUser}>{node}</MockAuthProvider> : <>{node}</>;
@@ -80,9 +86,7 @@ export const createStoryDecorator = (options: StoryDecoratorOptions = {}): Decor
         {withAuth(<BudgetProvider>{inner}</BudgetProvider>)}
       </QueryClientProvider>
     ) : (
-      <QueryClientProvider client={queryClient}>
-        {withAuth(inner)}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{withAuth(inner)}</QueryClientProvider>
     );
 
     return content;
@@ -110,8 +114,7 @@ export const mswHandlers = {
     }),
 
   /** Returns HTTP 500 to simulate a server error */
-  error: (path: string, status = 500) =>
-    http.get(path, () => new HttpResponse(null, { status })),
+  error: (path: string, status = 500) => http.get(path, () => new HttpResponse(null, { status })),
 
   /** Delays forever — shows loading state indefinitely */
   loading: (path: string) =>
@@ -121,12 +124,10 @@ export const mswHandlers = {
     }),
 
   /** Returns an empty array */
-  empty: (path: string) =>
-    http.get(path, () => HttpResponse.json([])),
+  empty: (path: string) => http.get(path, () => HttpResponse.json([])),
 
   /** Returns null (for single-resource endpoints) */
-  emptyNull: (path: string) =>
-    http.get(path, () => HttpResponse.json(null)),
+  emptyNull: (path: string) => http.get(path, () => HttpResponse.json(null)),
 
   /** Returns data as JSON with a short realistic delay (POST) */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -138,9 +139,7 @@ export const mswHandlers = {
 
   /** Returns an HTTP error for a POST endpoint */
   postError: (path: string, status = 500, message?: string) =>
-    http.post(path, () =>
-      HttpResponse.json(message ? { message } : null, { status })
-    ),
+    http.post(path, () => HttpResponse.json(message ? { message } : null, { status })),
 
   /** Delays POST forever — shows loading state indefinitely */
   loadingPost: (path: string) =>

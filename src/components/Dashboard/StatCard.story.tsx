@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconWallet, IconTrendingUp, IconCalendar } from '@tabler/icons-react';
+import { IconCalendar, IconTrendingUp, IconWallet } from '@tabler/icons-react';
 import { createStoryDecorator } from '@/stories/storyUtils';
 import { StatCard } from './StatCard';
 

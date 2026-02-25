@@ -8,7 +8,13 @@ const meta: Meta<typeof RegisterPage> = {
   component: RegisterPage,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
-  decorators: [createStoryDecorator({ withBudgetProvider: false, withAuthProvider: 'unauthenticated', padding: false })],
+  decorators: [
+    createStoryDecorator({
+      withBudgetProvider: false,
+      withAuthProvider: 'unauthenticated',
+      padding: false,
+    }),
+  ],
 };
 
 export default meta;
@@ -19,9 +25,7 @@ export const Default: Story = {};
 export const SubmitLoading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.loadingPost('/api/users/'),
-      ],
+      handlers: [mswHandlers.loadingPost('/api/users/')],
     },
   },
 };

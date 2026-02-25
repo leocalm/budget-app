@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  mockExpenseTransaction,
+  mockIncomeTransaction,
+  mockTransferTransaction,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockExpenseTransaction, mockIncomeTransaction, mockTransferTransaction } from '@/mocks/budgetData';
 import { MobileTransactionCard } from './MobileTransactionCard';
 
 const meta: Meta<typeof MobileTransactionCard> = {

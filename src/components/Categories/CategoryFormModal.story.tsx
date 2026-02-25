@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@mantine/core';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockCategoriesManagement } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { CategoryFormModal } from './CategoryFormModal';
 
 const meta: Meta<typeof CategoryFormModal> = {

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockVendorsWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { VendorsContainer } from './VendorsContainer';
 
 const meta: Meta<typeof VendorsContainer> = {
@@ -17,7 +17,11 @@ type Story = StoryObj<typeof VendorsContainer>;
 
 const defaultHandlers = [
   http.get('/api/v1/vendors', () =>
-    HttpResponse.json({ items: mockVendorsWithStats.filter((v) => !v.archived), hasNextPage: false, nextCursor: null })
+    HttpResponse.json({
+      items: mockVendorsWithStats.filter((v) => !v.archived),
+      hasNextPage: false,
+      nextCursor: null,
+    })
   ),
   http.get('/api/v1/vendors/archived', () =>
     HttpResponse.json(mockVendorsWithStats.filter((v) => v.archived))

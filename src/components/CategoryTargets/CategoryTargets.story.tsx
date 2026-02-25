@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockCategoryTargets } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { CategoryTargetsContainer } from './CategoryTargetsContainer';
 
 const meta: Meta<typeof CategoryTargetsContainer> = {

@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  mockIncomingCategory,
+  mockOutgoingCategory,
+  mockTransferCategory,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockOutgoingCategory, mockIncomingCategory, mockTransferCategory } from '@/mocks/budgetData';
 import { CategoryBadge } from './CategoryBadge';
 
 const meta: Meta<typeof CategoryBadge> = {

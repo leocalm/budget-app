@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockActiveOverlay } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { ActiveOverlayBanner } from './ActiveOverlayBanner';
 
 const meta: Meta<typeof ActiveOverlayBanner> = {
@@ -17,9 +17,7 @@ type Story = StoryObj<typeof ActiveOverlayBanner>;
 export const Default: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get('/api/v1/overlays', () => HttpResponse.json([mockActiveOverlay])),
-      ],
+      handlers: [http.get('/api/v1/overlays', () => HttpResponse.json([mockActiveOverlay]))],
     },
   },
 };
@@ -55,7 +53,14 @@ export const MultipleOverlays: Story = {
         http.get('/api/v1/overlays', () =>
           HttpResponse.json([
             mockActiveOverlay,
-            { ...mockActiveOverlay, id: 'ovl-2', name: 'Car Repair', icon: '🚗', totalCapAmount: 50000, spentAmount: 30000 },
+            {
+              ...mockActiveOverlay,
+              id: 'ovl-2',
+              name: 'Car Repair',
+              icon: '🚗',
+              totalCapAmount: 50000,
+              spentAmount: 30000,
+            },
           ])
         ),
       ],

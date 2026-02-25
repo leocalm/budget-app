@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { mockAccountDetail, mockCheckingAccount } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockCheckingAccount, mockAccountDetail } from '@/mocks/budgetData';
 import { AccountDetailHeader } from './AccountDetailHeader';
 
 const meta: Meta<typeof AccountDetailHeader> = {

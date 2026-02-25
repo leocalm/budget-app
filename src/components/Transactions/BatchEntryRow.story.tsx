@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Table } from '@mantine/core';
+import { initialVendors, mockAccounts, mockCategories } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockAccounts, mockCategories, initialVendors } from '@/mocks/budgetData';
 import { BatchEntryRow } from './BatchEntryRow';
 
 const meta: Meta<typeof BatchEntryRow> = {

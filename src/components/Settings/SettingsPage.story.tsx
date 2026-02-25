@@ -16,17 +16,42 @@ type Story = StoryObj<typeof SettingsPage>;
 
 const settingsHandlers = [
   http.get('/api/v1/settings', () =>
-    HttpResponse.json({ id: 's1', language: 'en', defaultCurrencyId: 'cur-1', budgetStabilityToleranceBasisPoints: 1000, updatedAt: '2026-01-01T00:00:00Z' })
+    HttpResponse.json({
+      id: 's1',
+      language: 'en',
+      defaultCurrencyId: 'cur-1',
+      budgetStabilityToleranceBasisPoints: 1000,
+      updatedAt: '2026-01-01T00:00:00Z',
+    })
   ),
   http.get('/api/v1/settings/profile', () =>
-    HttpResponse.json({ name: 'Alice Demo', email: 'alice@example.com', timezone: 'Europe/London', defaultCurrencyId: 'cur-1', updatedAt: '2026-01-01T00:00:00Z' })
+    HttpResponse.json({
+      name: 'Alice Demo',
+      email: 'alice@example.com',
+      timezone: 'Europe/London',
+      defaultCurrencyId: 'cur-1',
+      updatedAt: '2026-01-01T00:00:00Z',
+    })
   ),
   http.get('/api/v1/settings/preferences', () =>
-    HttpResponse.json({ theme: 'auto', dateFormat: 'DD/MM/YYYY', numberFormat: '1,234.56', compactMode: false, updatedAt: '2026-01-01T00:00:00Z' })
+    HttpResponse.json({
+      theme: 'auto',
+      dateFormat: 'DD/MM/YYYY',
+      numberFormat: '1,234.56',
+      compactMode: false,
+      updatedAt: '2026-01-01T00:00:00Z',
+    })
   ),
   http.get('/api/v1/settings/security/sessions', () =>
     HttpResponse.json([
-      { id: 'sess-1', userAgent: 'Mozilla/5.0 Chrome', ipAddress: '127.0.0.1', createdAt: '2026-01-20T10:00:00Z', lastUsedAt: '2026-01-25T08:30:00Z', isCurrent: true },
+      {
+        id: 'sess-1',
+        userAgent: 'Mozilla/5.0 Chrome',
+        ipAddress: '127.0.0.1',
+        createdAt: '2026-01-20T10:00:00Z',
+        lastUsedAt: '2026-01-25T08:30:00Z',
+        isCurrent: true,
+      },
     ])
   ),
   http.get('/api/v1/settings/period-model', () =>
@@ -48,14 +73,25 @@ export const Default: Story = {
   parameters: { msw: { handlers: settingsHandlers } },
 };
 
-const [settingsHandler, profileHandler, preferencesHandler, sessionsHandler, periodModelHandler, currencyHandler] = settingsHandlers;
+const [
+  settingsHandler,
+  profileHandler,
+  preferencesHandler,
+  sessionsHandler,
+  periodModelHandler,
+  currencyHandler,
+] = settingsHandlers;
 
 export const TwoFactorEnabled: Story = {
   parameters: {
     msw: {
       handlers: [
-        settingsHandler, profileHandler, preferencesHandler,
-        sessionsHandler, periodModelHandler, currencyHandler,
+        settingsHandler,
+        profileHandler,
+        preferencesHandler,
+        sessionsHandler,
+        periodModelHandler,
+        currencyHandler,
         http.get('/api/v1/two-factor/status', () =>
           HttpResponse.json({ enabled: true, hasBackupCodes: true, backupCodesRemaining: 4 })
         ),

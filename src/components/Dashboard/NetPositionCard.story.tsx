@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { euroCurrency, mockNetPosition } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockNetPosition, euroCurrency } from '@/mocks/budgetData';
 import { NetPositionCard } from './NetPositionCard';
 
 const meta: Meta<typeof NetPositionCard> = {
@@ -63,7 +63,14 @@ export const NegativeNetPosition: Story = {
 
 export const NoAccounts: Story = {
   args: {
-    data: { ...mockNetPosition, accountCount: 0, totalNetPosition: 0, liquidBalance: 0, protectedBalance: 0, debtBalance: 0 },
+    data: {
+      ...mockNetPosition,
+      accountCount: 0,
+      totalNetPosition: 0,
+      liquidBalance: 0,
+      protectedBalance: 0,
+      debtBalance: 0,
+    },
     isLoading: false,
     isError: false,
     onRetry: () => {},

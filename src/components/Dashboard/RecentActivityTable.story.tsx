@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { initialTransactions } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { RecentActivityTable } from './RecentActivityTable';
 
 const meta: Meta<typeof RecentActivityTable> = {

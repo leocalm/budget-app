@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { euroCurrency, gbpCurrency, usdCurrency } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { euroCurrency, usdCurrency, gbpCurrency } from '@/mocks/budgetData';
 import { CurrencyValue } from './CurrencyValue';
 
 const meta: Meta<typeof CurrencyValue> = {

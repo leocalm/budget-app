@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockActiveOverlay } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { OverlayCard } from './OverlayCard';
 
 const meta: Meta<typeof OverlayCard> = {

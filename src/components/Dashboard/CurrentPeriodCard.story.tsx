@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockMonthlyBurnIn, mockMonthProgress } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { CurrentPeriodCard } from './CurrentPeriodCard';
 
 const meta: Meta<typeof CurrentPeriodCard> = {

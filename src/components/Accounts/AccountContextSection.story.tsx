@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { euroCurrency, mockAccountContext } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { AccountContextSection } from './AccountContextSection';
 
 const meta: Meta<typeof AccountContextSection> = {
@@ -19,9 +19,7 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('/api/v1/accounts/:id/context', () =>
-          HttpResponse.json(mockAccountContext)
-        ),
+        http.get('/api/v1/accounts/:id/context', () => HttpResponse.json(mockAccountContext)),
       ],
     },
   },

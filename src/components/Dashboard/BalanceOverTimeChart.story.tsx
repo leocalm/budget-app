@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockBalanceHistory } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { BalanceOverTimeChart } from './BalanceOverTimeChart';
 
 const meta: Meta<typeof BalanceOverTimeChart> = {

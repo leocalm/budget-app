@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
+import { Button } from '@mantine/core';
+import {
+  mockAccounts,
+  mockActiveOverlay,
+  mockCategoryWithStats,
+  mockVendorsWithStats,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockCategoryWithStats, mockVendorsWithStats, mockAccounts, mockActiveOverlay } from '@/mocks/budgetData';
 import { OverlayFormModal } from './OverlayFormModal';
 
 const meta: Meta<typeof OverlayFormModal> = {

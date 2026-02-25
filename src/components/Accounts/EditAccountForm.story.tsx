@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  mockAllowanceAccount,
+  mockCheckingAccount,
+  mockCreditCardAccount,
+} from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
-import { mockCheckingAccount, mockCreditCardAccount, mockAllowanceAccount } from '@/mocks/budgetData';
 import { EditAccountForm } from './EditAccountForm';
 
 const meta: Meta<typeof EditAccountForm> = {

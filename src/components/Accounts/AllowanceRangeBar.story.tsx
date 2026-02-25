@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockAllowanceAccount } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { AllowanceRangeBar } from './AllowanceRangeBar';
 
 const meta: Meta<typeof AllowanceRangeBar> = {

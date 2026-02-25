@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockAccountManagementList } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { AccountsManagement } from './AccountsManagement';
 
 const meta: Meta<typeof AccountsManagement> = {
@@ -16,7 +16,9 @@ type Story = StoryObj<typeof AccountsManagement>;
 
 export const Default: Story = {
   parameters: {
-    msw: { handlers: [mswHandlers.success('/api/v1/accounts/management', mockAccountManagementList)] },
+    msw: {
+      handlers: [mswHandlers.success('/api/v1/accounts/management', mockAccountManagementList)],
+    },
   },
 };
 
@@ -41,9 +43,7 @@ export const Empty: Story = {
 export const WithArchivedAccounts: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.success('/api/v1/accounts/management', mockAccountManagementList),
-      ],
+      handlers: [mswHandlers.success('/api/v1/accounts/management', mockAccountManagementList)],
     },
   },
 };

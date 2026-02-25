@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator } from '@/stories/storyUtils';
+import { Button } from '@mantine/core';
 import { mockVendorsWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { VendorFormModal } from './VendorFormModal';
 
 const meta: Meta<typeof VendorFormModal> = {

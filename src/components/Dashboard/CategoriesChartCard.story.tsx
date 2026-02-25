@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockSpentPerCategory } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { CategoriesChartCard } from './CategoriesChartCard';
 
 const meta: Meta<typeof CategoriesChartCard> = {
@@ -21,7 +21,12 @@ export const WithOverBudget: Story = {
   args: {
     data: [
       ...mockSpentPerCategory,
-      { categoryName: 'Dining Out', budgetedValue: 10000, amountSpent: 15000, percentageSpent: 150 },
+      {
+        categoryName: 'Dining Out',
+        budgetedValue: 10000,
+        amountSpent: 15000,
+        percentageSpent: 150,
+      },
     ],
   },
 };

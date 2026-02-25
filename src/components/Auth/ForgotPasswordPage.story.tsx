@@ -19,9 +19,7 @@ export const Default: Story = {};
 export const SubmitLoading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        mswHandlers.loadingPost('/api/password-reset/request'),
-      ],
+      handlers: [mswHandlers.loadingPost('/api/password-reset/request')],
     },
   },
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
+import { Button } from '@mantine/core';
 import { createStoryDecorator } from '@/stories/storyUtils';
 import { PeriodFormModal } from './PeriodFormModal';
 
@@ -20,8 +20,20 @@ const periods = [
 ];
 
 const mutationHandlers = [
-  http.post('/api/v1/budget_period', () => HttpResponse.json({ id: 'per-new', name: 'March 2026', startDate: '2026-03-01', endDate: '2026-03-31' }, { status: 201 })),
-  http.put('/api/v1/budget_period/:id', () => HttpResponse.json({ id: 'per-1', name: 'January 2026 (updated)', startDate: '2026-01-01', endDate: '2026-01-31' })),
+  http.post('/api/v1/budget_period', () =>
+    HttpResponse.json(
+      { id: 'per-new', name: 'March 2026', startDate: '2026-03-01', endDate: '2026-03-31' },
+      { status: 201 }
+    )
+  ),
+  http.put('/api/v1/budget_period/:id', () =>
+    HttpResponse.json({
+      id: 'per-1',
+      name: 'January 2026 (updated)',
+      startDate: '2026-01-01',
+      endDate: '2026-01-31',
+    })
+  ),
 ];
 
 export const Create: Story = {
@@ -31,11 +43,7 @@ export const Create: Story = {
     return (
       <>
         <Button onClick={() => setOpened(true)}>Create Period</Button>
-        <PeriodFormModal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          periods={periods}
-        />
+        <PeriodFormModal opened={opened} onClose={() => setOpened(false)} periods={periods} />
       </>
     );
   },

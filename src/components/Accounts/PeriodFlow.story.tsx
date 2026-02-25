@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { euroCurrency, mockAccountDetail } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { PeriodFlow } from './PeriodFlow';
 
 const meta: Meta<typeof PeriodFlow> = {

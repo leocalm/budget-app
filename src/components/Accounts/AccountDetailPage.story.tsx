@@ -1,8 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { Route, Routes } from 'react-router-dom';
+import {
+  mockAccountContext,
+  mockAccountDetail,
+  mockBalanceHistory,
+  mockCheckingAccount,
+} from '@/mocks/budgetData';
 import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
-import { mockCheckingAccount, mockAccountDetail, mockAccountContext, mockBalanceHistory } from '@/mocks/budgetData';
 import { AccountDetailPage } from './AccountDetailPage';
 
 const meta: Meta<typeof AccountDetailPage> = {
@@ -54,9 +59,7 @@ export const Loading: Story = {
 export const AccountNotFound: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get('/api/v1/accounts/:id', () => new HttpResponse(null, { status: 404 })),
-      ],
+      handlers: [http.get('/api/v1/accounts/:id', () => new HttpResponse(null, { status: 404 }))],
     },
   },
 };

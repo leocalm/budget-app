@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockCategoryWithStats } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { CategoriesTable } from './CategoriesTable';
 
 const meta: Meta<typeof CategoriesTable> = {

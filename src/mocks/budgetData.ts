@@ -1,9 +1,26 @@
-import { AccountResponse, AccountManagementResponse, AccountContext, AccountDetail } from '@/types/account';
-import { CategoryResponse, CategoryWithStats, BudgetedCategoryDiagnostic, UnbudgetedCategoryDiagnostic, CategoriesManagementListResponse } from '@/types/category';
+import {
+  AccountContext,
+  AccountDetail,
+  AccountManagementResponse,
+  AccountResponse,
+} from '@/types/account';
+import {
+  BudgetedCategoryDiagnostic,
+  CategoriesManagementListResponse,
+  CategoryResponse,
+  CategoryWithStats,
+  UnbudgetedCategoryDiagnostic,
+} from '@/types/category';
+import { CategoryTargetsResponse } from '@/types/categoryTarget';
+import {
+  BudgetStability,
+  MonthlyBurnIn,
+  MonthProgress,
+  NetPosition,
+  SpentPerCategory,
+} from '@/types/dashboard';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor, VendorWithStats } from '@/types/vendor';
-import { MonthlyBurnIn, MonthProgress, NetPosition, BudgetStability, SpentPerCategory } from '@/types/dashboard';
-import { CategoryTargetsResponse } from '@/types/categoryTarget';
 
 export const mockAccounts: AccountResponse[] = [
   {
@@ -229,11 +246,11 @@ export const gbpCurrency = {
 
 // ─── NAMED ACCOUNT VARIANTS ──────────────────────────────────────────────────
 
-export const mockCheckingAccount = mockAccounts[0];   // 'acc-1' Main Checking
-export const mockSavingsAccount = mockAccounts[1];    // 'acc-2' Emergency Fund
+export const mockCheckingAccount = mockAccounts[0]; // 'acc-1' Main Checking
+export const mockSavingsAccount = mockAccounts[1]; // 'acc-2' Emergency Fund
 export const mockCreditCardAccount = mockAccounts[2]; // 'acc-3' Credit Card
-export const mockAllowanceAccount = mockAccounts[3];  // 'acc-4' Pocket Money
-export const mockWalletAccount = mockAccounts[4];     // 'acc-5' Cash Wallet
+export const mockAllowanceAccount = mockAccounts[3]; // 'acc-4' Pocket Money
+export const mockWalletAccount = mockAccounts[4]; // 'acc-5' Cash Wallet
 
 export const mockArchivedAccount: AccountResponse = {
   ...mockCheckingAccount,
@@ -357,11 +374,11 @@ export const mockBalanceHistory = [
 
 // ─── NAMED CATEGORY VARIANTS ─────────────────────────────────────────────────
 
-export const mockOutgoingCategory = mockCategories[0];  // Food
-export const mockIncomingCategory = mockCategories[1];  // Salary
-export const mockTransferCategory = mockCategories[2];  // Transfer
+export const mockOutgoingCategory = mockCategories[0]; // Food
+export const mockIncomingCategory = mockCategories[1]; // Salary
+export const mockTransferCategory = mockCategories[2]; // Transfer
 
-export const mockArchivedCategory: typeof mockCategories[0] = {
+export const mockArchivedCategory: (typeof mockCategories)[0] = {
   ...mockOutgoingCategory,
   id: 'cat-archived',
   name: 'Old Expenses',
@@ -524,9 +541,9 @@ export const mockCategoriesManagement: CategoriesManagementListResponse = {
 
 // ─── NAMED TRANSACTION VARIANTS ──────────────────────────────────────────────
 
-export const mockExpenseTransaction = initialTransactions[0];   // Groceries
-export const mockIncomeTransaction = initialTransactions[1];    // January Salary
-export const mockTransferTransaction = initialTransactions[2];  // Move to savings
+export const mockExpenseTransaction = initialTransactions[0]; // Groceries
+export const mockIncomeTransaction = initialTransactions[1]; // January Salary
+export const mockTransferTransaction = initialTransactions[2]; // Move to savings
 
 // ─── NAMED VENDOR VARIANTS ───────────────────────────────────────────────────
 

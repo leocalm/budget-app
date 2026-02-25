@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { http, HttpResponse, delay } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
+import { Box, Stack } from '@mantine/core';
 import { mockAccounts } from '@/mocks/budgetData';
 import { createStoryDecorator } from '@/stories/storyUtils';
 import { AccountsOverview } from './AccountsOverview';
-import { Stack, Box } from '@mantine/core';
 
 /* ==================== ACCOUNTS OVERVIEW FULL PAGE ==================== */
 
@@ -261,9 +261,7 @@ export const AllowanceAccountRowNoTransfer: Story = {
   render: () => (
     <Box maw={500}>
       <Stack>
-        <p style={{ fontSize: '12px', color: '#666' }}>
-          Allowance Account Row - No Transfer Set
-        </p>
+        <p style={{ fontSize: '12px', color: '#666' }}>Allowance Account Row - No Transfer Set</p>
         <AccountsOverview />
       </Stack>
     </Box>

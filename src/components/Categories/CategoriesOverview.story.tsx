@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { mockBudgetedDiagnosticRows, mockUnbudgetedDiagnosticRows } from '@/mocks/budgetData';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { CategoriesOverview } from './CategoriesOverview';
 
 const meta: Meta<typeof CategoriesOverview> = {
@@ -17,7 +17,10 @@ type Story = StoryObj<typeof CategoriesOverview>;
 
 const defaultHandlers = [
   http.get('/api/v1/categories/diagnostics', () =>
-    HttpResponse.json({ budgetedRows: mockBudgetedDiagnosticRows, unbudgetedRows: mockUnbudgetedDiagnosticRows })
+    HttpResponse.json({
+      budgetedRows: mockBudgetedDiagnosticRows,
+      unbudgetedRows: mockUnbudgetedDiagnosticRows,
+    })
   ),
 ];
 

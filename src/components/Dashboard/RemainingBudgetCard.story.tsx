@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryDecorator } from '@/stories/storyUtils';
 import { mockMonthlyBurnIn } from '@/mocks/budgetData';
+import { createStoryDecorator } from '@/stories/storyUtils';
 import { RemainingBudgetCard } from './RemainingBudgetCard';
 
 const meta: Meta<typeof RemainingBudgetCard> = {
