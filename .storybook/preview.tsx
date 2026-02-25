@@ -38,8 +38,9 @@ const preview: Preview = {
     layout: 'fullscreen',
     options: {
       showPanel: false,
-      // Storybook doesn't expose a stable, exported type for storySort args in our setup.
-      storySort: (a: any, b: any) => a.title.localeCompare(b.title, undefined, { numeric: true }),
+      // storySort is eval'd by Storybook at runtime, so TS type annotations break it.
+      // @ts-ignore
+      storySort: (a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }),
     },
     backgrounds: { disable: true },
     interactions: { timeout: 2000 },
