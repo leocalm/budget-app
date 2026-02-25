@@ -41,7 +41,7 @@ export const Deleting: Story = {
           opened={opened}
           onClose={() => setOpened(false)}
           onConfirm={() => {}}
-          isDeleting={true}
+          isDeleting
         />
       </>
     );

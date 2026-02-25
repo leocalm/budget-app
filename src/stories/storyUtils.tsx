@@ -106,7 +106,7 @@ export const createStoryDecorator = (options: StoryDecoratorOptions = {}): Decor
  */
 export const mswHandlers = {
   /** Returns data as JSON with a short realistic delay */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   success: (path: string, data: any, delayMs = 300) =>
     http.get(path, async () => {
       await delay(delayMs);
@@ -130,7 +130,7 @@ export const mswHandlers = {
   emptyNull: (path: string) => http.get(path, () => HttpResponse.json(null)),
 
   /** Returns data as JSON with a short realistic delay (POST) */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   post: (path: string, data: any, delayMs = 300) =>
     http.post(path, async () => {
       await delay(delayMs);
