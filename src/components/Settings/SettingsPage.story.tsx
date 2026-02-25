@@ -48,11 +48,14 @@ export const Default: Story = {
   parameters: { msw: { handlers: settingsHandlers } },
 };
 
+const [settingsHandler, profileHandler, preferencesHandler, sessionsHandler, periodModelHandler, currencyHandler] = settingsHandlers;
+
 export const TwoFactorEnabled: Story = {
   parameters: {
     msw: {
       handlers: [
-        ...settingsHandlers.filter((h) => !String(h).includes('two-factor')),
+        settingsHandler, profileHandler, preferencesHandler,
+        sessionsHandler, periodModelHandler, currencyHandler,
         http.get('/api/v1/two-factor/status', () =>
           HttpResponse.json({ enabled: true, hasBackupCodes: true, backupCodesRemaining: 4 })
         ),

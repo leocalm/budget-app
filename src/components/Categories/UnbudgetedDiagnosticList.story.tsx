@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { createStoryDecorator } from '@/stories/storyUtils';
+import { mockUnbudgetedDiagnosticRows } from '@/mocks/budgetData';
 import { UnbudgetedDiagnosticList } from './UnbudgetedDiagnosticList';
 
 const meta: Meta<typeof UnbudgetedDiagnosticList> = {
@@ -12,20 +13,24 @@ const meta: Meta<typeof UnbudgetedDiagnosticList> = {
 export default meta;
 type Story = StoryObj<typeof UnbudgetedDiagnosticList>;
 
+const toRowProps = (row: (typeof mockUnbudgetedDiagnosticRows)[number]) => ({
+  id: row.id,
+  name: row.name,
+  icon: row.icon,
+  color: row.color,
+  spentValue: row.actualValue,
+  sharePercentage: row.shareOfTotalBasisPoints / 100,
+});
+
 export const Default: Story = {
   args: {
-    rows: [
-      { id: 'cat-1', name: 'Entertainment', icon: 'device-tv', color: '#f783ac', spentValue: 9800, sharePercentage: 12 },
-      { id: 'cat-2', name: 'Subscriptions', icon: 'credit-card', color: '#74c0fc', spentValue: 4500, sharePercentage: 5.5 },
-    ],
+    rows: mockUnbudgetedDiagnosticRows.map(toRowProps),
   },
 };
 
 export const Single: Story = {
   args: {
-    rows: [
-      { id: 'cat-1', name: 'Misc', icon: 'dots', color: '#ced4da', spentValue: 2300, sharePercentage: 3 },
-    ],
+    rows: [toRowProps(mockUnbudgetedDiagnosticRows[0])],
   },
 };
 

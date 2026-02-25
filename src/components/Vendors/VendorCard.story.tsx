@@ -38,9 +38,9 @@ export const Archived: Story = {
   },
 };
 
-export const NoDeletable: Story = {
+export const HighUsage: Story = {
   args: {
     ...Default.args,
-    vendor: mockVendorsWithStats[0],
+    vendor: { ...mockVendorsWithStats[0], transactionCount: 248 },
   },
 };

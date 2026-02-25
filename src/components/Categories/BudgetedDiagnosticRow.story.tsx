@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { createStoryDecorator } from '@/stories/storyUtils';
+import { mockBudgetedDiagnosticRows } from '@/mocks/budgetData';
 import { BudgetedDiagnosticRow } from './BudgetedDiagnosticRow';
 
 const meta: Meta<typeof BudgetedDiagnosticRow> = {
@@ -12,44 +13,31 @@ const meta: Meta<typeof BudgetedDiagnosticRow> = {
 export default meta;
 type Story = StoryObj<typeof BudgetedDiagnosticRow>;
 
+const toRowProps = (row: (typeof mockBudgetedDiagnosticRows)[number]) => ({
+  id: row.id,
+  name: row.name,
+  icon: row.icon,
+  color: row.color,
+  budgetedValue: row.budgetedValue,
+  spentValue: row.actualValue,
+  varianceValue: row.varianceValue,
+  progressPercentage: row.progressBasisPoints / 100,
+  stabilityHistory: row.recentClosedPeriods.map((p) => !p.isOutsideTolerance),
+});
+
 export const UnderBudget: Story = {
-  args: {
-    id: 'cat-out-1',
-    name: 'Food',
-    icon: 'cart',
-    color: '#ff6b9d',
-    budgetedValue: 50000,
-    spentValue: 42000,
-    varianceValue: -8000,
-    progressPercentage: 84,
-    stabilityHistory: [false, true, false],
-  },
+  args: toRowProps(mockBudgetedDiagnosticRows[0]),
+};
+
+export const NearLimit: Story = {
+  args: toRowProps(mockBudgetedDiagnosticRows[1]),
 };
 
 export const OverBudget: Story = {
   args: {
-    id: 'cat-out-2',
-    name: 'Transport',
-    icon: 'car',
-    color: '#4dabf7',
-    budgetedValue: 20000,
-    spentValue: 24000,
-    varianceValue: 4000,
+    ...toRowProps(mockBudgetedDiagnosticRows[0]),
+    spentValue: 60000,
+    varianceValue: 10000,
     progressPercentage: 120,
-    stabilityHistory: [true, true, false],
-  },
-};
-
-export const NearLimit: Story = {
-  args: {
-    id: 'cat-out-3',
-    name: 'Utilities',
-    icon: 'bolt',
-    color: '#ffd43b',
-    budgetedValue: 15000,
-    spentValue: 14500,
-    varianceValue: -500,
-    progressPercentage: 97,
-    stabilityHistory: [false, false, false],
   },
 };

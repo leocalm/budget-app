@@ -34,3 +34,20 @@ export const Error: Story = {
     msw: { handlers: [mswHandlers.error('/api/v1/category-targets')] },
   },
 };
+
+export const Empty: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('/api/v1/category-targets', () =>
+          HttpResponse.json({
+            ...mockCategoryTargets,
+            outgoingTargets: [],
+            incomingTargets: [],
+            excludedCategories: [],
+          })
+        ),
+      ],
+    },
+  },
+};

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@mantine/core';
 import { http, HttpResponse } from 'msw';
-import { createStoryDecorator } from '@/stories/storyUtils';
+import { createStoryDecorator, mswHandlers } from '@/stories/storyUtils';
 import { TwoFactorSetup } from './TwoFactorSetup';
 
 const meta: Meta<typeof TwoFactorSetup> = {
@@ -28,6 +28,25 @@ const setupHandlers = [
 
 export const Default: Story = {
   parameters: { msw: { handlers: setupHandlers } },
+  render: () => {
+    const [opened, setOpened] = useState(true);
+    return (
+      <>
+        <Button onClick={() => setOpened(true)}>Enable 2FA</Button>
+        <TwoFactorSetup
+          opened={opened}
+          onClose={() => setOpened(false)}
+          onSuccess={() => setOpened(false)}
+        />
+      </>
+    );
+  },
+};
+
+export const Loading: Story = {
+  parameters: {
+    msw: { handlers: [mswHandlers.loading('/api/v1/two-factor/setup')] },
+  },
   render: () => {
     const [opened, setOpened] = useState(true);
     return (
