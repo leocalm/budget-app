@@ -39,7 +39,6 @@ const preview: Preview = {
     options: {
       showPanel: false,
       // Storybook doesn't expose a stable, exported type for storySort args in our setup.
-      // Explicitly type to satisfy TS strict mode.
       storySort: (a: any, b: any) => a.title.localeCompare(b.title, undefined, { numeric: true }),
     },
     backgrounds: { disable: true },
@@ -62,8 +61,9 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const scheme = (context.globals?.theme || 'light') as 'light' | 'dark';
+      const initialEntries: string[] = context.parameters?.initialEntries ?? ['/'];
       return (
-        <MemoryRouter>
+        <MemoryRouter initialEntries={initialEntries}>
           <MantineProvider theme={theme} forceColorScheme={scheme}>
             <ColorSchemeScript />
             <Story />
