@@ -186,6 +186,34 @@ export async function register(credentials: RegisterRequest): Promise<void> {
 }
 
 /**
+ * Unlocks a locked account using the token received by email.
+ * @throws Error with user-friendly message on failure
+ */
+export async function unlockAccount(token: string, userId: string): Promise<void> {
+  try {
+    await apiGet<void>(
+      `/api/unlock?token=${encodeURIComponent(token)}&user=${encodeURIComponent(userId)}`
+    );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      if (error.status === 400) {
+        throw errorWithCause(error.message || 'Unlock link is invalid or has expired.', error);
+      }
+      if (error.status >= 500) {
+        throw errorWithCause('Server error. Please try again later.', error);
+      }
+    }
+    if (error instanceof Error && error.message.includes('Failed to fetch')) {
+      throw errorWithCause(
+        'Unable to connect to the server. Please check your internet connection.',
+        error
+      );
+    }
+    throw errorWithCause('Failed to unlock account. Please try again.', error);
+  }
+}
+
+/**
  * Logs out the current user.
  * Clears the authentication cookie on the backend.
  */
