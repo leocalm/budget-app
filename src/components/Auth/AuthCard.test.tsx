@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import { AuthCard, AuthMessage } from './AuthCard';
 
-const wrap = (ui: React.ReactNode) =>
+const wrap = (ui: ReactNode) =>
   render(
     <MantineProvider>
       <MemoryRouter>{ui}</MemoryRouter>

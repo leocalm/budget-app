@@ -250,26 +250,6 @@ export const mockCheckingAccount = mockAccounts[0]; // 'acc-1' Main Checking
 export const mockSavingsAccount = mockAccounts[1]; // 'acc-2' Emergency Fund
 export const mockCreditCardAccount = mockAccounts[2]; // 'acc-3' Credit Card
 export const mockAllowanceAccount = mockAccounts[3]; // 'acc-4' Pocket Money
-export const mockWalletAccount = mockAccounts[4]; // 'acc-5' Cash Wallet
-
-export const mockArchivedAccount: AccountResponse = {
-  ...mockCheckingAccount,
-  id: 'acc-archived',
-  name: 'Old Bank Account',
-  isArchived: true,
-  balance: 0,
-  transactionCount: 0,
-};
-
-export const mockAccountWithSpendLimit: AccountResponse = {
-  ...mockCheckingAccount,
-  id: 'acc-spend-limit',
-  name: 'Daily Spending',
-  color: 'orange',
-  spendLimit: 50000,
-  balance: 32000,
-};
-
 export const mockAccountManagementList: AccountManagementResponse[] = [
   {
     id: 'acc-1',
@@ -377,13 +357,6 @@ export const mockBalanceHistory = [
 export const mockOutgoingCategory = mockCategories[0]; // Food
 export const mockIncomingCategory = mockCategories[1]; // Salary
 export const mockTransferCategory = mockCategories[2]; // Transfer
-
-export const mockArchivedCategory: (typeof mockCategories)[0] = {
-  ...mockOutgoingCategory,
-  id: 'cat-archived',
-  name: 'Old Expenses',
-  isArchived: true,
-};
 
 export const mockCategoryWithStats: CategoryWithStats[] = [
   {

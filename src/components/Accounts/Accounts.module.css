@@ -230,7 +230,7 @@
 }
 
 /* ── Mobile layout ── */
-@media (max-width: em(768)) {
+@media (max-width: 768em) {
   .mgmtRow {
     flex-wrap: wrap;
   }

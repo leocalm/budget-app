@@ -63,7 +63,7 @@ export function UnlockAccountPage() {
       }
     };
 
-    tryUnlock();
+    void tryUnlock();
   }, [token, userId, t]);
 
   if (unlocking) {

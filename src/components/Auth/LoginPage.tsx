@@ -95,7 +95,13 @@ export function LoginPage() {
       // Login successful — hydrate user from cookie-backed endpoint
       const refreshed = await refreshUser(false, false);
       if (!refreshed) {
-        throw new Error(t('auth.login.errors.generic'));
+        setError(
+          t(
+            'auth.login.errors.generic',
+            "We couldn't sign you in. Please verify your credentials and try again."
+          )
+        );
+        return;
       }
 
       // Navigate to the page user was trying to access, or dashboard
@@ -179,7 +185,7 @@ export function LoginPage() {
                 onChange={setTwoFactorCode}
                 onComplete={() => {
                   if (twoFactorCode.length === 6) {
-                    handleSubmit(form.values);
+                    void handleSubmit(form.values);
                   }
                 }}
                 disabled={loading}

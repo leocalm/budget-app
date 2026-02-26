@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, TextInput } from '@mantine/core';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
@@ -33,7 +33,7 @@ export function CategoryTargetRow({
 
   const previousLabel = row.previousTarget !== null ? formatAmount(row.previousTarget) : 'None';
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.currentTarget.value;
     setInputValue(raw);
   };
@@ -52,7 +52,7 @@ export function CategoryTargetRow({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       commitValue();
       inputRef.current?.blur();

@@ -118,7 +118,7 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
   };
 
   const copySecret = () => {
-    navigator.clipboard.writeText(secret);
+    void navigator.clipboard.writeText(secret);
     toast.info({
       title: t('common.success'),
       message: 'Secret copied to clipboard',
@@ -143,7 +143,7 @@ export function TwoFactorSetup({ opened, onClose, onSuccess }: TwoFactorSetupPro
   };
 
   const copyBackupCodes = () => {
-    navigator.clipboard.writeText(backupCodes.join('\n'));
+    void navigator.clipboard.writeText(backupCodes.join('\n'));
     toast.info({
       title: t('common.success'),
       message: 'Backup codes copied to clipboard',

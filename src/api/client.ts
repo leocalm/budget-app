@@ -264,11 +264,10 @@ export function toSnakeCase<T>(obj: unknown): T {
  * Base fetch wrapper with error handling
  */
 async function baseFetch(url: string, options?: RequestInit): Promise<Response> {
-  const res = await fetch(resolveApiUrl(url), {
+  return fetch(resolveApiUrl(url), {
     ...options,
     credentials: 'include',
   });
-  return res;
 }
 
 /**

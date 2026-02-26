@@ -19,10 +19,6 @@ export async function fetchUnbudgetedCategories(): Promise<CategoryResponse[]> {
   return apiGet<CategoryResponse[]>('/api/categories/not-in-budget');
 }
 
-export async function fetchCategory(id: string): Promise<CategoryRequest> {
-  return apiGet<CategoryRequest>(`/api/categories/${id}`);
-}
-
 function toOptionalString(value: unknown): string | null {
   return typeof value === 'string' && value.length > 0 ? value : null;
 }

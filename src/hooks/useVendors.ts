@@ -42,9 +42,9 @@ export const useCreateVendor = () => {
 
   return useMutation({
     mutationFn: (data: VendorInput) => createVendor(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
     },
   });
 };
@@ -54,9 +54,9 @@ export const useUpdateVendor = () => {
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: VendorInput }) => updateVendor(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
     },
   });
 };
@@ -66,10 +66,10 @@ export const useDeleteVendor = () => {
 
   return useMutation({
     mutationFn: (id: string) => deleteVendor(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
     },
   });
 };
@@ -85,10 +85,10 @@ export const useArchiveVendor = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => archiveVendor(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
     },
   });
 };
@@ -97,10 +97,10 @@ export const useRestoreVendor = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => restoreVendor(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsRoot() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsInfinite() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendorsArchived() });
     },
   });
 };

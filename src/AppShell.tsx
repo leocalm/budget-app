@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { AppShell, Group, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
@@ -9,7 +10,7 @@ import { usePageTitle } from '@/hooks/usePageTitle';
 
 const CONTENT_WRAPPER_STYLE = { maxWidth: '1100px', margin: '0 auto' } as const;
 
-export function BasicAppShell({ children }: { children: React.ReactNode }) {
+export function BasicAppShell({ children }: { children: ReactNode }) {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const pageTitle = usePageTitle();

@@ -59,15 +59,15 @@ export const useDeleteCategory = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: deleteCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
     },
   });
 };
@@ -77,15 +77,15 @@ export const useCreateCategory = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: (newCategory: CategoryRequest) => createCategory(newCategory),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.categoriesInfinite(selectedPeriodId, CATEGORIES_PAGE_SIZE),
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.unbudgetedCategories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
     },
   });
 };
@@ -202,10 +202,10 @@ export const useArchiveCategory = () => {
 
   return useMutation({
     mutationFn: archiveCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
     },
   });
 };
@@ -218,10 +218,10 @@ export const useRestoreCategory = () => {
 
   return useMutation({
     mutationFn: restoreCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
     },
   });
 };

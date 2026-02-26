@@ -23,14 +23,6 @@ export async function getMonthProgress(selectedPeriodId: string): Promise<MonthP
   return apiGet<MonthProgress>(`/api/dashboard/month-progress?period_id=${selectedPeriodId}`);
 }
 
-export async function getRecentTransactions(
-  selectedPeriodId: string
-): Promise<TransactionResponse[]> {
-  return apiGet<TransactionResponse[]>(
-    `/api/dashboard/recent-transactions?period_id=${selectedPeriodId}`
-  );
-}
-
 export async function getBudgetPerDay(selectedPeriodId: string): Promise<BudgetPerDay[]> {
   return apiGet<BudgetPerDay[]>(`/api/dashboard/budget-per-day?period_id=${selectedPeriodId}`);
 }

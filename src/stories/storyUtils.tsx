@@ -81,15 +81,13 @@ export const createStoryDecorator = (options: StoryDecoratorOptions = {}): Decor
     const withAuth = (node: React.ReactNode) =>
       withAuthProvider ? <MockAuthProvider user={mockUser}>{node}</MockAuthProvider> : <>{node}</>;
 
-    const content = withBudgetProvider ? (
+    return withBudgetProvider ? (
       <QueryClientProvider client={queryClient}>
         {withAuth(<BudgetProvider>{inner}</BudgetProvider>)}
       </QueryClientProvider>
     ) : (
       <QueryClientProvider client={queryClient}>{withAuth(inner)}</QueryClientProvider>
     );
-
-    return content;
   };
 };
 

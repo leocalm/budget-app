@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { ErrorState } from '../Utils/ErrorState';
+import { ErrorState } from '../Utils';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

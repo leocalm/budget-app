@@ -35,8 +35,8 @@ export const useUpdateSettings = () => {
 
   return useMutation({
     mutationFn: (data: SettingsRequest) => updateSettings(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.settings() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.settings() });
     },
   });
 };
@@ -53,8 +53,8 @@ export const useUpdateProfile = () => {
 
   return useMutation({
     mutationFn: (data: ProfileRequest) => updateProfile(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.settingsProfile() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.settingsProfile() });
     },
   });
 };
@@ -71,8 +71,8 @@ export const useUpdatePreferences = () => {
 
   return useMutation({
     mutationFn: (data: PreferencesRequest) => updatePreferences(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.settingsPreferences() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.settingsPreferences() });
     },
   });
 };
@@ -95,8 +95,8 @@ export const useRevokeSession = () => {
 
   return useMutation({
     mutationFn: (sessionId: string) => revokeSession(sessionId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.settingsSessions() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.settingsSessions() });
     },
   });
 };
@@ -113,8 +113,8 @@ export const useUpdatePeriodModel = () => {
 
   return useMutation({
     mutationFn: (data: PeriodModelRequest) => updatePeriodModel(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.settingsPeriodModel() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.settingsPeriodModel() });
     },
   });
 };

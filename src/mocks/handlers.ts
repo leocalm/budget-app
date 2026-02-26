@@ -78,7 +78,7 @@ export const handlers = [
     const data = (await request.json()) as any;
     const item = {
       ...data,
-      id: `acc-${Math.random().toString(36).substr(2, 9)}`,
+      id: `acc-${Math.random().toString(36).substring(2, 11)}`,
       balance: data.initialBalance || 0,
       balancePerDay: [],
       balanceChangeThisPeriod: 0,
@@ -127,7 +127,7 @@ export const handlers = [
     const cat = db.categories.find((c) => c.id === data.category_id) || db.categories[0];
 
     const item = {
-      id: `tx-${Math.random().toString(36).substr(2, 9)}`,
+      id: `tx-${Math.random().toString(36).substring(2, 11)}`,
       description: data.description,
       amount: data.amount,
       occurredAt: data.occurred_at,
@@ -175,7 +175,7 @@ export const handlers = [
     const data = (await request.json()) as any;
     const item = {
       ...data,
-      id: `cat-${Math.random().toString(36).substr(2, 9)}`,
+      id: `cat-${Math.random().toString(36).substring(2, 11)}`,
     };
     db.categories.push(item);
     return HttpResponse.json(item);
@@ -213,7 +213,7 @@ export const handlers = [
     const data = (await request.json()) as any;
     const item = {
       ...data,
-      id: `ven-${Math.random().toString(36).substr(2, 9)}`,
+      id: `ven-${Math.random().toString(36).substring(2, 11)}`,
     };
     db.vendors.push(item);
     return HttpResponse.json(item);
@@ -224,7 +224,7 @@ export const handlers = [
 
   http.post('/api/v1/overlays', async ({ request }) => {
     const data = (await request.json()) as any;
-    const item = { ...data, id: `ovl-${Math.random().toString(36).substr(2, 9)}` };
+    const item = { ...data, id: `ovl-${Math.random().toString(36).substring(2, 11)}` };
     db.overlays.push(item);
     return HttpResponse.json(item);
   }),
@@ -241,7 +241,7 @@ export const handlers = [
 
   http.post('/api/v1/budget_period', async ({ request }) => {
     const data = (await request.json()) as any;
-    const id = `per-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `per-${Math.random().toString(36).substring(2, 11)}`;
     db.periods.push({ ...data, id });
     return HttpResponse.json(id);
   }),

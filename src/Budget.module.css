@@ -4,22 +4,22 @@
 }
 
 .dark {
-    @mixin dark {
+    :global([data-mantine-color-scheme='dark']) .dark {
         display: none;
     }
 
-    @mixin light {
+    :global([data-mantine-color-scheme='dark']) .light {
         display: block;
     }
 }
 
 .light {
-    @mixin light {
+    :global([data-mantine-color-scheme='light']) .light {
         display: none;
     }
 
-    @mixin dark {
-        display: block;
+    :global([data-mantine-color-scheme='dark']) .dark {
+        display: none;
     }
 }
 

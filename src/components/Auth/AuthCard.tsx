@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react';
 import { Paper, Stack, Text, Transition } from '@mantine/core';
 import { Logo } from '@/components/Layout/Logo';
 
 interface AuthCardProps {
   tagline?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function AuthCard({ tagline, children }: AuthCardProps) {

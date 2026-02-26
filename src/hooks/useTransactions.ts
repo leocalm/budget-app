@@ -45,22 +45,22 @@ export const useDeleteTransaction = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: deleteTransaction,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -70,22 +70,22 @@ export const useCreateTransaction = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: (newTransaction: Transaction) => createTransaction(newTransaction),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -96,22 +96,22 @@ export const useCreateTransactionFromRequest = (selectedPeriodId: string | null)
   return useMutation({
     mutationFn: (newTransaction: TransactionRequest) =>
       createTransactionFromRequest(newTransaction),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };
@@ -122,22 +122,22 @@ export const useUpdateTransaction = (selectedPeriodId: string | null) => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TransactionRequest }) =>
       updateTransaction(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['transactions', selectedPeriodId, 'infinite'],
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
       // Invalidate dashboard data
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
       // Invalidate related entity lists
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
     },
   });
 };

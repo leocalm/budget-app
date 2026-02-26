@@ -7,8 +7,8 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { BasicAppShell } from './AppShell';
-import { ProtectedRoute } from './components/Auth/ProtectedRoute';
-import { PageLoader } from './components/Utils/PageLoader';
+import { ProtectedRoute } from './components/Auth';
+import { PageLoader } from './components/Utils';
 import { AuthProvider } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
 

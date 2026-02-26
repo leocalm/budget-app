@@ -31,8 +31,8 @@ export const useCreateOverlay = () => {
 
   return useMutation({
     mutationFn: (payload: OverlayRequest) => createOverlay(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
     },
   });
 };
@@ -43,9 +43,9 @@ export const useUpdateOverlay = () => {
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: OverlayRequest }) =>
       updateOverlay(id, payload),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.detail(variables.id) });
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.overlays.detail(variables.id) });
     },
   });
 };
@@ -55,8 +55,8 @@ export const useDeleteOverlay = () => {
 
   return useMutation({
     mutationFn: (id: string) => deleteOverlay(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.overlays.list() });
     },
   });
 };

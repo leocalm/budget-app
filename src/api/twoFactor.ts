@@ -26,10 +26,6 @@ export interface TwoFactorDisableRequest {
   code: string;
 }
 
-export interface TwoFactorRegenerateRequest {
-  code: string;
-}
-
 export interface EmergencyDisableRequest {
   email: string;
 }
@@ -91,23 +87,6 @@ export async function getTwoFactorStatus(): Promise<TwoFactorStatus> {
       throw errorWithCause(error.message, error);
     }
     throw errorWithCause('Failed to get two-factor status', error);
-  }
-}
-
-/**
- * Regenerate backup codes (requires current 2FA code)
- */
-export async function regenerateBackupCodes(code: string): Promise<string[]> {
-  try {
-    return await apiPost<string[], TwoFactorRegenerateRequest>(
-      '/api/two-factor/regenerate-backup-codes',
-      { code }
-    );
-  } catch (error) {
-    if (error instanceof ApiError && error.message) {
-      throw errorWithCause(error.message, error);
-    }
-    throw errorWithCause('Failed to regenerate backup codes', error);
   }
 }
 

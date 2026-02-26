@@ -19,7 +19,7 @@ export function CategoryStabilityDots({ history }: CategoryStabilityDotsProps) {
         <span
           key={`stability-dot-${index}`}
           className={`${styles.categoryStabilityDot} ${
-            isWithinTolerance === false ? styles.categoryStabilityDotFilled : ''
+            !isWithinTolerance ? styles.categoryStabilityDotFilled : ''
           }`}
           aria-label={
             isWithinTolerance === undefined

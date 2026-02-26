@@ -87,7 +87,7 @@ export function ResetPasswordPage() {
       }
     };
 
-    validate();
+    void validate();
   }, [token]);
 
   const handleSubmit = async (values: typeof form.values) => {

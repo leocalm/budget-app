@@ -21,12 +21,12 @@ export const useSaveCategoryTargets = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: (payload: BatchUpsertTargetsRequest) => saveCategoryTargets(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.categoryTargets(selectedPeriodId),
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categoriesDiagnostic() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetedCategories() });
     },
   });
 };
@@ -36,8 +36,8 @@ export const useExcludeCategory = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: excludeCategoryFromTargets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.categoryTargets(selectedPeriodId),
       });
     },
@@ -49,8 +49,8 @@ export const useIncludeCategory = (selectedPeriodId: string | null) => {
 
   return useMutation({
     mutationFn: includeCategoryInTargets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.categoryTargets(selectedPeriodId),
       });
     },

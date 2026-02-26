@@ -28,8 +28,8 @@ export const useUpdateBudget = () => {
 
   return useMutation({
     mutationFn: (payload: BudgetResponse) => updateBudget(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgets() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgets() });
     },
   });
 };
@@ -53,9 +53,9 @@ export const useCreateBudgetPeriod = () => {
 
   return useMutation({
     mutationFn: (payload: BudgetPeriodRequest) => createBudgetPeriod(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
     },
   });
 };
@@ -66,21 +66,21 @@ export const useUpdateBudgetPeriod = () => {
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: BudgetPeriodRequest }) =>
       updateBudgetPeriod(id, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
       // Invalidate all period-scoped queries since the period definition changed
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
     },
   });
 };
@@ -90,21 +90,21 @@ export const useDeleteBudgetPeriod = () => {
 
   return useMutation({
     mutationFn: (id: string) => deleteBudgetPeriod(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.current() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.gaps() });
       // Invalidate all period-scoped queries since a period was deleted
-      queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.transactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.vendors() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.spentPerCategory() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthlyBurnIn() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.monthProgress() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPerDay() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentTransactions() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetStability() });
     },
   });
 };
@@ -121,9 +121,9 @@ export const useCreateBudgetPeriodSchedule = () => {
 
   return useMutation({
     mutationFn: (payload: BudgetPeriodScheduleRequest) => createBudgetPeriodSchedule(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
     },
   });
 };
@@ -133,9 +133,9 @@ export const useUpdateBudgetPeriodSchedule = () => {
 
   return useMutation({
     mutationFn: (payload: BudgetPeriodScheduleRequest) => updateBudgetPeriodSchedule(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
     },
   });
 };
@@ -145,9 +145,9 @@ export const useDeleteBudgetPeriodSchedule = () => {
 
   return useMutation({
     mutationFn: deleteBudgetPeriodSchedule,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.schedule() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.budgetPeriods.list() });
     },
   });
 };

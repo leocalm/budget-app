@@ -68,7 +68,8 @@ export function RegisterPage() {
       // Hydrate user from cookie-backed endpoint
       const refreshed = await refreshUser(false, false);
       if (!refreshed) {
-        throw new Error(t('auth.register.errors.generic'));
+        setError(t('auth.register.errors.generic'));
+        return;
       }
 
       // Navigate to dashboard

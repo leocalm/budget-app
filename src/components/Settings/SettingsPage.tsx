@@ -113,8 +113,8 @@ export function SettingsPage() {
   const disableTwoFactorMutation = useMutation({
     mutationFn: ({ password, code }: { password: string; code: string }) =>
       disableTwoFactor(password, code),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
       setDisableModalOpened(false);
       setDisablePassword('');
       setDisableCode('');
@@ -195,7 +195,7 @@ export function SettingsPage() {
   }, [settingsQuery.data]);
 
   useEffect(() => {
-    i18n.changeLanguage(language);
+    void i18n.changeLanguage(language);
   }, [i18n, language]);
 
   useEffect(() => {
@@ -1247,8 +1247,8 @@ export function SettingsPage() {
       <TwoFactorSetup
         opened={setupModalOpened}
         onClose={() => setSetupModalOpened(false)}
-        onSuccess={() => {
-          queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
+        onSuccess={async () => {
+          await queryClient.invalidateQueries({ queryKey: ['twoFactorStatus'] });
         }}
       />
     </Container>

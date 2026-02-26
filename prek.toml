@@ -1,0 +1,55 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+    { id = "end-of-file-fixer" },
+    { id = "trailing-whitespace" },
+    { id = "check-added-large-files" },
+    { id = "check-toml" },
+    { id = "check-yaml" },
+    { id = "check-json" },
+    { id = "detect-private-key"},
+    { id = "no-commit-to-branch"},
+    { id = "check-merge-conflict", args = ["--assume-in-merge"]}
+]
+
+[[repos]]
+repo = "https://github.com/Yelp/detect-secrets"
+rev = "v1.5.0"
+hooks = [
+    { id = "detect-secrets", args = ["--baseline", ".secrets.baseline"]}
+]
+
+
+[[repos]]
+repo = "local"
+hooks = [
+    {
+        id = "yarn typecheck",
+        name = "yarn typecheck",
+        language = "system",
+        entry = "yarn typecheck",
+        pass_filenames = false,
+    },
+    {
+        id = "yarn prettier",
+        name = "yarn prettier",
+        language = "system",
+        entry = "yarn prettier",
+        pass_filenames = false,
+    },
+    {
+    id = "yarn lint",
+    name = "yarn lint",
+    language = "system",
+    entry = "yarn lint",
+    pass_filenames = false,
+    },
+    {
+    id = "yarn vitest",
+    name = "yarn vitest",
+    language = "system",
+    entry = "yarn vitest",
+    pass_filenames = false,
+    },
+]
