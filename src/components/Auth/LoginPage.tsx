@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -26,8 +26,27 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lockedMessage, setLockedMessage] = useState<string | null>(null);
+  const [retryAfterSeconds, setRetryAfterSeconds] = useState<number | null>(null);
+  const retryIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [requires2FA, setRequires2FA] = useState(false);
   const [twoFactorCode, setTwoFactorCode] = useState('');
+
+  useEffect(() => {
+    if (retryAfterSeconds === null || retryAfterSeconds <= 0) {
+      if (retryIntervalRef.current) {
+        clearInterval(retryIntervalRef.current);
+        retryIntervalRef.current = null;
+      }
+      if (retryAfterSeconds === 0) setRetryAfterSeconds(null);
+      return;
+    }
+    retryIntervalRef.current = setInterval(() => {
+      setRetryAfterSeconds((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => {
+      if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
+    };
+  }, [retryAfterSeconds !== null && retryAfterSeconds > 0]);
 
   const getRedirectPath = () =>
     (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard';
@@ -54,6 +73,7 @@ export function LoginPage() {
     setLoading(true);
     setError(null);
     setLockedMessage(null);
+    setRetryAfterSeconds(null);
 
     try {
       await Promise.all([
@@ -85,11 +105,22 @@ export function LoginPage() {
         }
       }
 
-      if (err instanceof ApiError && (err.status === 423 || err.status === 429)) {
+      if (err instanceof ApiError && err.status === 429) {
+        const data = err.data as { retry_after_seconds?: number } | undefined;
+        const seconds = data?.retry_after_seconds ?? 60;
+        setRetryAfterSeconds(seconds);
+        setLockedMessage(
+          t('auth.login.errors.rateLimited', 'Too many sign-in attempts. Please wait before trying again.')
+        );
+      } else if (err instanceof ApiError && err.status === 423) {
+        const data = err.data as { locked_until?: string } | undefined;
+        const lockedUntil = data?.locked_until
+          ? ` until ${new Date(data.locked_until).toLocaleTimeString()}`
+          : '';
         setLockedMessage(
           t(
-            'auth.login.errors.locked',
-            "We're temporarily limiting sign-in attempts. Please try again later."
+            'auth.login.errors.accountLocked',
+            `Your account has been temporarily locked${lockedUntil}. Check your email for unlock instructions.`
           )
         );
       } else if (requires2FA) {
@@ -114,6 +145,7 @@ export function LoginPage() {
     setTwoFactorCode('');
     setError(null);
     setLockedMessage(null);
+    setRetryAfterSeconds(null);
   };
 
   if (requires2FA) {
@@ -186,12 +218,21 @@ export function LoginPage() {
           />
           <AuthMessage message={error} />
           {lockedMessage && (
-            <Text size="xs" c="dimmed" ta="center">
+            <Text size="xs" c="orange" ta="center">
               {lockedMessage}
             </Text>
           )}
-          <Button fullWidth type="submit" loading={loading}>
-            {loading ? t('auth.login.signingIn', 'Signing in…') : t('auth.login.signIn', 'Log in')}
+          <Button
+            fullWidth
+            type="submit"
+            loading={loading}
+            disabled={retryAfterSeconds !== null && retryAfterSeconds > 0}
+          >
+            {loading
+              ? t('auth.login.signingIn', 'Signing in…')
+              : retryAfterSeconds !== null && retryAfterSeconds > 0
+                ? t('auth.login.retryIn', `Retry in ${retryAfterSeconds}s`, { seconds: retryAfterSeconds })
+                : t('auth.login.signIn', 'Log in')}
           </Button>
           <Text ta="center" size="sm">
             <Anchor component={Link} to="/auth/forgot-password">

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchCurrentUser, login, LoginRequest, register, RegisterRequest, User } from './auth';
 import { apiGet, apiPost } from './client';
-import { ApiError } from './errors';
+import { AccountLockedError, ApiError, RateLimitError } from './errors';
 
 vi.mock('./client', () => ({
   apiPost: vi.fn(),
@@ -124,6 +124,45 @@ describe('auth api', () => {
       await expect(login(credentials)).rejects.toThrow(
         'Invalid email or password. Please try again.'
       );
+    });
+
+    it('throws RateLimitError with retryAfterSeconds on 429', async () => {
+      const credentials: LoginRequest = {
+        email: 'john@example.com',
+        password: 'wrongpassword',
+      };
+
+      const apiPostMock = vi.mocked(apiPost);
+      apiPostMock.mockRejectedValueOnce(
+        new ApiError('Too many attempts', 429, '/api/users/login', {
+          error: 'too_many_attempts',
+          retry_after_seconds: 30,
+        })
+      );
+
+      const error = await login(credentials).catch((e) => e);
+      expect(error).toBeInstanceOf(RateLimitError);
+      expect(error.retryAfterSeconds).toBe(30);
+    });
+
+    it('throws AccountLockedError with lockedUntil on 423', async () => {
+      const credentials: LoginRequest = {
+        email: 'john@example.com',
+        password: 'wrongpassword',
+      };
+
+      const lockedUntil = '2026-02-26T10:00:00Z';
+      const apiPostMock = vi.mocked(apiPost);
+      apiPostMock.mockRejectedValueOnce(
+        new ApiError('Account locked', 423, '/api/users/login', {
+          error: 'account_locked',
+          locked_until: lockedUntil,
+        })
+      );
+
+      const error = await login(credentials).catch((e) => e);
+      expect(error).toBeInstanceOf(AccountLockedError);
+      expect(error.lockedUntil).toBe(lockedUntil);
     });
   });
 

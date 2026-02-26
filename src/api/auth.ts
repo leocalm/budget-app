@@ -1,5 +1,5 @@
 import { apiGet, apiPost, apiPut } from './client';
-import { ApiError } from './errors';
+import { AccountLockedError, ApiError, RateLimitError } from './errors';
 
 function errorWithCause(message: string, cause: unknown): Error {
   return new Error(message, { cause });
@@ -43,7 +43,20 @@ export async function login(credentials: LoginRequest): Promise<void> {
       }
 
       if (error.status === 429) {
-        throw errorWithCause('Too many login attempts. Please try again later.', error);
+        const data = error.data as { retry_after_seconds?: number } | undefined;
+        const retryAfter = data?.retry_after_seconds ?? 60;
+        throw new RateLimitError(
+          error.message || 'Too many login attempts. Please wait before trying again.',
+          retryAfter
+        );
+      }
+
+      if (error.status === 423) {
+        const data = error.data as { locked_until?: string } | undefined;
+        throw new AccountLockedError(
+          error.message || 'Account temporarily locked. Check your email for unlock instructions.',
+          data?.locked_until ?? ''
+        );
       }
 
       if (error.status >= 500) {
