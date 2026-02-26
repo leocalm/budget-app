@@ -37,14 +37,18 @@ export function LoginPage() {
         clearInterval(retryIntervalRef.current);
         retryIntervalRef.current = null;
       }
-      if (retryAfterSeconds === 0) setRetryAfterSeconds(null);
+      if (retryAfterSeconds === 0) {
+        setRetryAfterSeconds(null);
+      }
       return;
     }
     retryIntervalRef.current = setInterval(() => {
       setRetryAfterSeconds((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => {
-      if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
+      if (retryIntervalRef.current) {
+        clearInterval(retryIntervalRef.current);
+      }
     };
   }, [retryAfterSeconds !== null && retryAfterSeconds > 0]);
 
@@ -110,7 +114,10 @@ export function LoginPage() {
         const seconds = data?.retry_after_seconds ?? 60;
         setRetryAfterSeconds(seconds);
         setLockedMessage(
-          t('auth.login.errors.rateLimited', 'Too many sign-in attempts. Please wait before trying again.')
+          t(
+            'auth.login.errors.rateLimited',
+            'Too many sign-in attempts. Please wait before trying again.'
+          )
         );
       } else if (err instanceof ApiError && err.status === 423) {
         const data = err.data as { locked_until?: string } | undefined;
@@ -231,7 +238,9 @@ export function LoginPage() {
             {loading
               ? t('auth.login.signingIn', 'Signing in…')
               : retryAfterSeconds !== null && retryAfterSeconds > 0
-                ? t('auth.login.retryIn', `Retry in ${retryAfterSeconds}s`, { seconds: retryAfterSeconds })
+                ? t('auth.login.retryIn', `Retry in ${retryAfterSeconds}s`, {
+                    seconds: retryAfterSeconds,
+                  })
                 : t('auth.login.signIn', 'Log in')}
           </Button>
           <Text ta="center" size="sm">
