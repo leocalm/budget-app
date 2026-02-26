@@ -97,6 +97,11 @@ const Emergency2FADisablePage = lazy(() =>
     default: module.Emergency2FADisablePage,
   }))
 );
+const UnlockAccountPage = lazy(() =>
+  import('./components/Auth/UnlockAccountPage').then((module) => ({
+    default: module.UnlockAccountPage,
+  }))
+);
 const NotFoundPage = lazy(() =>
   import('./pages/NotFound.page').then((module) => ({
     default: module.NotFoundPage,
@@ -173,6 +178,7 @@ export function Router() {
         { path: 'forgot-password', element: withPageLoader(<ForgotPasswordPage />) },
         { path: 'reset-password', element: withPageLoader(<ResetPasswordPage />) },
         { path: 'emergency-2fa-disable', element: withPageLoader(<Emergency2FADisablePage />) },
+        { path: 'unlock', element: withPageLoader(<UnlockAccountPage />) },
       ],
     },
     // Error pages (accessible without authentication)
