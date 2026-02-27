@@ -2,6 +2,7 @@ name: PR Agent
 
 on:
   pull_request:
+<<<<<<< HEAD
     types: [opened, reopened, ready_for_review, synchronize]
   issue_comment:
 
