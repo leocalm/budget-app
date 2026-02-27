@@ -125,7 +125,7 @@ export const TransactionsPageView = ({
       {!isMobile && (
         <Button
           size="sm"
-          variant={batchMode ? 'filled' : 'subtle'}
+          variant={batchMode ? 'outline' : 'subtle'}
           onClick={() => setBatchMode((v) => !v)}
         >
           {batchMode ? t('states.done') : t('transactions.tableView.batchEntry')}
@@ -176,11 +176,7 @@ export const TransactionsPageView = ({
       loadingSkeleton={<TransactionListSkeleton count={8} />}
     >
       <Stack gap="md">
-        <PageHeader
-          title={t('transactions.container.title')}
-          subtitle={t('transactions.container.subtitle')}
-          actions={headerActions}
-        />
+        <PageHeader title={t('transactions.container.title')} actions={headerActions} />
 
         {!isMobile && (
           <TransactionFilters

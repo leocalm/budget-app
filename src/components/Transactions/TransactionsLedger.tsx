@@ -7,6 +7,7 @@ import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
 import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
+import { formatDisplayDate } from '@/utils/date';
 import { BatchEntryRow } from './BatchEntryRow';
 
 interface TransactionsLedgerProps {
@@ -74,12 +75,22 @@ export const TransactionsLedger = ({
             }}
           >
             <Table.Tr>
-              <Table.Th w={110}>{t('transactions.list.date')}</Table.Th>
-              <Table.Th>{t('transactions.list.notes')}</Table.Th>
-              <Table.Th w={180}>{t('transactions.list.category')}</Table.Th>
-              <Table.Th w={220}>{t('transactions.list.account')}</Table.Th>
-              <Table.Th w={150}>{t('transactions.list.vendor')}</Table.Th>
-              <Table.Th w={120} ta="right">
+              <Table.Th w={110} style={{ textTransform: 'uppercase' }}>
+                {t('transactions.list.date')}
+              </Table.Th>
+              <Table.Th style={{ textTransform: 'uppercase' }}>
+                {t('transactions.list.notes')}
+              </Table.Th>
+              <Table.Th w={180} style={{ textTransform: 'uppercase' }}>
+                {t('transactions.list.category')}
+              </Table.Th>
+              <Table.Th w={220} style={{ textTransform: 'uppercase' }}>
+                {t('transactions.list.account')}
+              </Table.Th>
+              <Table.Th w={150} style={{ textTransform: 'uppercase' }}>
+                {t('transactions.list.vendor')}
+              </Table.Th>
+              <Table.Th w={120} ta="right" style={{ textTransform: 'uppercase' }}>
                 {t('transactions.list.amount')}
               </Table.Th>
               <Table.Th w={80} />
@@ -106,7 +117,7 @@ export const TransactionsLedger = ({
                     }}
                   >
                     <Text size="xs" fw={600} c="dimmed">
-                      {date}
+                      {formatDisplayDate(date)}
                     </Text>
                   </Table.Td>
                 </Table.Tr>
@@ -145,7 +156,7 @@ export const TransactionsLedger = ({
                   return (
                     <Table.Tr key={tx.id}>
                       <Table.Td>
-                        <Text size="sm">{tx.occurredAt.slice(0, 10)}</Text>
+                        <Text size="sm">{formatDisplayDate(tx.occurredAt.slice(0, 10))}</Text>
                       </Table.Td>
                       <Table.Td>
                         <Text size="sm">{tx.description}</Text>

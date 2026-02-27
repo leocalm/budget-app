@@ -1205,6 +1205,7 @@
     "subtitle": "Current position, deviation, and period trajectory."
   },
   "states": {
+    "done": "Done",
     "contract": {
       "emptyTitle": "No {{items}} yet.",
       "items": {

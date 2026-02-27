@@ -93,7 +93,7 @@ export const TransactionFilters = ({
         />
 
         <MultiSelect
-          label={t('transactions.filters.vendors')}
+          label={`${t('transactions.filters.vendors')} (optional)`}
           data={vendors.map((v) => ({ value: v.id, label: v.name }))}
           value={filters.vendorIds ?? []}
           onChange={(val) => set({ vendorIds: val })}

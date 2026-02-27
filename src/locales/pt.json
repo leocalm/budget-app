@@ -1145,6 +1145,7 @@
     }
   },
   "states": {
+    "done": "Concluído",
     "contract": {
       "emptyTitle": "Sem {{items}} ainda.",
       "items": {

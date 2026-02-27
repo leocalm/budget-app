@@ -1,15 +1,6 @@
 import React, { useRef } from 'react';
-import { IconCheck } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Autocomplete,
-  Group,
-  NumberInput,
-  Select,
-  Table,
-  TextInput,
-} from '@mantine/core';
+import { Autocomplete, Button, Group, NumberInput, Select, Table, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { useCreateVendor } from '@/hooks/useVendors';
@@ -225,15 +216,9 @@ export const BatchEntryRow = ({ accounts, categories, vendors, onSave }: BatchEn
         />
       </Table.Td>
       <Table.Td>
-        <ActionIcon
-          size="sm"
-          variant="filled"
-          color="blue"
-          onClick={() => void handleSubmit()}
-          aria-label={t('transactions.batch.save')}
-        >
-          <IconCheck size={14} />
-        </ActionIcon>
+        <Button size="xs" variant="filled" onClick={() => void handleSubmit()}>
+          {t('transactions.batch.save')}
+        </Button>
       </Table.Td>
     </Table.Tr>
   );
