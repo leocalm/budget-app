@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { PeriodHeaderControl } from '@/components/BudgetPeriodSelector';
 import { BottomNavigation } from '@/components/Layout/BottomNavigation';
 import { Logo } from '@/components/Layout/Logo';
+import { ScopeChip } from '@/components/Layout/ScopeChip';
 import { Sidebar } from '@/components/Layout/Sidebar';
 import { UserMenu } from '@/components/Layout/UserMenu';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -36,7 +37,8 @@ export function BasicAppShell({ children }: { children: ReactNode }) {
             </Text>
           )}
           <Group gap="sm" align="center" wrap="nowrap" justify="flex-end">
-            <PeriodHeaderControl />
+            {!isMobile && <ScopeChip />}
+            {!isMobile && <PeriodHeaderControl />}
             <UserMenu variant="topbar" />
           </Group>
         </Group>

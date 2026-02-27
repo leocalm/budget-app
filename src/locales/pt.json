@@ -324,6 +324,9 @@
     "logo": {
       "title": "PiggyPulse"
     },
+    "scope": {
+      "allAccounts": "Todas as contas"
+    },
     "userMenu": {
       "userName": "João Silva",
       "userEmail": "joao@exemplo.com",
@@ -968,6 +971,8 @@
         "error": "Não foi possível carregar os valores do período atual."
       },
       "of": "de {{totalBudgetFormatted}}",
+      "noBudget": "Sem orçamento definido",
+      "periodElapsedAria": "{{percent}}% do período decorrido",
       "remainingDays": "{{remainingDays}} dias restando. {{remainingFormatted}} ainda neste período.",
       "projectedSpend": "Gasto projetado com o ritmo atual: {{projectedSpendFormatted}}"
     },
@@ -993,7 +998,8 @@
       "error": "Não foi possível carregar a posição líquida.",
       "retry": "Tentar novamente",
       "acrossAccounts": "Em {{count}} contas",
-      "lastUpdated": "Atualizado há {{time}}"
+      "lastUpdated": "Atualizado há {{time}}",
+      "updatedAgo": "Atualizado {{time}}"
     },
     "stats": {
       "remainingBudget": {
@@ -1048,6 +1054,7 @@
       "withinRangeCount": "{{within}} de {{total}} períodos dentro da faixa",
       "lastClosedPeriodsLabel": "Últimos 6 períodos fechados",
       "empty": "Ainda não há períodos fechados",
+      "insufficientData": "Necessário 3+ períodos fechados para dados de estabilidade",
       "error": "Não foi possível carregar a estabilidade do orçamento.",
       "retry": "Tentar novamente",
       "dots": {

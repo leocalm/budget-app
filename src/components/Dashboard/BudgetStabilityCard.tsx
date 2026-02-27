@@ -19,6 +19,7 @@ export function BudgetStabilityCard({
   const { t } = useTranslation();
 
   const isEmpty = !data || data.totalClosedPeriods < 1;
+  const hasInsufficientData = !isEmpty && data.totalClosedPeriods < 3;
 
   const recentPeriods = data ? data.recentClosedPeriods.slice(0, 6) : [];
   const outsideToleranceCount = recentPeriods.filter((p) => p.isOutsideTolerance).length;
@@ -53,6 +54,8 @@ export function BudgetStabilityCard({
         </Stack>
       ) : isEmpty ? (
         <Text className={styles.meta}>{t('dashboard.stability.empty')}</Text>
+      ) : hasInsufficientData ? (
+        <Text className={styles.meta}>{t('dashboard.stability.insufficientData')}</Text>
       ) : (
         <>
           <Text className={styles.valueHero}>{Math.round(data.withinTolerancePercentage)}%</Text>

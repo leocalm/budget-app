@@ -200,6 +200,17 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
 
         <Grid gutter="xl">
           <Grid.Col span={{ base: 12, md: 6 }}>
+            <BudgetStabilityCard
+              data={budgetStability}
+              isLoading={isBudgetStabilityLoading}
+              isError={isBudgetStabilityError}
+              onRetry={() => {
+                void refetchBudgetStability();
+              }}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <NetPositionCard
               data={netPosition}
               isLoading={isNetPositionLoading}
@@ -209,17 +220,6 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
               }}
               currency={globalCurrency}
               locale={i18n.language}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <BudgetStabilityCard
-              data={budgetStability}
-              isLoading={isBudgetStabilityLoading}
-              isError={isBudgetStabilityError}
-              onRetry={() => {
-                void refetchBudgetStability();
-              }}
             />
           </Grid.Col>
         </Grid>
