@@ -94,7 +94,7 @@ describe('PeriodsPage', () => {
   it('renders redesigned sections with current schedule upcoming and past structure', () => {
     renderPeriodsPage();
 
-    expect(screen.getByRole('heading', { name: /Budget Periods/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /^Periods$/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Create Period/i })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Edit Schedule/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Current Period/i })).toBeInTheDocument();

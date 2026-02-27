@@ -661,8 +661,8 @@
   },
   "periods": {
     "page": {
-      "title": "Períodos de Orçamento",
-      "description": "Gerencie suas janelas de orçamento. Crie períodos manuais ou ative criação automática com agendamento."
+      "title": "Períodos",
+      "description": "Janelas de tempo que ajudam a acompanhar padrões"
     },
     "sections": {
       "current": "Período Atual",
@@ -681,6 +681,7 @@
       "upcoming": "Nenhum próximo período encontrado.",
       "past": "Ainda não há períodos passados."
     },
+    "upcomingDisclaimer": "Períodos futuros podem mudar. Transações com data futura aparecerão no período adequado com base na data.",
     "card": {
       "daysRemaining_one": "{{count}} dia restante",
       "daysRemaining_other": "{{count}} dias restantes",
@@ -1672,7 +1673,7 @@
       "categoriesWithTargets": "{{targeted}} de {{total}} categorias ativas",
       "periodProgress": "Progresso do Período",
       "elapsed": "decorrido",
-      "hint": "As metas são inicializadas a partir do período anterior. Os valores são inseridos como positivos. A direção é derivada do tipo de categoria."
+      "hint": "As metas são inicializadas a partir do período anterior. Os valores são inseridos como positivos. A direção é derivada do tipo de categoria"
     },
     "sections": {
       "outgoing": "Categorias de Gastos",

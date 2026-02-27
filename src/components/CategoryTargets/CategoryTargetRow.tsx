@@ -31,7 +31,7 @@ export function CategoryTargetRow({
   const formatAmount = (amountInCents: number) =>
     formatCurrency(amountInCents, currency, i18n.language);
 
-  const previousLabel = row.previousTarget !== null ? formatAmount(row.previousTarget) : 'None';
+  const previousLabel = row.previousTarget !== null ? formatAmount(row.previousTarget) : '—';
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.currentTarget.value;
@@ -68,7 +68,7 @@ export function CategoryTargetRow({
   let varianceLabel = '—';
   let varianceClass = styles.varianceNeutral;
   if (row.projectedVarianceBasisPoints !== null) {
-    const percent = (row.projectedVarianceBasisPoints / 100).toFixed(1);
+    const percent = Math.round(row.projectedVarianceBasisPoints / 100);
     varianceLabel = `${row.projectedVarianceBasisPoints > 0 ? '+' : ''}${percent}%`;
     if (row.projectedVarianceBasisPoints > 0) {
       varianceClass = styles.variancePositive;
@@ -121,7 +121,7 @@ export function CategoryTargetRow({
         onChange={handleInputChange}
         onBlur={commitValue}
         onKeyDown={handleKeyDown}
-        leftSection={<span className={styles.targetInputPrefix}>$</span>}
+        leftSection={<span className={styles.targetInputPrefix}>{currency.symbol}</span>}
         size="sm"
       />
       <span className={`${styles.varianceValue} ${varianceClass}`}>{varianceLabel}</span>

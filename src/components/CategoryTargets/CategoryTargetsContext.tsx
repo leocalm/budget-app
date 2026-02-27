@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { CategoryTargetsResponse } from '@/types/categoryTarget';
 import { formatCurrency } from '@/utils/currency';
+import { formatDisplayDate } from '@/utils/date';
 import styles from './CategoryTargets.module.css';
 
 interface CategoryTargetsContextProps {
@@ -14,7 +15,7 @@ export function CategoryTargetsContext({ data }: CategoryTargetsContextProps) {
 
   const format = (amountInCents: number) => formatCurrency(amountInCents, currency, i18n.language);
 
-  const periodLabel = `${data.periodStartDate} - ${data.periodEndDate}`;
+  const periodLabel = `${formatDisplayDate(data.periodStartDate)} – ${formatDisplayDate(data.periodEndDate)}`;
   const positionLabel = t('categoryTargets.context.currentPosition', {
     set: format(data.totalTargeted),
     total: format(data.totalTargeted),

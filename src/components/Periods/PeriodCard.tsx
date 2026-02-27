@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ActionIcon, Badge, Card, Group, Stack, Text } from '@mantine/core';
 import { BudgetPeriod } from '@/types/budget';
+import { formatMonthYear } from '@/utils/date';
 import classes from './PeriodsPage.module.css';
 
 interface PeriodCardProps {
@@ -46,7 +47,7 @@ export function PeriodCard({ period, status, onEdit, onDelete }: PeriodCardProps
       <Group justify="space-between" align="center" mb="xs">
         <Stack gap={2}>
           <Group gap="xs">
-            <Text fw={700}>{period.name}</Text>
+            <Text fw={700}>{formatMonthYear(period.startDate)}</Text>
             <Badge size="xs" variant="light" color={status === 'current' ? 'cyan' : 'gray'}>
               {badgeLabel}
             </Badge>
@@ -86,15 +87,17 @@ export function PeriodCard({ period, status, onEdit, onDelete }: PeriodCardProps
           >
             <IconEdit size={16} />
           </ActionIcon>
-          <ActionIcon
-            variant="subtle"
-            color="red"
-            disabled={isLocked}
-            onClick={() => onDelete(period)}
-            aria-label="Delete period"
-          >
-            <IconTrash size={16} />
-          </ActionIcon>
+          {status !== 'current' && (
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              disabled={isLocked}
+              onClick={() => onDelete(period)}
+              aria-label="Delete period"
+            >
+              <IconTrash size={16} />
+            </ActionIcon>
+          )}
         </Group>
       </Group>
 

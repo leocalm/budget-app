@@ -52,13 +52,6 @@ export function CategoryTargetTable({
           onExclude={onExclude}
         />
       ))}
-      <div className={styles.markExcludedHint}>
-        {t('categoryTargets.hints.markExcluded.prefix')}{' '}
-        <span className={styles.markExcludedHintBold}>
-          {t('categoryTargets.actions.markExcluded')}
-        </span>{' '}
-        {t('categoryTargets.hints.markExcluded.suffix')}
-      </div>
     </div>
   );
 }

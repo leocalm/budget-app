@@ -40,3 +40,12 @@ export const getCurrentDateForApi = (): string => {
 export const isValidDate = (date: Date | string | dayjs.Dayjs): boolean => {
   return dayjs(date).isValid();
 };
+
+/**
+ * Formats a date as a human-readable month and year.
+ * @param date - The date to format (Date object, string, or dayjs instance)
+ * @returns Date string in "MMMM YYYY" format (e.g., "February 2026")
+ */
+export const formatMonthYear = (date: Date | string | dayjs.Dayjs): string => {
+  return dayjs(date).format('MMMM YYYY');
+};

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { StateRenderer } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
@@ -27,6 +28,7 @@ function TargetsSkeleton() {
 
 export function CategoryTargetsContainer() {
   const { t } = useTranslation();
+  const isMdUp = useMediaQuery('(min-width: 768px)');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data, isLoading, isError, refetch } = useCategoryTargets(selectedPeriodId);
   const saveMutation = useSaveCategoryTargets(selectedPeriodId);
@@ -151,6 +153,14 @@ export function CategoryTargetsContainer() {
 
           <ExcludedCategoriesTable rows={data.excludedCategories} onInclude={handleInclude} />
 
+          <div className={styles.markExcludedHint}>
+            {t('categoryTargets.hints.markExcluded.prefix')}{' '}
+            <span className={styles.markExcludedHintBold}>
+              {t('categoryTargets.actions.markExcluded')}
+            </span>{' '}
+            {t('categoryTargets.hints.markExcluded.suffix')}
+          </div>
+
           {/* Footer actions */}
           <div className={styles.footerBar}>
             <div>
@@ -173,7 +183,9 @@ export function CategoryTargetsContainer() {
               </Button>
             </div>
           </div>
-          <Text className={styles.keyboardHint}>{t('categoryTargets.footer.keyboardHint')}</Text>
+          {isMdUp && (
+            <Text className={styles.keyboardHint}>{t('categoryTargets.footer.keyboardHint')}</Text>
+          )}
         </Stack>
       )}
     </StateRenderer>

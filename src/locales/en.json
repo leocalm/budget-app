@@ -390,8 +390,8 @@
   },
   "periods": {
     "page": {
-      "title": "Budget Periods",
-      "description": "Manage your budget windows. Create custom periods or enable auto-creation with a recurring schedule."
+      "title": "Periods",
+      "description": "Time windows that help you track patterns"
     },
     "sections": {
       "current": "Current Period",
@@ -410,6 +410,7 @@
       "upcoming": "No upcoming periods found.",
       "past": "No past periods yet."
     },
+    "upcomingDisclaimer": "Future periods may change. Future-dated transactions will appear in the appropriate period based on date.",
     "card": {
       "daysRemaining_one": "{{count}} day remaining",
       "daysRemaining_other": "{{count}} days remaining",
@@ -1756,7 +1757,7 @@
       "categoriesWithTargets": "{{targeted}} of {{total}} active categories",
       "periodProgress": "Period Progress",
       "elapsed": "elapsed",
-      "hint": "Targets are initialized from the previous period. Amounts are entered as positive values. Direction is derived from category type."
+      "hint": "Targets are initialized from the previous period. Amounts are entered as positive values. Direction is derived from category type"
     },
     "sections": {
       "outgoing": "Outgoing Categories",

@@ -425,7 +425,9 @@ export function PeriodsPage() {
 
       <section className={`${classes.section} ${classes.currentSection}`}>
         <Group justify="space-between">
-          <Title order={3}>{t('periods.sections.current')}</Title>
+          <Title order={3} className={classes.sectionLabel}>
+            {t('periods.sections.current')}
+          </Title>
         </Group>
 
         <Stack gap="md" mt="md">
@@ -447,7 +449,9 @@ export function PeriodsPage() {
 
       <section className={`${classes.section} ${classes.upcomingSection}`}>
         <Group justify="space-between">
-          <Title order={3}>{t('periods.sections.upcoming')}</Title>
+          <Title order={3} className={classes.sectionLabel}>
+            {t('periods.sections.upcoming')}
+          </Title>
           <Badge variant="light" color="gray">
             {groupedPeriods.upcoming.length}
           </Badge>
@@ -468,11 +472,17 @@ export function PeriodsPage() {
             <Text c="dimmed">{t('periods.empty.upcoming')}</Text>
           )}
         </Stack>
+
+        <Text size="xs" c="dimmed" mt="sm" className={classes.upcomingDisclaimer}>
+          {t('periods.upcomingDisclaimer')}
+        </Text>
       </section>
 
       <section className={`${classes.section} ${classes.pastSection}`}>
         <Group justify="space-between" align="center">
-          <Title order={3}>{t('periods.sections.past')}</Title>
+          <Title order={3} className={classes.sectionLabel}>
+            {t('periods.sections.past')}
+          </Title>
           <Group gap="xs">
             <Badge variant="light" color="gray">
               {groupedPeriods.past.length}
