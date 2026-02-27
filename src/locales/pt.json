@@ -228,7 +228,18 @@
       "dateRange": "Período",
       "accountAll": "Conta: Todas",
       "categoryAll": "Categoria: Todas",
-      "amountAll": "Valor: Todos"
+      "amountAll": "Valor: Todos",
+      "title": "Filtros",
+      "direction": "Direção",
+      "accounts": "Contas",
+      "categories": "Categorias",
+      "vendors": "Fornecedor (opcional)",
+      "dateFrom": "De",
+      "dateTo": "Até",
+      "allAccounts": "Todas as contas",
+      "allCategories": "Todas as categorias",
+      "allVendors": "Todos os fornecedores",
+      "clearAll": "Limpar filtros"
     },
     "section": {
       "showing": "Mostrando {{count}} transações em {{period}}",
@@ -323,6 +334,9 @@
   "layout": {
     "logo": {
       "title": "PiggyPulse"
+    },
+    "scope": {
+      "allAccounts": "Todas as contas"
     },
     "userMenu": {
       "userName": "João Silva",
@@ -974,8 +988,10 @@
         "error": "Não foi possível carregar os valores do período atual."
       },
       "of": "de {{totalBudgetFormatted}}",
+      "noBudget": "Nenhum orçamento definido para este período.",
       "remainingDays": "{{remainingDays}} dias restando. {{remainingFormatted}} ainda neste período.",
-      "projectedSpend": "Gasto projetado com o ritmo atual: {{projectedSpendFormatted}}"
+      "projectedSpend": "Gasto projetado com o ritmo atual: {{projectedSpendFormatted}}",
+      "periodElapsedAria": "{{percent}}% do período decorrido"
     },
     "noPeriod": {
       "title": "Você está em uma lacuna de período",
@@ -999,7 +1015,8 @@
       "error": "Não foi possível carregar a posição líquida.",
       "retry": "Tentar novamente",
       "acrossAccounts": "Em {{count}} contas",
-      "lastUpdated": "Atualizado há {{time}}"
+      "lastUpdated": "Atualizado há {{time}}",
+      "updatedAgo": "Atualizado {{time}}"
     },
     "stats": {
       "remainingBudget": {
@@ -1054,6 +1071,7 @@
       "withinRangeCount": "{{within}} de {{total}} períodos dentro da faixa",
       "lastClosedPeriodsLabel": "Últimos 6 períodos fechados",
       "empty": "Ainda não há períodos fechados",
+      "insufficientData": "São necessários pelo menos 3 períodos fechados para uma leitura de estabilidade confiável.",
       "error": "Não foi possível carregar a estabilidade do orçamento.",
       "retry": "Tentar novamente",
       "dots": {
@@ -1147,6 +1165,7 @@
     }
   },
   "states": {
+    "done": "Concluído",
     "contract": {
       "emptyTitle": "Sem {{items}} ainda.",
       "items": {
