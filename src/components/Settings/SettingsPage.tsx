@@ -7,17 +7,16 @@ import {
   IconEdit,
   IconKey,
   IconLock,
-  IconRefresh,
   IconShieldCheck,
   IconShieldOff,
-  IconTrash,
 } from '@tabler/icons-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
-  Avatar,
+  Anchor,
   Badge,
+  Box,
   Button,
   Container,
   Divider,
@@ -28,6 +27,7 @@ import {
   Paper,
   PasswordInput,
   PinInput,
+  rem,
   Select,
   Stack,
   Switch,
@@ -36,6 +36,7 @@ import {
   Title,
   useMantineColorScheme,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { disableTwoFactor, getTwoFactorStatus } from '@/api/twoFactor';
 import { useAuth } from '@/context/AuthContext';
 import { useCurrencies } from '@/hooks/useCurrencies';
@@ -369,14 +370,6 @@ export function SettingsPage() {
 
   // --- Derived values ---
 
-  const avatarInitials =
-    (profileQuery.data?.name ?? user?.name)
-      ?.split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2) ?? 'U';
-
   const currencyOptions =
     currenciesQuery.data?.map((c) => ({
       value: c.id,
@@ -389,8 +382,10 @@ export function SettingsPage() {
   }));
 
   const profileCurrencyLabel =
-    currenciesQuery.data?.find((c) => c.id === profileQuery.data?.defaultCurrencyId)?.symbol ??
+    currenciesQuery.data?.find((c) => c.id === profileQuery.data?.defaultCurrencyId)?.currency ??
     null;
+
+  const isDesktop = useMediaQuery('(min-width: 62em)');
 
   const themeOptions: { value: Theme; label: string }[] = [
     { value: 'light', label: t('settings.preferences.themeOptions.light') },
@@ -432,6 +427,15 @@ export function SettingsPage() {
     { value: 'manual', label: t('settings.periodModel.modeManual') },
   ];
 
+  const sidebarLinks = [
+    { id: 'profile', label: t('settings.profile.title') },
+    { id: 'security', label: t('settings.security.title') },
+    { id: 'period-model', label: t('settings.periodModel.title') },
+    { id: 'preferences', label: t('settings.preferences.title') },
+    { id: 'data-export', label: t('settings.dataExport.title') },
+    { id: 'danger-zone', label: t('settings.dangerZone.title') },
+  ];
+
   return (
     <Container size="lg">
       <Stack gap="xl">
@@ -440,479 +444,534 @@ export function SettingsPage() {
           <Text c="dimmed">{t('settings.pageDescription')}</Text>
         </div>
 
-        {/* ─── Profile ─── */}
-        <Paper withBorder radius="md" p="xl">
-          <Stack gap="lg">
-            <Group justify="space-between" align="flex-start">
-              <div>
-                <Title order={4} mb={4}>
-                  {t('settings.profile.title')}
-                </Title>
-                <Text c="dimmed" size="sm">
-                  {t('settings.profile.description')}
-                </Text>
-              </div>
-              <Button
-                variant="light"
-                size="sm"
-                leftSection={<IconEdit size={16} />}
-                onClick={openProfileModal}
-                disabled={profileQuery.isLoading}
-              >
-                {t('settings.profile.editButton')}
-              </Button>
-            </Group>
-
-            {profileQuery.isLoading && <Loader size="sm" />}
-
-            {profileQuery.data && (
-              <Group align="flex-start" gap="xl">
-                <Avatar size={56} radius={56} color="cyan">
-                  {avatarInitials}
-                </Avatar>
-                <Stack gap="xs">
-                  <InfoRow label={t('settings.profile.nameLabel')} value={profileQuery.data.name} />
-                  <InfoRow
-                    label={t('settings.profile.emailLabel')}
-                    value={profileQuery.data.email}
-                  />
-                  <InfoRow
-                    label={t('settings.profile.timezoneLabel')}
-                    value={profileQuery.data.timezone}
-                  />
-                  <InfoRow
-                    label={t('settings.profile.currencyLabel')}
-                    value={profileCurrencyLabel}
-                  />
-                </Stack>
-              </Group>
-            )}
-          </Stack>
-        </Paper>
-
-        {/* ─── Security ─── */}
-        <Paper withBorder radius="md" p="xl">
-          <Stack gap="lg">
-            <div>
-              <Title order={4} mb={4}>
-                {t('settings.security.title')}
-              </Title>
-              <Text c="dimmed" size="sm">
-                {t('settings.security.description')}
-              </Text>
-            </div>
-
-            {/* Password */}
-            <Group justify="space-between">
-              <div>
-                <Text size="sm" fw={500}>
-                  {t('settings.security.passwordLabel')}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  ••••••••
-                </Text>
-              </div>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<IconKey size={16} />}
-                onClick={() => setPasswordModalOpened(true)}
-              >
-                {t('settings.security.changePasswordButton')}
-              </Button>
-            </Group>
-
-            <Divider />
-
-            {/* Two-Factor Auth */}
-            <Group justify="space-between">
-              <Group gap="sm">
-                <Text size="sm" fw={500}>
-                  {t('settings.security.twoFactorLabel')}
-                </Text>
-                {twoFactorStatusQuery.data?.enabled ? (
-                  <Badge color="green" size="sm" leftSection={<IconShieldCheck size={12} />}>
-                    {t('settings.security.twoFactorEnabled')}
-                  </Badge>
-                ) : (
-                  <Badge color="gray" size="sm" leftSection={<IconShieldOff size={12} />}>
-                    {t('settings.security.twoFactorDisabled')}
-                  </Badge>
-                )}
-              </Group>
-              {twoFactorStatusQuery.data && !twoFactorStatusQuery.data.enabled && (
-                <Button
-                  variant="default"
-                  size="sm"
-                  leftSection={<IconLock size={16} />}
-                  onClick={() => setSetupModalOpened(true)}
-                >
-                  {t('settings.security.enableTwoFactorButton')}
-                </Button>
-              )}
-              {twoFactorStatusQuery.data?.enabled && (
-                <Button
-                  variant="light"
-                  color="red"
-                  size="sm"
-                  leftSection={<IconShieldOff size={16} />}
-                  onClick={() => setDisableModalOpened(true)}
-                >
-                  {t('settings.security.disableTwoFactorButton')}
-                </Button>
-              )}
-            </Group>
-
-            <Divider />
-
-            {/* Sessions */}
-            <div>
-              <Text size="sm" fw={500} mb="sm">
-                {t('settings.security.sessionsTitle')}
-              </Text>
-
-              {sessionsQuery.isLoading && <Loader size="sm" />}
-
-              {sessionsQuery.data?.length === 0 && (
-                <Text size="sm" c="dimmed">
-                  {t('settings.security.noSessions')}
-                </Text>
-              )}
-
-              <Stack gap="xs">
-                {sessionsQuery.data?.map((session) => (
-                  <Group
-                    key={session.id}
-                    justify="space-between"
-                    p="sm"
+        <Group align="flex-start" gap="xl" wrap="nowrap">
+          {/* ─── Sidebar Navigation (desktop only) ─── */}
+          {isDesktop && (
+            <Box
+              component="nav"
+              style={{
+                position: 'sticky',
+                top: rem(16),
+                width: rem(160),
+                flexShrink: 0,
+                alignSelf: 'flex-start',
+              }}
+            >
+              <Stack gap={4}>
+                {sidebarLinks.map(({ id, label }) => (
+                  <Anchor
+                    key={id}
+                    href={`#${id}`}
+                    underline="never"
+                    size="sm"
+                    c="dimmed"
                     style={{
-                      borderRadius: 8,
-                      background: 'var(--mantine-color-default-hover)',
+                      display: 'block',
+                      padding: `${rem(4)} ${rem(8)}`,
+                      borderRadius: rem(4),
+                    }}
+                    styles={{
+                      root: {
+                        '&:hover': {
+                          color: 'var(--mantine-color-cyan-6)',
+                          background: 'var(--mantine-color-default-hover)',
+                        },
+                      },
                     }}
                   >
-                    <div>
-                      <Group gap="xs">
-                        <Text size="sm" fw={500}>
-                          {session.deviceLabel}
-                        </Text>
-                        {session.isCurrent && (
-                          <Badge size="xs" color="blue">
-                            {t('settings.security.sessionCurrent')}
-                          </Badge>
-                        )}
-                      </Group>
-                      <Text size="xs" c="dimmed">
-                        {session.country} ·{' '}
-                        {new Date(session.createdAt).toLocaleDateString(undefined, {
-                          dateStyle: 'medium',
-                        })}
-                      </Text>
-                    </div>
-                    {!session.isCurrent && (
-                      <Button
-                        variant="light"
-                        color="red"
-                        size="xs"
-                        loading={revokeSessionMutation.isPending}
-                        onClick={() => revokeSessionMutation.mutate(session.id)}
-                      >
-                        {t('settings.security.revokeButton')}
-                      </Button>
-                    )}
-                  </Group>
+                    {label}
+                  </Anchor>
                 ))}
               </Stack>
-            </div>
-          </Stack>
-        </Paper>
+            </Box>
+          )}
 
-        {/* ─── Period Model ─── */}
-        <Paper withBorder radius="md" p="xl">
-          <Stack gap="lg">
-            <Group justify="space-between" align="flex-start">
-              <div>
-                <Title order={4} mb={4}>
-                  {t('settings.periodModel.title')}
-                </Title>
-                <Text c="dimmed" size="sm">
-                  {t('settings.periodModel.description')}
-                </Text>
-              </div>
-              <Button
-                variant="light"
-                size="sm"
-                leftSection={<IconCalendar size={16} />}
-                onClick={openPeriodModal}
-                disabled={periodModelQuery.isLoading}
-              >
-                {t('settings.periodModel.editButton')}
-              </Button>
-            </Group>
-
-            {periodModelQuery.isLoading && <Loader size="sm" />}
-
-            {periodModelQuery.data && (
-              <Stack gap="xs">
-                <Group gap="sm" wrap="nowrap">
-                  <Text size="sm" c="dimmed" style={{ minWidth: LABEL_WIDTH, flexShrink: 0 }}>
-                    {t('settings.periodModel.modeLabel')}
-                  </Text>
-                  <Badge
-                    color={periodModelQuery.data.periodMode === 'automatic' ? 'teal' : 'gray'}
-                    variant="light"
-                  >
-                    {periodModelQuery.data.periodMode === 'automatic'
-                      ? t('settings.periodModel.modeAutomatic')
-                      : t('settings.periodModel.modeManual')}
-                  </Badge>
-                </Group>
-
-                {periodModelQuery.data.periodMode === 'automatic' &&
-                  periodModelQuery.data.periodSchedule && (
-                    <>
-                      <InfoRow
-                        label={t('settings.periodModel.startDayLabel')}
-                        value={String(periodModelQuery.data.periodSchedule.startDay)}
-                      />
-                      <InfoRow
-                        label={t('settings.periodModel.durationLabel')}
-                        value={`${periodModelQuery.data.periodSchedule.durationValue} ${periodModelQuery.data.periodSchedule.durationUnit}`}
-                      />
-                      <InfoRow
-                        label={t('settings.periodModel.generateAheadLabel')}
-                        value={`${periodModelQuery.data.periodSchedule.generateAhead} ${t('settings.periodModel.periods')}`}
-                      />
-                      <InfoRow
-                        label={t('settings.periodModel.namePatternLabel')}
-                        value={periodModelQuery.data.periodSchedule.namePattern}
-                      />
-                    </>
-                  )}
-
-                {periodModelQuery.data.periodMode === 'manual' && (
-                  <Text size="sm" c="dimmed">
-                    {t('settings.periodModel.noSchedule')}
-                  </Text>
-                )}
-              </Stack>
-            )}
-          </Stack>
-        </Paper>
-
-        {/* ─── Preferences ─── */}
-        <Paper withBorder radius="md" p="xl">
-          <Stack gap="lg">
-            <div>
-              <Title order={4} mb={4}>
-                {t('settings.preferences.title')}
-              </Title>
-              <Text c="dimmed" size="sm">
-                {t('settings.preferences.description')}
-              </Text>
-            </div>
-
-            {preferencesQuery.isLoading ? (
-              <Loader size="sm" />
-            ) : (
-              <>
-                <Group justify="space-between">
+          {/* ─── Main content ─── */}
+          <Stack gap="xl" style={{ flex: 1, minWidth: 0 }}>
+            {/* ─── Profile ─── */}
+            <Paper id="profile" withBorder radius="md" p="xl">
+              <Stack gap="lg">
+                <Group justify="space-between" align="flex-start">
                   <div>
-                    <Text size="sm" fw={500}>
-                      {t('settings.preferences.themeLabel')}
+                    <Title
+                      order={4}
+                      mb={4}
+                      style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                    >
+                      {t('settings.profile.title')}
+                    </Title>
+                    <Text c="dimmed" size="sm">
+                      {t('settings.profile.description')}
                     </Text>
                   </div>
-                  <Select
-                    data={themeOptions}
-                    value={theme}
-                    onChange={(value) => {
-                      const next = (value ?? 'auto') as Theme;
-                      setTheme(next);
-                      setColorScheme(next);
-                    }}
-                    w={200}
-                    size="sm"
-                  />
-                </Group>
-
-                <Group justify="space-between">
-                  <Text size="sm" fw={500}>
-                    {t('settings.preferences.dateFormatLabel')}
-                  </Text>
-                  <Select
-                    data={dateFormatOptions}
-                    value={dateFormat}
-                    onChange={(value) => setDateFormat((value ?? 'DD/MM/YYYY') as DateFormat)}
-                    w={200}
-                    size="sm"
-                  />
-                </Group>
-
-                <Group justify="space-between">
-                  <Text size="sm" fw={500}>
-                    {t('settings.preferences.numberFormatLabel')}
-                  </Text>
-                  <Select
-                    data={numberFormatOptions}
-                    value={numberFormat}
-                    onChange={(value) => setNumberFormat((value ?? '1,234.56') as NumberFormat)}
-                    w={200}
-                    size="sm"
-                  />
-                </Group>
-
-                <Group justify="space-between">
-                  <div>
-                    <Text size="sm" fw={500}>
-                      {t('settings.preferences.compactModeLabel')}
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      {t('settings.preferences.compactModeDescription')}
-                    </Text>
-                  </div>
-                  <Switch
-                    checked={compactMode}
-                    onChange={(e) => setCompactMode(e.currentTarget.checked)}
-                  />
-                </Group>
-
-                <Group justify="space-between">
-                  <Text size="sm" fw={500}>
-                    {t('settings.preferences.languageLabel')}
-                  </Text>
-                  <Select
-                    data={languageOptions}
-                    value={language}
-                    onChange={(value) => setLanguage((value ?? 'en') as Language)}
-                    w={200}
-                    size="sm"
-                  />
-                </Group>
-
-                <Group justify="flex-end">
                   <Button
-                    onClick={handleSavePreferences}
-                    loading={
-                      updatePreferencesMutation.isPending || updateSettingsMutation.isPending
-                    }
+                    variant="light"
+                    size="sm"
+                    leftSection={<IconEdit size={16} />}
+                    onClick={openProfileModal}
+                    disabled={profileQuery.isLoading}
                   >
-                    {t('settings.preferences.saveButton')}
+                    {t('settings.profile.editButton')}
                   </Button>
                 </Group>
-              </>
-            )}
+
+                {profileQuery.isLoading && <Loader size="sm" />}
+
+                {profileQuery.data && (
+                  <Stack gap="xs">
+                    <InfoRow
+                      label={t('settings.profile.nameLabel')}
+                      value={profileQuery.data.name}
+                    />
+                    <InfoRow
+                      label={t('settings.profile.emailLabel')}
+                      value={profileQuery.data.email}
+                    />
+                    <InfoRow
+                      label={t('settings.profile.timezoneLabel')}
+                      value={profileQuery.data.timezone}
+                    />
+                    <InfoRow
+                      label={t('settings.profile.currencyLabel')}
+                      value={profileCurrencyLabel}
+                    />
+                  </Stack>
+                )}
+              </Stack>
+            </Paper>
+
+            {/* ─── Security ─── */}
+            <Paper id="security" withBorder radius="md" p="xl">
+              <Stack gap="lg">
+                <div>
+                  <Title
+                    order={4}
+                    mb={4}
+                    style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                  >
+                    {t('settings.security.title')}
+                  </Title>
+                  <Text c="dimmed" size="sm">
+                    {t('settings.security.description')}
+                  </Text>
+                </div>
+
+                {/* Password */}
+                <Group justify="space-between">
+                  <div>
+                    <Text size="sm" fw={500}>
+                      {t('settings.security.passwordLabel')}
+                    </Text>
+                    <Text size="sm" c="dimmed">
+                      ••••••••
+                    </Text>
+                  </div>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    leftSection={<IconKey size={16} />}
+                    onClick={() => setPasswordModalOpened(true)}
+                  >
+                    {t('settings.security.changePasswordButton')}
+                  </Button>
+                </Group>
+
+                <Divider />
+
+                {/* Two-Factor Auth */}
+                <Group justify="space-between">
+                  <Group gap="sm">
+                    <Text size="sm" fw={500}>
+                      {t('settings.security.twoFactorLabel')}
+                    </Text>
+                    {twoFactorStatusQuery.data?.enabled ? (
+                      <Badge color="green" size="sm" leftSection={<IconShieldCheck size={12} />}>
+                        {t('settings.security.twoFactorEnabled')}
+                      </Badge>
+                    ) : (
+                      <Badge color="gray" size="sm" leftSection={<IconShieldOff size={12} />}>
+                        {t('settings.security.twoFactorDisabled')}
+                      </Badge>
+                    )}
+                  </Group>
+                  {twoFactorStatusQuery.data && !twoFactorStatusQuery.data.enabled && (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      leftSection={<IconLock size={16} />}
+                      onClick={() => setSetupModalOpened(true)}
+                    >
+                      {t('settings.security.enableTwoFactorButton')}
+                    </Button>
+                  )}
+                  {twoFactorStatusQuery.data?.enabled && (
+                    <Button
+                      variant="light"
+                      color="red"
+                      size="sm"
+                      leftSection={<IconShieldOff size={16} />}
+                      onClick={() => setDisableModalOpened(true)}
+                    >
+                      {t('settings.security.disableTwoFactorButton')}
+                    </Button>
+                  )}
+                </Group>
+
+                <Divider />
+
+                {/* Sessions */}
+                <div>
+                  <Text size="sm" fw={500} mb="sm">
+                    {t('settings.security.sessionsTitle')}
+                  </Text>
+
+                  {sessionsQuery.isLoading && <Loader size="sm" />}
+
+                  {sessionsQuery.data?.length === 0 && (
+                    <Text size="sm" c="dimmed">
+                      {t('settings.security.noSessions')}
+                    </Text>
+                  )}
+
+                  <Stack gap="xs">
+                    {sessionsQuery.data?.map((session) => (
+                      <Group
+                        key={session.id}
+                        justify="space-between"
+                        p="sm"
+                        style={{
+                          borderRadius: 8,
+                          background: 'var(--mantine-color-default-hover)',
+                        }}
+                      >
+                        <div>
+                          <Group gap="xs">
+                            <Text size="sm" fw={500}>
+                              {session.deviceLabel}
+                            </Text>
+                            {session.isCurrent && (
+                              <Badge size="xs" color="blue">
+                                {t('settings.security.sessionCurrent')}
+                              </Badge>
+                            )}
+                          </Group>
+                          <Text size="xs" c="dimmed">
+                            {session.country} ·{' '}
+                            {new Date(session.createdAt).toLocaleDateString(undefined, {
+                              dateStyle: 'medium',
+                            })}
+                          </Text>
+                        </div>
+                        {!session.isCurrent && (
+                          <Button
+                            variant="light"
+                            color="red"
+                            size="xs"
+                            loading={revokeSessionMutation.isPending}
+                            onClick={() => revokeSessionMutation.mutate(session.id)}
+                          >
+                            {t('settings.security.revokeButton')}
+                          </Button>
+                        )}
+                      </Group>
+                    ))}
+                  </Stack>
+                </div>
+              </Stack>
+            </Paper>
+
+            {/* ─── Period Model ─── */}
+            <Paper id="period-model" withBorder radius="md" p="xl">
+              <Stack gap="lg">
+                <Group justify="space-between" align="flex-start">
+                  <div>
+                    <Title
+                      order={4}
+                      mb={4}
+                      style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                    >
+                      {t('settings.periodModel.title')}
+                    </Title>
+                    <Text c="dimmed" size="sm">
+                      {t('settings.periodModel.description')}
+                    </Text>
+                  </div>
+                  <Button
+                    variant="light"
+                    size="sm"
+                    leftSection={<IconCalendar size={16} />}
+                    onClick={openPeriodModal}
+                    disabled={periodModelQuery.isLoading}
+                  >
+                    {t('settings.periodModel.editButton')}
+                  </Button>
+                </Group>
+
+                {periodModelQuery.isLoading && <Loader size="sm" />}
+
+                {periodModelQuery.data && (
+                  <Stack gap="xs">
+                    <Group gap="sm" wrap="nowrap">
+                      <Text size="sm" c="dimmed" style={{ minWidth: LABEL_WIDTH, flexShrink: 0 }}>
+                        {t('settings.periodModel.modeLabel')}
+                      </Text>
+                      <Badge
+                        color={periodModelQuery.data.periodMode === 'automatic' ? 'teal' : 'gray'}
+                        variant="light"
+                      >
+                        {periodModelQuery.data.periodMode === 'automatic'
+                          ? t('settings.periodModel.modeAutomatic')
+                          : t('settings.periodModel.modeManual')}
+                      </Badge>
+                    </Group>
+
+                    {periodModelQuery.data.periodMode === 'automatic' &&
+                      periodModelQuery.data.periodSchedule && (
+                        <>
+                          <InfoRow
+                            label={t('settings.periodModel.startDayLabel')}
+                            value={String(periodModelQuery.data.periodSchedule.startDay)}
+                          />
+                          <InfoRow
+                            label={t('settings.periodModel.durationLabel')}
+                            value={`${periodModelQuery.data.periodSchedule.durationValue} ${periodModelQuery.data.periodSchedule.durationUnit}`}
+                          />
+                          <InfoRow
+                            label={t('settings.periodModel.generateAheadLabel')}
+                            value={`${periodModelQuery.data.periodSchedule.generateAhead} ${t('settings.periodModel.periods')}`}
+                          />
+                          <InfoRow
+                            label={t('settings.periodModel.namePatternLabel')}
+                            value={periodModelQuery.data.periodSchedule.namePattern}
+                          />
+                        </>
+                      )}
+
+                    {periodModelQuery.data.periodMode === 'manual' && (
+                      <Text size="sm" c="dimmed">
+                        {t('settings.periodModel.noSchedule')}
+                      </Text>
+                    )}
+                  </Stack>
+                )}
+              </Stack>
+            </Paper>
+
+            {/* ─── Preferences ─── */}
+            <Paper id="preferences" withBorder radius="md" p="xl">
+              <Stack gap="lg">
+                <div>
+                  <Title
+                    order={4}
+                    mb={4}
+                    style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                  >
+                    {t('settings.preferences.title')}
+                  </Title>
+                  <Text c="dimmed" size="sm">
+                    {t('settings.preferences.description')}
+                  </Text>
+                </div>
+
+                {preferencesQuery.isLoading ? (
+                  <Loader size="sm" />
+                ) : (
+                  <>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="sm" fw={500}>
+                          {t('settings.preferences.themeLabel')}
+                        </Text>
+                      </div>
+                      <Select
+                        data={themeOptions}
+                        value={theme}
+                        onChange={(value) => {
+                          const next = (value ?? 'auto') as Theme;
+                          setTheme(next);
+                          setColorScheme(next);
+                        }}
+                        w={200}
+                        size="sm"
+                      />
+                    </Group>
+
+                    <Group justify="space-between">
+                      <Text size="sm" fw={500}>
+                        {t('settings.preferences.dateFormatLabel')}
+                      </Text>
+                      <Select
+                        data={dateFormatOptions}
+                        value={dateFormat}
+                        onChange={(value) => setDateFormat((value ?? 'DD/MM/YYYY') as DateFormat)}
+                        w={200}
+                        size="sm"
+                      />
+                    </Group>
+
+                    <Group justify="space-between">
+                      <Text size="sm" fw={500}>
+                        {t('settings.preferences.numberFormatLabel')}
+                      </Text>
+                      <Select
+                        data={numberFormatOptions}
+                        value={numberFormat}
+                        onChange={(value) => setNumberFormat((value ?? '1,234.56') as NumberFormat)}
+                        w={200}
+                        size="sm"
+                      />
+                    </Group>
+
+                    <Group justify="space-between">
+                      <Text size="sm" fw={500}>
+                        {t('settings.preferences.compactModeLabel')}
+                      </Text>
+                      <Switch
+                        checked={compactMode}
+                        onChange={(e) => setCompactMode(e.currentTarget.checked)}
+                      />
+                    </Group>
+
+                    <Group justify="space-between">
+                      <Text size="sm" fw={500}>
+                        {t('settings.preferences.languageLabel')}
+                      </Text>
+                      <Select
+                        data={languageOptions}
+                        value={language}
+                        onChange={(value) => setLanguage((value ?? 'en') as Language)}
+                        w={200}
+                        size="sm"
+                      />
+                    </Group>
+
+                    <Group justify="flex-end">
+                      <Button
+                        onClick={handleSavePreferences}
+                        loading={
+                          updatePreferencesMutation.isPending || updateSettingsMutation.isPending
+                        }
+                      >
+                        {t('settings.preferences.saveButton')}
+                      </Button>
+                    </Group>
+                  </>
+                )}
+              </Stack>
+            </Paper>
+
+            {/* ─── Data & Export ─── */}
+            <Paper id="data-export" withBorder radius="md" p="xl">
+              <Stack gap="lg">
+                <div>
+                  <Title
+                    order={4}
+                    mb={4}
+                    style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                  >
+                    {t('settings.dataExport.title')}
+                  </Title>
+                  <Text c="dimmed" size="sm">
+                    {t('settings.dataExport.description')}
+                  </Text>
+                </div>
+
+                <Stack gap="sm">
+                  <Button
+                    variant="default"
+                    fullWidth
+                    leftSection={<IconDownload size={16} />}
+                    disabled
+                    title={t('settings.dataExport.comingSoon')}
+                  >
+                    {t('settings.dataExport.exportCsvButton')}
+                  </Button>
+                  <Button
+                    variant="default"
+                    fullWidth
+                    leftSection={<IconDownload size={16} />}
+                    disabled
+                    title={t('settings.dataExport.comingSoon')}
+                  >
+                    {t('settings.dataExport.exportJsonButton')}
+                  </Button>
+                </Stack>
+              </Stack>
+            </Paper>
+
+            {/* ─── Danger Zone ─── */}
+            <Paper
+              id="danger-zone"
+              withBorder
+              radius="md"
+              p="xl"
+              style={{ borderColor: 'var(--mantine-color-red-4)' }}
+            >
+              <Stack gap="lg">
+                <Group gap="sm">
+                  <IconAlertTriangle size={20} color="var(--mantine-color-red-6)" />
+                  <div>
+                    <Title
+                      order={4}
+                      mb={4}
+                      c="red"
+                      style={{ textTransform: isDesktop ? undefined : 'uppercase' }}
+                    >
+                      {t('settings.dangerZone.title')}
+                    </Title>
+                    <Text c="dimmed" size="sm">
+                      {t('settings.dangerZone.description')}
+                    </Text>
+                  </div>
+                </Group>
+
+                <Group justify="space-between">
+                  <div>
+                    <Text size="sm" fw={500}>
+                      {t('settings.dangerZone.resetStructureButton')}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t('settings.dangerZone.resetStructureDescription')}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t('settings.dangerZone.resetStructureNote')}
+                    </Text>
+                  </div>
+                  <Button
+                    color="orange"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResetModalOpened(true)}
+                  >
+                    {t('settings.dangerZone.resetStructureButton')}
+                  </Button>
+                </Group>
+
+                <Group justify="space-between">
+                  <div>
+                    <Text size="sm" fw={500}>
+                      {t('settings.dangerZone.deleteAccountButton')}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t('settings.dangerZone.deleteAccountDescription')}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {t('settings.dangerZone.deleteAccountNote')}
+                    </Text>
+                  </div>
+                  <Button
+                    color="red"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDeleteModalOpened(true)}
+                  >
+                    {t('settings.dangerZone.deleteAccountButton')}
+                  </Button>
+                </Group>
+              </Stack>
+            </Paper>
           </Stack>
-        </Paper>
-
-        {/* ─── Data & Export ─── */}
-        <Paper withBorder radius="md" p="xl">
-          <Stack gap="lg">
-            <div>
-              <Title order={4} mb={4}>
-                {t('settings.dataExport.title')}
-              </Title>
-              <Text c="dimmed" size="sm">
-                {t('settings.dataExport.description')}
-              </Text>
-            </div>
-
-            <Group justify="space-between">
-              <div>
-                <Text size="sm" fw={500}>
-                  {t('settings.dataExport.exportCsvButton')}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {t('settings.dataExport.exportCsvDescription')}
-                </Text>
-              </div>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<IconDownload size={16} />}
-                disabled
-                title={t('settings.dataExport.comingSoon')}
-              >
-                CSV
-              </Button>
-            </Group>
-
-            <Group justify="space-between">
-              <div>
-                <Text size="sm" fw={500}>
-                  {t('settings.dataExport.exportJsonButton')}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {t('settings.dataExport.exportJsonDescription')}
-                </Text>
-              </div>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<IconDownload size={16} />}
-                disabled
-                title={t('settings.dataExport.comingSoon')}
-              >
-                JSON
-              </Button>
-            </Group>
-          </Stack>
-        </Paper>
-
-        {/* ─── Danger Zone ─── */}
-        <Paper withBorder radius="md" p="xl" style={{ borderColor: 'var(--mantine-color-red-4)' }}>
-          <Stack gap="lg">
-            <Group gap="sm">
-              <IconAlertTriangle size={20} color="var(--mantine-color-red-6)" />
-              <div>
-                <Title order={4} mb={4} c="red">
-                  {t('settings.dangerZone.title')}
-                </Title>
-                <Text c="dimmed" size="sm">
-                  {t('settings.dangerZone.description')}
-                </Text>
-              </div>
-            </Group>
-
-            <Group justify="space-between">
-              <div>
-                <Text size="sm" fw={500}>
-                  {t('settings.dangerZone.resetStructureButton')}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {t('settings.dangerZone.resetStructureDescription')}
-                </Text>
-              </div>
-              <Button
-                color="orange"
-                variant="light"
-                size="sm"
-                leftSection={<IconRefresh size={16} />}
-                onClick={() => setResetModalOpened(true)}
-              >
-                {t('settings.dangerZone.resetStructureButton')}
-              </Button>
-            </Group>
-
-            <Group justify="space-between">
-              <div>
-                <Text size="sm" fw={500}>
-                  {t('settings.dangerZone.deleteAccountButton')}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {t('settings.dangerZone.deleteAccountDescription')}
-                </Text>
-              </div>
-              <Button
-                color="red"
-                variant="light"
-                size="sm"
-                leftSection={<IconTrash size={16} />}
-                onClick={() => setDeleteModalOpened(true)}
-              >
-                {t('settings.dangerZone.deleteAccountButton')}
-              </Button>
-            </Group>
-          </Stack>
-        </Paper>
+        </Group>
       </Stack>
 
       {/* ─── Edit Profile Modal ─── */}
