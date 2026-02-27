@@ -15,18 +15,19 @@ interface NetPositionCardProps {
   lastUpdated?: Date;
 }
 
-const formatRelativeTime = (date: Date): string => {
+const formatRelativeTime = (date: Date, locale: string): string => {
   const diffMs = Date.now() - date.getTime();
   const diffMins = Math.floor(diffMs / 60000);
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
   if (diffMins < 60) {
-    return `${diffMins}m ago`;
+    return rtf.format(-diffMins, 'minute');
   }
   const diffHours = Math.floor(diffMins / 60);
   if (diffHours < 24) {
-    return `${diffHours}h ago`;
+    return rtf.format(-diffHours, 'hour');
   }
   const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}d ago`;
+  return rtf.format(-diffDays, 'day');
 };
 
 const formatMoney = (amount: number, currency: CurrencyResponse, locale: string): string => {
@@ -134,7 +135,7 @@ export const NetPositionCard = ({
               {lastUpdated && (
                 <Text className={styles.meta} size="xs" c="dimmed">
                   {t('dashboard.netPosition.updatedAgo', {
-                    time: formatRelativeTime(lastUpdated),
+                    time: formatRelativeTime(lastUpdated, locale),
                   })}
                 </Text>
               )}

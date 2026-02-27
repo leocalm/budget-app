@@ -220,6 +220,9 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
               }}
               currency={globalCurrency}
               locale={i18n.language}
+              lastUpdated={
+                currentPeriod?.endDate ? new Date(`${currentPeriod.endDate}T00:00:00`) : undefined
+              }
             />
           </Grid.Col>
         </Grid>

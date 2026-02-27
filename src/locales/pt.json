@@ -228,7 +228,18 @@
       "dateRange": "Período",
       "accountAll": "Conta: Todas",
       "categoryAll": "Categoria: Todas",
-      "amountAll": "Valor: Todos"
+      "amountAll": "Valor: Todos",
+      "direction": "Direção",
+      "accounts": "Contas",
+      "categories": "Categorias",
+      "vendors": "Fornecedor (opcional)",
+      "dateFrom": "De",
+      "dateTo": "Até",
+      "allAccounts": "Todas as contas",
+      "allCategories": "Todas as categorias",
+      "allVendors": "Todos os fornecedores",
+      "clearAll": "Limpar filtros",
+      "title": "Filtros"
     },
     "section": {
       "showing": "Mostrando {{count}} transações em {{period}}",

@@ -254,7 +254,7 @@
       "direction": "Direction",
       "accounts": "Accounts",
       "categories": "Categories",
-      "vendors": "Vendors",
+      "vendors": "Vendor (optional)",
       "dateFrom": "From",
       "dateTo": "To",
       "allAccounts": "All accounts",
