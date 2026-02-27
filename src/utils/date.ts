@@ -47,5 +47,5 @@ export const isValidDate = (date: Date | string | dayjs.Dayjs): boolean => {
  * @returns Date string in "MMMM YYYY" format (e.g., "February 2026")
  */
 export const formatMonthYear = (date: Date | string | dayjs.Dayjs): string => {
-  return dayjs(date).format('MMMM YYYY');
+  return dayjs.utc(date).format('MMMM YYYY');
 };
