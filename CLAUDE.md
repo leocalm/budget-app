@@ -2,13 +2,16 @@
 
 ## Critical: Before Committing
 
-Always run the full CI check suite locally before committing or pushing:
+Pre-commit hooks (prek) handle the full CI check suite automatically on every commit:
+`yarn typecheck`, `yarn prettier`, `yarn lint`, `yarn vitest`, `detect-secrets`, etc.
+
+If you need to run checks manually:
 
 ```bash
 yarn prettier:write      # Format all files
 yarn typecheck           # TypeScript type checking
 yarn lint                # ESLint + Stylelint
-yarn test                # Full test suite (typecheck + prettier + lint + vitest + build)
+yarn vitest              # Unit tests
 ```
 
 Also search your changes for `console.log` and remove all debugging statements before committing.
@@ -25,9 +28,24 @@ Always use **Serena MCP tools** (`find_symbol`, `replace_symbol_body`, `search_f
 - Push the branch and open a PR against `main`
 - Never attempt to push directly to `main`
 
-## Critical: No Assumptions
+## Critical: Autonomy and Assumptions
 
-**Never assume anything.** If requirements, intent, or context are unclear, ask before proceeding. It is always better to ask a clarifying question than to make a wrong assumption and do work that needs to be undone.
+When executing an **approved plan**, proceed autonomously through all steps without asking for confirmation at each step. Push the branch and open a PR when done.
+
+When there is **no approved plan**, ask before proceeding if:
+- Requirements, intent, or context are unclear
+- There are multiple valid approaches and the choice matters
+- The change has significant architectural implications
+
+Do not ask for confirmation on routine operations (running tests, formatting, committing, pushing branches).
+
+## Critical: Pull Request Conventions
+
+When creating PRs:
+- Base branch: `main`
+- Create as **draft** unless explicitly told otherwise
+- Title: conventional commit format matching the primary change type
+- Body: use the standard `## Summary` / `## Test plan` format
 
 ---
 
