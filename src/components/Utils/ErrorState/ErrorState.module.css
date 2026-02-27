@@ -21,15 +21,25 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .errorCode {
   font-family: var(--mantine-font-family-monospace);
   font-size: 72px;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--mantine-color-red-5) 0%, var(--mantine-color-orange-5) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-red-5) 0%,
+    var(--mantine-color-orange-5) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -59,8 +69,9 @@
 
 /* Inline Error */
 .errorInline {
-  background: linear-gradient(135deg, 
-    light-dark(rgb(255 107 157 / 0.08), rgb(255 107 157 / 0.12)) 0%, 
+  background: linear-gradient(
+    135deg,
+    light-dark(rgb(255 107 157 / 0.08), rgb(255 107 157 / 0.12)) 0%,
     light-dark(rgb(255 169 64 / 0.08), rgb(255 169 64 / 0.12)) 100%
   );
   border: 1px solid var(--mantine-color-red-5);
@@ -206,8 +217,14 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .networkTitle {

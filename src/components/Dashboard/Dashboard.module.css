@@ -508,5 +508,9 @@
 }
 
 .period-card {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--surface) 88%), color-mix(in srgb, var(--accent-secondary) 9%, var(--surface) 91%));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary) 12%, var(--surface) 88%),
+    color-mix(in srgb, var(--accent-secondary) 9%, var(--surface) 91%)
+  );
 }

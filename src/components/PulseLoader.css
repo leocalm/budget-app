@@ -1,58 +1,58 @@
 .pulse {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
 }
 
 /* Loading */
 .pulse--loading {
-    stroke-dasharray: 30 70;
-    animation: pulse-move linear infinite;
+  stroke-dasharray: 30 70;
+  animation: pulse-move linear infinite;
 }
 
 /* Success (one pulse) */
 .pulse--success {
-    stroke-dasharray: 30 70;
-    animation: pulse-success linear;
+  stroke-dasharray: 30 70;
+  animation: pulse-success linear;
 }
 
 /* Success done */
 .pulse--success-done {
-    stroke-dasharray: none;
+  stroke-dasharray: none;
 }
 
 /* Error (flatline motion) */
 .pulse--error {
-    stroke-dasharray: 200 40;
-    animation: flatline-move linear infinite;
+  stroke-dasharray: 200 40;
+  animation: flatline-move linear infinite;
 }
 
 /* Keyframes */
 @keyframes pulse-move {
-    from {
-        stroke-dashoffset: 100;
-    }
+  from {
+    stroke-dashoffset: 100;
+  }
 
-    to {
-        stroke-dashoffset: 0;
-    }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes pulse-success {
-    from {
-        stroke-dashoffset: 100;
-    }
+  from {
+    stroke-dashoffset: 100;
+  }
 
-    to {
-        stroke-dashoffset: 0;
-    }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes flatline-move {
-    from {
-        stroke-dashoffset: 240;
-    }
+  from {
+    stroke-dashoffset: 240;
+  }
 
-    to {
-        stroke-dashoffset: 0;
-    }
+  to {
+    stroke-dashoffset: 0;
+  }
 }

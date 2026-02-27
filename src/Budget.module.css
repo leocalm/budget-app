@@ -1,37 +1,39 @@
 .icon {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .dark {
-    :global([data-mantine-color-scheme='dark']) .dark {
-        display: none;
-    }
+  :global([data-mantine-color-scheme='dark']) .dark {
+    display: none;
+  }
 
-    :global([data-mantine-color-scheme='dark']) .light {
-        display: block;
-    }
+  :global([data-mantine-color-scheme='dark']) .light {
+    display: block;
+  }
 }
 
 .light {
-    :global([data-mantine-color-scheme='light']) .light {
-        display: none;
-    }
+  :global([data-mantine-color-scheme='light']) .light {
+    display: none;
+  }
 
-    :global([data-mantine-color-scheme='dark']) .dark {
-        display: none;
-    }
+  :global([data-mantine-color-scheme='dark']) .dark {
+    display: none;
+  }
 }
 
 .deleteButton {
-    transition: color 0.2s ease, background-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .deleteButton:hover {
-    color: var(--accent-secondary) !important;
-    background-color: var(--color-accent-secondary-soft) !important;
+  color: var(--accent-secondary) !important;
+  background-color: var(--color-accent-secondary-soft) !important;
 }
 
 :global([data-mantine-color-scheme='dark']) .deleteButton:hover {
-    background-color: var(--color-accent-secondary-soft) !important;
+  background-color: var(--color-accent-secondary-soft) !important;
 }
