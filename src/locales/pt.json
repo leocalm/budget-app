@@ -597,7 +597,7 @@
       "context": {
         "toggle": "Contexto",
         "categoryImpact": "Impacto por Categoria",
-        "stability": "Estabilidade",
+        "stability": "CONTEXTO DE ESTABILIDADE",
         "closedPositive": "Fechou positivo em {{positive}} de {{total}} períodos",
         "avgClosingBalance": "Saldo médio de fechamento: {{value}}",
         "highestClosingBalance": "Maior saldo de fechamento: {{value}}",
@@ -616,6 +616,12 @@
         "colAmount": "Valor",
         "colBalance": "Saldo",
         "loadMore": "Carregar mais"
+      },
+      "typeLabels": {
+        "liquid": "CONTA LÍQUIDA",
+        "protected": "CONTA PROTEGIDA",
+        "debt": "CONTA DE DÍVIDA",
+        "default": "CONTA"
       }
     }
   },

@@ -4,6 +4,7 @@ import { Button, Group, Skeleton, Table, Text } from '@mantine/core';
 import { useAccountTransactions } from '@/hooks/useAccountTransactions';
 import { AccountTransaction, CurrencyResponse } from '@/types/account';
 import { formatCurrency } from '@/utils/currency';
+import { formatShortDate, formatUpperShortDate } from '@/utils/dateFormat';
 
 type FlowFilter = 'all' | 'in' | 'out';
 
@@ -82,16 +83,16 @@ export function AccountTransactions({ accountId, periodId, currency }: Props) {
                   <Table.Tr key={`group-${date}`}>
                     <Table.Td colSpan={5}>
                       <Text size="xs" tt="uppercase" c="dimmed">
-                        {date}
+                        {formatUpperShortDate(date)}
                       </Text>
                     </Table.Td>
                   </Table.Tr>
                   {txs.map((tx) => (
                     <Table.Tr key={tx.id}>
-                      <Table.Td>{tx.occurredAt}</Table.Td>
+                      <Table.Td>{formatShortDate(tx.occurredAt)}</Table.Td>
                       <Table.Td>{tx.description}</Table.Td>
                       <Table.Td>{tx.categoryName}</Table.Td>
-                      <Table.Td ta="right" c={tx.flow === 'in' ? 'indigo' : undefined}>
+                      <Table.Td ta="right" c={tx.flow === 'in' ? 'green' : undefined}>
                         {tx.flow === 'in' ? '+' : '-'}
                         {fmt(tx.amount)}
                       </Table.Td>

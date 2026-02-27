@@ -59,6 +59,8 @@ export function BalanceHistoryChart({ accountId, periodId, currency }: Props) {
           curveType="linear"
           referenceLines={[{ y: 0, color: 'gray.4', label: '' }]}
           valueFormatter={(v) => (currency ? formatCurrency(v, currency) : String(v))}
+          withYAxis={false}
+          xAxisProps={{ tick: false }}
         />
       )}
     </Paper>

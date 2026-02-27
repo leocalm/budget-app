@@ -960,7 +960,7 @@
       "context": {
         "toggle": "Context",
         "categoryImpact": "Category Impact",
-        "stability": "Stability",
+        "stability": "STABILITY CONTEXT",
         "closedPositive": "Closed positive in {{positive}} of {{total}} periods",
         "avgClosingBalance": "Average closing balance: {{value}}",
         "highestClosingBalance": "Highest closing balance: {{value}}",
@@ -979,6 +979,12 @@
         "colAmount": "Amount",
         "colBalance": "Balance",
         "loadMore": "Load more"
+      },
+      "typeLabels": {
+        "liquid": "LIQUID ACCOUNT",
+        "protected": "PROTECTED ACCOUNT",
+        "debt": "DEBT ACCOUNT",
+        "default": "ACCOUNT"
       }
     }
   },
