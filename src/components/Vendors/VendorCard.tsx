@@ -52,9 +52,16 @@ export function VendorCard({
     return (
       <Paper withBorder radius="md" p="sm">
         <Group justify="space-between" align="flex-start" mb={4}>
-          <Text fw={600} size="sm">
-            {vendor.name}
-          </Text>
+          <Group gap={6} align="center">
+            <Text fw={600} size="sm">
+              {vendor.name}
+            </Text>
+            {vendor.archived && (
+              <Text size="xs" c="dimmed">
+                {t('vendors.card.archived')}
+              </Text>
+            )}
+          </Group>
           <Text size="xs" c="dimmed">
             {t('vendors.card.transactionCount', { count: vendor.transactionCount })}
           </Text>
@@ -79,9 +86,16 @@ export function VendorCard({
     >
       <Group justify="space-between" align="center" wrap="nowrap">
         <Box style={{ flex: '1 1 0', minWidth: 0 }}>
-          <Text fw={600} size="sm" truncate>
-            {vendor.name}
-          </Text>
+          <Group gap={6} align="center">
+            <Text fw={600} size="sm" truncate>
+              {vendor.name}
+            </Text>
+            {vendor.archived && (
+              <Text size="xs" c="dimmed">
+                {t('vendors.card.archived')}
+              </Text>
+            )}
+          </Group>
           {vendor.description && (
             <Text size="xs" c="dimmed" truncate>
               {vendor.description}

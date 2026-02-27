@@ -1067,7 +1067,7 @@
   "vendors": {
     "title": "Fornecedores",
     "subtitle": "Rastreie onde ocorrem as transações",
-    "addVendor": "Adicionar Fornecedor",
+    "addVendor": "+ Adicionar Fornecedor",
     "editVendor": "Editar Fornecedor",
     "deleteVendor": "Excluir Fornecedor",
     "viewTransactions": "Ver Transações",
@@ -1079,12 +1079,14 @@
     "lastUsed": "Último Uso",
     "never": "Nunca",
     "form": {
-      "nameLabel": "Nome do Fornecedor",
+      "nameLabel": "Nome",
       "namePlaceholder": "Digite o nome do fornecedor",
       "descriptionLabel": "Descrição (opcional)",
       "descriptionPlaceholder": "Nota de referência curta",
       "editNote": "Edições atualizam apenas o rótulo do fornecedor. O histórico financeiro não é alterado.",
-      "saveButton": "Salvar Fornecedor",
+      "saveButton": "Salvar",
+      "createButton": "Criar",
+      "addSubtitle": "Preencha os detalhes para criar um novo fornecedor.",
       "cancelButton": "Cancelar"
     },
     "delete": {
@@ -1109,7 +1111,7 @@
       "title": "Nenhum fornecedor ainda.",
       "message": "Crie fornecedores manualmente ou deixe-os aparecer a partir de transações."
     },
-    "activeSection": "Fornecedores Ativos ({{count}})",
+    "activeSection": "Todos os Fornecedores (ALFABÉTICO)",
     "archivedSection": "Arquivados ({{count}})",
     "noSearchResults": "Nenhum fornecedor corresponde sua pesquisa",
     "loadMore": "Carregar mais",
@@ -1128,12 +1130,13 @@
         "edit": "Editar Fornecedor",
         "delete": "Excluir Fornecedor"
       },
-      "transactionCount": "{{count}} transação",
-      "transactionCount_plural": "{{count}} transações",
+      "transactionCount": "{{count}} tx",
+      "transactionCount_plural": "{{count}} tx",
       "edit": "Editar",
       "archive": "Arquivar",
       "restore": "Restaurar",
-      "delete": "Excluir"
+      "delete": "Excluir",
+      "archived": "Arquivado"
     },
     "times": {
       "never": "Nunca",
@@ -1444,7 +1447,9 @@
       "deleteConfirmPrompt": "Digite EXCLUIR para confirmar",
       "deleteConfirmPlaceholder": "EXCLUIR",
       "saveButton": "Confirmar",
-      "cancelButton": "Cancelar"
+      "cancelButton": "Cancelar",
+      "resetStructureNote": "As transações permanecem intactas.",
+      "deleteAccountNote": "Requer confirmação digitada: DELETE"
     },
     "notifications": {
       "profile": {

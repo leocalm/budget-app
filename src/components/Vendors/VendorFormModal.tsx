@@ -86,6 +86,11 @@ export function VendorFormModal({ opened, onClose, vendor }: VendorFormModalProp
       {(requestClose) => (
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
+            {!vendor && (
+              <Text size="sm" c="dimmed">
+                {t('vendors.form.addSubtitle')}
+              </Text>
+            )}
             <TextInput
               label={t('vendors.form.nameLabel')}
               placeholder={t('vendors.form.namePlaceholder')}
@@ -112,7 +117,7 @@ export function VendorFormModal({ opened, onClose, vendor }: VendorFormModalProp
                 {t('vendors.form.cancelButton')}
               </Button>
               <Button type="submit" loading={isLoading}>
-                {t('vendors.form.saveButton')}
+                {vendor ? t('vendors.form.saveButton') : t('vendors.form.createButton')}
               </Button>
             </Group>
           </Stack>

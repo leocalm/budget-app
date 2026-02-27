@@ -217,7 +217,7 @@ export function VendorsContainer() {
               letterSpacing: '0.08em',
             }}
           >
-            {t('vendors.activeSection', { count: processedVendors.length })}
+            {t('vendors.activeSection')}
           </Text>
           <Stack gap={0}>
             {processedVendors.map((vendor) => (

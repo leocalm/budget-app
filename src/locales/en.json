@@ -991,7 +991,7 @@
   "vendors": {
     "title": "Vendors",
     "subtitle": "Track where transactions occur",
-    "addVendor": "Add Vendor",
+    "addVendor": "+ Add Vendor",
     "editVendor": "Edit Vendor",
     "deleteVendor": "Delete Vendor",
     "viewTransactions": "View Transactions",
@@ -1003,12 +1003,14 @@
     "lastUsed": "Last Used",
     "never": "Never",
     "form": {
-      "nameLabel": "Vendor Name",
+      "nameLabel": "Name",
       "namePlaceholder": "Enter vendor name",
       "descriptionLabel": "Description (optional)",
       "descriptionPlaceholder": "Short reference note",
       "editNote": "Edits update vendor labeling only. Financial history is unchanged.",
-      "saveButton": "Save Vendor",
+      "saveButton": "Save",
+      "createButton": "Create",
+      "addSubtitle": "Fill in the details to create a new vendor.",
       "cancelButton": "Cancel"
     },
     "delete": {
@@ -1033,7 +1035,7 @@
       "title": "No vendors yet.",
       "message": "Create vendors manually or let them appear from transactions."
     },
-    "activeSection": "Active Vendors ({{count}})",
+    "activeSection": "All Vendors (ALPHABETICAL)",
     "archivedSection": "Archived ({{count}})",
     "noSearchResults": "No vendors match your search",
     "loadMore": "Load more",
@@ -1056,8 +1058,9 @@
       "archive": "Archive",
       "restore": "Restore",
       "delete": "Delete",
-      "transactionCount": "{{count}} transaction",
-      "transactionCount_plural": "{{count}} transactions"
+      "transactionCount": "{{count}} tx",
+      "transactionCount_plural": "{{count}} tx",
+      "archived": "Archived"
     },
     "times": {
       "never": "Never",
@@ -1504,7 +1507,9 @@
       "deleteConfirmPrompt": "Type DELETE to confirm",
       "deleteConfirmPlaceholder": "DELETE",
       "saveButton": "Confirm",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "resetStructureNote": "Transactions remain intact.",
+      "deleteAccountNote": "Requires typed confirmation: DELETE"
     },
     "notifications": {
       "profile": {
