@@ -977,16 +977,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/charts@npm:^8.3.10":
-  version: 8.3.14
-  resolution: "@mantine/charts@npm:8.3.14"
+"@mantine/charts@npm:^8.3.15":
+  version: 8.3.15
+  resolution: "@mantine/charts@npm:8.3.15"
   peerDependencies:
-    "@mantine/core": 8.3.14
-    "@mantine/hooks": 8.3.14
+    "@mantine/core": 8.3.15
+    "@mantine/hooks": 8.3.15
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
     recharts: ">=2.13.3"
-  checksum: 10c0/cba562b7b736a5514410ce6d3e3ea3adcc66c7e76f83db6b521e2af8dd45b097a8996f439364fc61c31897b9d846b8bec1bdabe0028c4158c32b03177ef71574
+  checksum: 10c0/90a2bbd51971bb9109a354114d5b19980edfc1e8cb80304f3cbc799083cda84fca93d2311e48ecf860b9ae2c1662f68b7d1005211321bf66ca5f709b6dad7b46
   languageName: node
   linkType: hard
 
@@ -5703,7 +5703,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^10.0.1"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.7.0"
-    "@mantine/charts": "npm:^8.3.10"
+    "@mantine/charts": "npm:^8.3.15"
     "@mantine/core": "npm:^8.3.15"
     "@mantine/dates": "npm:^8.3.15"
     "@mantine/form": "npm:^8.3.10"
