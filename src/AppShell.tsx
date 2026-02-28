@@ -36,7 +36,7 @@ export function BasicAppShell({ children }: { children: ReactNode }) {
             </Text>
           )}
           <Group gap="sm" align="center" wrap="nowrap" justify="flex-end">
-            {!isMobile && <PeriodHeaderControl />}
+            <PeriodHeaderControl />
             <UserMenu variant="topbar" />
           </Group>
         </Group>

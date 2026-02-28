@@ -181,12 +181,13 @@
 
 @media (max-width: 768px) {
   .headerControl {
-    width: 100%;
+    min-width: 0;
+    width: auto;
   }
 
   .triggerLabel,
   .triggerMeta {
-    max-width: 140px;
+    max-width: 120px;
   }
 }
 
