@@ -26,7 +26,7 @@
     "e2e:docker:up": "bash scripts/test-env-up.sh",
     "e2e:docker:down": "bash scripts/test-env-down.sh",
     "e2e:docker:reset": "bash scripts/test-env-reset.sh",
-    "e2e:screenshots": "E2E_TARGET=local E2E_API_MODE=mock playwright test tests/e2e/screenshots.spec.ts",
+    "e2e:screenshots": "E2E_TARGET=local E2E_API_MODE=mock playwright test tests/screenshots/screenshots.spec.ts",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "test-storybook": "vitest --config vitest.storybook.config.ts",

@@ -7,10 +7,19 @@ test.describe('Navigation - Mobile', () => {
     await authenticatedPage.getByRole('button', { name: 'Transactions' }).click();
     await expect(authenticatedPage).toHaveURL(/\/transactions$/);
 
-    await authenticatedPage.getByRole('button', { name: 'Budget' }).click();
-    await expect(authenticatedPage).toHaveURL(/\/budget$/);
+    await authenticatedPage.getByRole('button', { name: 'Periods' }).click();
+    await expect(authenticatedPage).toHaveURL(/\/periods$/);
 
+    await authenticatedPage.getByRole('button', { name: 'More' }).click();
     await authenticatedPage.getByRole('button', { name: 'Accounts' }).click();
     await expect(authenticatedPage).toHaveURL(/\/accounts$/);
+
+    await authenticatedPage.getByRole('button', { name: 'More' }).click();
+    await authenticatedPage.getByRole('button', { name: 'Categories' }).click();
+    await expect(authenticatedPage).toHaveURL(/\/categories$/);
+
+    await authenticatedPage.getByRole('button', { name: 'More' }).click();
+    await authenticatedPage.getByRole('button', { name: 'Vendors' }).click();
+    await expect(authenticatedPage).toHaveURL(/\/vendors$/);
   });
 });

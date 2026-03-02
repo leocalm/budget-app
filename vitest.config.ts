@@ -29,6 +29,12 @@ export default defineConfig({
     name: 'unit',
     globals: true,
     setupFiles: ['./vitest.setup.mjs'],
-    exclude: [...configDefaults.exclude, 'tests/e2e/**', '.claude/**', '.worktrees/**'],
+    exclude: [
+      ...configDefaults.exclude,
+      'tests/e2e/**',
+      'tests/screenshots/**',
+      '.claude/**',
+      '.worktrees/**',
+    ],
   },
 });

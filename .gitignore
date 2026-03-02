@@ -149,3 +149,7 @@ screenshots/
 .serena/
 .worktrees/
 .claude/worktrees/
+.idea/
+.chunkhound/
+.chunkhound.json
+storybook-static.zip

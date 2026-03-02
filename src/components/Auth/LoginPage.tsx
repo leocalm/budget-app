@@ -212,7 +212,7 @@ export function LoginPage() {
     <AuthCard tagline={t('auth.login.tagline', 'Clarity begins with structure.')}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
-          <Text fw={600} size="lg" ta="center">
+          <Text fw={600} size="lg" ta="center" aria-label={t('auth.login.welcomeBack')}>
             {t('auth.login.welcomeBack', 'Welcome back')}
           </Text>
           <TextInput
@@ -240,6 +240,7 @@ export function LoginPage() {
             type="submit"
             loading={loading}
             disabled={retryAfterSeconds !== null && retryAfterSeconds > 0}
+            aria-label={t('auth.login.signIn', 'Log in')}
           >
             {loading
               ? t('auth.login.signingIn', 'Signing in…')

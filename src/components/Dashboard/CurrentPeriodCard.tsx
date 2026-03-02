@@ -36,7 +36,7 @@ export const CurrentPeriodCard = ({
 
   if (isError) {
     return (
-      <Paper className={styles.card} p="xl" withBorder>
+      <Paper className={styles.card} p="xl" withBorder data-testid="current-period-error">
         <img src={piggyLogo} className={styles.pigMark} alt="" />
         <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
         <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.error')}</Text>
@@ -51,7 +51,7 @@ export const CurrentPeriodCard = ({
 
   if (isLoading) {
     return (
-      <Paper className={styles.card} p="xl" withBorder>
+      <Paper className={styles.card} p="xl" withBorder data-testid="current-period-loading">
         <img src={piggyLogo} className={styles.pigMark} alt="" />
         <Skeleton height={16} width={140} radius="md" mb="sm" />
         <Skeleton height={48} width="40%" radius="md" mb="xs" />
@@ -65,7 +65,7 @@ export const CurrentPeriodCard = ({
 
   if (!selectedPeriodId || !monthlyBurnIn || !monthProgress) {
     return (
-      <Paper className={styles.card} p="xl" withBorder>
+      <Paper className={styles.card} p="xl" withBorder data-testid="current-period-empty">
         <img src={piggyLogo} className={styles.pigMark} alt="" />
         <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
         <Text className={styles.stateText}>{t('dashboard.currentPeriod.states.empty')}</Text>
@@ -91,7 +91,7 @@ export const CurrentPeriodCard = ({
   const periodElapsedPct = Math.min(monthProgress.daysPassedPercentage, 100);
 
   return (
-    <Paper className={styles.card} p="xl" withBorder>
+    <Paper className={styles.card} p="xl" withBorder data-testid="current-period-active">
       <img src={piggyLogo} className={styles.pigMark} alt="" />
       <Text className={styles.label}>{t('dashboard.currentPeriod.title')}</Text>
       <Text className={styles.periodAmount}>{actualSpendFormatted}</Text>

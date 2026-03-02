@@ -92,6 +92,8 @@ interface MockOverlay {
 const SESSION_COOKIE_NAME = 'budget_session';
 
 export class MockApiServer {
+  private context: BrowserContext | null = null;
+  private currentUserId: string | null = null;
   private users = new Map<string, MockUser>();
   private sessions = new Map<string, MockSession>();
   private vendors: MockVendor[] = [
@@ -164,6 +166,26 @@ export class MockApiServer {
       },
     },
   ];
+  private netPosition = {
+    total_net_position: 250000,
+    change_this_period: 5000,
+    liquid_balance: 250000,
+    protected_balance: 0,
+    debt_balance: 0,
+    account_count: 1,
+  };
+  private budgetStability = {
+    within_tolerance_percentage: 80,
+    periods_within_tolerance: 4,
+    total_closed_periods: 5,
+    recent_closed_periods: [
+      { period_id: 'p1', is_outside_tolerance: false },
+      { period_id: 'p2', is_outside_tolerance: false },
+      { period_id: 'p3', is_outside_tolerance: true },
+      { period_id: 'p4', is_outside_tolerance: false },
+      { period_id: 'p5', is_outside_tolerance: false },
+    ],
+  };
   private overlays: MockOverlay[] = [
     {
       id: 'overlay-1',
@@ -220,6 +242,7 @@ export class MockApiServer {
   };
 
   async install(context: BrowserContext): Promise<void> {
+    this.context = context;
     await context.route('**/*', this.routeHandler);
   }
 
@@ -252,6 +275,30 @@ export class MockApiServer {
     this.currentPeriod = period;
   }
 
+  setNetPosition(netPosition: {
+    total_net_position: number;
+    change_this_period: number;
+    liquid_balance: number;
+    protected_balance: number;
+    debt_balance: number;
+    account_count: number;
+  }): void {
+    this.netPosition = netPosition;
+  }
+
+  setBudgetStability(budgetStability: {
+    within_tolerance_percentage: number;
+    periods_within_tolerance: number;
+    total_closed_periods: number;
+    recent_closed_periods: Array<{ period_id: string; is_outside_tolerance: boolean }>;
+  }): void {
+    this.budgetStability = budgetStability;
+  }
+
+  setOverlays(overlays: MockOverlay[]): void {
+    this.overlays = overlays;
+  }
+
   private async handleRoute(route: Route): Promise<void> {
     const request = route.request();
     const url = new URL(request.url());
@@ -261,34 +308,31 @@ export class MockApiServer {
     const authUser = this.findAuthenticatedUser(cookieHeader);
 
     if (method === 'POST' && path === '/users/') {
-      const body = this.parseBody(request.postData());
+      const body = this.parseBody(await request.postDataBuffer());
       const response = this.handleRegister(body);
       await this.fulfill(route, response);
       return;
     }
 
     if (method === 'POST' && path === '/users/login') {
-      const body = this.parseBody(request.postData());
-      const response = this.handleLogin(body);
+      const body = this.parseBody(await request.postDataBuffer());
+      const { sessionToken, ...response } = this.handleLogin(body);
+      if (sessionToken && this.context) {
+        await this.context.addCookies([
+          { name: SESSION_COOKIE_NAME, value: sessionToken, httpOnly: true, url: url.origin },
+        ]);
+      }
       await this.fulfill(route, response);
       return;
     }
 
     if (method === 'GET' && path === '/users/me') {
       if (!authUser) {
-        await this.fulfill(route, {
-          status: 401,
-          body: { message: 'Unauthorized' },
-        });
+        await this.fulfill(route, { status: 401, body: { message: 'Unauthorized' } });
         return;
       }
-
       await this.fulfill(route, {
-        body: {
-          id: authUser.id,
-          name: authUser.name,
-          email: authUser.email,
-        },
+        body: { id: authUser.id, name: authUser.name, email: authUser.email },
       });
       return;
     }
@@ -298,25 +342,20 @@ export class MockApiServer {
       if (sessionToken) {
         this.sessions.delete(sessionToken);
       }
-
-      await this.fulfill(route, {
-        body: { success: true },
-        headers: {
-          'set-cookie': `${SESSION_COOKIE_NAME}=deleted; Path=/; Max-Age=0`,
-        },
-      });
+      this.currentUserId = null;
+      if (this.context) {
+        await this.context.clearCookies({ name: SESSION_COOKIE_NAME });
+      }
+      await this.fulfill(route, { body: { success: true } });
       return;
     }
 
     if (!authUser) {
-      await this.fulfill(route, {
-        status: 401,
-        body: { message: 'Unauthorized' },
-      });
+      await this.fulfill(route, { status: 401, body: { message: 'Unauthorized' } });
       return;
     }
 
-    const body = this.parseBody(request.postData());
+    const body = this.parseBody(await request.postDataBuffer());
     const response = this.resolveAuthenticatedRoute(method, path, body);
     await this.fulfill(route, response);
   }
@@ -531,6 +570,14 @@ export class MockApiServer {
       return { body: [] };
     }
 
+    if (method === 'GET' && path === '/dashboard/net-position') {
+      return { body: this.netPosition };
+    }
+
+    if (method === 'GET' && path === '/dashboard/budget-stability') {
+      return { body: this.budgetStability };
+    }
+
     if (method === 'GET' && path === '/dashboard/budget-per-day') {
       return {
         body: [
@@ -674,7 +721,9 @@ export class MockApiServer {
     };
   }
 
-  private handleLogin(payload: Record<string, unknown>): MockApiResponse {
+  private handleLogin(
+    payload: Record<string, unknown>
+  ): MockApiResponse & { sessionToken?: string } {
     const email = typeof payload.email === 'string' ? payload.email : '';
     const password = typeof payload.password === 'string' ? payload.password : '';
 
@@ -687,34 +736,36 @@ export class MockApiServer {
     }
 
     const token = `mock-session-${Date.now()}-${Math.floor(Math.random() * 100_000)}`;
-    this.sessions.set(token, {
-      token,
-      userId: user.id,
-    });
+    this.sessions.set(token, { token, userId: user.id });
+    this.currentUserId = user.id;
 
     return {
       status: 200,
       body: { success: true },
-      headers: {
-        'set-cookie': `${SESSION_COOKIE_NAME}=${token}; Path=/; HttpOnly`,
-      },
+      sessionToken: token,
     };
   }
 
   private findAuthenticatedUser(rawCookieHeader: string | null): MockUser | null {
     const token = this.extractSessionToken(rawCookieHeader);
-    if (!token) {
-      return null;
+    if (token) {
+      const session = this.sessions.get(token);
+      if (session) {
+        for (const user of this.users.values()) {
+          if (user.id === session.userId) {
+            return user;
+          }
+        }
+      }
     }
 
-    const session = this.sessions.get(token);
-    if (!session) {
-      return null;
-    }
-
-    for (const user of this.users.values()) {
-      if (user.id === session.userId) {
-        return user;
+    // WebKit does not forward context cookies into intercepted request headers.
+    // Fall back to the in-memory current user set after a successful login.
+    if (this.currentUserId) {
+      for (const user of this.users.values()) {
+        if (user.id === this.currentUserId) {
+          return user;
+        }
       }
     }
 
@@ -763,13 +814,13 @@ export class MockApiServer {
     return pathname === '/api' || pathname.startsWith('/api/');
   }
 
-  private parseBody(rawBody: string | null): Record<string, unknown> {
-    if (!rawBody) {
+  private parseBody(rawBody: Buffer | null): Record<string, unknown> {
+    if (!rawBody || rawBody.byteLength === 0) {
       return {};
     }
 
     try {
-      const parsed = JSON.parse(rawBody) as unknown;
+      const parsed = JSON.parse(rawBody.toString('utf-8')) as unknown;
       if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
         return parsed as Record<string, unknown>;
       }

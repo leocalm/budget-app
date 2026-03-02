@@ -13,7 +13,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Divider,
   Group,
-  NavLink,
   Paper,
   Popover,
   Stack,
@@ -144,35 +143,35 @@ export function BottomNavigation() {
                       const isLast = index === moreMenuItems.length - 1;
                       return (
                         <React.Fragment key={menuItem.route}>
-                          <NavLink
-                            key={menuItem.route}
-                            label={t(menuItem.labelKey)}
-                            leftSection={
-                              <ThemeIcon
-                                variant={active ? 'light' : 'transparent'}
-                                color={active ? 'piggyPrimary' : 'gray'}
-                                size="lg"
-                                radius="md"
-                              >
-                                <Icon size={22} />
-                              </ThemeIcon>
-                            }
+                          <UnstyledButton
                             onClick={() => {
                               navigate(menuItem.route);
                               close();
                             }}
-                            variant="light"
-                            styles={{
-                              label: {
-                                color: active
-                                  ? 'var(--accent-primary)'
-                                  : 'var(--mantine-color-dimmed)',
-                                fontSize: 14,
-                                fontWeight: 500,
-                              },
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 12,
+                              padding: '8px 12px',
+                              width: '100%',
                             }}
-                            style={{ padding: '8px 12px' }}
-                          />
+                          >
+                            <ThemeIcon
+                              variant={active ? 'light' : 'transparent'}
+                              color={active ? 'piggyPrimary' : 'gray'}
+                              size="lg"
+                              radius="md"
+                            >
+                              <Icon size={22} />
+                            </ThemeIcon>
+                            <Text
+                              size="sm"
+                              fw={500}
+                              c={active ? 'var(--accent-primary)' : 'var(--mantine-color-dimmed)'}
+                            >
+                              {t(menuItem.labelKey)}
+                            </Text>
+                          </UnstyledButton>
                           {!isLast && <Divider key={`divider-${menuItem.route}`} />}
                         </React.Fragment>
                       );

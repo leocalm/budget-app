@@ -49,6 +49,7 @@ export function AuthMessage({ message }: AuthMessageProps) {
             borderRadius: 'var(--mantine-radius-md)',
             background: 'var(--mantine-color-default)',
           }}
+          aria-label="Authentication message"
         >
           {message}
         </Text>

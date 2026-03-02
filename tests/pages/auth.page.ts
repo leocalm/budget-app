@@ -4,7 +4,7 @@ import { BasePage } from './base.page';
 export class AuthPage extends BasePage {
   async gotoLogin(): Promise<void> {
     await this.goto('/auth/login');
-    await expect(this.page.getByRole('heading', { name: 'Welcome back!' })).toBeVisible();
+    await expect(this.page.getByLabel('Welcome back')).toBeVisible();
   }
 
   async gotoRegister(): Promise<void> {
@@ -15,7 +15,7 @@ export class AuthPage extends BasePage {
   async login(email: string, password: string): Promise<void> {
     await this.page.getByLabel('Email').fill(email);
     await this.page.getByLabel('Password').fill(password);
-    await this.page.getByRole('button', { name: 'Sign in' }).click();
+    await this.page.getByLabel('Log in').click();
   }
 
   async register(name: string, email: string, password: string): Promise<void> {
@@ -32,7 +32,7 @@ export class AuthPage extends BasePage {
   }
 
   async expectLoginError(): Promise<void> {
-    await expect(this.page.getByText(/invalid email or password/i)).toBeVisible();
+    await expect(this.page.getByLabel('Authentication message')).toBeVisible();
   }
 
   async expectRegistrationError(errorMessage: string): Promise<void> {

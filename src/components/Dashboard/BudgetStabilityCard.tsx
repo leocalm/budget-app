@@ -25,8 +25,19 @@ export function BudgetStabilityCard({
   const outsideToleranceCount = recentPeriods.filter((p) => p.isOutsideTolerance).length;
   const recentPeriodCount = recentPeriods.length;
 
+  let testId = 'budget-stability-active';
+  if (isError) {
+    testId = 'budget-stability-error';
+  } else if (isLoading) {
+    testId = 'budget-stability-loading';
+  } else if (isEmpty) {
+    testId = 'budget-stability-empty';
+  } else if (hasInsufficientData) {
+    testId = 'budget-stability-insufficient';
+  }
+
   return (
-    <Paper className={styles.wireframeCard} withBorder>
+    <Paper className={styles.wireframeCard} withBorder data-testid={testId}>
       <Text component="h2">{t('dashboard.stability.title')}</Text>
 
       {isError ? (
