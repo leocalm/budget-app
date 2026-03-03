@@ -4,7 +4,7 @@ import { e2eEnv } from './tests/setup/env';
 const isLocalTarget = e2eEnv.target === 'local';
 
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
