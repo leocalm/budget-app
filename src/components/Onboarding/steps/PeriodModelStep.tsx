@@ -124,14 +124,16 @@ export function PeriodModelStep({ onComplete }: Props) {
           </Stack>
 
           {/* Duration + Generate ahead */}
-          <SimpleGrid cols={2} spacing="sm" style={{ alignItems: 'end' }}>
-            <Stack gap={6}>
-              <Text size="sm" fw={500}>
-                Period length
-              </Text>
-              <Text size="xs" c="dimmed">
-                How many months each period spans. Most people use 1.
-              </Text>
+          <SimpleGrid cols={2} spacing="sm" style={{ alignItems: 'stretch' }}>
+            <Stack gap={6} justify="space-between">
+              <Stack gap={6}>
+                <Text size="sm" fw={500}>
+                  Period length
+                </Text>
+                <Text size="xs" c="dimmed">
+                  How many months each period spans. Most people use 1.
+                </Text>
+              </Stack>
               <Select
                 data={DURATION_OPTIONS}
                 value={String(schedule.durationValue)}
@@ -139,13 +141,15 @@ export function PeriodModelStep({ onComplete }: Props) {
                 allowDeselect={false}
               />
             </Stack>
-            <Stack gap={6}>
-              <Text size="sm" fw={500}>
-                Periods to prepare
-              </Text>
-              <Text size="xs" c="dimmed">
-                How many future periods to create in advance.
-              </Text>
+            <Stack gap={6} justify="space-between">
+              <Stack gap={6}>
+                <Text size="sm" fw={500}>
+                  Periods to prepare
+                </Text>
+                <Text size="xs" c="dimmed">
+                  How many future periods to create in advance.
+                </Text>
+              </Stack>
               <SegmentedControl
                 data={['1', '3', '6']}
                 value={String(schedule.generateAhead)}
