@@ -124,7 +124,7 @@ export function PeriodModelStep({ onComplete }: Props) {
           </Stack>
 
           {/* Duration + Generate ahead */}
-          <SimpleGrid cols={2} spacing="sm">
+          <SimpleGrid cols={2} spacing="sm" style={{ alignItems: 'end' }}>
             <Stack gap={6}>
               <Text size="sm" fw={500}>
                 Period length
