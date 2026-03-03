@@ -7,7 +7,7 @@ import { DayPicker } from '../DayPicker';
 const DEFAULT_SCHEDULE = {
   startDay: 1,
   durationValue: 1,
-  durationUnit: 'Month',
+  durationUnit: 'months',
   generateAhead: 3,
   saturdayAdjustment: 'keep' as WeekendAdjustment,
   sundayAdjustment: 'keep' as WeekendAdjustment,
