@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '@mantine/core';
 import { AccountResponse } from '@/types/account';
@@ -6,17 +5,15 @@ import { CategoryResponse } from '@/types/category';
 import { TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
 import { EditTransactionForm, type EditFormValues } from './Form/EditTransactionForm';
-import { QuickAddTransaction } from './Form/QuickAddTransaction';
 
 interface TransactionModalProps {
   opened: boolean;
   onClose: () => void;
-  // If provided → edit mode; if null → add mode
   transaction?: TransactionResponse | null;
   accounts: AccountResponse[];
   categories: CategoryResponse[];
   vendors: Vendor[];
-  onSave?: (data: EditFormValues) => Promise<void>;
+  onSave: (data: EditFormValues) => Promise<void>;
   isSavePending?: boolean;
 }
 
@@ -42,22 +39,18 @@ export const TransactionModal = ({
       centered
       closeButtonProps={{ tabIndex: -1 }}
     >
-      {isEdit && onSave ? (
-        <EditTransactionForm
-          transaction={transaction}
-          accounts={accounts}
-          categories={categories}
-          vendors={vendors}
-          onSave={async (data) => {
-            await onSave(data);
-            onClose();
-          }}
-          onCancel={onClose}
-          isPending={isSavePending}
-        />
-      ) : (
-        <QuickAddTransaction onSuccess={onClose} />
-      )}
+      <EditTransactionForm
+        transaction={transaction}
+        accounts={accounts}
+        categories={categories}
+        vendors={vendors}
+        onSave={async (data) => {
+          await onSave(data);
+          onClose();
+        }}
+        onCancel={onClose}
+        isPending={isSavePending}
+      />
     </Modal>
   );
 };

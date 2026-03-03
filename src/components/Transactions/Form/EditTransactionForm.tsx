@@ -22,7 +22,7 @@ import { convertCentsToDisplay } from '@/utils/currency';
 import { getIcon, iconMap } from '@/utils/IconMap';
 
 interface EditTransactionFormProps {
-  transaction: TransactionResponse;
+  transaction?: TransactionResponse | null;
   accounts: AccountResponse[];
   categories: CategoryResponse[];
   vendors: Vendor[];
@@ -82,17 +82,29 @@ export const EditTransactionForm = ({
 }: EditTransactionFormProps) => {
   const { t } = useTranslation();
   const globalCurrency = useDisplayCurrency();
+  const isEdit = transaction != null;
   const form = useForm<EditFormValues>({
-    initialValues: {
-      description: transaction.description,
-      amount: convertCentsToDisplay(transaction.amount),
-      occurredAt: new Date(transaction.occurredAt),
-      categoryType: transaction.category.categoryType,
-      categoryId: transaction.category.id,
-      fromAccountId: transaction.fromAccount.id,
-      toAccountId: transaction.toAccount?.id || '',
-      vendorName: transaction.vendor?.name || '',
-    },
+    initialValues: isEdit
+      ? {
+          description: transaction!.description,
+          amount: convertCentsToDisplay(transaction!.amount),
+          occurredAt: new Date(transaction!.occurredAt),
+          categoryType: transaction!.category.categoryType,
+          categoryId: transaction!.category.id,
+          fromAccountId: transaction!.fromAccount.id,
+          toAccountId: transaction!.toAccount?.id || '',
+          vendorName: transaction!.vendor?.name || '',
+        }
+      : {
+          description: '',
+          amount: 0,
+          occurredAt: new Date(),
+          categoryType: 'Outgoing' as CategoryType,
+          categoryId: '',
+          fromAccountId: accounts[0]?.id || '',
+          toAccountId: '',
+          vendorName: '',
+        },
     validate: {
       description: (value) => {
         if (!value || value.trim().length === 0) {
@@ -283,7 +295,9 @@ export const EditTransactionForm = ({
               },
             }}
           >
-            {t('transactions.editTransaction.saveChanges')}
+            {isEdit
+              ? t('transactions.editTransaction.saveChanges')
+              : t('transactions.tableView.addTransaction')}
           </Button>
         </Group>
       </Stack>

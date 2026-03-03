@@ -55,19 +55,18 @@ export const TransactionFilters = ({
 
   return (
     <Stack gap="sm">
+      <div>
+        <Text size="xs" c="dimmed" mb={4}>
+          {t('transactions.filters.direction')}
+        </Text>
+        <SegmentedControl
+          size="xs"
+          data={directionOptions}
+          value={filters.direction ?? 'all'}
+          onChange={(val) => set({ direction: val as TransactionFilterParams['direction'] })}
+        />
+      </div>
       <Group align="flex-end" gap="md" wrap="wrap">
-        <div>
-          <Text size="xs" c="dimmed" mb={4}>
-            {t('transactions.filters.direction')}
-          </Text>
-          <SegmentedControl
-            size="xs"
-            data={directionOptions}
-            value={filters.direction ?? 'all'}
-            onChange={(val) => set({ direction: val as TransactionFilterParams['direction'] })}
-          />
-        </div>
-
         <MultiSelect
           label={t('transactions.filters.accounts')}
           data={accounts.map((a) => ({ value: a.id, label: a.name }))}

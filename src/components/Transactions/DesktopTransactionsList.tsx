@@ -198,7 +198,7 @@ export const DesktopTransactionsList = ({
                   </Group>
 
                   {/* Meta row: category + vendor + account */}
-                  <Group gap="xs">
+                  <Group gap="xs" px="md">
                     {isTransfer ? (
                       <Text size="xs" c="dimmed">
                         {tx.fromAccount.name}{' '}
@@ -215,9 +215,6 @@ export const DesktopTransactionsList = ({
                             • {tx.vendor.name}
                           </Text>
                         )}
-                        <Badge size="sm" variant="outline" color={tx.fromAccount.color}>
-                          {tx.fromAccount.name}
-                        </Badge>
                       </>
                     )}
                   </Group>
@@ -231,6 +228,9 @@ export const DesktopTransactionsList = ({
                     className="transaction-card-actions"
                     style={{ opacity: 0, transition: 'opacity 150ms ease' }}
                   >
+                    <Badge size="sm" variant="outline" color={tx.fromAccount.color}>
+                      {tx.fromAccount.name}
+                    </Badge>
                     <ActionIcon
                       size="sm"
                       variant="subtle"

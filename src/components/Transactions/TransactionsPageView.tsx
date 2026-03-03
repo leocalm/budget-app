@@ -90,7 +90,7 @@ export const TransactionsPageView = ({
   const openEdit = (tx: TransactionResponse) => setModalState({ open: true, transaction: tx });
   const closeModal = () => setModalState({ open: false, transaction: null });
 
-  const handleSaveEdit = async (data: EditFormValues) => {
+  const handleSave = async (data: EditFormValues) => {
     let vendorId: string | undefined;
     if (data.categoryType !== 'Transfer' && data.vendorName?.trim()) {
       const existing = vendors.find((v) => v.name.toLowerCase() === data.vendorName.toLowerCase());
@@ -112,7 +112,11 @@ export const TransactionsPageView = ({
       vendorId,
     };
 
-    await updateTransaction(modalState.transaction!.id, payload);
+    if (modalState.transaction) {
+      await updateTransaction(modalState.transaction.id, payload);
+    } else {
+      await createTransaction(payload);
+    }
   };
 
   const headerActions = (
@@ -278,7 +282,7 @@ export const TransactionsPageView = ({
         accounts={accounts}
         categories={categories}
         vendors={vendors}
-        onSave={handleSaveEdit}
+        onSave={handleSave}
       />
     </StateRenderer>
   );
