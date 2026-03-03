@@ -14,6 +14,7 @@ import {
 import { toast } from '@/lib/toast';
 import { AccountManagementResponse, AccountType } from '@/types/account';
 import { convertCentsToDisplay, convertDisplayToCents, formatCurrency } from '@/utils/currency';
+import { getIcon } from '@/utils/IconMap';
 import { CreateAccountForm } from './CreateAccountForm';
 import { EditAccountForm } from './EditAccountForm';
 import styles from './Accounts.module.css';
@@ -42,7 +43,7 @@ function AccountManagementRow({
       {/* Icon frame */}
       <Box className={styles.mgmtIconFrame}>
         <Box component="span" className={styles.mgmtIconEmoji}>
-          {account.icon}
+          {getIcon(account.icon, 22)}
         </Box>
       </Box>
 

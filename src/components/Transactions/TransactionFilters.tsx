@@ -105,7 +105,7 @@ export const TransactionFilters = ({
 
         <TextInput
           label={t('transactions.filters.dateFrom')}
-          placeholder="YYYY-MM-DD"
+          placeholder="e.g. 2026-03-01"
           size="xs"
           w={130}
           value={filters.dateFrom ?? ''}
@@ -114,7 +114,7 @@ export const TransactionFilters = ({
 
         <TextInput
           label={t('transactions.filters.dateTo')}
-          placeholder="YYYY-MM-DD"
+          placeholder="e.g. 2026-03-01"
           size="xs"
           w={130}
           value={filters.dateTo ?? ''}

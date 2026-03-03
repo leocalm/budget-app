@@ -14,6 +14,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { ApiError } from '@/api/errors';
 import { useCreateAccount } from '@/hooks/useAccounts';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { ACCOUNT_TYPES, AccountRequest, AccountType } from '@/types/account';
@@ -84,8 +85,12 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
       form.reset();
 
       onAccountCreated?.();
-    } catch {
-      setError(t('accounts.forms.errors.createFailed'));
+    } catch (err) {
+      if (err instanceof ApiError && err.message) {
+        setError(err.message);
+      } else {
+        setError(t('accounts.forms.errors.createFailed'));
+      }
     }
   };
 
