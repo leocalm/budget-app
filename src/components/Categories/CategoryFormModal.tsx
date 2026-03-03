@@ -150,7 +150,6 @@ export function CategoryFormModal({
         categoryType,
         description: description.trim() || null,
       });
-      onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : t('categories.form.errors.submit'));
     } finally {
