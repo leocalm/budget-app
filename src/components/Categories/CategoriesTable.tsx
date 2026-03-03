@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconArrowDownLeft, IconArrowUpRight, IconPencil, IconTrash } from '@tabler/icons-react';
+import {
+  IconArrowDownLeft,
+  IconArrowUpRight,
+  IconDots,
+  IconPencil,
+  IconTrash,
+} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
@@ -7,6 +13,7 @@ import {
   Card,
   Drawer,
   Group,
+  Menu,
   Modal,
   SimpleGrid,
   Tabs,
@@ -14,12 +21,75 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { ConfirmDialog } from '@/components/Overlays/ConfirmDialog';
 import { EmptyState, LoadingState } from '@/components/Utils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useDeleteCategory, useInfiniteCategories } from '@/hooks/useCategories';
 import type { CategoryResponse } from '@/types/category';
 import { CategoryNameIcon } from './CategoryNameIcon';
 import { EditCategoryForm } from './EditCategoryForm';
+
+interface CategoryCardProps {
+  category: CategoryResponse;
+  onEdit: (category: CategoryResponse) => void;
+  onDelete: (id: string) => void;
+}
+
+function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
+  const { t } = useTranslation();
+  const isOutgoing = category.categoryType === 'Outgoing';
+  const accentColor = isOutgoing ? 'red' : 'green';
+
+  return (
+    <Card
+      withBorder
+      padding="sm"
+      radius="md"
+      style={{
+        borderLeft: `4px solid var(--mantine-color-${accentColor}-6)`,
+        backgroundColor: 'var(--bg-card)',
+      }}
+    >
+      <Group justify="space-between" wrap="nowrap">
+        <Group gap="sm">
+          <CategoryNameIcon category={category} />
+          <div>
+            <Group gap={4}>
+              {isOutgoing ? (
+                <IconArrowUpRight size={12} color="var(--mantine-color-red-6)" />
+              ) : (
+                <IconArrowDownLeft size={12} color="var(--mantine-color-green-6)" />
+              )}
+              <Text size="xs" c="dimmed" tt="capitalize">
+                {category.categoryType}
+              </Text>
+            </Group>
+          </div>
+        </Group>
+
+        <Menu position="bottom-end" withinPortal>
+          <Menu.Target>
+            <ActionIcon variant="subtle" color="gray" size="sm">
+              <IconDots size={16} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item leftSection={<IconPencil size={14} />} onClick={() => onEdit(category)}>
+              {t('common.edit', 'Edit')}
+            </Menu.Item>
+            <Menu.Item
+              color="red"
+              leftSection={<IconTrash size={14} />}
+              onClick={() => onDelete(category.id)}
+            >
+              {t('common.delete', 'Delete')}
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Group>
+    </Card>
+  );
+}
 
 export function CategoriesTable() {
   const { t } = useTranslation();
@@ -36,6 +106,7 @@ export function CategoriesTable() {
   const deleteMutation = useDeleteCategory(selectedPeriodId);
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [selected, setSelected] = useState<CategoryResponse | null>(null);
+  const [categoryToDelete, setCategoryToDelete] = useState<CategoryResponse | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const categories = React.useMemo(
@@ -81,61 +152,14 @@ export function CategoriesTable() {
     );
   }
 
-  const CategoryCard = ({ category }: { category: CategoryResponse }) => {
-    const isOutgoing = category.categoryType === 'Outgoing';
-    const accentColor = isOutgoing ? 'red' : 'green';
+  const handleEdit = (category: CategoryResponse) => {
+    setSelected(category);
+    openEdit();
+  };
 
-    return (
-      <Card
-        withBorder
-        padding="sm"
-        radius="md"
-        style={{
-          borderLeft: `4px solid var(--mantine-color-${accentColor}-6)`,
-          backgroundColor: 'var(--bg-card)',
-        }}
-      >
-        <Group justify="space-between" wrap="nowrap">
-          <Group gap="sm">
-            <CategoryNameIcon category={category} />
-            <div>
-              <Group gap={4}>
-                {isOutgoing ? (
-                  <IconArrowUpRight size={12} color="var(--mantine-color-red-6)" />
-                ) : (
-                  <IconArrowDownLeft size={12} color="var(--mantine-color-green-6)" />
-                )}
-                <Text size="xs" c="dimmed" tt="capitalize">
-                  {category.categoryType}
-                </Text>
-              </Group>
-            </div>
-          </Group>
-
-          <Group gap="xs">
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              onClick={() => {
-                setSelected(category);
-                openEdit();
-              }}
-              size="sm"
-            >
-              <IconPencil size={16} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              color="red"
-              onClick={() => deleteMutation.mutate(category.id)}
-              size="sm"
-            >
-              <IconTrash size={16} />
-            </ActionIcon>
-          </Group>
-        </Group>
-      </Card>
-    );
+  const handleDelete = (id: string) => {
+    const cat = categories.find((c) => c.id === id) ?? null;
+    setCategoryToDelete(cat);
   };
 
   const incoming = categories?.filter((c) => c.categoryType === 'Incoming') || [];
@@ -145,12 +169,14 @@ export function CategoriesTable() {
     <>
       <Tabs defaultValue="all" variant="pills" radius="xl">
         <Tabs.List mb="xl">
-          <Tabs.Tab value="all">All ({categories?.length})</Tabs.Tab>
+          <Tabs.Tab value="all">
+            {t('categories.tabs.all')} ({categories?.length})
+          </Tabs.Tab>
           <Tabs.Tab value="outgoing" color="red">
-            Spending ({outgoing.length})
+            {t('categories.tabs.outgoing')} ({outgoing.length})
           </Tabs.Tab>
           <Tabs.Tab value="incoming" color="green">
-            Income ({incoming.length})
+            {t('categories.tabs.incoming')} ({incoming.length})
           </Tabs.Tab>
         </Tabs.List>
 
@@ -169,7 +195,12 @@ export function CategoriesTable() {
             return (
               <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
                 {visible.map((c) => (
-                  <CategoryCard key={c.id} category={c} />
+                  <CategoryCard
+                    key={c.id}
+                    category={c}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
                 ))}
               </SimpleGrid>
             );
@@ -189,7 +220,7 @@ export function CategoriesTable() {
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
               {outgoing.map((c) => (
-                <CategoryCard key={c.id} category={c} />
+                <CategoryCard key={c.id} category={c} onEdit={handleEdit} onDelete={handleDelete} />
               ))}
             </SimpleGrid>
           )}
@@ -208,7 +239,7 @@ export function CategoriesTable() {
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
               {incoming.map((c) => (
-                <CategoryCard key={c.id} category={c} />
+                <CategoryCard key={c.id} category={c} onEdit={handleEdit} onDelete={handleDelete} />
               ))}
             </SimpleGrid>
           )}
@@ -230,7 +261,13 @@ export function CategoriesTable() {
       )}
 
       {isMobile ? (
-        <Drawer opened={editOpened} onClose={closeEdit} title="Edit Category" position="bottom">
+        <Drawer
+          opened={editOpened}
+          onClose={closeEdit}
+          title={t('categories.editCategory')}
+          position="bottom"
+          closeOnClickOutside={false}
+        >
           <div>
             {selected && (
               <EditCategoryForm
@@ -245,7 +282,12 @@ export function CategoriesTable() {
           </div>
         </Drawer>
       ) : (
-        <Modal opened={editOpened} onClose={closeEdit} title="Edit Category" centered>
+        <Modal
+          opened={editOpened}
+          onClose={closeEdit}
+          title={t('categories.editCategory')}
+          centered
+        >
           {selected && (
             <EditCategoryForm
               category={selected}
@@ -258,6 +300,24 @@ export function CategoriesTable() {
           )}
         </Modal>
       )}
+
+      <ConfirmDialog
+        opened={categoryToDelete !== null}
+        title={t('categories.confirm.delete.title')}
+        impact={t('categories.confirm.delete.impact', { name: categoryToDelete?.name })}
+        safeActionLabel={t('common.cancel')}
+        actionLabel={t('common.delete')}
+        actionColor="red"
+        actionLoading={deleteMutation.isPending}
+        onClose={() => setCategoryToDelete(null)}
+        onAction={() => {
+          if (categoryToDelete) {
+            deleteMutation.mutate(categoryToDelete.id, {
+              onSuccess: () => setCategoryToDelete(null),
+            });
+          }
+        }}
+      />
     </>
   );
 }

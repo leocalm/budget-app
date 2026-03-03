@@ -47,7 +47,7 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
       name: '',
       accountType: '',
       balance: 0,
-      color: '',
+      color: ACCOUNT_COLOR_SWATCHES[0],
       icon: 'wallet',
       spendLimit: undefined,
     },
@@ -56,6 +56,8 @@ export function CreateAccountForm({ onAccountCreated }: CreateAccountFormProps) 
       name: (value) =>
         !value || value.length < 2 ? t('accounts.forms.validation.nameMinLength') : null,
       accountType: (value) => (value ? null : t('accounts.forms.validation.accountTypeRequired')),
+      color: (value) =>
+        !value ? t('accounts.forms.validation.colorRequired', 'Please select a color') : null,
     },
   });
 

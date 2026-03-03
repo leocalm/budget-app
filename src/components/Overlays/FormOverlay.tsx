@@ -56,7 +56,8 @@ export function FormOverlay({
           size="88vh"
           withCloseButton={false}
           closeOnEscape={!closeBlocked}
-          closeOnClickOutside={!closeBlocked}
+          closeOnClickOutside={false}
+          lockScroll
           trapFocus
           returnFocus
           title={

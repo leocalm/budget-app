@@ -176,7 +176,14 @@ export const TransactionsPageView = ({
       loadingSkeleton={<TransactionListSkeleton count={8} />}
     >
       <Stack gap="md">
-        <PageHeader title={t('transactions.container.title')} actions={headerActions} />
+        <PageHeader
+          title={t('transactions.container.title')}
+          subtitle={t(
+            'transactions.container.subtitle',
+            'Record and review your income and spending.'
+          )}
+          actions={headerActions}
+        />
 
         {!isMobile && (
           <TransactionFilters

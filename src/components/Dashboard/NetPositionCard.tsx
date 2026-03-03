@@ -79,7 +79,7 @@ export const NetPositionCard = ({
     testId = 'net-position-error';
   } else if (isLoading) {
     testId = 'net-position-loading';
-  } else if (data?.accountCount === 0) {
+  } else if (!data || data.accountCount === 0) {
     testId = 'net-position-empty';
   }
 
@@ -113,7 +113,7 @@ export const NetPositionCard = ({
         </Stack>
       )}
 
-      {!isError && !isLoading && data?.accountCount === 0 && (
+      {!isError && !isLoading && (!data || data.accountCount === 0) && (
         <Text className={styles.meta}>{t('dashboard.netPosition.empty')}</Text>
       )}
 

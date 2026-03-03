@@ -32,11 +32,11 @@
       "emailPlaceholder": "voce@exemplo.com",
       "passwordLabel": "Senha",
       "passwordPlaceholder": "Sua senha",
-      "rememberMe": "Lembrar-me",
+      "rememberMe": "Lembrar de mim",
       "forgotPassword": "Esqueceu a senha?",
+      "noAccount": "Não tem uma conta?",
+      "signUp": "Registre-se",
       "signIn": "Entrar",
-      "noAccountYet": "Ainda não tem uma conta?",
-      "createAccount": "Criar conta",
       "validation": {
         "invalidEmail": "E-mail inválido",
         "passwordMinLength": "A senha deve ter pelo menos 6 caracteres"
@@ -146,6 +146,7 @@
       "vendor": {
         "placeholder": "Fornecedor"
       },
+      "submit": "Adicionar",
       "recent": "Recentes",
       "success": "Transação adicionada com sucesso",
       "error": {
@@ -259,7 +260,7 @@
       "confirmDelete": "Tem certeza de que deseja excluir esta transação?",
       "thisPeriod": "este período",
       "title": "Transações",
-      "subtitle": "Revise e gerencie sua atividade financeira para o período selecionado.",
+      "subtitle": "Registre e revise suas receitas e despesas.",
       "editTitle": "Editar Transação",
       "editing": "Editando"
     }
@@ -444,7 +445,8 @@
       "validation": {
         "nameMinLength": "O nome deve ter pelo menos 2 letras",
         "accountTypeRequired": "O tipo de conta é obrigatório",
-        "balanceRequired": "O saldo é obrigatório"
+        "balanceRequired": "O saldo é obrigatório",
+        "colorRequired": "Selecione uma cor"
       },
       "errors": {
         "createFailed": "Falha ao criar conta",
@@ -945,6 +947,13 @@
   },
   "dashboard": {
     "title": "Painel",
+    "onboarding": {
+      "title": "Primeiros passos",
+      "subtitle": "Complete estes passos para configurar seu orçamento.",
+      "createPeriod": "Crie um período orçamental",
+      "addAccount": "Adicione uma conta",
+      "addCategory": "Adicione uma categoria"
+    },
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -1517,6 +1526,7 @@
     "actions": {
       "addCategory": "Adicionar Categoria"
     },
+    "editCategory": "Editar Categoria",
     "tabs": {
       "all": "Todas",
       "outgoing": "Gastos",

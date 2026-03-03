@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Anchor,
   Button,
+  Checkbox,
   Group,
   PasswordInput,
   PinInput,
@@ -66,6 +67,7 @@ export function LoginPage() {
     initialValues: {
       email: '',
       password: '',
+      rememberMe: true,
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : t('auth.login.validation.invalidEmail')),
@@ -93,7 +95,7 @@ export function LoginPage() {
       ]);
 
       // Login successful — hydrate user from cookie-backed endpoint
-      const refreshed = await refreshUser(false, false);
+      const refreshed = await refreshUser(values.rememberMe, false);
       if (!refreshed) {
         setError(
           t(
@@ -229,6 +231,10 @@ export function LoginPage() {
             disabled={loading}
             {...form.getInputProps('password')}
           />
+          <Checkbox
+            label={t('auth.login.rememberMe', 'Remember me')}
+            {...form.getInputProps('rememberMe', { type: 'checkbox' })}
+          />
           <AuthMessage message={error} />
           {lockedMessage && (
             <Text size="xs" c="orange" ta="center">
@@ -253,6 +259,12 @@ export function LoginPage() {
           <Text ta="center" size="sm">
             <Anchor component={Link} to="/auth/forgot-password">
               {t('auth.login.forgotPassword', 'Forgot password?')}
+            </Anchor>
+          </Text>
+          <Text ta="center" size="sm">
+            {t('auth.login.noAccount', "Don't have an account?")}{' '}
+            <Anchor component={Link} to="/auth/register">
+              {t('auth.login.signUp', 'Sign up')}
             </Anchor>
           </Text>
         </Stack>

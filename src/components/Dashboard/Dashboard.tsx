@@ -5,8 +5,11 @@ import { ApiError } from '@/api/errors';
 import { ActiveOverlayBanner } from '@/components/Dashboard/ActiveOverlayBanner';
 import { BudgetStabilityCard } from '@/components/Dashboard/BudgetStabilityCard';
 import { CurrentPeriodCard } from '@/components/Dashboard/CurrentPeriodCard';
+import { GettingStartedChecklist } from '@/components/Dashboard/GettingStartedChecklist';
 import { NetPositionCard } from '@/components/Dashboard/NetPositionCard';
-import { useCurrentBudgetPeriod } from '@/hooks/useBudget';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useBudgetPeriods, useCurrentBudgetPeriod } from '@/hooks/useBudget';
+import { useCategories } from '@/hooks/useCategories';
 import {
   useBudgetStability,
   useMonthlyBurnIn,
@@ -103,6 +106,14 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     refetch: refetchBudgetStability,
   } = useBudgetStability({ enabled: !isPeriodMissing });
 
+  const { data: budgetPeriods } = useBudgetPeriods();
+  const { data: accounts } = useAccounts(selectedPeriodId);
+  const { data: categories } = useCategories(selectedPeriodId);
+
+  const hasPeriod = (budgetPeriods?.length ?? 0) > 0;
+  const hasAccount = (accounts?.length ?? 0) > 0;
+  const hasCategory = (categories?.length ?? 0) > 0;
+
   const hasCurrentPeriodError = Boolean(monthlyBurnInError || monthProgressError);
   const isCurrentPeriodLoading =
     selectedPeriodId !== null &&
@@ -186,6 +197,12 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
           </Title>
           <Text className={styles.dashboardSubtitle}>{t('dashboard.subtitle')}</Text>
         </Stack>
+
+        <GettingStartedChecklist
+          hasPeriod={hasPeriod}
+          hasAccount={hasAccount}
+          hasCategory={hasCategory}
+        />
 
         <ActiveOverlayBanner />
 

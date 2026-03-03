@@ -195,9 +195,6 @@ export function VendorsContainer() {
           <Text c="dimmed" mb="md">
             {t('vendors.empty.message')}
           </Text>
-          <Button onClick={handleAdd} leftSection={<IconPlus size={16} />}>
-            {t('vendors.addVendor')}
-          </Button>
         </Paper>
       )}
 

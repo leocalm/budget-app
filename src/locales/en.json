@@ -38,10 +38,10 @@
       "passwordPlaceholder": "Your password",
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
       "signIn": "Log in",
       "signingIn": "Signing in…",
-      "noAccountYet": "Do not have an account yet?",
-      "createAccount": "Create account",
       "validation": {
         "invalidEmail": "Invalid email",
         "passwordMinLength": "Password should include at least 6 characters"
@@ -162,6 +162,7 @@
       "vendor": {
         "placeholder": "Vendor"
       },
+      "submit": "Add",
       "recent": "Recent",
       "success": "Transaction added successfully",
       "error": {
@@ -282,7 +283,7 @@
       "confirmDelete": "Are you sure you want to delete this transaction?",
       "thisPeriod": "this period",
       "title": "Transactions",
-      "subtitle": "Review and manage your financial activity for the selected period.",
+      "subtitle": "Record and review your income and spending.",
       "editTitle": "Edit Transaction",
       "editing": "Editing"
     },
@@ -797,7 +798,8 @@
       "validation": {
         "nameMinLength": "Name must have at least 2 letters",
         "accountTypeRequired": "Account type is required",
-        "balanceRequired": "Balance is required"
+        "balanceRequired": "Balance is required",
+        "colorRequired": "Please select a color"
       },
       "errors": {
         "createFailed": "Failed to create account",
@@ -1076,6 +1078,13 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "onboarding": {
+      "title": "Getting started",
+      "subtitle": "Complete these steps to set up your budget.",
+      "createPeriod": "Create a budget period",
+      "addAccount": "Add an account",
+      "addCategory": "Add a category"
+    },
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {
@@ -1568,6 +1577,7 @@
     "actions": {
       "addCategory": "Add Category"
     },
+    "editCategory": "Edit Category",
     "tabs": {
       "all": "All",
       "outgoing": "Spending",

@@ -148,7 +148,7 @@ describe('QuickAddTransaction', () => {
   it('validates required fields on submit', async () => {
     renderComponent();
 
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -176,7 +176,7 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByText('🍔 Comida'));
 
     // Submit
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -219,7 +219,7 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByText('🍔 Comida'));
 
     // Submit
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -292,7 +292,7 @@ describe('QuickAddTransaction', () => {
 
     await user.type(screen.getByPlaceholderText('0.00'), '0');
 
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -308,7 +308,7 @@ describe('QuickAddTransaction', () => {
       target: { value: longDescription },
     });
 
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -342,7 +342,7 @@ describe('QuickAddTransaction', () => {
     });
 
     // Submit without selecting toAccountId
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -375,7 +375,7 @@ describe('QuickAddTransaction', () => {
     await user.click(allSavings[allSavings.length - 1]); // Click last occurrence (from toAccount dropdown)
 
     // Submit
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -408,7 +408,7 @@ describe('QuickAddTransaction', () => {
     await user.click(screen.getByText('🍔 Comida'));
 
     // Submit without toAccountId (should be valid for non-Transfer)
-    const submitButton = screen.getByRole('button', { name: /plus/i });
+    const submitButton = screen.getByRole('button', { name: /add/i });
     await user.click(submitButton);
 
     await waitFor(() => {

@@ -12,7 +12,6 @@ type JsonArray = JsonValue[];
 
 const DEFAULT_API_VERSION = 'v1';
 const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:[/?#]|$)/;
-const LOGIN_PATH_PATTERN = /\/api(?:\/v\d+)?\/users\/login(?:[/?#]|$)/;
 
 function normalizeApiVersion(version: string): string {
   if (!version) {
@@ -155,36 +154,6 @@ function clearStoredUser(): void {
   }
 }
 
-export const navigation = {
-  assign: (url: string): void => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    window.location.assign(url);
-  },
-};
-
-function redirectToLogin(): void {
-  try {
-    navigation.assign('/auth/login');
-  } catch {
-    // Ignore navigation errors (e.g., during tests).
-  }
-}
-
-function isAuthRoute(): boolean {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-
-  return window.location.pathname.startsWith('/auth');
-}
-
-function isLoginRequest(url: string): boolean {
-  return LOGIN_PATH_PATTERN.test(url);
-}
-
 async function parseErrorBody(res: Response): Promise<unknown> {
   const raw = await res.text();
   if (!raw) {
@@ -204,9 +173,6 @@ async function throwForStatus(res: Response, url: string): Promise<never> {
 
   if (res.status === 401) {
     clearStoredUser();
-    if (!isLoginRequest(url) && !isAuthRoute()) {
-      redirectToLogin();
-    }
   }
 
   throw new ApiError(message, res.status, url, data);

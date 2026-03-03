@@ -239,7 +239,7 @@ export const QuickAddTransaction = ({
             value={form.values.occurredAt}
             onChange={(value) => form.setFieldValue('occurredAt', value as Date | null)}
             error={form.errors.occurredAt}
-            valueFormat="YYYY-MM-DD"
+            valueFormat="MMMM D, YYYY"
             classNames={inputClassNames}
           />
 
@@ -326,10 +326,10 @@ export const QuickAddTransaction = ({
           <UnstyledButton
             type="submit"
             disabled={isPending}
-            aria-label="plus"
+            aria-label={t('transactions.quickAddTransaction.submit')}
             className={styles.submitButton}
           >
-            <span>+</span>
+            <span>{t('transactions.quickAddTransaction.submit')}</span>
           </UnstyledButton>
         </Box>
       </form>

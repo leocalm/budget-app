@@ -23,7 +23,7 @@
 
 .formGrid {
   display: grid;
-  grid-template-columns: 140px 2fr 120px 1fr 1fr 1fr 48px;
+  grid-template-columns: 140px 2fr 120px 1fr 1fr 1fr auto;
   gap: var(--space-sm);
   align-items: flex-start;
 }
@@ -50,8 +50,10 @@
 }
 
 .submitButton {
-  width: 48px;
+  width: auto;
+  min-width: 48px;
   height: 48px;
+  padding: 0 16px;
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: none;
   border-radius: var(--radius-md);
@@ -110,7 +112,7 @@
 
 @media (max-width: 1200px) {
   .formGrid {
-    grid-template-columns: 1fr 1fr 1fr 48px;
+    grid-template-columns: 1fr 1fr 1fr auto;
     gap: var(--space-sm);
   }
 }
