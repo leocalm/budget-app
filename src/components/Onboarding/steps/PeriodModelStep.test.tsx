@@ -28,11 +28,8 @@ describe('PeriodModelStep', () => {
     renderStep();
     fireEvent.click(screen.getByRole('switch', { name: /customize/i }));
     expect(screen.getByText(/start day/i)).toBeInTheDocument();
-    // Day grid should render 28 day buttons
-    const dayButtons = screen
-      .getAllByRole('button')
-      .filter((b) => /^\d+$/.test(b.textContent ?? ''));
-    expect(dayButtons).toHaveLength(28);
+    expect(screen.getByRole('button', { name: /increase day/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /decrease day/i })).toBeInTheDocument();
   });
 
   it('calls updatePeriodModel and onComplete on Continue', async () => {

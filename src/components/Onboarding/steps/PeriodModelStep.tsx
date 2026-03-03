@@ -8,12 +8,10 @@ import {
   Stack,
   Switch,
   Text,
-  UnstyledButton,
-  useMantineColorScheme,
-  useMantineTheme,
 } from '@mantine/core';
 import { updatePeriodModel } from '@/api/settings';
 import type { PeriodModelRequest, WeekendAdjustment } from '@/types/settings';
+import { DayPicker } from '../DayPicker';
 
 const DEFAULT_SCHEDULE = {
   startDay: 1,
@@ -35,9 +33,6 @@ interface Props {
 }
 
 export function PeriodModelStep({ onComplete }: Props) {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === 'dark';
   const [isCustom, setIsCustom] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE);
@@ -63,8 +58,6 @@ export function PeriodModelStep({ onComplete }: Props) {
     }
   }
 
-  const primaryColor = theme.colors[theme.primaryColor][6];
-
   return (
     <Stack mt="lg" gap="md">
       <Text size="sm" c="dimmed">
@@ -89,38 +82,7 @@ export function PeriodModelStep({ onComplete }: Props) {
               The day of the month your period begins. Values above 28 are avoided to ensure the day
               exists in every month.
             </Text>
-            <SimpleGrid cols={7} spacing={6} mt={4}>
-              {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => (
-                <UnstyledButton
-                  key={day}
-                  onClick={() => set('startDay', day)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 36,
-                    borderRadius: theme.radius.sm,
-                    fontSize: theme.fontSizes.sm,
-                    fontWeight: schedule.startDay === day ? 600 : 400,
-                    background:
-                      schedule.startDay === day
-                        ? primaryColor
-                        : isDark
-                          ? theme.colors.dark[5]
-                          : theme.colors.gray[1],
-                    color:
-                      schedule.startDay === day
-                        ? theme.white
-                        : isDark
-                          ? theme.colors.dark[0]
-                          : theme.colors.dark[7],
-                    cursor: 'pointer',
-                  }}
-                >
-                  {day}
-                </UnstyledButton>
-              ))}
-            </SimpleGrid>
+            <DayPicker value={schedule.startDay} onChange={(v) => set('startDay', v)} />
           </Stack>
 
           {/* Duration + Generate ahead */}
