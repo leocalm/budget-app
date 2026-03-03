@@ -9,10 +9,11 @@ export function AuthLayout() {
         background: 'var(--bg-primary)',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 'max(40px, calc((100vh - 700px) / 2))',
       }}
     >
-      <Container size={420} my={40}>
+      <Container size={420} mb={40}>
         <Outlet />
       </Container>
     </Box>

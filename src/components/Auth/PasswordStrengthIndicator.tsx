@@ -17,7 +17,7 @@ export function PasswordStrengthIndicator({ result }: PasswordStrengthIndicatorP
   const color = colors[result.score];
 
   return (
-    <Stack gap="xs">
+    <Stack gap="xs" mih={100}>
       <Progress
         value={(result.score + 1) * 20}
         color={color}

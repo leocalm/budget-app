@@ -9,7 +9,7 @@ interface AuthCardProps {
 
 export function AuthCard({ tagline, children }: AuthCardProps) {
   return (
-    <Paper withBorder shadow="none" p={30} radius="md">
+    <Paper withBorder shadow="none" p={30} radius="md" mih={520} w={420} maw="100%">
       <Stack gap="md">
         <Stack gap={4} align="center" mb="xs">
           <Logo />
