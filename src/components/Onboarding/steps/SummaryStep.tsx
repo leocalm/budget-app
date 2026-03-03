@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Button, Group, Loader, Stack, Text, Title } from '@mantine/core';
-import { fetchAccounts } from '@/api/account';
-import { fetchCategories } from '@/api/category';
+import { fetchAccountsManagement } from '@/api/account';
+import { fetchCategoriesForManagement } from '@/api/category';
 import { fetchPeriodModel } from '@/api/settings';
-import type { AccountResponse } from '@/types/account';
-import type { CategoryWithStats } from '@/types/category';
+import type { AccountManagementResponse } from '@/types/account';
+import type { CategoryManagementRow } from '@/types/category';
 import type { PeriodModelResponse } from '@/types/settings';
 
 interface Props {
@@ -25,10 +25,10 @@ function formatBalance(cents: number, symbol: string, decimalPlaces: number): st
 }
 
 const ADJECTIVAL_UNITS: Record<string, string> = {
-  day: 'Daily',
-  week: 'Weekly',
-  month: 'Monthly',
-  year: 'Yearly',
+  days: 'Daily',
+  weeks: 'Weekly',
+  months: 'Monthly',
+  years: 'Yearly',
 };
 
 function periodSummary(model: PeriodModelResponse): string {
@@ -44,7 +44,7 @@ function periodSummary(model: PeriodModelResponse): string {
   if (schedule.durationValue === 1 && ADJECTIVAL_UNITS[unitKey]) {
     label = ADJECTIVAL_UNITS[unitKey];
   } else {
-    const plural = `${schedule.durationValue} ${unitKey}s`;
+    const plural = `${schedule.durationValue} ${unitKey}`;
     label = plural.charAt(0).toUpperCase() + plural.slice(1);
   }
   return `${label}, starting on the ${ordinal(schedule.startDay)}`;
@@ -52,19 +52,23 @@ function periodSummary(model: PeriodModelResponse): string {
 
 export function SummaryStep({ onEnter, onBack }: Props) {
   const [loading, setLoading] = useState(true);
-  const [accounts, setAccounts] = useState<AccountResponse[]>([]);
-  const [categories, setCategories] = useState<CategoryWithStats[]>([]);
+  const [accounts, setAccounts] = useState<AccountManagementResponse[]>([]);
+  const [incoming, setIncoming] = useState<CategoryManagementRow[]>([]);
+  const [outgoing, setOutgoing] = useState<CategoryManagementRow[]>([]);
   const [periodModel, setPeriodModel] = useState<PeriodModelResponse | null>(null);
 
   useEffect(() => {
-    Promise.all([fetchAccounts(null), fetchCategories(null), fetchPeriodModel()]).then(
-      ([accts, cats, period]) => {
-        setAccounts(accts);
-        setCategories(cats);
-        setPeriodModel(period);
-        setLoading(false);
-      }
-    );
+    Promise.all([
+      fetchAccountsManagement(),
+      fetchCategoriesForManagement(),
+      fetchPeriodModel(),
+    ]).then(([accts, cats, period]) => {
+      setAccounts(accts.filter((a) => !a.isArchived));
+      setIncoming(cats.incoming);
+      setOutgoing(cats.outgoing);
+      setPeriodModel(period);
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {
@@ -74,10 +78,6 @@ export function SummaryStep({ onEnter, onBack }: Props) {
       </Group>
     );
   }
-
-  const visibleCategories = categories.filter((c) => !c.isSystem && !c.isArchived);
-  const incoming = visibleCategories.filter((c) => c.categoryType === 'Incoming');
-  const outgoing = visibleCategories.filter((c) => c.categoryType === 'Outgoing');
 
   return (
     <Stack gap="lg">

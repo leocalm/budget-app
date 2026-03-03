@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
-import { fetchAccounts } from '@/api/account';
-import { fetchCategories } from '@/api/category';
+import { fetchAccountsManagement } from '@/api/account';
+import { fetchCategoriesForManagement } from '@/api/category';
 import { fetchPeriodModel } from '@/api/settings';
 import { SummaryStep } from './SummaryStep';
 
-vi.mock('@/api/account', () => ({ fetchAccounts: vi.fn() }));
-vi.mock('@/api/category', () => ({ fetchCategories: vi.fn() }));
+vi.mock('@/api/account', () => ({ fetchAccountsManagement: vi.fn() }));
+vi.mock('@/api/category', () => ({ fetchCategoriesForManagement: vi.fn() }));
 vi.mock('@/api/settings', () => ({ fetchPeriodModel: vi.fn() }));
 
 function renderStep(ui: React.ReactElement) {
@@ -25,31 +25,18 @@ const mockAccounts = [
   },
 ];
 
-const mockCategories = [
-  {
-    id: '1',
-    name: 'Income',
-    categoryType: 'Incoming',
-    parentId: null,
-    isSystem: false,
-    isArchived: false,
-  },
-  {
-    id: '2',
-    name: 'Housing',
-    categoryType: 'Outgoing',
-    parentId: null,
-    isSystem: false,
-    isArchived: false,
-  },
-];
+const mockCategoriesResponse = {
+  incoming: [{ id: '1', name: 'Income', categoryType: 'Incoming', parentId: null }],
+  outgoing: [{ id: '2', name: 'Housing', categoryType: 'Outgoing', parentId: null }],
+  archived: [],
+};
 
 const mockPeriodModel = {
   periodMode: 'automatic',
   periodSchedule: {
     startDay: 1,
     durationValue: 1,
-    durationUnit: 'Month',
+    durationUnit: 'months',
     generateAhead: 3,
     saturdayAdjustment: 'keep',
     sundayAdjustment: 'keep',
@@ -60,8 +47,8 @@ const mockPeriodModel = {
 describe('SummaryStep', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(fetchAccounts).mockResolvedValue(mockAccounts as any);
-    vi.mocked(fetchCategories).mockResolvedValue(mockCategories as any);
+    vi.mocked(fetchAccountsManagement).mockResolvedValue(mockAccounts as any);
+    vi.mocked(fetchCategoriesForManagement).mockResolvedValue(mockCategoriesResponse as any);
     vi.mocked(fetchPeriodModel).mockResolvedValue(mockPeriodModel as any);
   });
 
