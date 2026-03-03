@@ -34,6 +34,7 @@ export const queryKeys = {
   categoriesManagement: () => ['categoriesManagement'] as const,
   budgetedCategories: () => ['budgetedCategories'] as const,
   unbudgetedCategories: () => ['unbudgetedCategories'] as const,
+  transferCategory: () => ['transferCategory'] as const,
 
   // Accounts
   accounts: (periodId?: string | null) =>

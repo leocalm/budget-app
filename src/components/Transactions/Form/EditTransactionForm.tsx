@@ -5,6 +5,7 @@ import {
   Button,
   Group,
   NumberInput,
+  SegmentedControl,
   Select,
   Stack,
   Text,
@@ -110,8 +111,10 @@ export const EditTransactionForm = ({
         !value ? t('transactions.quickAddTransaction.error.occurredAt.required') : null,
       fromAccountId: (value) =>
         !value ? t('transactions.quickAddTransaction.error.fromAccount.required') : null,
-      categoryId: (value) =>
-        !value ? t('transactions.quickAddTransaction.error.category.required') : null,
+      categoryId: (value, values) =>
+        values.categoryType !== 'Transfer' && !value
+          ? t('transactions.quickAddTransaction.error.category.required')
+          : null,
     },
   });
 
@@ -147,9 +150,27 @@ export const EditTransactionForm = ({
     }
   });
 
+  const typeOptions = [
+    { label: t('transactions.filters.outgoing'), value: 'Outgoing' },
+    { label: t('transactions.filters.incoming'), value: 'Incoming' },
+    { label: t('transactions.filters.transfers'), value: 'Transfer' },
+  ];
+
   return (
     <form onSubmit={handleSubmit}>
       <Stack gap="md">
+        {/* Transaction Type */}
+        <SegmentedControl
+          fullWidth
+          size="xs"
+          data={typeOptions}
+          value={form.values.categoryType}
+          onChange={(val) => {
+            form.setFieldValue('categoryType', val as CategoryType);
+            form.setFieldValue('categoryId', '');
+          }}
+        />
+
         {/* Date */}
         <DateInput
           label={t('transactions.editTransaction.date.label')}

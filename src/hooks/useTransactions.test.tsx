@@ -93,6 +93,7 @@ describe('useTransactions', () => {
           categoryType: 'Outgoing',
           isArchived: false,
           description: null,
+          isSystem: false,
         },
         fromAccount: {
           id: 'acc-1',
@@ -221,6 +222,7 @@ describe('useTransactions', () => {
         categoryType: 'Outgoing',
         isArchived: false,
         description: null,
+        isSystem: false,
       },
       fromAccount: {
         id: 'acc-1',
@@ -280,6 +282,7 @@ describe('useTransactions', () => {
         categoryType: 'Outgoing',
         isArchived: false,
         description: null,
+        isSystem: false,
       },
       fromAccount: {
         id: 'acc-2',
@@ -339,6 +342,7 @@ describe('useTransactions', () => {
         categoryType: 'Outgoing',
         isArchived: false,
         description: null,
+        isSystem: false,
       },
       fromAccount: {
         id: 'acc-3',

@@ -127,6 +127,10 @@ export async function updateCategory(
   return apiPut<CategoryResponse, CategoryRequest>(`/api/categories/${id}`, payload);
 }
 
+export async function fetchTransferCategory(): Promise<CategoryResponse> {
+  return apiGet<CategoryResponse>('/api/categories/transfer');
+}
+
 // Management view endpoints
 export async function fetchCategoriesForManagement(): Promise<CategoriesManagementListResponse> {
   return apiGet<CategoriesManagementListResponse>('/api/categories/management');

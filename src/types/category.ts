@@ -12,6 +12,7 @@ export interface CategoryResponse {
   categoryType: CategoryType;
   isArchived: boolean;
   description: string | null;
+  isSystem: boolean;
 }
 
 export interface CategoryStats {
