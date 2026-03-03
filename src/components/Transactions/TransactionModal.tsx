@@ -40,6 +40,7 @@ export const TransactionModal = ({
       title={isEdit ? t('transactions.modal.editTitle') : t('transactions.modal.addTitle')}
       size="lg"
       centered
+      closeButtonProps={{ tabIndex: -1 }}
     >
       {isEdit && onSave ? (
         <EditTransactionForm
