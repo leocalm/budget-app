@@ -5,6 +5,7 @@ import {
   IconCalendar,
   IconDots,
   IconLayoutDashboard,
+  IconSettings,
   IconTag,
   IconWallet,
 } from '@tabler/icons-react';
@@ -32,6 +33,7 @@ const moreMenuItems: MoreMenuItem[] = [
   { route: '/accounts', icon: IconWallet, labelKey: 'layout.navigation.accounts' },
   { route: '/categories', icon: IconTag, labelKey: 'layout.navigation.categories' },
   { route: '/vendors', icon: IconBuildingStore, labelKey: 'layout.navigation.vendors' },
+  { route: '/settings', icon: IconSettings, labelKey: 'layout.navigation.settings' },
 ];
 
 export function BottomNavigation() {
@@ -177,7 +179,6 @@ export function BottomNavigation() {
                       );
                     })}
                   </Stack>
-                  {/* Settings intentionally removed from mobile More popover per request */}
                 </Popover.Dropdown>
               </Popover>
             );
