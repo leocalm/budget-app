@@ -22,12 +22,12 @@ import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
 import { convertDisplayToCents } from '@/utils/currency';
 import { formatDateForApi } from '@/utils/date';
+import { DesktopTransactionsList } from './DesktopTransactionsList';
 import type { EditFormValues } from './Form/EditTransactionForm';
 import { MobileTransactionsList } from './List/MobileTransactionsList';
 import { PageHeader } from './PageHeader';
 import { TransactionFilters, useDirectionOptions } from './TransactionFilters';
 import { TransactionModal } from './TransactionModal';
-import { TransactionsLedger } from './TransactionsLedger';
 
 export interface TransactionsPageViewProps {
   transactions: TransactionResponse[] | undefined;
@@ -255,7 +255,7 @@ export const TransactionsPageView = ({
             </Drawer>
           </>
         ) : (
-          <TransactionsLedger
+          <DesktopTransactionsList
             transactions={transactions ?? []}
             batchMode={batchMode}
             accounts={accounts}
