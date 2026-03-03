@@ -218,13 +218,9 @@ export const DesktopTransactionsList = ({
                       </Group>
                     </div>
 
-                    {/* Account — pushed right */}
+                    {/* Account */}
                     {!isTransfer && (
-                      <Text
-                        size="xs"
-                        c="dimmed"
-                        style={{ whiteSpace: 'nowrap', marginLeft: 'auto' }}
-                      >
+                      <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>
                         {tx.fromAccount.name}
                       </Text>
                     )}
@@ -239,7 +235,6 @@ export const DesktopTransactionsList = ({
                         fontVariantNumeric: 'tabular-nums',
                         minWidth: 90,
                         textAlign: 'right',
-                        ...(isTransfer ? { marginLeft: 'auto' } : {}),
                       }}
                     >
                       {amountPrefix}
