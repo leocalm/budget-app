@@ -13,11 +13,11 @@ export function FocusLayout({ children }: FocusLayoutProps) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 48,
+        paddingTop: 'clamp(16px, 4vw, 48px)',
         paddingBottom: 48,
       }}
     >
-      <Container size={600} w="100%">
+      <Container size={600} w="100%" px={{ base: 'md', sm: 'xl' }}>
         <Text fw={700} size="xl" mb="xl" style={{ fontFamily: 'Sora, sans-serif' }}>
           PiggyPulse
         </Text>

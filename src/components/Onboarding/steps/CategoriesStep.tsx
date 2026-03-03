@@ -109,7 +109,7 @@ export function CategoriesStep({ onComplete, onBack }: Props) {
     <Stack gap="lg">
       <Title order={3}>Set up your categories</Title>
 
-      <SimpleGrid cols={3}>
+      <SimpleGrid cols={{ base: 1, sm: 3 }}>
         {templateCards.map(({ key, label, description }) => (
           <Card
             key={key}

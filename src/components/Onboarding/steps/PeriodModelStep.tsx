@@ -60,7 +60,7 @@ export function PeriodModelStep({ onComplete }: Props) {
       {isCustom && (
         <Stack gap="lg">
           {/* Row 1: Start day · Duration · Generate ahead */}
-          <SimpleGrid cols={3} spacing="sm" style={{ alignItems: 'stretch' }}>
+          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" style={{ alignItems: 'stretch' }}>
             <Stack gap={6} justify="space-between">
               <Stack gap={6}>
                 <Text size="sm" fw={500}>
@@ -124,7 +124,7 @@ export function PeriodModelStep({ onComplete }: Props) {
               weekday. This only affects when a period is recorded as starting — it does not change
               how long the period lasts.
             </Text>
-            <SimpleGrid cols={2} spacing="sm" mt={4}>
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm" mt={4}>
               <Select
                 label="If it lands on Saturday"
                 data={[
