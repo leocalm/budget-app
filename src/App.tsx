@@ -1,3 +1,4 @@
+import { CookieBanner } from './components/CookieBanner/CookieBanner';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Router } from './Router';
 
@@ -7,6 +8,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Router />
+      <CookieBanner />
     </ErrorBoundary>
   );
 }
