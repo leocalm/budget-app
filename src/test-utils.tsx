@@ -39,6 +39,7 @@ export function createMockCategory(overrides: Partial<CategoryResponse> = {}): C
     categoryType: 'Outgoing',
     isArchived: false,
     description: null,
+    isSystem: false,
     ...overrides,
   };
 }

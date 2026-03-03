@@ -15,6 +15,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { TransactionFilterParams } from '@/api/transaction';
 import { StateRenderer, TransactionListSkeleton } from '@/components/Utils';
+import { useTransferCategory } from '@/hooks/useCategories';
 import { useCreateVendor } from '@/hooks/useVendors';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
@@ -22,12 +23,12 @@ import { TransactionRequest, TransactionResponse } from '@/types/transaction';
 import { Vendor } from '@/types/vendor';
 import { convertDisplayToCents } from '@/utils/currency';
 import { formatDateForApi } from '@/utils/date';
+import { DesktopTransactionsList } from './DesktopTransactionsList';
 import type { EditFormValues } from './Form/EditTransactionForm';
 import { MobileTransactionsList } from './List/MobileTransactionsList';
 import { PageHeader } from './PageHeader';
 import { TransactionFilters, useDirectionOptions } from './TransactionFilters';
 import { TransactionModal } from './TransactionModal';
-import { TransactionsLedger } from './TransactionsLedger';
 
 export interface TransactionsPageViewProps {
   transactions: TransactionResponse[] | undefined;
@@ -85,12 +86,13 @@ export const TransactionsPageView = ({
     useDisclosure(false);
 
   const createVendorMutation = useCreateVendor();
+  const { data: transferCategory } = useTransferCategory();
 
   const openAdd = () => setModalState({ open: true, transaction: null });
   const openEdit = (tx: TransactionResponse) => setModalState({ open: true, transaction: tx });
   const closeModal = () => setModalState({ open: false, transaction: null });
 
-  const handleSaveEdit = async (data: EditFormValues) => {
+  const handleSave = async (data: EditFormValues) => {
     let vendorId: string | undefined;
     if (data.categoryType !== 'Transfer' && data.vendorName?.trim()) {
       const existing = vendors.find((v) => v.name.toLowerCase() === data.vendorName.toLowerCase());
@@ -106,13 +108,17 @@ export const TransactionsPageView = ({
       description: data.description,
       amount: convertDisplayToCents(data.amount),
       occurredAt: formatDateForApi(data.occurredAt!),
-      categoryId: data.categoryId,
+      categoryId: data.categoryType === 'Transfer' ? transferCategory!.id : data.categoryId,
       fromAccountId: data.fromAccountId,
       toAccountId: data.categoryType === 'Transfer' ? data.toAccountId : undefined,
       vendorId,
     };
 
-    await updateTransaction(modalState.transaction!.id, payload);
+    if (modalState.transaction) {
+      await updateTransaction(modalState.transaction.id, payload);
+    } else {
+      await createTransaction(payload);
+    }
   };
 
   const headerActions = (
@@ -255,7 +261,7 @@ export const TransactionsPageView = ({
             </Drawer>
           </>
         ) : (
-          <TransactionsLedger
+          <DesktopTransactionsList
             transactions={transactions ?? []}
             batchMode={batchMode}
             accounts={accounts}
@@ -278,7 +284,7 @@ export const TransactionsPageView = ({
         accounts={accounts}
         categories={categories}
         vendors={vendors}
-        onSave={handleSaveEdit}
+        onSave={handleSave}
       />
     </StateRenderer>
   );

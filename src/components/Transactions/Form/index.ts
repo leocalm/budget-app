@@ -1,4 +1,3 @@
-export { QuickAddTransaction } from './QuickAddTransaction';
 export {
   TransactionFormProvider,
   useTransactionFormContext,

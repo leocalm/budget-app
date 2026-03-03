@@ -40,7 +40,7 @@ export function BudgetContainer() {
     const map = new Map<string, number>();
     transactions?.forEach((t) => {
       // Only count expenses (categories with Outgoing type)
-      if (t.category?.categoryType === 'Outgoing') {
+      if (t.category.categoryType === 'Outgoing') {
         map.set(t.category.id, (map.get(t.category.id) || 0) + t.amount);
       }
     });

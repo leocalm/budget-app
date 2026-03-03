@@ -13,6 +13,7 @@ import {
   fetchCategoriesDiagnostic,
   fetchCategoriesForManagement,
   fetchCategoriesPage,
+  fetchTransferCategory,
   fetchUnbudgetedCategories,
   restoreCategory,
   updateCategory,
@@ -170,6 +171,17 @@ export const useUpdateBudgetCategory = () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.categoriesManagement() }),
       ]);
     },
+  });
+};
+
+/**
+ * Fetches the system Transfer category for the current user.
+ */
+export const useTransferCategory = () => {
+  return useQuery({
+    queryKey: queryKeys.transferCategory(),
+    queryFn: fetchTransferCategory,
+    staleTime: Infinity,
   });
 };
 
