@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { Box, Container, Text } from '@mantine/core';
+import { Box, Container } from '@mantine/core';
+import { Logo } from '@/components/Layout/Logo';
 
 interface FocusLayoutProps {
   children: ReactNode;
@@ -18,9 +19,9 @@ export function FocusLayout({ children }: FocusLayoutProps) {
       }}
     >
       <Container size={600} w="100%" px={{ base: 'md', sm: 'xl' }}>
-        <Text fw={700} size="xl" mb="xl" style={{ fontFamily: 'Sora, sans-serif' }}>
-          PiggyPulse
-        </Text>
+        <Box mb="xl">
+          <Logo />
+        </Box>
         {children}
       </Container>
     </Box>
