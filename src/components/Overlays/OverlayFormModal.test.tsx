@@ -85,6 +85,7 @@ describe('OverlayFormModal', () => {
           transactionCount: 0,
           isArchived: false,
           description: null,
+          isSystem: false,
         },
       ],
     });

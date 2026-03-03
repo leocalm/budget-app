@@ -15,6 +15,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { TransactionFilterParams } from '@/api/transaction';
 import { StateRenderer, TransactionListSkeleton } from '@/components/Utils';
+import { useTransferCategory } from '@/hooks/useCategories';
 import { useCreateVendor } from '@/hooks/useVendors';
 import { AccountResponse } from '@/types/account';
 import { CategoryResponse } from '@/types/category';
@@ -85,6 +86,7 @@ export const TransactionsPageView = ({
     useDisclosure(false);
 
   const createVendorMutation = useCreateVendor();
+  const { data: transferCategory } = useTransferCategory();
 
   const openAdd = () => setModalState({ open: true, transaction: null });
   const openEdit = (tx: TransactionResponse) => setModalState({ open: true, transaction: tx });
@@ -106,7 +108,7 @@ export const TransactionsPageView = ({
       description: data.description,
       amount: convertDisplayToCents(data.amount),
       occurredAt: formatDateForApi(data.occurredAt!),
-      categoryId: data.categoryId,
+      categoryId: data.categoryType === 'Transfer' ? transferCategory!.id : data.categoryId,
       fromAccountId: data.fromAccountId,
       toAccountId: data.categoryType === 'Transfer' ? data.toAccountId : undefined,
       vendorId,

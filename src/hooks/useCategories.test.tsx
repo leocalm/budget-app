@@ -169,6 +169,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
       isArchived: false,
       description: null,
+      isSystem: false,
     });
 
     const { result } = renderHook(() => useCreateCategory(null), { wrapper });
@@ -216,6 +217,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
       isArchived: false,
       description: null,
+      isSystem: false,
     });
 
     const { result } = renderHook(() => useUpdateCategory(null), { wrapper });
@@ -265,6 +267,7 @@ describe('useCategories', () => {
         categoryType: 'Outgoing',
         isArchived: false,
         description: null,
+        isSystem: false,
       },
     });
 
@@ -341,6 +344,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
       isArchived: true,
       description: null,
+      isSystem: false,
     });
 
     const { result } = renderHook(() => useArchiveCategory(), { wrapper });
@@ -365,6 +369,7 @@ describe('useCategories', () => {
       categoryType: 'Outgoing',
       isArchived: false,
       description: null,
+      isSystem: false,
     });
 
     const { result } = renderHook(() => useRestoreCategory(), { wrapper });
@@ -406,6 +411,7 @@ describe('useCategories', () => {
             transactionCount: 10,
             isArchived: false,
             description: null,
+            isSystem: false,
           },
         ],
         nextCursor: 'cursor-1',
