@@ -285,7 +285,7 @@
       "confirmDelete": "Are you sure you want to delete this transaction?",
       "thisPeriod": "this period",
       "title": "Transactions",
-      "subtitle": "Review and manage your financial activity for the selected period.",
+      "subtitle": "Record and review your income and spending.",
       "editTitle": "Edit Transaction",
       "editing": "Editing"
     },
