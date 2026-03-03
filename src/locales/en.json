@@ -1079,6 +1079,13 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "onboarding": {
+      "title": "Getting started",
+      "subtitle": "Complete these steps to set up your budget.",
+      "createPeriod": "Create a budget period",
+      "addAccount": "Add an account",
+      "addCategory": "Add a category"
+    },
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {

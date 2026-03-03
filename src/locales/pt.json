@@ -948,6 +948,13 @@
   },
   "dashboard": {
     "title": "Painel",
+    "onboarding": {
+      "title": "Primeiros passos",
+      "subtitle": "Complete estes passos para configurar seu orçamento.",
+      "createPeriod": "Crie um período orçamental",
+      "addAccount": "Adicione uma conta",
+      "addCategory": "Adicione uma categoria"
+    },
     "locked": {
       "statusLabel": "Status: {{status}}",
       "status": {

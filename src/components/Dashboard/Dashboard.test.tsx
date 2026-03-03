@@ -11,6 +11,8 @@ const useMonthProgressMock = vi.hoisted(() => vi.fn());
 const useBudgetPerDayMock = vi.hoisted(() => vi.fn());
 const useRecentTransactionsMock = vi.hoisted(() => vi.fn());
 const useAccountsMock = vi.hoisted(() => vi.fn());
+const useBudgetPeriodsMock = vi.hoisted(() => vi.fn());
+const useCategoriesMock = vi.hoisted(() => vi.fn());
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -49,6 +51,7 @@ vi.mock('@/hooks/useDisplayCurrency', () => ({
 
 vi.mock('@/hooks/useBudget', () => ({
   useCurrentBudgetPeriod: () => useCurrentBudgetPeriodMock(),
+  useBudgetPeriods: () => useBudgetPeriodsMock(),
 }));
 
 vi.mock('@/hooks/useDashboard', () => ({
@@ -63,6 +66,10 @@ vi.mock('@/hooks/useDashboard', () => ({
 
 vi.mock('@/hooks/useAccounts', () => ({
   useAccounts: () => useAccountsMock(),
+}));
+
+vi.mock('@/hooks/useCategories', () => ({
+  useCategories: () => useCategoriesMock(),
 }));
 
 vi.mock('@/components/BudgetPeriodSelector', () => ({
@@ -104,6 +111,8 @@ describe('Dashboard locked state', () => {
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useAccountsMock.mockReturnValue({ data: [] });
+    useBudgetPeriodsMock.mockReturnValue({ data: [] });
+    useCategoriesMock.mockReturnValue({ data: [] });
 
     render(
       <MemoryRouter>
@@ -142,6 +151,8 @@ describe('Dashboard locked state', () => {
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useAccountsMock.mockReturnValue({ data: [] });
+    useBudgetPeriodsMock.mockReturnValue({ data: [] });
+    useCategoriesMock.mockReturnValue({ data: [] });
 
     render(
       <MemoryRouter>
@@ -175,6 +186,8 @@ describe('Dashboard locked state', () => {
     useBudgetPerDayMock.mockReturnValue({ data: [], isLoading: false });
     useRecentTransactionsMock.mockReturnValue({ data: [] });
     useAccountsMock.mockReturnValue({ data: [] });
+    useBudgetPeriodsMock.mockReturnValue({ data: [] });
+    useCategoriesMock.mockReturnValue({ data: [] });
 
     render(
       <MemoryRouter>
