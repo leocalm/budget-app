@@ -172,6 +172,7 @@ describe('auth api', () => {
         id: 'user-1',
         email: 'john@example.com',
         name: 'John Doe',
+        onboardingStatus: 'completed',
       };
 
       const apiGetMock = vi.mocked(apiGet);
@@ -186,6 +187,7 @@ describe('auth api', () => {
         id: 'user-1',
         email: 'john@example.com',
         name: 'John Doe',
+        onboardingStatus: 'completed',
       };
 
       const apiGetMock = vi.mocked(apiGet);

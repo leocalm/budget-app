@@ -291,8 +291,8 @@ export function SettingsPage() {
   const openPeriodModal = () => {
     const data = periodModelQuery.data;
     if (data) {
-      setEditPeriodMode(data.periodMode);
-      const s = data.periodSchedule;
+      setEditPeriodMode(data.mode);
+      const s = data.schedule;
       if (s) {
         setEditStartDay(s.startDay);
         setEditDurationValue(s.durationValue);
@@ -308,9 +308,9 @@ export function SettingsPage() {
 
   const handleSavePeriodModel = async () => {
     const payload: PeriodModelRequest = {
-      periodMode: editPeriodMode,
+      mode: editPeriodMode,
       ...(editPeriodMode === 'automatic' && {
-        periodSchedule: {
+        schedule: {
           startDay: editStartDay,
           durationValue: editDurationValue,
           durationUnit: editDurationUnit,
@@ -716,38 +716,38 @@ export function SettingsPage() {
                         {t('settings.periodModel.modeLabel')}
                       </Text>
                       <Badge
-                        color={periodModelQuery.data.periodMode === 'automatic' ? 'teal' : 'gray'}
+                        color={periodModelQuery.data.mode === 'automatic' ? 'teal' : 'gray'}
                         variant="light"
                       >
-                        {periodModelQuery.data.periodMode === 'automatic'
+                        {periodModelQuery.data.mode === 'automatic'
                           ? t('settings.periodModel.modeAutomatic')
                           : t('settings.periodModel.modeManual')}
                       </Badge>
                     </Group>
 
-                    {periodModelQuery.data.periodMode === 'automatic' &&
-                      periodModelQuery.data.periodSchedule && (
+                    {periodModelQuery.data.mode === 'automatic' &&
+                      periodModelQuery.data.schedule && (
                         <>
                           <InfoRow
                             label={t('settings.periodModel.startDayLabel')}
-                            value={String(periodModelQuery.data.periodSchedule.startDay)}
+                            value={String(periodModelQuery.data.schedule.startDay)}
                           />
                           <InfoRow
                             label={t('settings.periodModel.durationLabel')}
-                            value={`${periodModelQuery.data.periodSchedule.durationValue} ${periodModelQuery.data.periodSchedule.durationUnit}`}
+                            value={`${periodModelQuery.data.schedule.durationValue} ${periodModelQuery.data.schedule.durationUnit}`}
                           />
                           <InfoRow
                             label={t('settings.periodModel.generateAheadLabel')}
-                            value={`${periodModelQuery.data.periodSchedule.generateAhead} ${t('settings.periodModel.periods')}`}
+                            value={`${periodModelQuery.data.schedule.generateAhead} ${t('settings.periodModel.periods')}`}
                           />
                           <InfoRow
                             label={t('settings.periodModel.namePatternLabel')}
-                            value={periodModelQuery.data.periodSchedule.namePattern}
+                            value={periodModelQuery.data.schedule.namePattern}
                           />
                         </>
                       )}
 
-                    {periodModelQuery.data.periodMode === 'manual' && (
+                    {periodModelQuery.data.mode === 'manual' && (
                       <Text size="sm" c="dimmed">
                         {t('settings.periodModel.noSchedule')}
                       </Text>

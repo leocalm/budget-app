@@ -1,22 +1,32 @@
-import React, { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
+import { completeOnboarding } from '@/api/onboarding';
 import { useBudgetPeriods, useCurrentBudgetPeriod } from '@/hooks/useBudget';
+import { useAuth } from './AuthContext';
 
 interface BudgetPeriodContextType {
   selectedPeriodId: string | null;
   setSelectedPeriodId: (id: string | null) => void;
+  /** True while the initial period list is still loading (before auto-selection runs). */
+  isResolvingPeriod: boolean;
 }
 
 const BudgetPeriodContext = createContext<BudgetPeriodContextType | undefined>(undefined);
 
 export function BudgetProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const [selectedPeriodId, setSelectedPeriodId] = useLocalStorage<string | null>({
     key: 'budget-period-id',
     defaultValue: null,
   });
 
   const { data: currentPeriod } = useCurrentBudgetPeriod();
-  const { data: periods = [], isFetched: hasFetchedPeriods } = useBudgetPeriods();
+  const {
+    data: periods = [],
+    isFetched: hasFetchedPeriods,
+    refetch: refetchPeriods,
+  } = useBudgetPeriods();
+  const generatingRef = useRef(false);
 
   useEffect(() => {
     if (!hasFetchedPeriods) {
@@ -26,6 +36,18 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     if (periods.length === 0) {
       if (selectedPeriodId !== null) {
         setSelectedPeriodId(null);
+      }
+
+      // If the user has completed onboarding but has no periods yet (e.g.
+      // their account predates the cron-on-complete change), generate them now.
+      if (user?.onboardingStatus === 'completed' && !generatingRef.current) {
+        generatingRef.current = true;
+        completeOnboarding()
+          .then(() => refetchPeriods())
+          .catch(() => {})
+          .finally(() => {
+            generatingRef.current = false;
+          });
       }
 
       return;
@@ -47,8 +69,12 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     }
   }, [currentPeriod, hasFetchedPeriods, periods, selectedPeriodId, setSelectedPeriodId]);
 
+  const isResolvingPeriod = !hasFetchedPeriods;
+
   return (
-    <BudgetPeriodContext.Provider value={{ selectedPeriodId, setSelectedPeriodId }}>
+    <BudgetPeriodContext.Provider
+      value={{ selectedPeriodId, setSelectedPeriodId, isResolvingPeriod }}
+    >
       {children}
     </BudgetPeriodContext.Provider>
   );

@@ -46,11 +46,13 @@ describe('AuthContext', () => {
       id: 'user-1',
       email: 'stored@example.com',
       name: 'Stored User',
+      onboardingStatus: 'completed',
     };
     const refreshedUser: User = {
       id: 'user-1',
       email: 'refreshed@example.com',
       name: 'Refreshed User',
+      onboardingStatus: 'completed',
     };
 
     localStorage.setItem('user', JSON.stringify(storedUser));
@@ -75,6 +77,7 @@ describe('AuthContext', () => {
       id: 'user-2',
       email: 'stored2@example.com',
       name: 'Stored User 2',
+      onboardingStatus: 'completed',
     };
 
     localStorage.setItem('user', JSON.stringify(storedUser));
@@ -115,6 +118,7 @@ describe('AuthContext', () => {
       id: 'user-3',
       email: 'session@example.com',
       name: 'Session User',
+      onboardingStatus: 'completed',
     };
 
     act(() => {
@@ -152,6 +156,7 @@ describe('AuthContext', () => {
       id: 'user-4',
       email: 'remembered@example.com',
       name: 'Remembered User',
+      onboardingStatus: 'completed',
     };
 
     act(() => {

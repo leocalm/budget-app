@@ -117,6 +117,11 @@ const AccessDeniedPage = lazy(() =>
     default: module.AccessDeniedPage,
   }))
 );
+const OnboardingPage = lazy(() =>
+  import('./pages/Onboarding.page').then((module) => ({
+    default: module.OnboardingPage,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -168,6 +173,12 @@ export function Router() {
         // Catch-all for 404 within authenticated routes
         { path: '*', element: withPageLoader(<NotFoundPage />) },
       ],
+    },
+    {
+      path: '/onboarding',
+      element: (
+        <ProtectedRoute skipOnboardingGuard>{withPageLoader(<OnboardingPage />)}</ProtectedRoute>
+      ),
     },
     {
       path: '/auth',

@@ -22,7 +22,12 @@ vi.mock('react-router-dom', async (importOriginal) => {
 const mockUseAuth = vi.mocked(useAuth);
 const mockApiLogout = vi.mocked(apiLogout);
 
-const defaultUser = { id: '1', email: 'test@example.com', name: 'John Doe' };
+const defaultUser = {
+  id: '1',
+  email: 'test@example.com',
+  name: 'John Doe',
+  onboardingStatus: 'completed',
+};
 
 const renderMenu = (variant: 'sidebar' | 'topbar' = 'sidebar') =>
   render(
@@ -53,7 +58,7 @@ describe('UserMenu', () => {
 
     it('shows first two chars for single-word name', () => {
       mockUseAuth.mockReturnValue({
-        user: { id: '1', email: 'x@x.com', name: 'Alice' },
+        user: { id: '1', email: 'x@x.com', name: 'Alice', onboardingStatus: 'completed' },
         isAuthenticated: true,
         isLoading: false,
         login: vi.fn(),
@@ -79,7 +84,7 @@ describe('UserMenu', () => {
 
     it('falls back to U when name is empty string', () => {
       mockUseAuth.mockReturnValue({
-        user: { id: '1', email: 'x@x.com', name: '' },
+        user: { id: '1', email: 'x@x.com', name: '', onboardingStatus: 'completed' },
         isAuthenticated: true,
         isLoading: false,
         login: vi.fn(),
@@ -92,7 +97,7 @@ describe('UserMenu', () => {
 
     it('falls back to U when name is whitespace only', () => {
       mockUseAuth.mockReturnValue({
-        user: { id: '1', email: 'x@x.com', name: '   ' },
+        user: { id: '1', email: 'x@x.com', name: '   ', onboardingStatus: 'completed' },
         isAuthenticated: true,
         isLoading: false,
         login: vi.fn(),

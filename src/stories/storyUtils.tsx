@@ -7,7 +7,12 @@ import type { User } from '@/api/auth';
 import { AuthContext } from '@/context/AuthContext';
 import { BudgetProvider } from '@/context/BudgetContext';
 
-const MOCK_USER: User = { id: '1', email: 'designer@example.com', name: 'Design Team' };
+const MOCK_USER: User = {
+  id: '1',
+  email: 'designer@example.com',
+  name: 'Design Team',
+  onboardingStatus: 'completed',
+};
 
 /**
  * Provides AuthContext without any network calls or redirects.

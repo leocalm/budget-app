@@ -5,11 +5,15 @@ import { BudgetProvider, useBudgetPeriodSelection } from './BudgetContext';
 
 const mockUseCurrentBudgetPeriod = vi.hoisted(() => vi.fn());
 const mockUseBudgetPeriods = vi.hoisted(() => vi.fn());
+const mockUseAuth = vi.hoisted(() => vi.fn());
 
 vi.mock('@/hooks/useBudget', () => ({
   useCurrentBudgetPeriod: mockUseCurrentBudgetPeriod,
   useBudgetPeriods: mockUseBudgetPeriods,
 }));
+
+vi.mock('./AuthContext', () => ({ useAuth: mockUseAuth }));
+vi.mock('@/api/onboarding', () => ({ completeOnboarding: vi.fn().mockResolvedValue(undefined) }));
 
 const periods = [
   {
@@ -35,10 +39,12 @@ describe('BudgetContext', () => {
     localStorage.clear();
     mockUseCurrentBudgetPeriod.mockReset();
     mockUseBudgetPeriods.mockReset();
+    mockUseAuth.mockReturnValue({ user: { onboardingStatus: 'completed' } });
 
     mockUseBudgetPeriods.mockReturnValue({
       data: periods,
       isFetched: true,
+      refetch: vi.fn(),
     });
     mockUseCurrentBudgetPeriod.mockReturnValue({
       data: periods[0],
