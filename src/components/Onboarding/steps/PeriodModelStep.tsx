@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Group, Select, SimpleGrid, Stack, Switch, Text } from '@mantine/core';
+import { Button, Center, Group, Select, SimpleGrid, Stack, Switch, Text } from '@mantine/core';
 import { updatePeriodModel } from '@/api/settings';
 import type { PeriodModelRequest, WeekendAdjustment } from '@/types/settings';
 import { DayPicker } from '../DayPicker';
@@ -70,7 +70,9 @@ export function PeriodModelStep({ onComplete }: Props) {
                   The day of the month your period begins. Capped at 28 so it exists every month.
                 </Text>
               </Stack>
-              <DayPicker value={schedule.startDay} onChange={(v) => set('startDay', v)} />
+              <Center>
+                <DayPicker value={schedule.startDay} onChange={(v) => set('startDay', v)} />
+              </Center>
             </Stack>
 
             <Stack gap={6} justify="space-between">
@@ -82,12 +84,14 @@ export function PeriodModelStep({ onComplete }: Props) {
                   How many months each period spans. Most people use 1.
                 </Text>
               </Stack>
-              <DayPicker
-                value={schedule.durationValue}
-                min={1}
-                max={12}
-                onChange={(v) => set('durationValue', v)}
-              />
+              <Center>
+                <DayPicker
+                  value={schedule.durationValue}
+                  min={1}
+                  max={12}
+                  onChange={(v) => set('durationValue', v)}
+                />
+              </Center>
             </Stack>
 
             <Stack gap={6} justify="space-between">
@@ -99,12 +103,14 @@ export function PeriodModelStep({ onComplete }: Props) {
                   How many future periods to create in advance.
                 </Text>
               </Stack>
-              <DayPicker
-                value={schedule.generateAhead}
-                min={1}
-                max={24}
-                onChange={(v) => set('generateAhead', v)}
-              />
+              <Center>
+                <DayPicker
+                  value={schedule.generateAhead}
+                  min={1}
+                  max={24}
+                  onChange={(v) => set('generateAhead', v)}
+                />
+              </Center>
             </Stack>
           </SimpleGrid>
 
