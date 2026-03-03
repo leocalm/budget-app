@@ -1,6 +1,14 @@
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Box, Group, Stepper, Text, useMantineTheme } from '@mantine/core';
+import {
+  Alert,
+  Box,
+  Group,
+  Stepper,
+  Text,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { completeOnboarding } from '@/api/onboarding';
 import { useOnboardingWizard } from '@/hooks/useOnboardingWizard';
@@ -18,33 +26,67 @@ interface StepChipsProps {
 
 function StepChips({ activeStep }: StepChipsProps) {
   const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
   const primary = theme.colors[theme.primaryColor][5];
+  const muted = isDark ? theme.colors.dark[4] : theme.colors.gray[4];
 
   return (
-    <Group gap={12} align="center" justify="center" mb="lg">
+    <Group gap={0} align="center" justify="center" mb="lg">
       {STEP_LABELS.map((label, i) => {
         const isActive = i === activeStep;
         const isDone = i < activeStep;
+        const isLast = i === STEP_LABELS.length - 1;
+
+        const circleBg = isActive || isDone ? primary : 'transparent';
+        const circleBorder = isActive || isDone ? primary : muted;
+        const textColor = isActive || isDone ? theme.white : muted;
+
         return (
-          <Group key={label} gap={8} align="center" wrap="nowrap">
-            <Box
-              style={{
-                width: 14,
-                height: 14,
-                borderRadius: 999,
-                flexShrink: 0,
-                background: isActive
-                  ? primary
-                  : isDone
-                    ? primary
-                    : 'var(--mantine-color-default-border)',
-                transition: 'background 200ms ease',
-              }}
-            />
-            {isActive && (
-              <Text size="sm" fw={600} style={{ lineHeight: 1, whiteSpace: 'nowrap' }}>
-                {label}
-              </Text>
+          <Group key={label} gap={0} align="center" wrap="nowrap">
+            {/* Step circle */}
+            <Group gap={6} align="center" wrap="nowrap">
+              <Box
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 999,
+                  flexShrink: 0,
+                  background: circleBg,
+                  border: `2px solid ${circleBorder}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 200ms ease',
+                }}
+              >
+                {isDone ? (
+                  <IconCheck size={14} color={theme.white} stroke={3} />
+                ) : (
+                  <Text size="xs" fw={700} style={{ color: textColor, lineHeight: 1 }}>
+                    {i + 1}
+                  </Text>
+                )}
+              </Box>
+              {isActive && (
+                <Text size="sm" fw={600} style={{ whiteSpace: 'nowrap' }}>
+                  {label}
+                </Text>
+              )}
+            </Group>
+
+            {/* Connector line between steps */}
+            {!isLast && (
+              <Box
+                style={{
+                  width: isActive ? 12 : 20,
+                  height: 2,
+                  background: isDone ? primary : muted,
+                  margin: '0 6px',
+                  flexShrink: 0,
+                  transition: 'all 200ms ease',
+                }}
+              />
             )}
           </Group>
         );
