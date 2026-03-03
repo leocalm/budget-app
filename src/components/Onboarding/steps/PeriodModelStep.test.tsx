@@ -28,8 +28,8 @@ describe('PeriodModelStep', () => {
     renderStep();
     fireEvent.click(screen.getByRole('switch', { name: /customize/i }));
     expect(screen.getByText(/start day/i)).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /increase day/i })).toHaveLength(2);
-    expect(screen.getAllByRole('button', { name: /decrease day/i })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: /increase day/i })).toHaveLength(3);
+    expect(screen.getAllByRole('button', { name: /decrease day/i })).toHaveLength(3);
   });
 
   it('calls updatePeriodModel and onComplete on Continue', async () => {

@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  Button,
-  Group,
-  SegmentedControl,
-  Select,
-  SimpleGrid,
-  Stack,
-  Switch,
-  Text,
-} from '@mantine/core';
+import { Button, Group, Select, SimpleGrid, Stack, Switch, Text } from '@mantine/core';
 import { updatePeriodModel } from '@/api/settings';
 import type { PeriodModelRequest, WeekendAdjustment } from '@/types/settings';
 import { DayPicker } from '../DayPicker';
@@ -108,10 +99,11 @@ export function PeriodModelStep({ onComplete }: Props) {
                   How many future periods to create in advance.
                 </Text>
               </Stack>
-              <SegmentedControl
-                data={['1', '3', '6']}
-                value={String(schedule.generateAhead)}
-                onChange={(v) => set('generateAhead', Number(v))}
+              <DayPicker
+                value={schedule.generateAhead}
+                min={1}
+                max={24}
+                onChange={(v) => set('generateAhead', v)}
               />
             </Stack>
           </SimpleGrid>
