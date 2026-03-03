@@ -18,6 +18,7 @@ import styles from './Dashboard.module.css';
 
 interface DashboardProps {
   selectedPeriodId: string | null;
+  isResolvingPeriod?: boolean;
 }
 
 interface LockedDashboardCardProps {
@@ -55,7 +56,7 @@ const LockedDashboardCard = ({
   );
 };
 
-export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
+export const Dashboard = ({ selectedPeriodId, isResolvingPeriod = false }: DashboardProps) => {
   const { t, i18n } = useTranslation();
   const globalCurrency = useDisplayCurrency();
 
@@ -69,7 +70,7 @@ export const Dashboard = ({ selectedPeriodId }: DashboardProps) => {
     isCurrentPeriodFetched &&
     !currentPeriod &&
     (currentPeriodError instanceof ApiError ? currentPeriodError.isNotFound : true);
-  const isLocked = isPeriodMissing || hasNoActivePeriod;
+  const isLocked = !isResolvingPeriod && (isPeriodMissing || hasNoActivePeriod);
   const lockedStatus = isPeriodMissing
     ? t('dashboard.locked.status.notConfigured')
     : t('dashboard.locked.status.noActivePeriod');

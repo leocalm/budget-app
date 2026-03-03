@@ -1,10 +1,12 @@
-import React, { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 import { useBudgetPeriods, useCurrentBudgetPeriod } from '@/hooks/useBudget';
 
 interface BudgetPeriodContextType {
   selectedPeriodId: string | null;
   setSelectedPeriodId: (id: string | null) => void;
+  /** True while the initial period list is still loading (before auto-selection runs). */
+  isResolvingPeriod: boolean;
 }
 
 const BudgetPeriodContext = createContext<BudgetPeriodContextType | undefined>(undefined);
@@ -47,8 +49,12 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     }
   }, [currentPeriod, hasFetchedPeriods, periods, selectedPeriodId, setSelectedPeriodId]);
 
+  const isResolvingPeriod = !hasFetchedPeriods;
+
   return (
-    <BudgetPeriodContext.Provider value={{ selectedPeriodId, setSelectedPeriodId }}>
+    <BudgetPeriodContext.Provider
+      value={{ selectedPeriodId, setSelectedPeriodId, isResolvingPeriod }}
+    >
       {children}
     </BudgetPeriodContext.Provider>
   );
