@@ -1,10 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Paper, Text } from '@mantine/core';
+import { Button, Group, Paper, Text, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useCookieConsent } from '@/hooks/useCookieConsent';
+
+const BOTTOM_NAV_HEIGHT = 60;
 
 export function CookieBanner() {
   const { t } = useTranslation();
   const { consent, accept, reject } = useCookieConsent();
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   if (consent !== null) {
     return null;
@@ -18,7 +23,7 @@ export function CookieBanner() {
       p="md"
       style={{
         position: 'fixed',
-        bottom: 0,
+        bottom: isMobile ? BOTTOM_NAV_HEIGHT : 0,
         left: 0,
         right: 0,
         zIndex: 200,
