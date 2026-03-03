@@ -51,13 +51,10 @@ const ACCOUNT_TYPE_OPTIONS: { value: AccountType; label: string }[] = [
   { value: 'Checking', label: 'Checking' },
   { value: 'Savings', label: 'Savings' },
   { value: 'CreditCard', label: 'Credit Card' },
-  { value: 'DebitCard', label: 'Debit Card' },
   { value: 'Wallet', label: 'Wallet' },
-  { value: 'Investment', label: 'Investment' },
-  { value: 'Cash', label: 'Cash' },
 ];
 
-const ASSET_TYPES: AccountType[] = ['Checking', 'Savings', 'Wallet', 'Cash', 'DebitCard'];
+const ASSET_TYPES: AccountType[] = ['Checking', 'Savings', 'Wallet'];
 
 const DEFAULT_COLOR = '#228be6';
 const DEFAULT_ICON = 'wallet';

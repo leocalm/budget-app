@@ -1,13 +1,4 @@
-export const ACCOUNT_TYPES = [
-  'Checking',
-  'Savings',
-  'CreditCard',
-  'DebitCard',
-  'Wallet',
-  'Investment',
-  'Cash',
-  'Allowance',
-] as const;
+export const ACCOUNT_TYPES = ['Checking', 'Savings', 'CreditCard', 'Wallet', 'Allowance'] as const;
 export type AccountType = (typeof ACCOUNT_TYPES)[number];
 
 export interface CurrencyResponse {
