@@ -152,15 +152,17 @@ export const DesktopTransactionsList = ({
                 const amountPrefix = isIncoming ? '+' : '-';
 
                 return (
-                  <Group
+                  <div
                     key={tx.id}
-                    px="md"
-                    py="sm"
-                    gap="md"
-                    wrap="nowrap"
-                    justify="space-between"
                     className="transaction-card-row"
+                    role="button"
+                    tabIndex={0}
                     style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr auto auto auto',
+                      alignItems: 'center',
+                      gap: 'var(--mantine-spacing-md)',
+                      padding: 'var(--mantine-spacing-sm) var(--mantine-spacing-md)',
                       borderBottom: '1px solid var(--mantine-color-default-border)',
                       cursor: 'pointer',
                       transition: 'background 150ms ease',
@@ -184,8 +186,14 @@ export const DesktopTransactionsList = ({
                       }
                     }}
                     onClick={() => onEdit(tx)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        onEdit(tx);
+                      }
+                    }}
                   >
-                    <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Col 1: description + category/vendor */}
+                    <div style={{ minWidth: 0 }}>
                       <Text size="sm" fw={600} truncate>
                         {tx.description || '—'}
                       </Text>
@@ -211,12 +219,16 @@ export const DesktopTransactionsList = ({
                       </Group>
                     </div>
 
-                    {!isTransfer && (
+                    {/* Col 2: account */}
+                    {!isTransfer ? (
                       <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>
                         {tx.fromAccount.name}
                       </Text>
+                    ) : (
+                      <span />
                     )}
 
+                    {/* Col 3: amount */}
                     <Text
                       size="sm"
                       fw={700}
@@ -232,13 +244,14 @@ export const DesktopTransactionsList = ({
                       <CurrencyValue cents={Math.abs(tx.amount)} />
                     </Text>
 
+                    {/* Col 4: hover actions */}
                     <Group
                       gap={4}
                       data-actions
                       style={{
                         opacity: 0,
                         transition: 'opacity 150ms ease',
-                        flexShrink: 0,
+                        minWidth: 52,
                       }}
                     >
                       <ActionIcon
@@ -265,7 +278,7 @@ export const DesktopTransactionsList = ({
                         <IconTrash size={14} />
                       </ActionIcon>
                     </Group>
-                  </Group>
+                  </div>
                 );
               })}
             </React.Fragment>
