@@ -49,6 +49,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 
   useEffect(() => {
+    let cancelled = false;
+
     // Check for stored user on mount for quick hydration, then validate via cookie.
     const checkAuth = async () => {
       let rememberMe = false;
@@ -67,11 +69,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         sessionStorage.removeItem('user');
       }
 
-      await refreshUser(rememberMe, hasStoredUser);
-      setIsLoading(false);
+      if (!cancelled) {
+        await refreshUser(rememberMe, hasStoredUser);
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
     };
 
     void checkAuth();
+    return () => {
+      cancelled = true;
+    };
   }, [refreshUser]);
 
   const login = (userData: User, rememberMe: boolean) => {
