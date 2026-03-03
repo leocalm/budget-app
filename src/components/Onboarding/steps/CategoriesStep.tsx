@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActionIcon,
+  Alert,
   Badge,
   Button,
   Card,
@@ -12,7 +13,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { createCategory } from '@/api/category';
+import { createCategory, fetchCategoriesForManagement } from '@/api/category';
 import type { CategoryType } from '@/types/category';
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 interface CategoryEntry {
+  id?: string; // present if already persisted
   name: string;
   type: CategoryType;
 }
@@ -56,6 +58,20 @@ export function CategoriesStep({ onComplete, onBack }: Props) {
   const [newName, setNewName] = useState('');
   const [newType, setNewType] = useState<CategoryType>('Outgoing');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load existing categories on mount so navigating back shows current state
+  useEffect(() => {
+    fetchCategoriesForManagement().then(({ incoming, outgoing }) => {
+      const all = [
+        ...incoming.map((c) => ({ id: c.id, name: c.name, type: 'Incoming' as CategoryType })),
+        ...outgoing.map((c) => ({ id: c.id, name: c.name, type: 'Outgoing' as CategoryType })),
+      ];
+      if (all.length > 0) {
+        setCategories(all);
+      }
+    });
+  }, []);
 
   function selectTemplate(template: Template) {
     setSelectedTemplate(template);
@@ -86,17 +102,27 @@ export function CategoriesStep({ onComplete, onBack }: Props) {
 
   async function handleContinue() {
     setLoading(true);
-    for (const cat of categories) {
-      await createCategory({
-        name: cat.name,
-        color: '#228be6',
-        icon: 'tag',
-        parentId: null,
-        categoryType: cat.type,
-      });
+    setError(null);
+    try {
+      // Only create categories that are new (no id yet)
+      const toCreate = categories.filter((c) => !c.id);
+      for (const cat of toCreate) {
+        await createCategory({
+          name: cat.name,
+          color: '#228be6',
+          icon: 'tag',
+          parentId: null,
+          categoryType: cat.type,
+        });
+      }
+      onComplete();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    onComplete();
   }
 
   const templateCards: { key: Template; label: string; description: string }[] = [
@@ -108,6 +134,12 @@ export function CategoriesStep({ onComplete, onBack }: Props) {
   return (
     <Stack gap="lg">
       <Title order={3}>Set up your categories</Title>
+
+      {error && (
+        <Alert color="red" onClose={() => setError(null)} withCloseButton>
+          {error}
+        </Alert>
+      )}
 
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         {templateCards.map(({ key, label, description }) => (
@@ -131,7 +163,7 @@ export function CategoriesStep({ onComplete, onBack }: Props) {
       {categories.length > 0 && (
         <Stack gap="xs">
           {categories.map((cat, i) => (
-            <Group key={i} justify="space-between">
+            <Group key={cat.id ?? i} justify="space-between">
               <Group gap="xs">
                 <Text>{cat.name}</Text>
                 <Badge color={cat.type === 'Incoming' ? 'green' : 'red'} size="sm">

@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
-import { createCategory } from '@/api/category';
+import { createCategory, fetchCategoriesForManagement } from '@/api/category';
 import { CategoriesStep } from './CategoriesStep';
 
-vi.mock('@/api/category', () => ({ createCategory: vi.fn() }));
+vi.mock('@/api/category', () => ({
+  createCategory: vi.fn(),
+  fetchCategoriesForManagement: vi.fn(),
+}));
 
 function renderStep(ui: React.ReactElement) {
   return render(<MantineProvider>{ui}</MantineProvider>);
@@ -13,6 +16,11 @@ function renderStep(ui: React.ReactElement) {
 describe('CategoriesStep', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(fetchCategoriesForManagement).mockResolvedValue({
+      incoming: [],
+      outgoing: [],
+      archived: [],
+    } as any);
     vi.mocked(createCategory).mockResolvedValue({ id: '1' } as any);
   });
 

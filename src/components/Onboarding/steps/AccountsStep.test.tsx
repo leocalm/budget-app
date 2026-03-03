@@ -1,11 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
-import { createAccount } from '@/api/account';
+import { createAccount, fetchAccountsManagement } from '@/api/account';
+import { fetchCurrencies } from '@/api/currency';
 import { fetchProfile, updateProfile } from '@/api/settings';
 import { AccountsStep } from './AccountsStep';
 
-vi.mock('@/api/account', () => ({ createAccount: vi.fn() }));
+vi.mock('@/api/account', () => ({ createAccount: vi.fn(), fetchAccountsManagement: vi.fn() }));
+vi.mock('@/api/currency', () => ({ fetchCurrencies: vi.fn() }));
 vi.mock('@/api/settings', () => ({
   fetchProfile: vi.fn(),
   updateProfile: vi.fn(),
@@ -18,6 +20,8 @@ function renderStep(ui: React.ReactElement) {
 describe('AccountsStep', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(fetchAccountsManagement).mockResolvedValue([]);
+    vi.mocked(fetchCurrencies).mockResolvedValue([]);
     vi.mocked(fetchProfile).mockResolvedValue({
       name: 'Test User',
       timezone: 'UTC',

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconTrash } from '@tabler/icons-react';
 import {
   ActionIcon,
+  Alert,
   Button,
   Card,
   Group,
@@ -12,7 +13,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { createAccount } from '@/api/account';
+import { createAccount, fetchAccountsManagement } from '@/api/account';
 import { fetchCurrencies } from '@/api/currency';
 import { fetchProfile, updateProfile } from '@/api/settings';
 import type { AccountType } from '@/types/account';
@@ -23,6 +24,7 @@ interface Props {
 }
 
 interface AccountForm {
+  id?: string; // present if already persisted
   name: string;
   accountType: AccountType;
   balance: number;
@@ -68,6 +70,33 @@ export function AccountsStep({ onComplete, onBack }: Props) {
   const [currencyCode, setCurrencyCode] = useState<string | null>(null);
   const [accounts, setAccounts] = useState<AccountForm[]>([blankAccount()]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load existing accounts and currency on mount so navigating back shows current state
+  useEffect(() => {
+    Promise.all([fetchAccountsManagement(), fetchProfile(), fetchCurrencies()]).then(
+      ([existing, profile, currencies]) => {
+        const active = existing.filter((a) => !a.isArchived);
+        if (active.length > 0) {
+          setAccounts(
+            active.map((a) => ({
+              id: a.id,
+              name: a.name,
+              accountType: a.accountType,
+              balance: a.balance / 10 ** a.currency.decimalPlaces,
+            }))
+          );
+          // Infer currency from first account
+          setCurrencyCode(active[0].currency.currency);
+        } else if (profile.defaultCurrencyId) {
+          const match = currencies.find((c) => c.id === profile.defaultCurrencyId);
+          if (match) {
+            setCurrencyCode(match.currency);
+          }
+        }
+      }
+    );
+  }, []);
 
   const hasValidAccount = accounts.some(
     (a) => a.name.trim() !== '' && ASSET_TYPES.includes(a.accountType)
@@ -89,8 +118,8 @@ export function AccountsStep({ onComplete, onBack }: Props) {
 
   const handleContinue = async () => {
     setLoading(true);
+    setError(null);
     try {
-      // Persist currency selection via updateProfile
       if (currencyCode) {
         const [profile, currencies] = await Promise.all([fetchProfile(), fetchCurrencies()]);
         const found = currencies.find((c) => c.currency === currencyCode);
@@ -103,8 +132,8 @@ export function AccountsStep({ onComplete, onBack }: Props) {
         }
       }
 
-      // Create each account with a non-empty name sequentially
-      const toCreate = accounts.filter((a) => a.name.trim() !== '');
+      // Only create accounts that are new (no id yet)
+      const toCreate = accounts.filter((a) => !a.id && a.name.trim() !== '');
       for (const account of toCreate) {
         await createAccount({
           name: account.name.trim(),
@@ -116,8 +145,10 @@ export function AccountsStep({ onComplete, onBack }: Props) {
       }
 
       onComplete();
-    } catch {
-      // errors are swallowed here; production usage would show a notification
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -126,6 +157,12 @@ export function AccountsStep({ onComplete, onBack }: Props) {
   return (
     <Stack gap="lg">
       <Title order={3}>Set Up Your Accounts</Title>
+
+      {error && (
+        <Alert color="red" onClose={() => setError(null)} withCloseButton>
+          {error}
+        </Alert>
+      )}
 
       <Stack gap="xs">
         <Text fw={500}>Default currency</Text>
@@ -140,7 +177,7 @@ export function AccountsStep({ onComplete, onBack }: Props) {
       </Stack>
 
       {accounts.map((account, index) => (
-        <Card key={index} withBorder p="md">
+        <Card key={account.id ?? index} withBorder p="md">
           <Stack gap="sm">
             <Group justify="space-between">
               <Text fw={500}>Account {index + 1}</Text>
@@ -160,6 +197,7 @@ export function AccountsStep({ onComplete, onBack }: Props) {
               label="Account name"
               placeholder="e.g. Main Checking"
               value={account.name}
+              readOnly={!!account.id}
               onChange={(e) => updateAccount(index, { name: e.currentTarget.value })}
             />
 
@@ -167,6 +205,7 @@ export function AccountsStep({ onComplete, onBack }: Props) {
               label="Account type"
               data={ACCOUNT_TYPE_OPTIONS}
               value={account.accountType}
+              readOnly={!!account.id}
               onChange={(value) =>
                 updateAccount(index, { accountType: (value as AccountType) ?? 'Checking' })
               }
@@ -178,6 +217,7 @@ export function AccountsStep({ onComplete, onBack }: Props) {
               step={0.01}
               decimalScale={2}
               value={account.balance}
+              readOnly={!!account.id}
               onChange={(value) =>
                 updateAccount(index, { balance: typeof value === 'number' ? value : 0 })
               }
