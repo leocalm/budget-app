@@ -1507,7 +1507,8 @@
       "exportJsonButton": "Export Full Dataset (JSON)",
       "exportCsvDescription": "Download all your transactions as a CSV file",
       "exportJsonDescription": "Download your complete financial data as JSON",
-      "comingSoon": "Export feature coming soon"
+      "comingSoon": "Export feature coming soon",
+      "exportError": "Failed to export data. Please try again."
     },
     "dangerZone": {
       "title": "Danger Zone",

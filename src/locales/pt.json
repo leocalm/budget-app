@@ -1458,7 +1458,8 @@
       "exportJsonButton": "Exportar Conjunto Completo (JSON)",
       "exportCsvDescription": "Baixe todas as suas transações como arquivo CSV",
       "exportJsonDescription": "Baixe seus dados financeiros completos como JSON",
-      "comingSoon": "Recurso de exportação em breve"
+      "comingSoon": "Recurso de exportação em breve",
+      "exportError": "Falha ao exportar dados. Por favor, tente novamente."
     },
     "dangerZone": {
       "title": "Zona de Perigo",

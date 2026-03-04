@@ -43,6 +43,8 @@ import { useCurrencies } from '@/hooks/useCurrencies';
 import {
   useChangePassword,
   useDeleteAccount,
+  useExportFull,
+  useExportTransactions,
   usePeriodModel,
   usePreferences,
   useProfile,
@@ -110,6 +112,8 @@ export function SettingsPage() {
   const updatePeriodModelMutation = useUpdatePeriodModel();
   const resetStructureMutation = useResetStructure();
   const deleteAccountMutation = useDeleteAccount();
+  const exportTransactionsMutation = useExportTransactions();
+  const exportFullMutation = useExportFull();
 
   const disableTwoFactorMutation = useMutation({
     mutationFn: ({ password, code }: { password: string; code: string }) =>
@@ -881,8 +885,17 @@ export function SettingsPage() {
                     variant="default"
                     fullWidth
                     leftSection={<IconDownload size={16} />}
-                    disabled
-                    title={t('settings.dataExport.comingSoon')}
+                    onClick={() =>
+                      exportTransactionsMutation.mutate(undefined, {
+                        onError: () =>
+                          toast.error({
+                            title: t('common.error'),
+                            message: t('settings.dataExport.exportError'),
+                            nonCritical: true,
+                          }),
+                      })
+                    }
+                    loading={exportTransactionsMutation.isPending}
                   >
                     {t('settings.dataExport.exportCsvButton')}
                   </Button>
@@ -890,8 +903,17 @@ export function SettingsPage() {
                     variant="default"
                     fullWidth
                     leftSection={<IconDownload size={16} />}
-                    disabled
-                    title={t('settings.dataExport.comingSoon')}
+                    onClick={() =>
+                      exportFullMutation.mutate(undefined, {
+                        onError: () =>
+                          toast.error({
+                            title: t('common.error'),
+                            message: t('settings.dataExport.exportError'),
+                            nonCritical: true,
+                          }),
+                      })
+                    }
+                    loading={exportFullMutation.isPending}
                   >
                     {t('settings.dataExport.exportJsonButton')}
                   </Button>
