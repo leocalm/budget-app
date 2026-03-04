@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   changePassword,
   deleteAccount,
+  exportFullJson,
+  exportTransactionsCsv,
   fetchPeriodModel,
   fetchPreferences,
   fetchProfile,
@@ -129,4 +131,12 @@ export const useDeleteAccount = () => {
   return useMutation({
     mutationFn: deleteAccount,
   });
+};
+
+export const useExportTransactions = () => {
+  return useMutation({ mutationFn: exportTransactionsCsv });
+};
+
+export const useExportFull = () => {
+  return useMutation({ mutationFn: exportFullJson });
 };
