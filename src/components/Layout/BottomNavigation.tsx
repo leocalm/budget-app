@@ -4,6 +4,7 @@ import {
   IconBuildingStore,
   IconCalendar,
   IconDots,
+  IconLayersIntersect,
   IconLayoutDashboard,
   IconSettings,
   IconTag,
@@ -33,6 +34,7 @@ const moreMenuItems: MoreMenuItem[] = [
   { route: '/accounts', icon: IconWallet, labelKey: 'layout.navigation.accounts' },
   { route: '/categories', icon: IconTag, labelKey: 'layout.navigation.categories' },
   { route: '/vendors', icon: IconBuildingStore, labelKey: 'layout.navigation.vendors' },
+  { route: '/overlays', icon: IconLayersIntersect, labelKey: 'layout.navigation.overlays' },
   { route: '/settings', icon: IconSettings, labelKey: 'layout.navigation.settings' },
 ];
 
