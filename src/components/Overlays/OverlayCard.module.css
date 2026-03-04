@@ -1,10 +1,25 @@
 .card {
   border-color: var(--border-subtle);
   background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgb(180, 122, 255), rgb(0, 212, 255));
+  border-radius: 4px 4px 0 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .card:hover {
@@ -13,13 +28,30 @@
   box-shadow: var(--shadow-sm);
 }
 
+.card:hover::before {
+  opacity: 1;
+}
+
 .active {
-  border-color: rgb(0, 212, 255, 0.35);
-  background: linear-gradient(135deg, rgb(0, 212, 255, 0.08) 0%, rgb(180, 122, 255, 0.08) 100%);
+  border-color: rgb(180, 122, 255, 0.35);
+  background: linear-gradient(135deg, rgb(180, 122, 255, 0.08) 0%, rgb(0, 212, 255, 0.08) 100%);
+}
+
+.active::before {
+  opacity: 1;
 }
 
 .overspent {
   border-color: rgb(255, 107, 157, 0.42);
+}
+
+.overspent::before {
+  background: linear-gradient(90deg, rgb(255, 107, 157), rgb(255, 169, 64));
+  opacity: 1;
+}
+
+.past {
+  opacity: 0.7;
 }
 
 .mainInfo {
@@ -51,8 +83,14 @@
 
 .amount {
   font-family: var(--mantine-font-family-monospace);
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
+}
+
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+  margin-top: 4px;
 }
 
 @media (max-width: 768px) {

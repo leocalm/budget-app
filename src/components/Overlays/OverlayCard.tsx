@@ -1,13 +1,7 @@
 import dayjs from 'dayjs';
-import {
-  IconCalendarEvent,
-  IconEdit,
-  IconEye,
-  IconTrash,
-  IconTrendingUp,
-} from '@tabler/icons-react';
+import { IconCalendarEvent, IconClock, IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Badge, Group, Paper, Progress, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Card, Group, Progress, Stack, Text } from '@mantine/core';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { Overlay } from '@/types/overlay';
 import { formatCurrency } from '@/utils/currency';
@@ -49,7 +43,6 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
   const spentAmount = overlay.spentAmount ?? 0;
   const totalCapAmount = overlay.totalCapAmount ?? null;
   const transactionCount = overlay.transactionCount ?? 0;
-  const categoryCapsCount = overlay.categoryCaps?.length ?? 0;
 
   const spentPercentage =
     totalCapAmount && totalCapAmount > 0 ? Math.round((spentAmount / totalCapAmount) * 100) : 0;
@@ -66,13 +59,13 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
   const inclusionModeLabel = t(`overlays.modes.${overlay.inclusionMode}`);
 
   return (
-    <Paper
+    <Card
       withBorder
       radius="lg"
-      p="lg"
-      className={`${classes.card} ${status === 'active' ? classes.active : ''} ${isOverCap ? classes.overspent : ''}`}
+      className={`${classes.card} ${status === 'active' ? classes.active : ''} ${isOverCap ? classes.overspent : ''} ${status === 'past' ? classes.past : ''}`}
     >
-      <Group justify="space-between" align="flex-start" wrap="nowrap" gap="md">
+      {/* Zone 1: Header */}
+      <Group justify="space-between" align="flex-start" wrap="nowrap" gap="md" mb="sm">
         <Stack gap={4} className={classes.mainInfo}>
           <Group gap="xs" wrap="nowrap">
             <Text className={classes.icon} aria-hidden="true">
@@ -86,18 +79,9 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
           <Group gap="xs" c="dimmed" className={classes.metaRow}>
             <IconCalendarEvent size={14} />
             <Text size="sm">
-              {dayjs(overlay.startDate).format('MMM D')} - {dayjs(overlay.endDate).format('MMM D')}{' '}
-              • {t('overlays.card.duration', { count: durationDays })}
+              {dayjs(overlay.startDate).format('MMM D')} – {dayjs(overlay.endDate).format('MMM D')}{' '}
+              · {t('overlays.card.duration', { count: durationDays })}
             </Text>
-          </Group>
-
-          <Group gap="xs">
-            <Badge variant="light" color={getStatusColor(status)}>
-              {t(`overlays.status.${status}`)}
-            </Badge>
-            <Badge variant="outline" color="gray">
-              {inclusionModeLabel}
-            </Badge>
           </Group>
         </Stack>
 
@@ -129,49 +113,49 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
         </Group>
       </Group>
 
-      <Stack mt="md" gap="xs">
-        {totalCapAmount ? (
-          <>
-            <Group justify="space-between" align="center">
-              <Text className={classes.amount}>
-                {format(spentAmount)} / {format(totalCapAmount)}
-              </Text>
-              <Group gap={4} c={isOverCap ? 'red' : 'dimmed'}>
-                <IconTrendingUp size={14} />
-                <Text size="sm">{timingLabel}</Text>
-              </Group>
-            </Group>
-            <Progress
-              value={progressValue}
-              color={isOverCap ? 'red' : 'cyan'}
-              size="sm"
-              radius="xl"
-            />
-            <Text size="xs" c={isOverCap ? 'red' : 'dimmed'}>
-              {isOverCap
-                ? t('overlays.card.overBy', {
-                    amount: format(spentAmount - totalCapAmount),
-                  })
-                : t('overlays.card.remaining', {
-                    amount: format(totalCapAmount - spentAmount),
-                  })}
+      {/* Zone 2: Progress (only when totalCapAmount exists) */}
+      {totalCapAmount !== null && (
+        <Stack gap={4} mb="sm">
+          <Group justify="space-between" align="baseline">
+            <Text className={classes.amount}>{format(spentAmount)}</Text>
+            <Text size="xs" c="dimmed">
+              {t('overlays.card.of', { cap: format(totalCapAmount) })}
             </Text>
-          </>
-        ) : (
+          </Group>
+          <Progress
+            value={progressValue}
+            color={isOverCap ? 'red' : 'violet'}
+            size="sm"
+            radius="xl"
+          />
+          <Text size="xs" c={isOverCap ? 'red' : 'dimmed'}>
+            {isOverCap
+              ? t('overlays.card.overBy', { amount: format(spentAmount - totalCapAmount) })
+              : t('overlays.card.remaining', { amount: format(totalCapAmount - spentAmount) })}
+          </Text>
+        </Stack>
+      )}
+
+      {/* Zone 3: Footer */}
+      <Group className={classes.footer} justify="space-between" align="center">
+        <Group gap={6}>
+          <IconClock size={14} />
           <Text size="sm" c="dimmed">
             {timingLabel}
           </Text>
-        )}
-
-        <Group justify="space-between">
-          <Text size="sm" c="dimmed">
-            {t('overlays.card.transactions', { count: transactionCount })}
-          </Text>
-          <Text size="sm" c="dimmed">
-            {t('overlays.card.categoryCaps', { count: categoryCapsCount })}
-          </Text>
         </Group>
-      </Stack>
-    </Paper>
+        <Group gap="xs">
+          <Badge variant="light" color={getStatusColor(status)} size="sm">
+            {t(`overlays.status.${status}`)}
+          </Badge>
+          <Badge variant="light" size="sm">
+            {t('overlays.card.transactions', { count: transactionCount })}
+          </Badge>
+          <Badge variant="outline" color="gray" size="sm">
+            {inclusionModeLabel}
+          </Badge>
+        </Group>
+      </Group>
+    </Card>
   );
 }
