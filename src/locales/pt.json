@@ -1010,9 +1010,10 @@
       "cta": "Gerenciar Períodos"
     },
     "overlayBanner": {
-      "remaining": "{{amount}} restante • {{days}} dias",
-      "over": "-{{amount}} • {{days}} dias",
-      "noCap": "Sem limite definido • {{days}} dias",
+      "spent": "de {{cap}}",
+      "remaining": "{{amount}} restante • {{days}} dias restantes",
+      "over": "{{amount}} acima do limite • {{days}} dias restantes",
+      "noCap": "Sem limite definido • {{days}} dias restantes",
       "moreCount": "+{{count}}",
       "dismiss": "Dispensar banner de overlay"
     },

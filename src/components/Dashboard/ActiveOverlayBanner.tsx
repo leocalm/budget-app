@@ -33,24 +33,22 @@ export function ActiveOverlayBanner() {
     0
   );
   const hasMultiple = visibleOverlays.length > 1;
+  const isOverCap = Boolean(totalCap && spent > totalCap);
 
   const format = (cents: number) => formatCurrency(cents, globalCurrency, i18n.language);
 
-  const remainingMessage =
+  const progressValue =
+    totalCap && totalCap > 0 ? Math.min(100, Math.max(0, Math.round((spent / totalCap) * 100))) : 0;
+
+  const statusMessage =
     totalCap && totalCap > 0
-      ? spent <= totalCap
-        ? t('dashboard.overlayBanner.remaining', {
+      ? isOverCap
+        ? t('dashboard.overlayBanner.over', { amount: format(spent - totalCap), days: daysLeft })
+        : t('dashboard.overlayBanner.remaining', {
             amount: format(totalCap - spent),
             days: daysLeft,
           })
-        : t('dashboard.overlayBanner.over', {
-            amount: format(spent - totalCap),
-            days: daysLeft,
-          })
       : t('dashboard.overlayBanner.noCap', { days: daysLeft });
-
-  const progressValue =
-    totalCap && totalCap > 0 ? Math.min(100, Math.max(0, Math.round((spent / totalCap) * 100))) : 0;
 
   return (
     <Paper
@@ -63,7 +61,7 @@ export function ActiveOverlayBanner() {
       data-testid="dashboard-overlay-banner"
     >
       <Group justify="space-between" align="flex-start" wrap="nowrap">
-        <Stack gap={2} className={classes.mainContent}>
+        <Stack gap={6} className={classes.mainContent}>
           <Group gap="xs" wrap="nowrap">
             <IconLayersIntersect size={16} />
             <Text fw={700} className={classes.title}>
@@ -77,18 +75,28 @@ export function ActiveOverlayBanner() {
             )}
           </Group>
 
-          <Text size="sm" c="dimmed">
-            {remainingMessage}
-          </Text>
+          {totalCap && totalCap > 0 ? (
+            <>
+              <Group justify="space-between" align="baseline">
+                <Text fw={700} size="lg" className={classes.spentAmount}>
+                  {format(spent)}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {t('dashboard.overlayBanner.spent', { cap: format(totalCap) })}
+                </Text>
+              </Group>
+              <Progress
+                value={progressValue}
+                color={isOverCap ? 'red' : 'cyan'}
+                size="sm"
+                radius="xl"
+              />
+            </>
+          ) : null}
 
-          {totalCap && totalCap > 0 && (
-            <Progress
-              value={progressValue}
-              color={spent > totalCap ? 'red' : 'cyan'}
-              size="sm"
-              radius="xl"
-            />
-          )}
+          <Text size="sm" c={isOverCap ? 'red' : 'dimmed'}>
+            {statusMessage}
+          </Text>
         </Stack>
 
         <ActionIcon

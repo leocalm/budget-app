@@ -1141,9 +1141,10 @@
       "cta": "Manage Periods"
     },
     "overlayBanner": {
-      "remaining": "{{amount}} left • {{days}} days",
-      "over": "-{{amount}} • {{days}} days",
-      "noCap": "No cap configured • {{days}} days",
+      "spent": "of {{cap}}",
+      "remaining": "{{amount}} remaining • {{days}} days left",
+      "over": "{{amount}} over budget • {{days}} days left",
+      "noCap": "No cap configured • {{days}} days left",
       "moreCount": "+{{count}}",
       "dismiss": "Dismiss overlay banner"
     },

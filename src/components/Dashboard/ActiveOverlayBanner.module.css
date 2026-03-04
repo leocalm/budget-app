@@ -16,3 +16,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.spentAmount {
+  font-variant-numeric: tabular-nums;
+}

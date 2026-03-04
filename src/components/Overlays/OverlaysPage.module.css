@@ -37,14 +37,6 @@
   color: var(--text-secondary);
 }
 
-.fab {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 40;
-  box-shadow: var(--shadow-md);
-}
-
 @media (max-width: 768px) {
   .pageRoot {
     padding: 12px;
@@ -57,10 +49,5 @@
 
   .section {
     padding: 14px;
-  }
-
-  .fab {
-    right: 16px;
-    bottom: 96px;
   }
 }

@@ -257,17 +257,6 @@ export function OverlaysPage() {
         </>
       )}
 
-      {/* FAB */}
-      <Button
-        className={classes.fab}
-        radius="xl"
-        size="lg"
-        leftSection={<IconPlus size={16} />}
-        onClick={openCreateModal}
-      >
-        {t('overlays.createOverlay')}
-      </Button>
-
       <OverlayFormModal
         opened={isFormOpen}
         onClose={closeFormModal}
