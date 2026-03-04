@@ -332,7 +332,12 @@ export class MockApiServer {
         return;
       }
       await this.fulfill(route, {
-        body: { id: authUser.id, name: authUser.name, email: authUser.email },
+        body: {
+          id: authUser.id,
+          name: authUser.name,
+          email: authUser.email,
+          onboarding_status: 'completed',
+        },
       });
       return;
     }
@@ -356,14 +361,15 @@ export class MockApiServer {
     }
 
     const body = this.parseBody(await request.postDataBuffer());
-    const response = this.resolveAuthenticatedRoute(method, path, body);
+    const response = this.resolveAuthenticatedRoute(method, path, body, authUser);
     await this.fulfill(route, response);
   }
 
   private resolveAuthenticatedRoute(
     method: string,
     path: string,
-    payload?: Record<string, unknown>
+    payload?: Record<string, unknown>,
+    authUser?: MockUser | null
   ): MockApiResponse {
     if (method === 'GET' && path === '/budget_period/current') {
       if (!this.currentPeriod) {
@@ -609,8 +615,8 @@ export class MockApiServer {
     if (method === 'GET' && path === '/settings/profile') {
       return {
         body: {
-          name: authUser.name,
-          email: authUser.email.replace(/^(.).*@/, '$1***@'),
+          name: authUser?.name ?? '',
+          email: (authUser?.email ?? '').replace(/^(.).*@/, '$1***@'),
           timezone: 'Europe/Amsterdam',
           default_currency_id: 'currency-eur',
         },

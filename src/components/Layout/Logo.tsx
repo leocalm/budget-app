@@ -6,7 +6,7 @@ export function Logo() {
   const { t } = useTranslation();
 
   return (
-    <Group gap="xs">
+    <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
       <ThemeIcon size={40} radius="md" bg="transparent" variant="light">
         <Image src={logo} />
       </ThemeIcon>
