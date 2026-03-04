@@ -1,13 +1,31 @@
 .pageRoot {
-  max-width: 1120px;
   margin: 0 auto;
-  padding-bottom: 80px;
+  max-width: 1080px;
+  padding: 24px;
+  position: relative;
+}
+
+.headerRow {
+  align-items: flex-start;
 }
 
 .loadingState {
+  align-items: center;
   display: flex;
   justify-content: center;
-  padding: 48px 0;
+  min-height: 280px;
+}
+
+.section {
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--bg-card);
+  padding: 20px;
+}
+
+.activeSection {
+  background: linear-gradient(180deg, rgb(180, 122, 255, 0.05), transparent 45%);
+  border-color: rgb(180, 122, 255, 0.3);
 }
 
 .emptyState {
@@ -28,6 +46,19 @@
 }
 
 @media (max-width: 768px) {
+  .pageRoot {
+    padding: 12px;
+  }
+
+  .headerRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .section {
+    padding: 14px;
+  }
+
   .fab {
     right: 16px;
     bottom: 96px;

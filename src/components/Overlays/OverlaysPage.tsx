@@ -121,10 +121,16 @@ export function OverlaysPage() {
 
   return (
     <Stack gap="xl" className={classes.pageRoot}>
-      <div>
-        <Title order={1}>{t('overlays.page.title')}</Title>
-        <Text c="dimmed">{t('overlays.page.description')}</Text>
-      </div>
+      {/* Header */}
+      <Group justify="space-between" align="flex-start" className={classes.headerRow}>
+        <Stack gap={4}>
+          <Title order={1}>{t('overlays.page.title')}</Title>
+          <Text c="dimmed">{t('overlays.page.description')}</Text>
+        </Stack>
+        <Button leftSection={<IconPlus size={16} />} onClick={openCreateModal}>
+          {t('overlays.createOverlay')}
+        </Button>
+      </Group>
 
       {overlays.length === 0 ? (
         <Paper withBorder radius="lg" p="xl" className={classes.emptyState}>
@@ -134,22 +140,27 @@ export function OverlaysPage() {
             <Text c="dimmed" ta="center" maw={560}>
               {t('overlays.empty.description')}
             </Text>
-            <Button mt="sm" leftSection={<IconPlus size={16} />} onClick={openCreateModal}>
-              {t('overlays.createOverlay')}
-            </Button>
           </Stack>
         </Paper>
       ) : (
         <>
-          <section>
-            <Group justify="space-between" align="center">
-              <Title order={3}>{t('overlays.sections.active')}</Title>
-              <Badge variant="light" color="green">
+          {/* Active section */}
+          <Paper
+            withBorder
+            radius="lg"
+            p="lg"
+            className={`${classes.section} ${classes.activeSection}`}
+          >
+            <Group justify="space-between" align="center" mb="md">
+              <Text fw={600} tt="uppercase" size="xs" c="dimmed">
+                {t('overlays.sections.active')}
+              </Text>
+              <Badge variant="light" color="violet" size="sm">
                 {groupedOverlays.active.length}
               </Badge>
             </Group>
 
-            <Stack gap="md" mt="md">
+            <Stack gap="md">
               {groupedOverlays.active.length > 0 ? (
                 groupedOverlays.active.map((overlay) => (
                   <OverlayCard
@@ -162,20 +173,25 @@ export function OverlaysPage() {
                   />
                 ))
               ) : (
-                <Text c="dimmed">{t('overlays.empty.active')}</Text>
+                <Text c="dimmed" size="sm">
+                  {t('overlays.empty.active')}
+                </Text>
               )}
             </Stack>
-          </section>
+          </Paper>
 
-          <section>
-            <Group justify="space-between" align="center">
-              <Title order={3}>{t('overlays.sections.upcoming')}</Title>
-              <Badge variant="light" color="cyan">
+          {/* Upcoming section */}
+          <Paper withBorder radius="lg" p="lg" className={classes.section}>
+            <Group justify="space-between" align="center" mb="md">
+              <Text fw={600} tt="uppercase" size="xs" c="dimmed">
+                {t('overlays.sections.upcoming')}
+              </Text>
+              <Badge variant="light" color="cyan" size="sm">
                 {groupedOverlays.upcoming.length}
               </Badge>
             </Group>
 
-            <Stack gap="md" mt="md">
+            <Stack gap="md">
               {groupedOverlays.upcoming.length > 0 ? (
                 groupedOverlays.upcoming.map((overlay) => (
                   <OverlayCard
@@ -188,21 +204,27 @@ export function OverlaysPage() {
                   />
                 ))
               ) : (
-                <Text c="dimmed">{t('overlays.empty.upcoming')}</Text>
+                <Text c="dimmed" size="sm">
+                  {t('overlays.empty.upcoming')}
+                </Text>
               )}
             </Stack>
-          </section>
+          </Paper>
 
-          <section>
-            <Group justify="space-between" align="center">
-              <Title order={3}>{t('overlays.sections.past')}</Title>
+          {/* Past section */}
+          <Paper withBorder radius="lg" p="lg" className={classes.section}>
+            <Group justify="space-between" align="center" mb={isPastOpen ? 'md' : 0}>
+              <Text fw={600} tt="uppercase" size="xs" c="dimmed">
+                {t('overlays.sections.past')}
+              </Text>
               <Group gap="xs">
-                <Badge variant="light" color="gray">
+                <Badge variant="light" color="gray" size="sm">
                   {groupedOverlays.past.length}
                 </Badge>
                 <ActionIcon
                   variant="subtle"
                   color="gray"
+                  size="sm"
                   onClick={() => setIsPastOpen((current) => !current)}
                   aria-label={t('overlays.actions.togglePast')}
                 >
@@ -212,7 +234,7 @@ export function OverlaysPage() {
             </Group>
 
             {isPastOpen && (
-              <Stack gap="md" mt="md">
+              <Stack gap="md">
                 {groupedOverlays.past.length > 0 ? (
                   groupedOverlays.past.map((overlay) => (
                     <OverlayCard
@@ -225,14 +247,17 @@ export function OverlaysPage() {
                     />
                   ))
                 ) : (
-                  <Text c="dimmed">{t('overlays.empty.past')}</Text>
+                  <Text c="dimmed" size="sm">
+                    {t('overlays.empty.past')}
+                  </Text>
                 )}
               </Stack>
             )}
-          </section>
+          </Paper>
         </>
       )}
 
+      {/* FAB */}
       <Button
         className={classes.fab}
         radius="xl"
