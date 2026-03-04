@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { IconCalendarEvent, IconClock, IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Card, Group, Progress, Stack, Text } from '@mantine/core';
+import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { Overlay } from '@/types/overlay';
 import { formatCurrency } from '@/utils/currency';
@@ -19,7 +20,7 @@ interface OverlayCardProps {
 
 const getStatusColor = (status: OverlayCardStatus): string => {
   if (status === 'active') {
-    return 'green';
+    return 'violet';
   }
 
   if (status === 'upcoming') {
@@ -117,7 +118,9 @@ export function OverlayCard({ overlay, status, onEdit, onDelete, onView }: Overl
       {totalCapAmount !== null && (
         <Stack gap={4} mb="sm">
           <Group justify="space-between" align="baseline">
-            <Text className={classes.amount}>{format(spentAmount)}</Text>
+            <Text className={classes.amount}>
+              <CurrencyValue cents={spentAmount} />
+            </Text>
             <Text size="xs" c="dimmed">
               {t('overlays.card.of', { cap: format(totalCapAmount) })}
             </Text>
