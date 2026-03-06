@@ -447,8 +447,8 @@
   background: var(--border-subtle);
 }
 
-.block.outside {
-  background: var(--accent-purple);
+.blockWithin {
+  background: var(--accent-secondary);
 }
 
 .block.current {
@@ -489,13 +489,13 @@
 
 .segment.protected,
 .protected {
-  background: var(--accent-purple);
+  background: var(--accent-secondary);
   opacity: 0.6;
 }
 
 .segment.debt,
 .debt {
-  background: color-mix(in srgb, var(--accent-purple) 70%, var(--border-subtle) 30%);
+  background: color-mix(in srgb, var(--accent-secondary) 70%, var(--border-subtle) 30%);
   opacity: 0.5;
 }
 

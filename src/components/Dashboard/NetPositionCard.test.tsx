@@ -92,6 +92,6 @@ describe('NetPositionCard', () => {
     expect(screen.getByText(/\+€320\.00 this period/)).toBeInTheDocument();
     expect(screen.getByText(/Liquid €12,800\.00/)).toBeInTheDocument();
     expect(screen.getByText(/Protected €15,200\.00/)).toBeInTheDocument();
-    expect(screen.getByText(/Debt -€3,000\.00/)).toBeInTheDocument();
+    expect(screen.getByText(/Debt €3,000\.00/)).toBeInTheDocument();
   });
 });

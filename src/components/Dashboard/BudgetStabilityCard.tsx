@@ -80,8 +80,8 @@ export function BudgetStabilityCard({
             {recentPeriods.map((period) => {
               const isOutside = period.isOutsideTolerance;
               let blockClass = styles.block;
-              if (isOutside) {
-                blockClass += ` ${styles.blockOutside}`;
+              if (!isOutside) {
+                blockClass += ` ${styles.blockWithin}`;
               }
               // No current period indicator in data
               return (

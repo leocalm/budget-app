@@ -61,14 +61,15 @@ export const NetPositionCard = ({
     const liquidAbs = Math.abs(data.liquidBalance);
     const protectedAbs = Math.abs(data.protectedBalance);
     const debtAbs = Math.abs(data.debtBalance);
-    const total = liquidAbs + protectedAbs + debtAbs;
+    const total = liquidAbs + protectedAbs;
     if (total === 0) {
       return { liquid: 0, protected: 0, debt: 0 };
     }
+    const painted = Math.max(0, total - debtAbs);
     return {
-      liquid: (liquidAbs / total) * 100,
-      protected: (protectedAbs / total) * 100,
-      debt: (debtAbs / total) * 100,
+      liquid: Math.min((liquidAbs / total) * 100, (painted / total) * 100),
+      protected: Math.max(0, (painted / total) * 100 - (liquidAbs / total) * 100),
+      debt: 0,
     };
   };
 
@@ -165,7 +166,7 @@ export const NetPositionCard = ({
             })}
             {' · '}
             {t('dashboard.netPosition.breakdownDebt', {
-              amount: formatMoney(data.debtBalance, currency, locale),
+              amount: formatMoney(Math.abs(data.debtBalance), currency, locale),
             })}
           </Text>
         </>
