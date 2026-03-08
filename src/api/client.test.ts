@@ -165,7 +165,7 @@ describe('api client delete requests', () => {
 
     await apiDelete('/api/two-factor/disable', { twoFactorCode: '123456' });
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/v1/two-factor/disable', {
+    expect(fetchMock).toHaveBeenCalledWith('/v1/two-factor/disable', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ two_factor_code: '123456' }),

@@ -797,11 +797,11 @@ export class MockApiServer {
   }
 
   private normalizeApiPath(pathname: string): string {
-    if (pathname.startsWith('/api/v1/')) {
-      return pathname.slice('/api/v1'.length);
+    if (pathname.startsWith('/v1/')) {
+      return pathname.slice('/v1'.length);
     }
 
-    if (pathname === '/api/v1') {
+    if (pathname === '/v1') {
       return '/';
     }
 

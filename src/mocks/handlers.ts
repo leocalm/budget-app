@@ -48,7 +48,7 @@ const getScenario = (request: Request) => {
 
 export const handlers = [
   // --- AUTH ---
-  http.get('/api/v1/users/me', async ({ request }) => {
+  http.get('/v1/users/me', async ({ request }) => {
     const { isError, isLoading } = getScenario(request);
     if (isLoading) {
       await delay('infinite');
@@ -60,7 +60,7 @@ export const handlers = [
   }),
 
   // --- ACCOUNTS ---
-  http.get('/api/v1/accounts', async ({ request }) => {
+  http.get('/v1/accounts', async ({ request }) => {
     const { isError, isEmpty, isLoading } = getScenario(request);
     if (isLoading) {
       await delay('infinite');
@@ -74,7 +74,7 @@ export const handlers = [
     return HttpResponse.json(db.accounts);
   }),
 
-  http.post('/api/v1/accounts', async ({ request }) => {
+  http.post('/v1/accounts', async ({ request }) => {
     const data = (await request.json()) as any;
     const item = {
       ...data,
@@ -89,7 +89,7 @@ export const handlers = [
     return HttpResponse.json(item);
   }),
 
-  http.put('/api/v1/accounts/:id', async ({ params, request }) => {
+  http.put('/v1/accounts/:id', async ({ params, request }) => {
     const { id } = params;
     const data = (await request.json()) as any;
     const index = db.accounts.findIndex((a) => a.id === id);
@@ -100,14 +100,14 @@ export const handlers = [
     return new HttpResponse(null, { status: 404 });
   }),
 
-  http.delete('/api/v1/accounts/:id', async ({ params }) => {
+  http.delete('/v1/accounts/:id', async ({ params }) => {
     const { id } = params;
     db.accounts = db.accounts.filter((a) => a.id !== id);
     return new HttpResponse(null, { status: 204 });
   }),
 
   // --- TRANSACTIONS ---
-  http.get('/api/v1/transactions', async ({ request }) => {
+  http.get('/v1/transactions', async ({ request }) => {
     const { isError, isEmpty, isLoading } = getScenario(request);
     if (isLoading) {
       await delay('infinite');
@@ -121,7 +121,7 @@ export const handlers = [
     return HttpResponse.json(db.transactions);
   }),
 
-  http.post('/api/v1/transactions', async ({ request }) => {
+  http.post('/v1/transactions', async ({ request }) => {
     const data = (await request.json()) as any;
     const fromAcc = db.accounts.find((a) => a.id === data.from_account_id) || db.accounts[0];
     const cat = db.categories.find((c) => c.id === data.category_id) || db.categories[0];
@@ -142,7 +142,7 @@ export const handlers = [
     return HttpResponse.json(item);
   }),
 
-  http.put('/api/v1/transactions/:id', async ({ params, request }) => {
+  http.put('/v1/transactions/:id', async ({ params, request }) => {
     const { id } = params;
     const data = (await request.json()) as any;
     const index = db.transactions.findIndex((t) => t.id === id);
@@ -153,14 +153,14 @@ export const handlers = [
     return new HttpResponse(null, { status: 404 });
   }),
 
-  http.delete('/api/v1/transactions/:id', async ({ params }) => {
+  http.delete('/v1/transactions/:id', async ({ params }) => {
     const { id } = params;
     db.transactions = db.transactions.filter((t) => t.id !== id);
     return new HttpResponse(null, { status: 204 });
   }),
 
   // --- CATEGORIES ---
-  http.get('/api/v1/categories', async () => {
+  http.get('/v1/categories', async () => {
     return HttpResponse.json(
       db.categories.map((cat) => ({
         ...cat,
@@ -171,7 +171,7 @@ export const handlers = [
     );
   }),
 
-  http.post('/api/v1/categories', async ({ request }) => {
+  http.post('/v1/categories', async ({ request }) => {
     const data = (await request.json()) as any;
     const item = {
       ...data,
@@ -181,7 +181,7 @@ export const handlers = [
     return HttpResponse.json(item);
   }),
 
-  http.put('/api/v1/categories/:id', async ({ params, request }) => {
+  http.put('/v1/categories/:id', async ({ params, request }) => {
     const { id } = params;
     const data = (await request.json()) as any;
     const index = db.categories.findIndex((c) => c.id === id);
@@ -192,14 +192,14 @@ export const handlers = [
     return new HttpResponse(null, { status: 404 });
   }),
 
-  http.delete('/api/v1/categories/:id', async ({ params }) => {
+  http.delete('/v1/categories/:id', async ({ params }) => {
     const { id } = params;
     db.categories = db.categories.filter((c) => c.id !== id);
     return new HttpResponse(null, { status: 204 });
   }),
 
   // --- VENDORS ---
-  http.get('/api/v1/vendors', async () => {
+  http.get('/v1/vendors', async () => {
     return HttpResponse.json(
       db.vendors.map((v) => ({
         ...v,
@@ -209,7 +209,7 @@ export const handlers = [
     );
   }),
 
-  http.post('/api/v1/vendors', async ({ request }) => {
+  http.post('/v1/vendors', async ({ request }) => {
     const data = (await request.json()) as any;
     const item = {
       ...data,
@@ -220,48 +220,48 @@ export const handlers = [
   }),
 
   // --- OVERLAYS ---
-  http.get('/api/v1/overlays', () => HttpResponse.json(db.overlays)),
+  http.get('/v1/overlays', () => HttpResponse.json(db.overlays)),
 
-  http.post('/api/v1/overlays', async ({ request }) => {
+  http.post('/v1/overlays', async ({ request }) => {
     const data = (await request.json()) as any;
     const item = { ...data, id: `ovl-${Math.random().toString(36).substring(2, 11)}` };
     db.overlays.push(item);
     return HttpResponse.json(item);
   }),
 
-  http.delete('/api/v1/overlays/:id', async ({ params }) => {
+  http.delete('/v1/overlays/:id', async ({ params }) => {
     const { id } = params;
     db.overlays = db.overlays.filter((o) => o.id !== id);
     return new HttpResponse(null, { status: 204 });
   }),
 
   // --- BUDGET PERIODS ---
-  http.get('/api/v1/budget_period/current', () => HttpResponse.json(db.periods[0])),
-  http.get('/api/v1/budget_period', () => HttpResponse.json(db.periods)),
+  http.get('/v1/budget_period/current', () => HttpResponse.json(db.periods[0])),
+  http.get('/v1/budget_period', () => HttpResponse.json(db.periods)),
 
-  http.post('/api/v1/budget_period', async ({ request }) => {
+  http.post('/v1/budget_period', async ({ request }) => {
     const data = (await request.json()) as any;
     const id = `per-${Math.random().toString(36).substring(2, 11)}`;
     db.periods.push({ ...data, id });
     return HttpResponse.json(id);
   }),
 
-  http.delete('/api/v1/budget_period/:id', async ({ params }) => {
+  http.delete('/v1/budget_period/:id', async ({ params }) => {
     const { id } = params;
     db.periods = db.periods.filter((p) => p.id !== id);
     return new HttpResponse(null, { status: 204 });
   }),
 
   // --- SETTINGS (legacy) ---
-  http.get('/api/v1/settings', () => HttpResponse.json(db.settings)),
-  http.put('/api/v1/settings', async ({ request }) => {
+  http.get('/v1/settings', () => HttpResponse.json(db.settings)),
+  http.put('/v1/settings', async ({ request }) => {
     const data = (await request.json()) as any;
     db.settings = { ...db.settings, ...data, updatedAt: new Date().toISOString() };
     return HttpResponse.json(db.settings);
   }),
 
   // --- SETTINGS: PROFILE ---
-  http.get('/api/v1/settings/profile', () =>
+  http.get('/v1/settings/profile', () =>
     HttpResponse.json({
       name: 'Design Team',
       email: 'd***@example.com',
@@ -269,7 +269,7 @@ export const handlers = [
       defaultCurrencyId: 'cur-1',
     })
   ),
-  http.put('/api/v1/settings/profile', async ({ request }) => {
+  http.put('/v1/settings/profile', async ({ request }) => {
     const data = (await request.json()) as any;
     return HttpResponse.json({
       name: data.name ?? 'Design Team',
@@ -280,7 +280,7 @@ export const handlers = [
   }),
 
   // --- SETTINGS: PREFERENCES ---
-  http.get('/api/v1/settings/preferences', () =>
+  http.get('/v1/settings/preferences', () =>
     HttpResponse.json({
       theme: db.settings.theme,
       dateFormat: 'DD/MM/YYYY',
@@ -288,7 +288,7 @@ export const handlers = [
       compactMode: false,
     })
   ),
-  http.put('/api/v1/settings/preferences', async ({ request }) => {
+  http.put('/v1/settings/preferences', async ({ request }) => {
     const data = (await request.json()) as any;
     if (data.theme) {
       db.settings = { ...db.settings, theme: data.theme };
@@ -302,8 +302,8 @@ export const handlers = [
   }),
 
   // --- SETTINGS: SECURITY ---
-  http.post('/api/v1/settings/security/password', () => new HttpResponse(null, { status: 204 })),
-  http.get('/api/v1/settings/security/sessions', () =>
+  http.post('/v1/settings/security/password', () => new HttpResponse(null, { status: 204 })),
+  http.get('/v1/settings/security/sessions', () =>
     HttpResponse.json([
       {
         id: 'session-current',
@@ -321,13 +321,10 @@ export const handlers = [
       },
     ])
   ),
-  http.delete(
-    '/api/v1/settings/security/sessions/:id',
-    () => new HttpResponse(null, { status: 204 })
-  ),
+  http.delete('/v1/settings/security/sessions/:id', () => new HttpResponse(null, { status: 204 })),
 
   // --- SETTINGS: PERIOD MODEL ---
-  http.get('/api/v1/settings/period-model', () =>
+  http.get('/v1/settings/period-model', () =>
     HttpResponse.json({
       periodMode: 'automatic',
       periodSchedule: {
@@ -341,30 +338,24 @@ export const handlers = [
       },
     })
   ),
-  http.put('/api/v1/settings/period-model', async ({ request }) => {
+  http.put('/v1/settings/period-model', async ({ request }) => {
     const data = (await request.json()) as any;
     return HttpResponse.json(data);
   }),
 
   // --- SETTINGS: DANGER ZONE ---
-  http.post(
-    '/api/v1/settings/danger/reset-structure',
-    () => new HttpResponse(null, { status: 204 })
-  ),
-  http.post(
-    '/api/v1/settings/danger/delete-account',
-    () => new HttpResponse(null, { status: 204 })
-  ),
+  http.post('/v1/settings/danger/reset-structure', () => new HttpResponse(null, { status: 204 })),
+  http.post('/v1/settings/danger/delete-account', () => new HttpResponse(null, { status: 204 })),
 
   // --- DASHBOARD ---
-  http.get('/api/v1/dashboard/recent-transactions', () =>
+  http.get('/v1/dashboard/recent-transactions', () =>
     HttpResponse.json(db.transactions.slice(0, 5))
   ),
-  http.get('/api/v1/dashboard/total-assets', () => {
+  http.get('/v1/dashboard/total-assets', () => {
     const total = db.accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
     return HttpResponse.json({ totalAssets: total });
   }),
-  http.get('/api/v1/dashboard/net-position', () => {
+  http.get('/v1/dashboard/net-position', () => {
     const liquidBalance = db.accounts
       .filter((account) =>
         ['Checking', 'Wallet', 'Allowance'].includes(
@@ -391,15 +382,15 @@ export const handlers = [
     });
   }),
 
-  http.get('/api/v1/dashboard/spent-per-category', () =>
+  http.get('/v1/dashboard/spent-per-category', () =>
     HttpResponse.json([
       { categoryName: 'Food', budgetedValue: 500, amountSpent: 250, percentageSpent: 50 },
     ])
   ),
-  http.get('/api/v1/dashboard/monthly-burn-in', () =>
+  http.get('/v1/dashboard/monthly-burn-in', () =>
     HttpResponse.json({ totalBudget: 2000, spentBudget: 850, currentDay: 15, daysInPeriod: 30 })
   ),
-  http.get('/api/v1/dashboard/month-progress', () =>
+  http.get('/v1/dashboard/month-progress', () =>
     HttpResponse.json({
       currentDate: '2026-01-15',
       daysInPeriod: 31,
@@ -407,10 +398,10 @@ export const handlers = [
       daysPassedPercentage: 48,
     })
   ),
-  http.get('/api/v1/dashboard/budget-per-day', () =>
+  http.get('/v1/dashboard/budget-per-day', () =>
     HttpResponse.json([{ accountName: 'Checking', date: '2026-01-01', balance: 5000 }])
   ),
-  http.get('/api/v1/dashboard/budget-stability', () =>
+  http.get('/v1/dashboard/budget-stability', () =>
     HttpResponse.json({
       withinTolerancePercentage: 78,
       periodsWithinTolerance: 18,
@@ -427,7 +418,7 @@ export const handlers = [
   ),
 
   // --- TWO-FACTOR AUTHENTICATION ---
-  http.get('/api/v1/two-factor/status', () => {
+  http.get('/v1/two-factor/status', () => {
     return HttpResponse.json({
       enabled: db.schedule === '2fa-enabled',
       hasBackupCodes: db.schedule === '2fa-enabled',
@@ -435,7 +426,7 @@ export const handlers = [
     });
   }),
 
-  http.post('/api/v1/two-factor/setup', async () => {
+  http.post('/v1/two-factor/setup', async () => {
     return HttpResponse.json({
       secret: 'JBSWY3DPEHPK3PXP',
       qrCode:
@@ -444,7 +435,7 @@ export const handlers = [
     });
   }),
 
-  http.post('/api/v1/two-factor/verify', async ({ request }) => {
+  http.post('/v1/two-factor/verify', async ({ request }) => {
     const { code } = (await request.json()) as any;
     if (code === '123456') {
       db.schedule = '2fa-enabled';
@@ -453,19 +444,19 @@ export const handlers = [
     return HttpResponse.json({ message: 'Invalid verification code. Use 123456' }, { status: 400 });
   }),
 
-  http.delete('/api/v1/two-factor/disable', async () => {
+  http.delete('/v1/two-factor/disable', async () => {
     db.schedule = null;
     return new HttpResponse(null, { status: 204 });
   }),
 
   // Misc
-  http.get('/api/v1/currency', () =>
+  http.get('/v1/currency', () =>
     HttpResponse.json([
       { id: 'cur-1', name: 'Euro', symbol: '€', currency: 'EUR', decimalPlaces: 2 },
     ])
   ),
-  http.get('/api/v1/budget_period/schedule', () => HttpResponse.json(db.schedule)),
-  http.get('/api/v1/budget_period/gaps', () =>
+  http.get('/v1/budget_period/schedule', () => HttpResponse.json(db.schedule)),
+  http.get('/v1/budget_period/gaps', () =>
     HttpResponse.json({ unassignedCount: 0, transactions: [] })
   ),
 

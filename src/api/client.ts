@@ -11,7 +11,7 @@ type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
 const DEFAULT_API_VERSION = 'v1';
-const VERSIONED_API_PREFIX = /^\/api\/v\d+(?:[/?#]|$)/;
+const VERSIONED_API_PREFIX = /^\/v\d+(?:[/?#]|$)/;
 
 function normalizeApiVersion(version: string): string {
   if (!version) {
@@ -26,11 +26,11 @@ function normalizeApiVersion(version: string): string {
 
 function normalizeBasePath(basePath: string): string {
   if (!basePath) {
-    return `/api/${DEFAULT_API_VERSION}`;
+    return `/${DEFAULT_API_VERSION}`;
   }
   const trimmed = String(basePath).trim();
   if (!trimmed) {
-    return `/api/${DEFAULT_API_VERSION}`;
+    return `/${DEFAULT_API_VERSION}`;
   }
 
   if (isAbsoluteUrl(trimmed)) {
@@ -62,7 +62,7 @@ function resolveApiBasePath(): string {
   }
 
   const normalizedVersion = version ? normalizeApiVersion(version) : DEFAULT_API_VERSION;
-  return normalizeBasePath(`/api/${normalizedVersion}`);
+  return normalizeBasePath(`/${normalizedVersion}`);
 }
 
 const API_BASE_PATH = resolveApiBasePath();
