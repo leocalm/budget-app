@@ -87,10 +87,6 @@ export const queryKeys = {
   netPosition: (periodId?: string | null) => ['netPosition', periodId] as const,
   budgetStability: () => ['budgetStability'] as const,
 
-  // Dashboard Layout
-  dashboardLayout: () => ['dashboard-layout'] as const,
-  availableCards: () => ['dashboard-layout', 'available'] as const,
-
   // Category Targets
   categoryTargets: (periodId?: string | null) => ['categoryTargets', periodId] as const,
 };
