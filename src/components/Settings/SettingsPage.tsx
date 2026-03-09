@@ -68,6 +68,7 @@ import {
   Theme,
   WeekendAdjustment,
 } from '@/types/settings';
+import { DashboardCardsSection } from './DashboardCardsSection';
 import { TwoFactorSetup } from './TwoFactorSetup';
 
 const LABEL_WIDTH = 140;
@@ -436,6 +437,7 @@ export function SettingsPage() {
     { id: 'security', label: t('settings.security.title') },
     { id: 'period-model', label: t('settings.periodModel.title') },
     { id: 'preferences', label: t('settings.preferences.title') },
+    { id: 'dashboard-cards', label: t('settings.dashboardCards.title') },
     { id: 'data-export', label: t('settings.dataExport.title') },
     { id: 'danger-zone', label: t('settings.dangerZone.title') },
   ];
@@ -863,6 +865,9 @@ export function SettingsPage() {
                 )}
               </Stack>
             </Paper>
+
+            {/* ─── Dashboard Cards ─── */}
+            <DashboardCardsSection isDesktop={isDesktop ?? false} />
 
             {/* ─── Data & Export ─── */}
             <Paper id="data-export" withBorder radius="md" p="xl">

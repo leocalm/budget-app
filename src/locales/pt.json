@@ -948,6 +948,18 @@
   },
   "dashboard": {
     "title": "Painel",
+    "cards": {
+      "currentPeriod": "Período Atual",
+      "budgetStability": "Estabilidade do Orçamento",
+      "netPosition": "Posição Líquida",
+      "recentTransactions": "Transações Recentes",
+      "topCategories": "Principais Categorias",
+      "budgetPerDay": "Ritmo Diário de Orçamento",
+      "remainingBudget": "Orçamento Restante",
+      "balanceOverTime": "Saldo ao Longo do Tempo",
+      "accountSummary": "Resumo da Conta",
+      "categoryBreakdown": "Detalhamento da Categoria"
+    },
     "onboarding": {
       "title": "Primeiros passos",
       "subtitle": "Complete estes passos para configurar seu orçamento.",
@@ -1461,6 +1473,31 @@
       "exportJsonDescription": "Baixe seus dados financeiros completos como JSON",
       "comingSoon": "Recurso de exportação em breve",
       "exportError": "Falha ao exportar dados. Por favor, tente novamente."
+    },
+    "dashboardCards": {
+      "title": "Cartões do Dashboard",
+      "description": "Escolha quais cartões aparecem no dashboard e sua ordem de exibição",
+      "addButton": "Adicionar",
+      "resetButton": "Redefinir",
+      "empty": "Nenhum cartão configurado. Adicione um cartão ou redefina para os padrões.",
+      "sizeFull": "Largura total",
+      "sizeHalf": "Meia largura",
+      "toggleAria": "Alternar {{card}}",
+      "deleteAria": "Remover {{card}}",
+      "addModalTitle": "Adicionar Cartão ao Dashboard",
+      "cardTypeLabel": "Tipo de cartão",
+      "cardTypePlaceholder": "Selecione um tipo de cartão",
+      "cancelButton": "Cancelar",
+      "confirmAddButton": "Adicionar",
+      "resetConfirmTitle": "Redefinir Layout do Dashboard",
+      "resetConfirmMessage": "Isso removerá todas as suas personalizações e restaurará os cartões padrão do dashboard. Esta ação não pode ser desfeita.",
+      "confirmResetButton": "Redefinir para Padrões",
+      "notifications": {
+        "addSuccess": "Cartão adicionado ao dashboard",
+        "addError": "Falha ao adicionar cartão",
+        "resetSuccess": "Dashboard redefinido para os padrões",
+        "resetError": "Falha ao redefinir o dashboard"
+      }
     },
     "dangerZone": {
       "title": "Zona de Perigo",

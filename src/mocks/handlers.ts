@@ -21,6 +21,38 @@ const db = {
       endDate: '2026-01-31',
     },
   ],
+  dashboardCards: [
+    {
+      id: 'dc-1',
+      card_type: 'current_period',
+      entity_id: null,
+      size: 'full',
+      position: 0,
+      enabled: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'dc-2',
+      card_type: 'budget_stability',
+      entity_id: null,
+      size: 'half',
+      position: 1,
+      enabled: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'dc-3',
+      card_type: 'net_position',
+      entity_id: null,
+      size: 'half',
+      position: 2,
+      enabled: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ] as any[],
   overlays: [] as any[],
   schedule: null as any,
   settings: {
@@ -458,6 +490,99 @@ export const handlers = [
   http.get('/v1/budget_period/schedule', () => HttpResponse.json(db.schedule)),
   http.get('/v1/budget_period/gaps', () =>
     HttpResponse.json({ unassignedCount: 0, transactions: [] })
+  ),
+
+  // Dashboard Layout
+  http.get('/v1/dashboard-layout', () => HttpResponse.json(db.dashboardCards)),
+  http.post('/v1/dashboard-layout', async ({ request }) => {
+    const body = (await request.json()) as any;
+    const card = {
+      id: `dc-${Date.now()}`,
+      ...body,
+      enabled: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    db.dashboardCards.push(card);
+    return HttpResponse.json(card, { status: 201 });
+  }),
+  http.put('/v1/dashboard-layout/:id', async ({ params, request }) => {
+    const body = (await request.json()) as any;
+    const idx = db.dashboardCards.findIndex((c: any) => c.id === params.id);
+    if (idx === -1) {
+      return HttpResponse.json({ message: 'Not found' }, { status: 404 });
+    }
+    db.dashboardCards[idx] = {
+      ...db.dashboardCards[idx],
+      ...body,
+      updated_at: new Date().toISOString(),
+    };
+    return HttpResponse.json(db.dashboardCards[idx]);
+  }),
+  http.delete('/v1/dashboard-layout/:id', ({ params }) => {
+    db.dashboardCards = db.dashboardCards.filter((c: any) => c.id !== params.id);
+    return new HttpResponse(null, { status: 204 });
+  }),
+  http.post('/v1/dashboard-layout/reorder', async ({ request }) => {
+    const body = (await request.json()) as any;
+    for (const entry of body.order) {
+      const card = db.dashboardCards.find((c: any) => c.id === entry.id);
+      if (card) {
+        card.position = entry.position;
+      }
+    }
+    db.dashboardCards.sort((a: any, b: any) => a.position - b.position);
+    return HttpResponse.json(db.dashboardCards);
+  }),
+  http.post('/v1/dashboard-layout/reset', () => {
+    db.dashboardCards = [
+      {
+        id: 'dc-1',
+        card_type: 'current_period',
+        entity_id: null,
+        size: 'full',
+        position: 0,
+        enabled: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      {
+        id: 'dc-2',
+        card_type: 'budget_stability',
+        entity_id: null,
+        size: 'half',
+        position: 1,
+        enabled: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      {
+        id: 'dc-3',
+        card_type: 'net_position',
+        entity_id: null,
+        size: 'half',
+        position: 2,
+        enabled: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+    return HttpResponse.json(db.dashboardCards);
+  }),
+  http.get('/v1/dashboard-layout/available', () =>
+    HttpResponse.json({
+      global_cards: [
+        { card_type: 'current_period', already_added: true },
+        { card_type: 'budget_stability', already_added: true },
+        { card_type: 'net_position', already_added: true },
+        { card_type: 'recent_transactions', already_added: false },
+        { card_type: 'top_categories', already_added: false },
+        { card_type: 'budget_per_day', already_added: false },
+        { card_type: 'remaining_budget', already_added: false },
+        { card_type: 'balance_over_time', already_added: false },
+      ],
+      entity_card_types: [],
+    })
   ),
 
   // Catch-all
