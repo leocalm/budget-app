@@ -1082,7 +1082,12 @@
     "cards": {
       "currentPeriod": "Current Period",
       "budgetStability": "Budget Stability",
-      "netPosition": "Net Position"
+      "netPosition": "Net Position",
+      "recentTransactions": "Recent Transactions",
+      "topCategories": "Top Categories",
+      "budgetPerDay": "Daily Budget Pace",
+      "remainingBudget": "Remaining Budget",
+      "balanceOverTime": "Balance Over Time"
     },
     "onboarding": {
       "title": "Getting started",

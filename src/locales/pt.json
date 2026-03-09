@@ -951,7 +951,12 @@
     "cards": {
       "currentPeriod": "Período Atual",
       "budgetStability": "Estabilidade do Orçamento",
-      "netPosition": "Posição Líquida"
+      "netPosition": "Posição Líquida",
+      "recentTransactions": "Transações Recentes",
+      "topCategories": "Principais Categorias",
+      "budgetPerDay": "Ritmo Diário de Orçamento",
+      "remainingBudget": "Orçamento Restante",
+      "balanceOverTime": "Saldo ao Longo do Tempo"
     },
     "onboarding": {
       "title": "Primeiros passos",
