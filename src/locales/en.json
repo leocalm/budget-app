@@ -1079,6 +1079,11 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "cards": {
+      "currentPeriod": "Current Period",
+      "budgetStability": "Budget Stability",
+      "netPosition": "Net Position"
+    },
     "onboarding": {
       "title": "Getting started",
       "subtitle": "Complete these steps to set up your budget.",
@@ -1510,6 +1515,31 @@
       "exportJsonDescription": "Download your complete financial data as JSON",
       "comingSoon": "Export feature coming soon",
       "exportError": "Failed to export data. Please try again."
+    },
+    "dashboardCards": {
+      "title": "Dashboard Cards",
+      "description": "Choose which cards appear on your dashboard and their display order",
+      "addButton": "Add Card",
+      "resetButton": "Reset",
+      "empty": "No dashboard cards configured. Add a card or reset to defaults.",
+      "sizeFull": "Full width",
+      "sizeHalf": "Half width",
+      "toggleAria": "Toggle {{card}}",
+      "deleteAria": "Remove {{card}}",
+      "addModalTitle": "Add Dashboard Card",
+      "cardTypeLabel": "Card type",
+      "cardTypePlaceholder": "Select a card type",
+      "cancelButton": "Cancel",
+      "confirmAddButton": "Add",
+      "resetConfirmTitle": "Reset Dashboard Layout",
+      "resetConfirmMessage": "This will remove all your customizations and restore the default dashboard cards. This cannot be undone.",
+      "confirmResetButton": "Reset to Defaults",
+      "notifications": {
+        "addSuccess": "Card added to dashboard",
+        "addError": "Failed to add card",
+        "resetSuccess": "Dashboard reset to defaults",
+        "resetError": "Failed to reset dashboard"
+      }
     },
     "dangerZone": {
       "title": "Danger Zone",
