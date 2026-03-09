@@ -956,7 +956,9 @@
       "topCategories": "Principais Categorias",
       "budgetPerDay": "Ritmo Diário de Orçamento",
       "remainingBudget": "Orçamento Restante",
-      "balanceOverTime": "Saldo ao Longo do Tempo"
+      "balanceOverTime": "Saldo ao Longo do Tempo",
+      "accountSummary": "Resumo da Conta",
+      "categoryBreakdown": "Detalhamento da Categoria"
     },
     "onboarding": {
       "title": "Primeiros passos",

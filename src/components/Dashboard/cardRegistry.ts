@@ -1,8 +1,10 @@
 import type { ComponentType } from 'react';
 import type { CardSize } from '@/types/dashboardLayout';
+import { AccountSnapshotAdapter } from './adapters/AccountSnapshotAdapter';
 import { BalanceLineChartAdapter } from './adapters/BalanceLineChartAdapter';
 import { BudgetPerDayAdapter } from './adapters/BudgetPerDayAdapter';
 import { BudgetStabilityCardAdapter } from './adapters/BudgetStabilityCardAdapter';
+import { CategoryTrackerAdapter } from './adapters/CategoryTrackerAdapter';
 import { CurrentPeriodCardAdapter } from './adapters/CurrentPeriodCardAdapter';
 import { NetPositionCardAdapter } from './adapters/NetPositionCardAdapter';
 import { RecentActivityAdapter } from './adapters/RecentActivityAdapter';
@@ -88,6 +90,24 @@ export const CARD_REGISTRY: Record<string, CardDefinition> = {
     defaultSize: 'full',
     labelKey: 'dashboard.cards.balanceOverTime',
     requiresEntity: false,
+    requiresPeriod: true,
+  },
+  account_summary: {
+    cardType: 'account_summary',
+    component: AccountSnapshotAdapter,
+    defaultSize: 'half',
+    labelKey: 'dashboard.cards.accountSummary',
+    requiresEntity: true,
+    entityType: 'account',
+    requiresPeriod: true,
+  },
+  category_breakdown: {
+    cardType: 'category_breakdown',
+    component: CategoryTrackerAdapter,
+    defaultSize: 'half',
+    labelKey: 'dashboard.cards.categoryBreakdown',
+    requiresEntity: true,
+    entityType: 'category',
     requiresPeriod: true,
   },
 };

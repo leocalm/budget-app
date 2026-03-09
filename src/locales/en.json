@@ -1087,7 +1087,9 @@
       "topCategories": "Top Categories",
       "budgetPerDay": "Daily Budget Pace",
       "remainingBudget": "Remaining Budget",
-      "balanceOverTime": "Balance Over Time"
+      "balanceOverTime": "Balance Over Time",
+      "accountSummary": "Account Summary",
+      "categoryBreakdown": "Category Breakdown"
     },
     "onboarding": {
       "title": "Getting started",
