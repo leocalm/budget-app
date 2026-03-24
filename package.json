@@ -4,6 +4,7 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
+    "api:generate": "openapi-typescript ./openapi.yaml -o src/api/v2.d.ts",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -46,6 +47,7 @@
     "emoji-picker-react": "^4.18.0",
     "framer-motion": "^12.35.1",
     "i18next": "^25.8.13",
+    "openapi-fetch": "^0.17.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
@@ -82,6 +84,7 @@
     "jsdom": "^28.1.0",
     "msw": "^2.12.10",
     "msw-storybook-addon": "^2.0.6",
+    "openapi-typescript": "^7.13.0",
     "playwright": "^1.57.0",
     "postcss": "^8.5.6",
     "postcss-preset-mantine": "^1.18.0",
