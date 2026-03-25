@@ -37,7 +37,7 @@
 .progressSection {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--mantine-spacing-xs);
   margin-bottom: var(--mantine-spacing-sm);
 }
 

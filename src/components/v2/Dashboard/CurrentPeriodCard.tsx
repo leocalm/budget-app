@@ -60,13 +60,17 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
   }
 
   const hasBudget = data.target > 0;
-  const timePct = Math.round(((data.daysInPeriod - data.daysRemaining) / data.daysInPeriod) * 100);
+  // Guard against daysInPeriod === 0 to avoid NaN / division by zero
+  const timePct =
+    data.daysInPeriod > 0
+      ? Math.round(((data.daysInPeriod - data.daysRemaining) / data.daysInPeriod) * 100)
+      : 0;
   const budgetPct = hasBudget ? Math.round((data.spent / data.target) * 100) : 0;
   const remaining = hasBudget ? data.target - data.spent : 0;
   const perDayLeft =
     hasBudget && data.daysRemaining > 0 ? Math.round(remaining / data.daysRemaining) : 0;
   const daysElapsed = data.daysInPeriod - data.daysRemaining;
-  const dateRange = period ? periodDateRange(period) : '';
+  const dateRange = periodDateRange(period);
 
   return (
     <div className={classes.card} data-testid="current-period-card">
@@ -97,17 +101,13 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
           </Text>
         </div>
         <div className={classes.sparklineWrapper}>
-          <CurrentPeriodSparkline
-            history={history ?? undefined}
-            spent={data.spent}
-            daysElapsed={daysElapsed}
-          />
+          <CurrentPeriodSparkline history={history} spent={data.spent} daysElapsed={daysElapsed} />
         </div>
       </div>
 
       {/* Progress bars */}
       <div className={classes.progressSection}>
-        <div className={classes.progressRow}>
+        <div className={classes.progressRow} data-testid="progress-row-time">
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" className={classes.progressLabel}>
             Time
           </Text>
@@ -117,13 +117,14 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
             radius="xl"
             color={accents.primary}
             className={classes.progressBar}
+            aria-label={`Time elapsed: ${timePct}%`}
           />
           <Text fz="xs" c="dimmed" className={classes.progressPct}>
             {timePct}%
           </Text>
         </div>
         {hasBudget && (
-          <div className={classes.progressRow}>
+          <div className={classes.progressRow} data-testid="progress-row-budget">
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" className={classes.progressLabel}>
               Budget
             </Text>
@@ -133,16 +134,17 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
               radius="xl"
               color={accents.secondary}
               className={classes.progressBar}
+              aria-label={`Budget used: ${Math.min(budgetPct, 100)}%`}
             />
             <Text fz="xs" c="dimmed" className={classes.progressPct}>
-              {budgetPct}%
+              {Math.min(budgetPct, 100)}%
             </Text>
           </div>
         )}
       </div>
 
       {/* Stat boxes */}
-      <div className={classes.statsGrid}>
+      <div className={classes.statsGrid} data-testid="stats-grid">
         {hasBudget ? (
           <>
             <StatItem label="Remaining" cents={remaining} />
