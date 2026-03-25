@@ -35,7 +35,7 @@ export const Expanded: Story = {
   args: {
     collapsed: false,
     onToggleCollapse: () => {},
-    user: { name: 'Leonardo', email: 'leocalm@gmail.com' },
+    user: { name: 'Leonardo', email: 'user@example.com' },
   },
 };
 
@@ -43,7 +43,7 @@ export const Collapsed: Story = {
   args: {
     collapsed: true,
     onToggleCollapse: () => {},
-    user: { name: 'Leonardo', email: 'leocalm@gmail.com' },
+    user: { name: 'Leonardo', email: 'user@example.com' },
   },
   decorators: [
     (Story) => (
@@ -69,7 +69,7 @@ export const LightMode: Story = {
   args: {
     collapsed: false,
     onToggleCollapse: () => {},
-    user: { name: 'Leonardo', email: 'leocalm@gmail.com' },
+    user: { name: 'Leonardo', email: 'user@example.com' },
   },
   decorators: [
     (Story) => (

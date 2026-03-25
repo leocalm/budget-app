@@ -36,11 +36,13 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
           </Text>
         </Group>
         <Avatar
+          component="button"
           size="sm"
           radius="xl"
           style={{ cursor: 'pointer' }}
           onClick={() => navigate('/v2/settings')}
           data-testid="mobile-user-avatar"
+          aria-label="Go to settings"
         >
           {initials}
         </Avatar>

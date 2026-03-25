@@ -30,7 +30,7 @@ export function PeriodDropdown({
 
         {groups.map((group, idx) => (
           <Stack key={group.label} gap={2}>
-            {idx > 0 && !isInGap && <Divider my={4} />}
+            {idx > 0 && <Divider my={4} />}
             <Text
               fz={10}
               fw={600}

@@ -130,6 +130,46 @@ export const GapState: Story = {
   ],
 };
 
+export const Empty: Story = {
+  args: { variant: 'sidebar' },
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('*/api/v1/periods*', () => {
+          return HttpResponse.json({ data: [], total: 0, page: 1, pageSize: 20 });
+        }),
+      ],
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 200, backgroundColor: 'var(--v2-card)', padding: 16 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Error: Story = {
+  args: { variant: 'sidebar' },
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('*/api/v1/periods*', () => {
+          return new HttpResponse(null, { status: 500 });
+        }),
+      ],
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 200, backgroundColor: 'var(--v2-card)', padding: 16 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const Loading: Story = {
   args: { variant: 'sidebar' },
   parameters: {
@@ -144,6 +184,21 @@ export const Loading: Story = {
   decorators: [
     (Story) => (
       <div style={{ width: 200, backgroundColor: 'var(--v2-card)', padding: 16 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const MobilePill: Story = {
+  args: { variant: 'pill' },
+  parameters: {
+    msw: { handlers: periodHandlers },
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 360, padding: 16 }}>
         <Story />
       </div>
     ),

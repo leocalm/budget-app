@@ -1,6 +1,14 @@
 import { IconMoon, IconSun } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { ActionIcon, Avatar, Group, Stack, Text, useMantineColorScheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Group,
+  Stack,
+  Text,
+  UnstyledButton,
+  useMantineColorScheme,
+} from '@mantine/core';
 import classes from './AppShell.module.css';
 
 interface UserSectionProps {
@@ -20,6 +28,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
   const initials = name
     .split(' ')
     .map((n) => n[0])
+    .filter(Boolean)
     .join('')
     .slice(0, 2)
     .toUpperCase();
@@ -28,11 +37,13 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
     return (
       <Stack align="center" gap="xs" className={classes.userSection}>
         <Avatar
+          component="button"
           size="sm"
           radius="xl"
           data-testid="user-avatar"
-          onClick={() => navigate('/settings')}
+          onClick={() => navigate('/v2/settings')}
           style={{ cursor: 'pointer' }}
+          aria-label="Go to settings"
         >
           {initials}
         </Avatar>
@@ -47,31 +58,31 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
       justify="space-between"
       data-testid="user-section"
     >
-      <Group
-        gap="sm"
-        wrap="nowrap"
-        style={{ cursor: 'pointer', overflow: 'hidden', flex: 1 }}
-        onClick={() => navigate('/settings')}
+      <UnstyledButton
+        onClick={() => navigate('/v2/settings')}
+        style={{ overflow: 'hidden', flex: 1 }}
       >
-        <Avatar size="sm" radius="xl">
-          {initials}
-        </Avatar>
-        <Stack gap={0} style={{ overflow: 'hidden' }}>
-          <Text fz="sm" fw={500} truncate>
-            {name}
-          </Text>
-          <Text fz="xs" c="dimmed" truncate>
-            {email}
-          </Text>
-        </Stack>
-      </Group>
+        <Group gap="sm" wrap="nowrap">
+          <Avatar size="sm" radius="xl">
+            {initials}
+          </Avatar>
+          <Stack gap={0} style={{ overflow: 'hidden' }}>
+            <Text fz="sm" fw={500} truncate>
+              {name}
+            </Text>
+            <Text fz="xs" c="dimmed" truncate>
+              {email}
+            </Text>
+          </Stack>
+        </Group>
+      </UnstyledButton>
       <ActionIcon
         variant="subtle"
         size="sm"
         onClick={toggleColorScheme}
-        aria-label="Toggle color scheme"
+        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       >
-        {isDark ? <IconMoon size={14} /> : <IconSun size={14} />}
+        {isDark ? <IconSun size={14} /> : <IconMoon size={14} />}
       </ActionIcon>
     </Group>
   );

@@ -7,6 +7,11 @@ export interface PeriodGroup {
   periods: PeriodResponse[];
 }
 
+function parseLocalDate(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 /**
  * Groups periods by status (current/future/past) for the dropdown.
  */
@@ -41,8 +46,7 @@ export function periodBadgeText(period: PeriodResponse): string {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const start = new Date(period.startDate);
-  start.setHours(0, 0, 0, 0);
+  const start = parseLocalDate(period.startDate);
 
   if (period.status === 'upcoming') {
     const daysUntil = Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
@@ -51,7 +55,7 @@ export function periodBadgeText(period: PeriodResponse): string {
 
   if (period.status === 'past') {
     const endDate = new Date(start);
-    endDate.setDate(endDate.getDate() + period.length);
+    endDate.setDate(endDate.getDate() + period.length - 1);
     const daysAgo = Math.ceil((today.getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24));
     return `${daysAgo} days ago`;
   }
@@ -63,7 +67,7 @@ export function periodBadgeText(period: PeriodResponse): string {
  * Format date range from a period.
  */
 export function periodDateRange(period: PeriodResponse): string {
-  const start = new Date(period.startDate);
+  const start = parseLocalDate(period.startDate);
   const end = new Date(start);
   end.setDate(end.getDate() + period.length - 1);
 

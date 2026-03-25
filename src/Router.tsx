@@ -228,6 +228,7 @@ export function Router() {
         { path: 'subscriptions', element: withPageLoader(<PlaceholderPage />) },
         { path: 'overlays', element: withPageLoader(<PlaceholderPage />) },
         { path: 'settings', element: withPageLoader(<PlaceholderPage />) },
+        { path: '*', element: withPageLoader(<NotFoundPage />) },
       ],
     },
     {

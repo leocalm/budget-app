@@ -1,3 +1,4 @@
+import { IconDots } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Drawer, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -15,7 +16,7 @@ export function BottomNav() {
 
   return (
     <>
-      <nav className={classes.bottomNav} data-testid="bottom-nav">
+      <nav className={classes.bottomNav} data-testid="bottom-nav" aria-label="Main navigation">
         {bottomNavItems.map((item) => {
           const active = isActive(item.to);
           return (
@@ -24,6 +25,7 @@ export function BottomNav() {
               className={classes.bottomNavItem}
               onClick={() => navigate(item.to)}
               data-testid={`bottom-nav-${item.label.toLowerCase()}`}
+              aria-current={active ? 'page' : undefined}
             >
               <Text fz="lg">{item.icon}</Text>
               <Text
@@ -43,7 +45,7 @@ export function BottomNav() {
           onClick={openDrawer}
           data-testid="bottom-nav-more"
         >
-          <Text fz="lg">•••</Text>
+          <IconDots size={20} />
           <Text fz={10}>More</Text>
         </UnstyledButton>
       </nav>
@@ -65,6 +67,7 @@ export function BottomNav() {
                 key={item.to}
                 className={classes.drawerItem}
                 data-active={active || undefined}
+                aria-current={active ? 'page' : undefined}
                 onClick={() => {
                   navigate(item.to);
                   closeDrawer();

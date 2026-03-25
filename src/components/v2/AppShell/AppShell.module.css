@@ -18,8 +18,13 @@
   background-color: var(--v2-elevated);
 }
 
-.navItem[data-active] {
+.navItemActive {
   background-color: var(--v2-elevated);
+}
+
+.navItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
 }
 
 /* Active overlay dot indicator */
@@ -71,22 +76,9 @@
   opacity: 0.8;
 }
 
-/* Period pill on mobile */
-.periodPill {
-  display: flex;
-  align-items: center;
-  gap: var(--mantine-spacing-xs);
-  padding: 6px var(--mantine-spacing-sm);
-  border-radius: var(--mantine-radius-xl);
-  border: 1px solid var(--v2-border);
-  background-color: var(--v2-card);
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 150ms ease;
-}
-
-.periodPill:hover {
-  background-color: var(--v2-elevated);
+.bottomNavItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
 }
 
 /* More drawer nav item */
@@ -106,6 +98,11 @@
 
 .drawerItem:hover {
   background-color: var(--v2-elevated);
+}
+
+.drawerItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
 }
 
 .drawerItem[data-active] {

@@ -63,6 +63,8 @@ export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
           className={classes.periodPill}
           onClick={open}
           data-testid="period-selector-pill"
+          aria-expanded={opened}
+          aria-haspopup="dialog"
         >
           <Group gap="xs" wrap="nowrap" style={{ flex: 1 }}>
             <Text fz="sm" fw={600}>
@@ -112,6 +114,8 @@ export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
           className={classes.periodCard}
           onClick={toggle}
           data-testid="period-selector"
+          aria-expanded={opened}
+          aria-haspopup="dialog"
         >
           <Text fz={10} fw={600} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.08em' }}>
             Period

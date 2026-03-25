@@ -101,6 +101,8 @@ export function V2ThemeProvider({
     root.style.setProperty('--v2-gradient-end', accents.gradient[1]);
     if (accents.quaternary) {
       root.style.setProperty('--v2-quaternary', accents.quaternary);
+    } else {
+      root.style.removeProperty('--v2-quaternary');
     }
   }, [accents, surface]);
 

@@ -12,7 +12,7 @@ interface NavGroupProps {
 
 export function NavGroup({ label, children, collapsed }: NavGroupProps) {
   return (
-    <Stack gap={2} mb="md">
+    <Stack gap={2} mb="md" role="group" aria-label={label}>
       {!collapsed && (
         <Text
           fz={10}

@@ -16,17 +16,9 @@ interface SidebarProps {
   periodSelector?: ReactNode;
   /** Current user info */
   user: { name: string; email: string };
-  /** Whether an overlay is active (shows dot on Overlays nav item) */
-  hasActiveOverlay?: boolean;
 }
 
-export function Sidebar({
-  collapsed,
-  onToggleCollapse,
-  periodSelector,
-  user,
-  hasActiveOverlay,
-}: SidebarProps) {
+export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: SidebarProps) {
   return (
     <>
       {/* Logo + collapse toggle */}
@@ -36,8 +28,8 @@ export function Sidebar({
           justify={collapsed ? 'center' : 'space-between'}
           wrap="nowrap"
         >
-          {!collapsed && (
-            <Group gap="xs" wrap="nowrap">
+          {(() => {
+            const logo = (
               <Image
                 src="/piggy-pulse-icon.svg"
                 alt="PiggyPulse"
@@ -45,20 +37,18 @@ export function Sidebar({
                 h={28}
                 fallbackSrc="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><text y='22' font-size='22'>🐷</text></svg>"
               />
-              <Text fw={700} fz="md" ff="var(--mantine-font-family-headings)">
-                PiggyPulse
-              </Text>
-            </Group>
-          )}
-          {collapsed && (
-            <Image
-              src="/piggy-pulse-icon.svg"
-              alt="PiggyPulse"
-              w={28}
-              h={28}
-              fallbackSrc="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><text y='22' font-size='22'>🐷</text></svg>"
-            />
-          )}
+            );
+            return !collapsed ? (
+              <Group gap="xs" wrap="nowrap">
+                {logo}
+                <Text fw={700} fz="md" ff="var(--mantine-font-family-headings)">
+                  PiggyPulse
+                </Text>
+              </Group>
+            ) : (
+              logo
+            );
+          })()}
           <ActionIcon
             variant="subtle"
             size="xs"
@@ -90,7 +80,7 @@ export function Sidebar({
                   label={item.label}
                   to={item.to}
                   collapsed={collapsed}
-                  dot={item.label === 'Overlays' ? hasActiveOverlay : undefined}
+                  dot={item.dot}
                 />
               ))}
             </NavGroup>
