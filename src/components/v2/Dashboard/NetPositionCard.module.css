@@ -94,14 +94,14 @@
   flex-shrink: 0;
 }
 
-/* Responsive: stack hero row on narrow screens */
+/* Responsive: adjust card for mobile */
 @media (max-width: 48em) {
-  .heroRow {
-    flex-direction: column;
+  .card {
+    padding: var(--mantine-spacing-sm) var(--mantine-spacing-md) var(--mantine-spacing-md);
   }
 
   .sparklineWrapper {
-    max-width: 100%;
+    max-width: 100px;
   }
 }
 
