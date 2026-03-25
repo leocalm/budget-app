@@ -1,0 +1,159 @@
+/* Sidebar header with logo + toggle */
+.sidebarHeader {
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-sm);
+  border-bottom: 1px solid var(--v2-border);
+  min-height: 56px;
+}
+
+/* Nav item button */
+.navItem {
+  display: block;
+  width: 100%;
+  padding: 6px var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 150ms ease;
+}
+
+.navItem:hover {
+  background-color: var(--v2-elevated);
+}
+
+.navItemActive {
+  background-color: var(--v2-elevated);
+}
+
+.navItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
+}
+
+/* Active overlay dot indicator */
+.navDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--v2-secondary);
+  flex-shrink: 0;
+}
+
+/* User section at bottom of sidebar */
+.userSection {
+  padding-top: var(--mantine-spacing-sm);
+  border-top: 1px solid var(--v2-border);
+}
+
+/* Mobile header */
+.mobileHeader {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+}
+
+/* Mobile bottom nav */
+.bottomNav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--mantine-spacing-xs) 0;
+  padding-bottom: calc(var(--mantine-spacing-xs) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.bottomNavItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  border-radius: var(--mantine-radius-sm);
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+  transition: opacity 150ms ease;
+}
+
+.bottomNavItem:hover {
+  opacity: 0.8;
+}
+
+.bottomNavItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
+}
+
+/* More drawer nav item */
+.drawerItem {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  cursor: pointer;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  transition: background-color 150ms ease;
+}
+
+.drawerItem:hover {
+  background-color: var(--v2-elevated);
+}
+
+.drawerItem:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
+}
+
+.drawerItem[data-active] {
+  background-color: var(--v2-elevated);
+}
+
+/* Collapsed sidebar nav item — centered icon with generous spacing */
+.navItemCollapsed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 150ms ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navItemCollapsed:hover {
+  background-color: var(--v2-elevated);
+}
+
+.navItemCollapsed:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
+}
+
+/* Collapsed nav group — generous spacing between groups */
+.navGroupCollapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+/* Collapsed sidebar header — center the logo */
+.sidebarHeaderCollapsed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--mantine-spacing-sm);
+  border-bottom: 1px solid var(--v2-border);
+  min-height: 56px;
+}
+
+/* Brand text gradient */
+.brandText {
+  background: linear-gradient(90deg, var(--v2-gradient-start), var(--v2-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

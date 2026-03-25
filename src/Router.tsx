@@ -6,11 +6,13 @@ import {
   RouterProvider,
   useLocation,
 } from 'react-router-dom';
+import { useMantineColorScheme } from '@mantine/core';
 import { BasicAppShell } from './AppShell';
 import { ProtectedRoute } from './components/Auth';
 import { PageLoader } from './components/Utils';
 import { AuthProvider } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
+import { V2ThemeProvider } from './theme/v2';
 
 const DashboardPage = lazy(() =>
   import('./components/Dashboard/DashboardPage').then((module) => ({
@@ -122,6 +124,16 @@ const OnboardingPage = lazy(() =>
     default: module.OnboardingPage,
   }))
 );
+const V2AppShell = lazy(() =>
+  import('./components/v2/AppShell/V2AppShell').then((module) => ({
+    default: module.V2AppShell,
+  }))
+);
+const PlaceholderPage = lazy(() =>
+  import('./pages/v2/Placeholder.page').then((module) => ({
+    default: module.PlaceholderPage,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -143,6 +155,31 @@ const Layout = () => {
         <BasicAppShell>
           <Outlet />
         </BasicAppShell>
+      </BudgetProvider>
+    </ProtectedRoute>
+  );
+};
+
+const V2Layout = () => {
+  const location = useLocation();
+  const { colorScheme } = useMantineColorScheme();
+
+  useEffect(() => {
+    const h1 = document.querySelector('h1');
+    if (h1) {
+      if (!h1.hasAttribute('tabindex')) {
+        h1.setAttribute('tabindex', '-1');
+      }
+      h1.focus();
+    }
+  }, [location.pathname]);
+
+  return (
+    <ProtectedRoute>
+      <BudgetProvider>
+        <V2ThemeProvider colorMode={colorScheme === 'dark' ? 'dark' : 'light'}>
+          <V2AppShell />
+        </V2ThemeProvider>
       </BudgetProvider>
     </ProtectedRoute>
   );
@@ -171,6 +208,24 @@ export function Router() {
         { path: 'overlays', element: withPageLoader(<OverlaysPage />) },
         { path: 'settings', element: withPageLoader(<SettingsPage />) },
         // Catch-all for 404 within authenticated routes
+        { path: '*', element: withPageLoader(<NotFoundPage />) },
+      ],
+    },
+    {
+      path: '/v2',
+      element: withPageLoader(<V2Layout />),
+      children: [
+        { index: true, element: <Navigate to="/v2/dashboard" replace /> },
+        { path: 'dashboard', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'transactions', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'accounts', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'categories', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'targets', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'periods', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'vendors', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'subscriptions', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'overlays', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'settings', element: withPageLoader(<PlaceholderPage />) },
         { path: '*', element: withPageLoader(<NotFoundPage />) },
       ],
     },

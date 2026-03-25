@@ -1,0 +1,35 @@
+/* Desktop: sidebar period card */
+.periodCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-elevated);
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 150ms ease;
+}
+
+.periodCard:hover {
+  background-color: var(--v2-border);
+}
+
+/* Mobile: period pill */
+.periodPill {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  padding: 6px var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-xl);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 150ms ease;
+}
+
+.periodPill:hover {
+  background-color: var(--v2-elevated);
+}
