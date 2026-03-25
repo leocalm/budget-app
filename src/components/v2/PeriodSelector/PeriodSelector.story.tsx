@@ -63,13 +63,13 @@ const mockPeriods = {
 };
 
 const periodHandlers = [
-  http.get('*/api/v1/periods*', () => {
+  http.get('*/v2/periods*', () => {
     return HttpResponse.json(mockPeriods);
   }),
 ];
 
 const gapHandlers = [
-  http.get('*/api/v1/periods*', () => {
+  http.get('*/v2/periods*', () => {
     return HttpResponse.json({
       ...mockPeriods,
       data: mockPeriods.data.filter((p) => p.status !== 'active'),
@@ -135,7 +135,7 @@ export const Empty: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('*/api/v1/periods*', () => {
+        http.get('*/v2/periods*', () => {
           return HttpResponse.json({ data: [], total: 0, page: 1, pageSize: 20 });
         }),
       ],
@@ -155,7 +155,7 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('*/api/v1/periods*', () => {
+        http.get('*/v2/periods*', () => {
           return new HttpResponse(null, { status: 500 });
         }),
       ],
@@ -175,7 +175,7 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('*/api/v1/periods*', async () => {
+        http.get('*/v2/periods*', async () => {
           await new Promise(() => {}); // infinite delay
         }),
       ],
