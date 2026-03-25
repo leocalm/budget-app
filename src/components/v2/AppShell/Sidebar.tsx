@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { ActionIcon, AppShell, Group, Image, ScrollArea, Stack, Text } from '@mantine/core';
+import { useV2Theme } from '@/theme/v2';
 import { navGroups } from './navConfig';
 import { NavGroup } from './NavGroup';
 import { NavItem } from './NavItem';
@@ -18,7 +19,19 @@ interface SidebarProps {
   user: { name: string; email: string };
 }
 
+const LOGO_PATHS: Record<string, string> = {
+  moonlit: '/logo/piggy-pulse-moonlit.svg',
+  nebula: '/logo/piggy-pulse-nebula.svg',
+  frost: '/logo/piggy-pulse-frost.svg',
+  twilight: '/logo/piggy-pulse-twilight.svg',
+};
+
 export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: SidebarProps) {
+  const { colorTheme } = useV2Theme();
+  const logoSrc = LOGO_PATHS[colorTheme] ?? LOGO_PATHS.nebula;
+
+  const logo = <Image src={logoSrc} alt="PiggyPulse" w={28} h={28} />;
+
   return (
     <>
       {/* Logo + collapse toggle */}
@@ -28,32 +41,21 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
           justify={collapsed ? 'center' : 'space-between'}
           wrap="nowrap"
         >
-          {(() => {
-            const logo = (
-              <Image
-                src="/piggy-pulse-icon.svg"
-                alt="PiggyPulse"
-                w={28}
-                h={28}
-                fallbackSrc="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><text y='22' font-size='22'>🐷</text></svg>"
-              />
-            );
-            return !collapsed ? (
-              <Group gap="xs" wrap="nowrap">
-                {logo}
-                <Text
-                  fw={700}
-                  fz="md"
-                  ff="var(--mantine-font-family-headings)"
-                  className={classes.brandText}
-                >
-                  PiggyPulse
-                </Text>
-              </Group>
-            ) : (
-              logo
-            );
-          })()}
+          {!collapsed ? (
+            <Group gap="xs" wrap="nowrap">
+              {logo}
+              <Text
+                fw={700}
+                fz="md"
+                ff="var(--mantine-font-family-headings)"
+                className={classes.brandText}
+              >
+                PiggyPulse
+              </Text>
+            </Group>
+          ) : (
+            logo
+          )}
           <ActionIcon
             variant="subtle"
             size="xs"

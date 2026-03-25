@@ -109,7 +109,7 @@
   background-color: var(--v2-elevated);
 }
 
-/* Collapsed sidebar nav item — centered icon with breathing room */
+/* Collapsed sidebar nav item — centered icon, same height as expanded */
 .navItemCollapsed {
   display: flex;
   justify-content: center;
@@ -118,6 +118,8 @@
   padding: 8px 0;
   border-radius: var(--mantine-radius-sm);
   transition: background-color 150ms ease;
+  text-decoration: none;
+  color: inherit;
 }
 
 .navItemCollapsed:hover {
@@ -129,13 +131,14 @@
   outline-offset: 2px;
 }
 
-/* Collapsed nav group spacing */
+/* Collapsed nav group — same spacing as expanded groups */
 .navGroupCollapsed {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: var(--mantine-spacing-md);
+  padding-top: var(--mantine-spacing-xs);
 }
 
 /* Brand text gradient */

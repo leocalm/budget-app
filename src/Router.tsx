@@ -6,13 +6,13 @@ import {
   RouterProvider,
   useLocation,
 } from 'react-router-dom';
-import { MantineProvider, useMantineColorScheme } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 import { BasicAppShell } from './AppShell';
 import { ProtectedRoute } from './components/Auth';
 import { PageLoader } from './components/Utils';
 import { AuthProvider } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
-import { v2MantineTheme, V2ThemeProvider } from './theme/v2';
+import { V2ThemeProvider } from './theme/v2';
 
 const DashboardPage = lazy(() =>
   import('./components/Dashboard/DashboardPage').then((module) => ({
@@ -178,12 +178,7 @@ const V2Layout = () => {
     <ProtectedRoute>
       <BudgetProvider>
         <V2ThemeProvider colorMode={colorScheme === 'dark' ? 'dark' : 'light'}>
-          <MantineProvider
-            theme={v2MantineTheme}
-            forceColorScheme={colorScheme === 'dark' ? 'dark' : 'light'}
-          >
-            <V2AppShell />
-          </MantineProvider>
+          <V2AppShell />
         </V2ThemeProvider>
       </BudgetProvider>
     </ProtectedRoute>
