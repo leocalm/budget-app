@@ -178,7 +178,10 @@ const V2Layout = () => {
     <ProtectedRoute>
       <BudgetProvider>
         <V2ThemeProvider colorMode={colorScheme === 'dark' ? 'dark' : 'light'}>
-          <MantineProvider theme={v2MantineTheme}>
+          <MantineProvider
+            theme={v2MantineTheme}
+            forceColorScheme={colorScheme === 'dark' ? 'dark' : 'light'}
+          >
             <V2AppShell />
           </MantineProvider>
         </V2ThemeProvider>

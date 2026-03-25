@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Stack, Text } from '@mantine/core';
+import classes from './AppShell.module.css';
 
 interface NavGroupProps {
   /** Section label (e.g., "OVERVIEW", "PLANNING") */
@@ -11,21 +12,27 @@ interface NavGroupProps {
 }
 
 export function NavGroup({ label, children, collapsed }: NavGroupProps) {
+  if (collapsed) {
+    return (
+      <div className={classes.navGroupCollapsed} role="group" aria-label={label}>
+        {children}
+      </div>
+    );
+  }
+
   return (
     <Stack gap={2} mb="md" role="group" aria-label={label}>
-      {!collapsed && (
-        <Text
-          fz={10}
-          fw={600}
-          tt="uppercase"
-          c="dimmed"
-          px="sm"
-          mb={4}
-          style={{ letterSpacing: '0.08em' }}
-        >
-          {label}
-        </Text>
-      )}
+      <Text
+        fz={10}
+        fw={600}
+        tt="uppercase"
+        c="dimmed"
+        px="sm"
+        mb={4}
+        style={{ letterSpacing: '0.08em' }}
+      >
+        {label}
+      </Text>
       {children}
     </Stack>
   );

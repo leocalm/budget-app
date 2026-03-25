@@ -23,13 +23,15 @@ export function NavItem({ icon, label, to, dot, collapsed }: NavItemProps) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `${classes.navItem}${isActive ? ` ${classes.navItemActive}` : ''}`
+        collapsed
+          ? `${classes.navItemCollapsed}${isActive ? ` ${classes.navItemActive}` : ''}`
+          : `${classes.navItem}${isActive ? ` ${classes.navItemActive}` : ''}`
       }
       data-testid={`nav-item-${label.toLowerCase().replace(/\s+/g, '-')}`}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       {({ isActive }) => (
-        <Group gap="sm" wrap="nowrap">
+        <Group gap="sm" wrap="nowrap" justify={collapsed ? 'center' : undefined}>
           <Text component="span" fz="md">
             {icon}
           </Text>

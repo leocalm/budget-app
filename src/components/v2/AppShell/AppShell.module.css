@@ -108,3 +108,40 @@
 .drawerItem[data-active] {
   background-color: var(--v2-elevated);
 }
+
+/* Collapsed sidebar nav item — centered icon with breathing room */
+.navItemCollapsed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 150ms ease;
+}
+
+.navItemCollapsed:hover {
+  background-color: var(--v2-elevated);
+}
+
+.navItemCollapsed:focus-visible {
+  outline: 2px solid var(--v2-primary);
+  outline-offset: 2px;
+}
+
+/* Collapsed nav group spacing */
+.navGroupCollapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+/* Brand text gradient */
+.brandText {
+  background: linear-gradient(90deg, var(--v2-gradient-start), var(--v2-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

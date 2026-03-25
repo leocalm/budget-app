@@ -41,7 +41,12 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
             return !collapsed ? (
               <Group gap="xs" wrap="nowrap">
                 {logo}
-                <Text fw={700} fz="md" ff="var(--mantine-font-family-headings)">
+                <Text
+                  fw={700}
+                  fz="md"
+                  ff="var(--mantine-font-family-headings)"
+                  className={classes.brandText}
+                >
                   PiggyPulse
                 </Text>
               </Group>
