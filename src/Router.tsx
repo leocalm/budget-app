@@ -134,6 +134,11 @@ const PlaceholderPage = lazy(() =>
     default: module.PlaceholderPage,
   }))
 );
+const DashboardV2Page = lazy(() =>
+  import('./pages/v2/Dashboard.page').then((module) => ({
+    default: module.DashboardV2Page,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -216,7 +221,7 @@ export function Router() {
       element: withPageLoader(<V2Layout />),
       children: [
         { index: true, element: <Navigate to="/v2/dashboard" replace /> },
-        { path: 'dashboard', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'dashboard', element: withPageLoader(<DashboardV2Page />) },
         { path: 'transactions', element: withPageLoader(<PlaceholderPage />) },
         { path: 'accounts', element: withPageLoader(<PlaceholderPage />) },
         { path: 'categories', element: withPageLoader(<PlaceholderPage />) },
