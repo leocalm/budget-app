@@ -8,6 +8,7 @@ import { CurrentPeriodCard } from './CurrentPeriodCard';
 // Mock the hooks
 vi.mock('@/hooks/v2/useDashboard', () => ({
   useDashboardCurrentPeriod: vi.fn(),
+  useDashboardCurrentPeriodHistory: vi.fn(() => ({ data: undefined, isLoading: false })),
   useDashboardNetPosition: vi.fn(() => ({ data: undefined, isLoading: false })),
   useDashboardNetPositionHistory: vi.fn(() => ({ data: undefined, isLoading: false })),
 }));

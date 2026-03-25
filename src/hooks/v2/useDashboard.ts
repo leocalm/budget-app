@@ -49,6 +49,22 @@ export function useDashboardNetPositionHistory(periodId: string) {
   });
 }
 
+export function useDashboardCurrentPeriodHistory(periodId: string) {
+  return useQuery({
+    queryKey: ['dashboard', 'current-period-history', periodId],
+    queryFn: async () => {
+      const { data, error } = await apiClient.GET('/dashboard/current-period-history', {
+        params: { query: { periodId } },
+      });
+      if (error) {
+        throw error;
+      }
+      return data;
+    },
+    enabled: !!periodId,
+  });
+}
+
 export function useDashboardBudgetStability(periodId: string) {
   return useQuery({
     queryKey: ['dashboard', 'budget-stability', periodId],

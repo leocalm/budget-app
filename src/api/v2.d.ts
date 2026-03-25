@@ -89,6 +89,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/dashboard/current-period-history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get current period spending history */
+    get: operations['getDashboardCurrentPeriodHistory'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/periods': {
     parameters: {
       query?: never;
@@ -1328,6 +1345,24 @@ export interface components {
       debtAmount: number;
     };
     NetPositionHistoryResponse: components['schemas']['NetPositionHistoryPoint'][];
+    CurrentPeriodHistoryPoint: {
+      /**
+       * Format: date
+       * @example 2024-01-15
+       */
+      date: string;
+      /**
+       * @description Cumulative spending in cents as of end of day
+       * @example 45000
+       */
+      cumulativeSpent: number;
+      /**
+       * @description Spending on that day in cents
+       * @example 5000
+       */
+      dailySpent: number;
+    };
+    CurrentPeriodHistoryResponse: components['schemas']['CurrentPeriodHistoryPoint'][];
     DurationBased: {
       /** @enum {string} */
       periodType?: 'duration';
@@ -2931,6 +2966,33 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['NetPositionHistoryResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  getDashboardCurrentPeriodHistory: {
+    parameters: {
+      query: {
+        /** @description The ID of the period */
+        periodId: components['parameters']['PeriodId'];
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CurrentPeriodHistoryResponse'];
         };
       };
       400: components['responses']['BadRequest'];

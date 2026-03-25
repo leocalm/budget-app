@@ -1,7 +1,10 @@
 import { Button, Progress, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useBudgetPeriods } from '@/hooks/v2/useBudgetPeriods';
-import { useDashboardCurrentPeriod } from '@/hooks/v2/useDashboard';
+import {
+  useDashboardCurrentPeriod,
+  useDashboardCurrentPeriodHistory,
+} from '@/hooks/v2/useDashboard';
 import { useV2Theme } from '@/theme/v2';
 import { periodDateRange } from '../PeriodSelector/periodUtils';
 import { CurrentPeriodSparkline } from './CurrentPeriodSparkline';
@@ -13,6 +16,7 @@ interface CurrentPeriodCardProps {
 
 export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
   const { data, isLoading, isError, refetch } = useDashboardCurrentPeriod(periodId);
+  const { data: history } = useDashboardCurrentPeriodHistory(periodId);
   const { data: periodsData } = useBudgetPeriods({ limit: 20 });
   const { accents } = useV2Theme();
 
@@ -93,7 +97,11 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
           </Text>
         </div>
         <div className={classes.sparklineWrapper}>
-          <CurrentPeriodSparkline spent={data.spent} daysElapsed={daysElapsed} />
+          <CurrentPeriodSparkline
+            history={history ?? undefined}
+            spent={data.spent}
+            daysElapsed={daysElapsed}
+          />
         </div>
       </div>
 

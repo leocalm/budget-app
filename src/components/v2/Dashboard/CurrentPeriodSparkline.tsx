@@ -1,16 +1,12 @@
 import { AreaChart } from '@mantine/charts';
+import type { components } from '@/api/v2';
 import { useV2Theme } from '@/theme/v2';
 
-/** Matches the upcoming CurrentPeriodHistoryPoint schema */
-export interface SpendingHistoryPoint {
-  date: string;
-  cumulativeSpent: number;
-  dailySpent: number;
-}
+type HistoryPoint = components['schemas']['CurrentPeriodHistoryPoint'];
 
 interface CurrentPeriodSparklineProps {
   /** Daily spending history points */
-  history?: SpendingHistoryPoint[];
+  history?: HistoryPoint[];
   /** Fallback: total spent in cents */
   spent?: number;
   /** Fallback: days elapsed in period */

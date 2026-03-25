@@ -121,6 +121,29 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /dashboard/current-period-history:
+    get:
+      tags:
+        - Dashboard
+      summary: Get current period spending history
+      operationId: getDashboardCurrentPeriodHistory
+      parameters:
+        - $ref: '#/components/parameters/PeriodId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentPeriodHistoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /periods:
     get:
       tags:
@@ -2375,6 +2398,31 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/NetPositionHistoryPoint'
+    CurrentPeriodHistoryPoint:
+      type: object
+      required:
+        - date
+        - cumulativeSpent
+        - dailySpent
+      properties:
+        date:
+          type: string
+          format: date
+          example: '2024-01-15'
+        cumulativeSpent:
+          type: integer
+          description: Cumulative spending in cents as of end of day
+          example: 45000
+          minimum: 0
+        dailySpent:
+          type: integer
+          description: Spending on that day in cents
+          example: 5000
+          minimum: 0
+    CurrentPeriodHistoryResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/CurrentPeriodHistoryPoint'
     DurationBased:
       required:
         - duration
