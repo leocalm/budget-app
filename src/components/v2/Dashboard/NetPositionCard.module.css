@@ -48,6 +48,13 @@
   min-width: 4px;
 }
 
+/* Labels aligned under each bar segment */
+.barLabels {
+  display: flex;
+  margin-top: 4px;
+  gap: 2px;
+}
+
 /* Breakdown detail boxes */
 .breakdownGrid {
   display: flex;

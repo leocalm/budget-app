@@ -1,4 +1,4 @@
-import { Group, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { useV2Theme } from '@/theme/v2';
 import classes from './NetPositionCard.module.css';
 
@@ -41,7 +41,7 @@ export function NetPositionBreakdownBar({
           />
         ))}
       </div>
-      <Group justify="space-between" mt={4}>
+      <div className={classes.barLabels}>
         {segments.map((seg) => (
           <Text
             key={seg.label}
@@ -49,12 +49,13 @@ export function NetPositionBreakdownBar({
             fw={600}
             tt="uppercase"
             c="dimmed"
-            style={{ letterSpacing: '0.06em' }}
+            ta="center"
+            style={{ width: `${seg.pct}%`, letterSpacing: '0.06em' }}
           >
             {seg.label}
           </Text>
         ))}
-      </Group>
+      </div>
     </div>
   );
 }
