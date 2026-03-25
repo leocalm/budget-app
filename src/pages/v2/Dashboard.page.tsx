@@ -1,5 +1,5 @@
 import { Stack, Text, Title } from '@mantine/core';
-import { NetPositionCard } from '@/components/v2/Dashboard';
+import { CurrentPeriodCard, NetPositionCard } from '@/components/v2/Dashboard';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 
 export function DashboardV2Page() {
@@ -17,7 +17,10 @@ export function DashboardV2Page() {
       </div>
 
       {selectedPeriodId ? (
-        <NetPositionCard periodId={selectedPeriodId} />
+        <>
+          <CurrentPeriodCard periodId={selectedPeriodId} />
+          <NetPositionCard periodId={selectedPeriodId} />
+        </>
       ) : (
         <Text c="dimmed" fz="sm">
           No budget period selected. Please select a period to view your dashboard.

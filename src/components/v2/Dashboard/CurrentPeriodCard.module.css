@@ -1,0 +1,99 @@
+/* Card container */
+.card {
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+/* Header row: period label + days left */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+/* Hero amount + sparkline side by side */
+.heroRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.heroLeft {
+  flex-shrink: 0;
+}
+
+.sparklineWrapper {
+  flex: 1;
+  max-width: 140px;
+  align-self: center;
+}
+
+/* Dual progress bars */
+.progressSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.progressLabel {
+  width: 52px;
+  flex-shrink: 0;
+}
+
+.progressBar {
+  flex: 1;
+}
+
+.progressPct {
+  width: 32px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* Stat boxes grid */
+.statsGrid {
+  display: flex;
+  gap: 1px;
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-sm);
+  overflow: hidden;
+}
+
+.statItem {
+  flex: 1;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  background-color: var(--v2-elevated);
+}
+
+/* Error/empty centered state */
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+}
+
+/* Responsive */
+@media (max-width: 48em) {
+  .card {
+    padding: var(--mantine-spacing-sm) var(--mantine-spacing-md) var(--mantine-spacing-md);
+  }
+
+  .sparklineWrapper {
+    max-width: 100px;
+  }
+}
