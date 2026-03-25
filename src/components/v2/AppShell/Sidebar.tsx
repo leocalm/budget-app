@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { IconChevronLeft } from '@tabler/icons-react';
 import { ActionIcon, AppShell, Group, Image, ScrollArea, Stack, Text } from '@mantine/core';
 import { useV2Theme } from '@/theme/v2';
 import { navGroups } from './navConfig';
@@ -36,12 +36,25 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
     <>
       {/* Logo + collapse toggle */}
       <AppShell.Section>
-        <Group
-          className={classes.sidebarHeader}
-          justify={collapsed ? 'center' : 'space-between'}
-          wrap="nowrap"
-        >
-          {!collapsed ? (
+        {collapsed ? (
+          <div
+            className={classes.sidebarHeaderCollapsed}
+            onClick={onToggleCollapse}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onToggleCollapse();
+              }
+            }}
+            aria-label="Expand sidebar"
+            data-testid="sidebar-toggle"
+            style={{ cursor: 'pointer' }}
+          >
+            {logo}
+          </div>
+        ) : (
+          <Group className={classes.sidebarHeader} justify="space-between" wrap="nowrap">
             <Group gap="xs" wrap="nowrap">
               {logo}
               <Text
@@ -53,19 +66,17 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
                 PiggyPulse
               </Text>
             </Group>
-          ) : (
-            logo
-          )}
-          <ActionIcon
-            variant="subtle"
-            size="xs"
-            onClick={onToggleCollapse}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            data-testid="sidebar-toggle"
-          >
-            {collapsed ? <IconChevronRight size={14} /> : <IconChevronLeft size={14} />}
-          </ActionIcon>
-        </Group>
+            <ActionIcon
+              variant="subtle"
+              size="xs"
+              onClick={onToggleCollapse}
+              aria-label="Collapse sidebar"
+              data-testid="sidebar-toggle"
+            >
+              <IconChevronLeft size={14} />
+            </ActionIcon>
+          </Group>
+        )}
       </AppShell.Section>
 
       {/* Period selector */}
@@ -76,8 +87,8 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
       )}
 
       {/* Navigation */}
-      <AppShell.Section grow component={ScrollArea} px="xs">
-        <Stack gap={0}>
+      <AppShell.Section grow component={ScrollArea} px={collapsed ? 4 : 'xs'}>
+        <Stack gap={0} align={collapsed ? 'center' : undefined}>
           {navGroups.map((group) => (
             <NavGroup key={group.label} label={group.label} collapsed={collapsed}>
               {group.items.map((item) => (
@@ -96,7 +107,7 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
       </AppShell.Section>
 
       {/* User section */}
-      <AppShell.Section px="sm" pb="sm">
+      <AppShell.Section px={collapsed ? 0 : 'sm'} pb="sm">
         <UserSection name={user.name} email={user.email} collapsed={collapsed} />
       </AppShell.Section>
     </>
