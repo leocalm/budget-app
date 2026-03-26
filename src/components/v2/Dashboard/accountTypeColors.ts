@@ -1,44 +1,25 @@
-import type { ColorTheme } from '@/theme/v2';
+import type { themes } from '@/theme/v2';
 
 type AccountType = 'Checking' | 'Savings' | 'CreditCard' | 'Allowance' | 'Wallet';
+type ThemeAccents = (typeof themes)[keyof typeof themes];
 
 /**
- * Maps account types to theme-based badge colors.
- * Returns the CSS variable name for the color.
+ * Returns the hex accent color for a given account type, sourced directly from
+ * the resolved theme accents so Badge styling works with actual color values.
  */
-const colorMap: Record<ColorTheme, Record<AccountType, string>> = {
-  moonlit: {
-    Checking: 'var(--v2-primary)', // lavender
-    Savings: 'var(--v2-tertiary)', // sky
-    CreditCard: 'var(--v2-secondary)', // silver
-    Allowance: 'var(--v2-secondary)', // silver
-    Wallet: 'var(--v2-tertiary)', // sky
-  },
-  nebula: {
-    Checking: 'var(--v2-primary)', // lavender
-    Savings: 'var(--v2-tertiary)', // steel
-    CreditCard: 'var(--v2-secondary)', // rose
-    Allowance: 'var(--v2-secondary)', // rose
-    Wallet: '#9AA0CC', // peri (quaternary)
-  },
-  frost: {
-    Checking: 'var(--v2-primary)', // lavender
-    Savings: 'var(--v2-secondary)', // ice
-    CreditCard: 'var(--v2-tertiary)', // plum
-    Allowance: 'var(--v2-tertiary)', // plum
-    Wallet: '#7C98B4', // slate (quaternary)
-  },
-  twilight: {
-    Checking: 'var(--v2-primary)', // lavender
-    Savings: 'var(--v2-secondary)', // teal
-    CreditCard: 'var(--v2-tertiary)', // grape
-    Allowance: 'var(--v2-tertiary)', // grape
-    Wallet: '#8090B8', // storm (quaternary)
-  },
-};
-
-export function getAccountTypeColor(type: AccountType, theme: ColorTheme): string {
-  return colorMap[theme]?.[type] ?? 'var(--v2-primary)';
+export function getAccountTypeColor(type: AccountType, accents: ThemeAccents): string {
+  switch (type) {
+    case 'Checking':
+      return accents.primary; // lavender — consistent across all themes
+    case 'Savings':
+      return accents.tertiary;
+    case 'CreditCard':
+      return accents.secondary;
+    case 'Allowance':
+      return accents.secondary;
+    case 'Wallet':
+      return accents.quaternary ?? accents.tertiary;
+  }
 }
 
 export function getAccountTypeLabel(type: AccountType): string {

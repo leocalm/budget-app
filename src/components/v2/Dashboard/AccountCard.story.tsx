@@ -94,10 +94,15 @@ const archivedAccount = {
   status: 'inactive' as const,
 };
 
+// Static, deterministic history so Storybook snapshots are stable.
+const BALANCE_OFFSETS = [
+  1200, 3800, 800, 4200, 2100, 500, 3500, 1700, 4900, 2600, 900, 3100, 4400, 1300, 2800,
+];
+const TX_COUNTS = [2, 0, 3, 1, 4, 0, 2, 3, 1, 2, 0, 4, 1, 3, 2];
 const mockHistory = Array.from({ length: 15 }, (_, i) => ({
   date: `2026-03-${String(i + 10).padStart(2, '0')}`,
-  balance: 550000 + i * 2000 + Math.round(Math.random() * 5000),
-  transactionCount: Math.floor(Math.random() * 5),
+  balance: 550000 + i * 2000 + BALANCE_OFFSETS[i],
+  transactionCount: TX_COUNTS[i],
 }));
 
 const handlers = (account: Record<string, unknown>) => [
@@ -193,4 +198,17 @@ export const Mobile: Story = {
     msw: { handlers: handlers(checking) },
     viewport: { defaultViewport: 'mobile1' },
   },
+};
+
+export const LightMode: Story = {
+  parameters: { msw: { handlers: handlers(checking) } },
+  decorators: [
+    (Story) => (
+      <V2ThemeProvider colorMode="light">
+        <div style={{ maxWidth: 540 }}>
+          <Story />
+        </div>
+      </V2ThemeProvider>
+    ),
+  ],
 };

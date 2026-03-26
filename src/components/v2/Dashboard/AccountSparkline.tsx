@@ -6,9 +6,11 @@ type HistoryPoint = components['schemas']['AccountBalanceHistoryPoint'];
 
 interface AccountSparklineProps {
   history?: HistoryPoint[];
+  /** Account name used for the accessible aria-label. */
+  acctName?: string;
 }
 
-export function AccountSparkline({ history }: AccountSparklineProps) {
+export function AccountSparkline({ history, acctName }: AccountSparklineProps) {
   const { accents } = useV2Theme();
 
   if (!history || history.length < 2) {
@@ -16,9 +18,10 @@ export function AccountSparkline({ history }: AccountSparklineProps) {
   }
 
   const data = history.map((p) => ({ day: p.date, value: p.balance }));
+  const label = acctName ? `Balance history for ${acctName}` : 'Balance history';
 
   return (
-    <div data-testid="account-sparkline">
+    <div data-testid="account-sparkline" role="img" aria-label={label}>
       <AreaChart
         h={56}
         data={data}

@@ -68,10 +68,12 @@
 
 /* Allowance detail rows */
 .detailRows {
-  padding: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
   border-radius: var(--mantine-radius-md);
   display: flex;
   flex-direction: column;
+  margin-bottom: var(--mantine-spacing-sm);
 }
 
 .detailRow {
