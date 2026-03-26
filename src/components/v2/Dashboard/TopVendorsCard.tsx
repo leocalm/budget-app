@@ -1,33 +1,14 @@
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { useDashboardTopVendors } from '@/hooks/v2/useDashboard';
 import classes from './TopVendorsCard.module.css';
-
-interface TopVendorItem {
-  vendorId: string;
-  vendorName: string;
-  totalSpent: number;
-  transactionCount: number;
-}
 
 interface TopVendorsCardProps {
   periodId: string;
 }
 
-/**
- * Hook placeholder — will be replaced with useDashboardTopVendors.
- */
-function useTopVendorsData(_periodId: string): {
-  data: TopVendorItem[] | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
-} {
-  // TODO: Replace with real hook when GET /dashboard/top-vendors is implemented
-  return { data: undefined, isLoading: true, isError: false, refetch: () => {} };
-}
-
 export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
-  const { data, isLoading, isError, refetch } = useTopVendorsData(periodId);
+  const { data, isLoading, isError, refetch } = useDashboardTopVendors(periodId);
 
   if (isLoading) {
     return <TopVendorsCardSkeleton />;

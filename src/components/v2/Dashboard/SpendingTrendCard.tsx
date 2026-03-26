@@ -1,33 +1,16 @@
 import { BarChart } from '@mantine/charts';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { useDashboardSpendingTrend } from '@/hooks/v2/useDashboard';
 import { useV2Theme } from '@/theme/v2';
 import classes from './SpendingTrendCard.module.css';
-
-interface SpendingTrendData {
-  periods: { periodId: string; periodName: string; totalSpent: number }[];
-  periodAverage: number;
-}
 
 interface SpendingTrendCardProps {
   periodId: string;
 }
 
-/**
- * Hook placeholder — will be replaced with useDashboardSpendingTrend.
- */
-function useSpendingTrendData(_periodId: string): {
-  data: SpendingTrendData | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
-} {
-  // TODO: Replace with real hook when GET /dashboard/spending-trend is implemented
-  return { data: undefined, isLoading: true, isError: false, refetch: () => {} };
-}
-
 export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
-  const { data, isLoading, isError, refetch } = useSpendingTrendData(periodId);
+  const { data, isLoading, isError, refetch } = useDashboardSpendingTrend(periodId);
   const { accents } = useV2Theme();
 
   if (isLoading) {
