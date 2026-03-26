@@ -40,7 +40,7 @@ function upcomingLabel(nextChargeDate: string): string {
   if (days < 28) {
     return weeks === 1 ? 'IN 1 WEEK' : `IN ${weeks} WEEKS`;
   }
-  const months = Math.round(days / 30);
+  const months = Math.max(1, Math.floor(days / 30));
   return months === 1 ? 'IN 1 MONTH' : `IN ${months} MONTHS`;
 }
 
@@ -102,7 +102,7 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
           Subscriptions
         </Text>
         <Text fz="xs" fw={600} c="var(--v2-primary)">
-          {activeCount} {activeCount === 1 ? 'active' : 'active'}
+          {activeCount} active
         </Text>
       </div>
 
@@ -131,31 +131,32 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
       </div>
 
       <ScrollArea className={classes.scrollArea} type="auto" offsetScrollbars={false}>
-        {subscriptions.map((sub) => {
-          const status = sub.displayStatus as DisplayStatus;
-          const cycle = sub.billingCycle as BillingCycle;
-          return (
-            <div key={sub.id} className={classes.row}>
-              <div className={classes.dot} data-status={status} />
-              <Text fz="sm" fw={500} truncate c={status === 'upcoming' ? 'dimmed' : undefined}>
-                {sub.name}
-              </Text>
-              <Text
-                fz="xs"
-                c="dimmed"
-                ff="var(--mantine-font-family-monospace)"
-                className={classes.amount}
-              >
-                <CurrencyValue cents={sub.billingAmount} />
-                {cycleLabel(cycle)}
-              </Text>
-              <Text fz="xs" c="dimmed" className={classes.date}>
-                {formatChargeDate(sub.nextChargeDate)}
-              </Text>
-              <StatusBadge status={status} nextChargeDate={sub.nextChargeDate} />
-            </div>
-          );
-        })}
+        {subscriptions.map((sub) => (
+          <div key={sub.id} className={classes.row}>
+            <div className={classes.dot} data-status={sub.displayStatus} />
+            <Text
+              fz="sm"
+              fw={500}
+              truncate
+              c={sub.displayStatus === 'upcoming' ? 'dimmed' : undefined}
+            >
+              {sub.name}
+            </Text>
+            <Text
+              fz="xs"
+              c="dimmed"
+              ff="var(--mantine-font-family-monospace)"
+              className={classes.amount}
+            >
+              <CurrencyValue cents={sub.billingAmount} />
+              {cycleLabel(sub.billingCycle)}
+            </Text>
+            <Text fz="xs" c="dimmed" className={classes.date}>
+              {formatChargeDate(sub.nextChargeDate)}
+            </Text>
+            <StatusBadge status={sub.displayStatus} nextChargeDate={sub.nextChargeDate} />
+          </div>
+        ))}
       </ScrollArea>
     </div>
   );
