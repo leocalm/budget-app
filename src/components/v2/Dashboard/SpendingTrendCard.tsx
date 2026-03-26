@@ -35,7 +35,7 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
     );
   }
 
-  if (!data || data.periods.length < 2) {
+  if (!data || !data.periods || data.periods.length < 2) {
     return (
       <div className={classes.card}>
         <div className={classes.centeredState}>
