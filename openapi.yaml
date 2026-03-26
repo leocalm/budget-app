@@ -236,6 +236,29 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /dashboard/subscriptions:
+    get:
+      tags:
+        - Dashboard
+      summary: Get subscriptions relevant to the selected budget period
+      operationId: getDashboardSubscriptions
+      parameters:
+        - $ref: '#/components/parameters/PeriodId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionsDashboardResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /periods:
     get:
       tags:
@@ -2650,6 +2673,69 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FixedCategoryItem'
+    SubscriptionDisplayStatus:
+      type: string
+      enum:
+        - charged
+        - today
+        - upcoming
+    DashboardBillingCycle:
+      type: string
+      enum:
+        - monthly
+        - quarterly
+        - yearly
+    SubscriptionDashboardItem:
+      type: object
+      required:
+        - id
+        - name
+        - billingAmount
+        - billingCycle
+        - nextChargeDate
+        - displayStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        billingAmount:
+          type: integer
+          format: int64
+          description: Billing amount in cents
+        billingCycle:
+          $ref: '#/components/schemas/DashboardBillingCycle'
+        nextChargeDate:
+          type: string
+          format: date
+          description: ISO date string (YYYY-MM-DD)
+        displayStatus:
+          $ref: '#/components/schemas/SubscriptionDisplayStatus'
+    SubscriptionsDashboardResponse:
+      type: object
+      required:
+        - activeCount
+        - monthlyTotal
+        - yearlyTotal
+        - subscriptions
+      properties:
+        activeCount:
+          type: integer
+          format: int64
+          description: Number of active subscriptions in this period
+        monthlyTotal:
+          type: integer
+          format: int64
+          description: Sum of monthly equivalents in cents
+        yearlyTotal:
+          type: integer
+          format: int64
+          description: Sum of yearly equivalents in cents
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionDashboardItem'
     DurationBased:
       required:
         - duration

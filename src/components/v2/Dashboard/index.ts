@@ -7,3 +7,4 @@ export { RecentTransactionsCard } from './RecentTransactionsCard';
 export { SpendingTrendCard } from './SpendingTrendCard';
 export { TopVendorsCard } from './TopVendorsCard';
 export { VariableCategoriesCard } from './VariableCategoriesCard';
+export { SubscriptionsCard } from './SubscriptionsCard';
