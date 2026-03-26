@@ -3,6 +3,7 @@ import {
   AccountCard,
   CashFlowCard,
   CurrentPeriodCard,
+  FixedCategoriesCard,
   NetPositionCard,
   RecentTransactionsCard,
   SpendingTrendCard,
@@ -56,6 +57,7 @@ export function DashboardV2Page() {
         <SpendingTrendCard periodId={selectedPeriodId} />
         <TopVendorsCard periodId={selectedPeriodId} />
         <VariableCategoriesCard periodId={selectedPeriodId} />
+        <FixedCategoriesCard periodId={selectedPeriodId} />
       </SimpleGrid>
 
       {/* Individual account cards */}

@@ -128,3 +128,19 @@ export function useDashboardBudgetStability(periodId: string) {
     enabled: !!periodId,
   });
 }
+
+export function useDashboardFixedCategories(periodId: string) {
+  return useQuery({
+    queryKey: ['dashboard', 'fixed-categories', periodId],
+    queryFn: async () => {
+      const { data, error } = await apiClient.GET('/dashboard/fixed-categories', {
+        params: { query: { periodId } },
+      });
+      if (error) {
+        throw error;
+      }
+      return data;
+    },
+    enabled: !!periodId,
+  });
+}
