@@ -7,6 +7,7 @@ import {
   NetPositionCard,
   RecentTransactionsCard,
   SpendingTrendCard,
+  SubscriptionsCard,
   TopVendorsCard,
   VariableCategoriesCard,
 } from '@/components/v2/Dashboard';
@@ -58,6 +59,7 @@ export function DashboardV2Page() {
         <TopVendorsCard periodId={selectedPeriodId} />
         <VariableCategoriesCard periodId={selectedPeriodId} />
         <FixedCategoriesCard periodId={selectedPeriodId} />
+        <SubscriptionsCard periodId={selectedPeriodId} />
       </SimpleGrid>
 
       {/* Individual account cards */}

@@ -174,6 +174,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/dashboard/subscriptions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get subscriptions relevant to the selected budget period */
+    get: operations['getDashboardSubscriptions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/periods': {
     parameters: {
       query?: never;
@@ -1528,6 +1545,45 @@ export interface components {
        */
       totalPaid: number;
       categories: components['schemas']['FixedCategoryItem'][];
+    };
+    /** @enum {string} */
+    SubscriptionDisplayStatus: 'charged' | 'today' | 'upcoming';
+    /** @enum {string} */
+    DashboardBillingCycle: 'monthly' | 'quarterly' | 'yearly';
+    SubscriptionDashboardItem: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      /**
+       * Format: int64
+       * @description Billing amount in cents
+       */
+      billingAmount: number;
+      billingCycle: components['schemas']['DashboardBillingCycle'];
+      /**
+       * Format: date
+       * @description ISO date string (YYYY-MM-DD)
+       */
+      nextChargeDate: string;
+      displayStatus: components['schemas']['SubscriptionDisplayStatus'];
+    };
+    SubscriptionsDashboardResponse: {
+      /**
+       * Format: int64
+       * @description Number of active subscriptions in this period
+       */
+      activeCount: number;
+      /**
+       * Format: int64
+       * @description Sum of monthly equivalents in cents
+       */
+      monthlyTotal: number;
+      /**
+       * Format: int64
+       * @description Sum of yearly equivalents in cents
+       */
+      yearlyTotal: number;
+      subscriptions: components['schemas']['SubscriptionDashboardItem'][];
     };
     DurationBased: {
       /** @enum {string} */
@@ -3309,6 +3365,33 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['FixedCategoriesResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  getDashboardSubscriptions: {
+    parameters: {
+      query: {
+        /** @description The ID of the period */
+        periodId: components['parameters']['PeriodId'];
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionsDashboardResponse'];
         };
       };
       400: components['responses']['BadRequest'];
