@@ -1,6 +1,7 @@
 export { AccountCard } from './AccountCard';
 export { CashFlowCard } from './CashFlowCard';
 export { CurrentPeriodCard } from './CurrentPeriodCard';
+export { FixedCategoriesCard } from './FixedCategoriesCard';
 export { NetPositionCard } from './NetPositionCard';
 export { RecentTransactionsCard } from './RecentTransactionsCard';
 export { SpendingTrendCard } from './SpendingTrendCard';

@@ -213,6 +213,29 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /dashboard/fixed-categories:
+    get:
+      tags:
+        - Dashboard
+      summary: Get fixed-category expense tracking for dashboard
+      operationId: getDashboardFixedCategories
+      parameters:
+        - $ref: '#/components/parameters/PeriodId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedCategoriesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /periods:
     get:
       tags:
@@ -2578,6 +2601,55 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/TopVendorItem'
+    FixedCategoryStatus:
+      type: string
+      enum:
+        - paid
+        - partial
+        - pending
+    FixedCategoryItem:
+      type: object
+      required:
+        - id
+        - name
+        - budgeted
+        - paid
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        budgeted:
+          type: integer
+          format: int64
+          description: Budgeted amount in cents
+        paid:
+          type: integer
+          format: int64
+          description: Amount paid (from transactions) in cents
+        status:
+          $ref: '#/components/schemas/FixedCategoryStatus'
+    FixedCategoriesResponse:
+      type: object
+      required:
+        - totalBudgeted
+        - totalPaid
+        - categories
+      properties:
+        totalBudgeted:
+          type: integer
+          format: int64
+          description: Total budgeted across all fixed categories in cents
+        totalPaid:
+          type: integer
+          format: int64
+          description: Total paid across all fixed categories in cents
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/FixedCategoryItem'
     DurationBased:
       required:
         - duration
