@@ -1,0 +1,119 @@
+/* Card container */
+.card {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.cardArchived {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  opacity: 0.6;
+}
+
+/* Header: name + type badge */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+/* Hero: balance + sparkline side by side */
+.heroRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.heroLeft {
+  flex-shrink: 0;
+}
+
+.sparklineWrapper {
+  flex: 1;
+  max-width: 200px;
+  align-self: center;
+}
+
+/* Stat boxes grid — 2 columns */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-sm);
+}
+
+.statBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+}
+
+/* Credit card limit bar */
+.limitSection {
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.limitRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+/* Allowance detail rows */
+.detailRows {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+/* Date boxes for credit cards (statement close / payment due) */
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.dateBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+}
+
+/* Error/empty centered state */
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+}
+
+/* Responsive */
+@media (max-width: 48em) {
+  .card {
+    padding: var(--mantine-spacing-sm) var(--mantine-spacing-md) var(--mantine-spacing-md);
+  }
+
+  .sparklineWrapper {
+    max-width: 100px;
+  }
+}

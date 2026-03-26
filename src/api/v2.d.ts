@@ -1641,6 +1641,42 @@ export interface components {
       stabilityContext: components['schemas']['StabilityContext'];
       categoriesBreakdown: components['schemas']['AccountCategoriesBreakdown'];
       transactionsBreakdown: components['schemas']['AccountTransactionsBreakdown'];
+      /**
+       * @description Top-up amount in cents. Only present for Allowance accounts.
+       * @example 20000
+       */
+      topUpAmount?: number | null;
+      /**
+       * @description Top-up frequency. Only present for Allowance accounts.
+       * @example monthly
+       * @enum {string|null}
+       */
+      topUpCycle?: 'weekly' | 'bi-weekly' | 'monthly' | null;
+      /**
+       * @description Day of week (0–6) or day of month (1–31) for the top-up, depending on cycle. Only present for Allowance accounts.
+       * @example 1
+       */
+      topUpDay?: number | null;
+      /**
+       * @description Amount spent in the current top-up cycle in cents. Always 0 for non-Allowance accounts.
+       * @example 5000
+       */
+      spentThisCycle: number;
+      /**
+       * @description Day of month the statement closes (1–31). Only present for CreditCard accounts.
+       * @example 25
+       */
+      statementCloseDay?: number | null;
+      /**
+       * @description Day of month the payment is due (1–31). Only present for CreditCard accounts.
+       * @example 15
+       */
+      paymentDueDay?: number | null;
+      /**
+       * @description Average daily balance this period in cents. Always 0 for non-Checking accounts.
+       * @example 120000
+       */
+      avgDailyBalance: number;
     };
     CreateAccountRequest: {
       /**
