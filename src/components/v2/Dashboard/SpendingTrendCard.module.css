@@ -1,0 +1,34 @@
+.card {
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.chartWrapper {
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.averageRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--mantine-spacing-xs);
+  border-top: 1px solid var(--v2-border);
+}
+
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+}
