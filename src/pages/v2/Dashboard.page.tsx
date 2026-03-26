@@ -7,6 +7,7 @@ import {
   RecentTransactionsCard,
   SpendingTrendCard,
   TopVendorsCard,
+  VariableCategoriesCard,
 } from '@/components/v2/Dashboard';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/v2/useAccounts';
@@ -54,6 +55,7 @@ export function DashboardV2Page() {
         <RecentTransactionsCard periodId={selectedPeriodId} />
         <SpendingTrendCard periodId={selectedPeriodId} />
         <TopVendorsCard periodId={selectedPeriodId} />
+        <VariableCategoriesCard periodId={selectedPeriodId} />
       </SimpleGrid>
 
       {/* Individual account cards */}

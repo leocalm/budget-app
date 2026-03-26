@@ -1,0 +1,67 @@
+.card {
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mantine-spacing-xs);
+  margin-bottom: 6px;
+}
+
+.overallBar {
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 1fr 108px 48px 80px;
+  gap: 8px;
+  padding: 0 4px var(--mantine-spacing-xs);
+  border-bottom: 1px solid var(--v2-border);
+  margin-bottom: 4px;
+}
+
+.scrollArea {
+  max-height: 320px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 108px 48px 80px;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 4px;
+}
+
+.miniBarTrack {
+  height: 4px;
+  border-radius: 99px;
+  background-color: var(--v2-elevated, var(--v2-border));
+  overflow: hidden;
+}
+
+.miniBarFill {
+  height: 4px;
+  border-radius: 99px;
+  max-width: 100%;
+}
+
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+}

@@ -3286,6 +3286,16 @@ components:
             - inactive
           description: Category status
           example: active
+        behavior:
+          type:
+            - string
+            - 'null'
+          enum:
+            - fixed
+            - variable
+            - subscription
+          description: Category budget behavior
+          example: variable
     CategoryResponse:
       allOf:
         - $ref: '#/components/schemas/CategoryBase'

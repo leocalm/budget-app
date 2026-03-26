@@ -1952,6 +1952,12 @@ export interface components {
        * @enum {string}
        */
       status: 'active' | 'inactive';
+      /**
+       * @description Category budget behavior
+       * @example variable
+       * @enum {string|null}
+       */
+      behavior?: 'fixed' | 'variable' | 'subscription' | null;
     };
     CategoryResponse: components['schemas']['CategoryBase'] & {
       /**
