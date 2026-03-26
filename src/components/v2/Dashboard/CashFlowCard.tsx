@@ -1,15 +1,34 @@
 import { Button, Progress, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
-import { useDashboardCashFlow } from '@/hooks/v2/useDashboard';
 import { useV2Theme } from '@/theme/v2';
 import classes from './CashFlowCard.module.css';
+
+interface CashFlowData {
+  inflows: number;
+  outflows: number;
+  net: number;
+}
 
 interface CashFlowCardProps {
   periodId: string;
 }
 
+/**
+ * Hook placeholder — will be replaced with useDashboardCashFlow when the API is ready.
+ * For now, returns undefined so the card shows loading state.
+ */
+function useCashFlowData(_periodId: string): {
+  data: CashFlowData | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+} {
+  // TODO: Replace with real hook when GET /dashboard/cash-flow is implemented
+  return { data: undefined, isLoading: true, isError: false, refetch: () => {} };
+}
+
 export function CashFlowCard({ periodId }: CashFlowCardProps) {
-  const { data, isLoading, isError, refetch } = useDashboardCashFlow(periodId);
+  const { data, isLoading, isError, refetch } = useCashFlowData(periodId);
   const { accents } = useV2Theme();
 
   if (isLoading) {
@@ -18,7 +37,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
 
   if (isError) {
     return (
-      <div className={classes.card} data-testid="cash-flow-card-error">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Cash Flow
@@ -36,7 +55,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
 
   if (!data || (data.inflows === 0 && data.outflows === 0)) {
     return (
-      <div className={classes.card} data-testid="cash-flow-card-empty">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Cash Flow
@@ -72,7 +91,6 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
             radius="xl"
             color={accents.primary}
             className={classes.bar}
-            aria-label={`Inflows: ${inflowPct}% of period maximum`}
           />
           <Text
             fz="sm"
@@ -93,7 +111,6 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
             radius="xl"
             color={accents.secondary}
             className={classes.bar}
-            aria-label={`Outflows: ${outflowPct}% of period maximum`}
           />
           <Text
             fz="sm"

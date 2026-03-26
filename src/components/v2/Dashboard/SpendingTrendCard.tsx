@@ -1,20 +1,34 @@
 import { BarChart } from '@mantine/charts';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
-import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
-import { useDashboardSpendingTrend } from '@/hooks/v2/useDashboard';
 import { useV2Theme } from '@/theme/v2';
-import { convertCentsToDisplay, formatCurrencyValue } from '@/utils/currency';
 import classes from './SpendingTrendCard.module.css';
+
+interface SpendingTrendData {
+  periods: { periodId: string; periodName: string; totalSpent: number }[];
+  periodAverage: number;
+}
 
 interface SpendingTrendCardProps {
   periodId: string;
 }
 
+/**
+ * Hook placeholder — will be replaced with useDashboardSpendingTrend.
+ */
+function useSpendingTrendData(_periodId: string): {
+  data: SpendingTrendData | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+} {
+  // TODO: Replace with real hook when GET /dashboard/spending-trend is implemented
+  return { data: undefined, isLoading: true, isError: false, refetch: () => {} };
+}
+
 export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
-  const { data, isLoading, isError, refetch } = useDashboardSpendingTrend(periodId);
+  const { data, isLoading, isError, refetch } = useSpendingTrendData(periodId);
   const { accents } = useV2Theme();
-  const displayCurrency = useDisplayCurrency();
 
   if (isLoading) {
     return <SpendingTrendCardSkeleton />;
@@ -22,7 +36,7 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
 
   if (isError) {
     return (
-      <div className={classes.card} data-testid="spending-trend-card-error">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Spending Trend
@@ -38,9 +52,9 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
     );
   }
 
-  if (!data || !data.periods || data.periods.length < 2) {
+  if (!data || data.periods.length < 2) {
     return (
-      <div className={classes.card} data-testid="spending-trend-card-empty">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Spending Trend
@@ -53,17 +67,10 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
     );
   }
 
-  const decimalPlaces = displayCurrency.decimalPlaces ?? 2;
-
-  // Convert cents to display units using the currency's actual decimal places
   const chartData = data.periods.map((p) => ({
     period: p.periodName,
-    spent: convertCentsToDisplay(p.totalSpent, decimalPlaces),
+    spent: p.totalSpent / 100, // Convert cents to display units for chart
   }));
-
-  // Tooltip formatter: show the symbol + formatted value
-  const valueFormatter = (value: number) =>
-    `${displayCurrency.symbol}\u00a0${formatCurrencyValue(Math.round(value * 10 ** decimalPlaces), decimalPlaces, undefined, { clean: true })}`;
 
   return (
     <div className={classes.card} data-testid="spending-trend-card">
@@ -76,11 +83,7 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
         </Text>
       </div>
 
-      <div
-        className={classes.chartWrapper}
-        role="img"
-        aria-label={`Bar chart showing spending over the last ${data.periods.length} budget periods`}
-      >
+      <div className={classes.chartWrapper}>
         <BarChart
           h={160}
           data={chartData}
@@ -93,7 +96,6 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
           withBarValueLabel={false}
           tickLine="none"
           barProps={{ radius: [4, 4, 0, 0] }}
-          valueFormatter={valueFormatter}
         />
       </div>
 

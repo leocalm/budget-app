@@ -1,14 +1,33 @@
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
-import { useDashboardTopVendors } from '@/hooks/v2/useDashboard';
 import classes from './TopVendorsCard.module.css';
+
+interface TopVendorItem {
+  vendorId: string;
+  vendorName: string;
+  totalSpent: number;
+  transactionCount: number;
+}
 
 interface TopVendorsCardProps {
   periodId: string;
 }
 
+/**
+ * Hook placeholder — will be replaced with useDashboardTopVendors.
+ */
+function useTopVendorsData(_periodId: string): {
+  data: TopVendorItem[] | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+} {
+  // TODO: Replace with real hook when GET /dashboard/top-vendors is implemented
+  return { data: undefined, isLoading: true, isError: false, refetch: () => {} };
+}
+
 export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
-  const { data, isLoading, isError, refetch } = useDashboardTopVendors(periodId);
+  const { data, isLoading, isError, refetch } = useTopVendorsData(periodId);
 
   if (isLoading) {
     return <TopVendorsCardSkeleton />;
@@ -16,7 +35,7 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
 
   if (isError) {
     return (
-      <div className={classes.card} data-testid="top-vendors-card-error">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Top Vendors
@@ -34,7 +53,7 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
 
   if (!data || data.length === 0) {
     return (
-      <div className={classes.card} data-testid="top-vendors-card-empty">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Top Vendors
@@ -56,17 +75,8 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
       </div>
 
       <div className={classes.vendorList}>
-        {data.map((vendor, index) => (
+        {data.map((vendor) => (
           <div key={vendor.vendorId} className={classes.vendorRow}>
-            <Text
-              fz="xs"
-              fw={700}
-              c="dimmed"
-              className={classes.vendorRank}
-              aria-label={`Rank ${index + 1}`}
-            >
-              {index + 1}
-            </Text>
             <div className={classes.vendorLeft}>
               <Text fz="sm" fw={500} truncate>
                 {vendor.vendorName}

@@ -20,7 +20,7 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
 
   if (isError) {
     return (
-      <div className={classes.card} data-testid="recent-transactions-card-error">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Recent Transactions
@@ -40,7 +40,7 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
 
   if (transactions.length === 0) {
     return (
-      <div className={classes.card} data-testid="recent-transactions-card-empty">
+      <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
             Recent Transactions
@@ -78,7 +78,7 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
             </div>
             <div className={classes.txRight}>
               <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
-                {tx.category.type === 'expense' ? '-' : tx.category.type === 'income' ? '+' : ''}
+                {tx.transactionType === 'regular' ? '-' : ''}
                 <CurrencyValue cents={tx.amount} />
               </Text>
               <Text fz="xs" c="dimmed">

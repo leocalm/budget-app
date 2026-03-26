@@ -26,13 +26,6 @@
   border-bottom: none;
 }
 
-.vendorRank {
-  width: 20px;
-  flex-shrink: 0;
-  text-align: center;
-  margin-right: var(--mantine-spacing-xs);
-}
-
 .vendorLeft {
   display: flex;
   flex-direction: column;
