@@ -39,7 +39,13 @@ export const shared = {
 // Per-theme accent + data colors
 // ---------------------------------------------------------------------------
 
-export type ColorTheme = 'moonlit' | 'nebula' | 'frost' | 'twilight';
+export type ColorTheme =
+  | 'nebula'
+  | 'sunrise'
+  | 'sage_stone'
+  | 'deep_ocean'
+  | 'warm_rose'
+  | 'moonlit';
 
 export const DEFAULT_COLOR_THEME: ColorTheme = 'nebula';
 
@@ -123,48 +129,65 @@ function buildDataPalette(accents: string[]): string[] {
 }
 
 export const themes: Record<ColorTheme, ThemeAccents> = {
+  nebula: {
+    label: 'Nebula',
+    description: 'Lavender + Rose',
+    primary: shared.lavender,
+    secondary: '#C48BA0',
+    tertiary: '#7CA8C4',
+    destructive: shared.destructive,
+    gradient: [shared.lavender, '#C48BA0'],
+    data: buildDataPalette([shared.lavender, '#C48BA0', '#7CA8C4']),
+  },
+  sunrise: {
+    label: 'Sunrise',
+    description: 'Blue + Amber',
+    primary: '#4A7CFF',
+    secondary: '#F0A25C',
+    tertiary: '#9B8AE0',
+    destructive: shared.destructive,
+    gradient: ['#4A7CFF', '#F0A25C'],
+    data: buildDataPalette(['#4A7CFF', '#F0A25C', '#9B8AE0']),
+  },
+  sage_stone: {
+    label: 'Sage & Stone',
+    description: 'Green + Sandstone',
+    primary: '#6B8F71',
+    secondary: '#B89F7E',
+    tertiary: '#7A9EBA',
+    destructive: shared.destructive,
+    gradient: ['#6B8F71', '#B89F7E'],
+    data: buildDataPalette(['#6B8F71', '#B89F7E', '#7A9EBA']),
+  },
+  deep_ocean: {
+    label: 'Deep Ocean',
+    description: 'Teal + Sand',
+    primary: '#3D8B9E',
+    secondary: '#D4A574',
+    tertiary: '#8E7EBD',
+    destructive: shared.destructive,
+    gradient: ['#3D8B9E', '#D4A574'],
+    data: buildDataPalette(['#3D8B9E', '#D4A574', '#8E7EBD']),
+  },
+  warm_rose: {
+    label: 'Warm Rose',
+    description: 'Rose + Linen',
+    primary: '#B07592',
+    secondary: '#C4A882',
+    tertiary: '#7C9EB8',
+    destructive: shared.destructive,
+    gradient: ['#B07592', '#C4A882'],
+    data: buildDataPalette(['#B07592', '#C4A882', '#7C9EB8']),
+  },
   moonlit: {
     label: 'Moonlit',
-    description: 'Lavender + Cool Silver — restrained, elegant, purely cool-toned',
+    description: 'Lavender + Silver',
     primary: shared.lavender,
     secondary: '#A8B4C4',
     tertiary: '#7AADCF',
     destructive: shared.destructive,
     gradient: [shared.lavender, '#A8B4C4'],
     data: buildDataPalette([shared.lavender, '#A8B4C4', '#7AADCF']),
-  },
-  nebula: {
-    label: 'Nebula',
-    description: 'Lavender + Dusty Rose — warm-cool duality, intimate',
-    primary: shared.lavender,
-    secondary: '#C48BA0',
-    tertiary: '#7CA8C4',
-    quaternary: '#9AA0CC',
-    destructive: shared.destructive,
-    gradient: [shared.lavender, '#C48BA0'],
-    data: buildDataPalette([shared.lavender, '#C48BA0', '#7CA8C4', '#9AA0CC']),
-  },
-  frost: {
-    label: 'Frost',
-    description: 'Lavender + Ice Blue — crisp, strong data readability',
-    primary: shared.lavender,
-    secondary: '#6EA4C0',
-    tertiary: '#A88CB4',
-    quaternary: '#7C98B4',
-    destructive: shared.destructive,
-    gradient: [shared.lavender, '#6EA4C0'],
-    data: buildDataPalette([shared.lavender, '#6EA4C0', '#A88CB4', '#7C98B4']),
-  },
-  twilight: {
-    label: 'Twilight',
-    description: 'Deep Lavender + Muted Teal — maximum calm',
-    primary: shared.lavender,
-    secondary: '#6B9EA8',
-    tertiary: '#9C82B0',
-    quaternary: '#8090B8',
-    destructive: shared.destructive,
-    gradient: [shared.lavender, '#6B9EA8'],
-    data: buildDataPalette([shared.lavender, '#6B9EA8', '#9C82B0', '#8090B8']),
   },
 };
 

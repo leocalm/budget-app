@@ -1650,6 +1650,64 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /settings/import/data:
+    post:
+      tags:
+        - Settings
+      summary: Import all data from JSON backup
+      operationId: importData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Data backup in the same format as the export endpoint
+              properties:
+                accounts:
+                  type: array
+                  items:
+                    type: object
+                  description: List of account objects to import
+                categories:
+                  type: array
+                  items:
+                    type: object
+                  description: List of category objects to import
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                  description: List of transaction objects to import
+      responses:
+        '200':
+          description: Import completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imported:
+                    type: object
+                    properties:
+                      accounts:
+                        type: integer
+                        description: Number of accounts imported
+                        example: 3
+                      categories:
+                        type: integer
+                        description: Number of categories imported
+                        example: 10
+                      transactions:
+                        type: integer
+                        description: Number of transactions imported
+                        example: 150
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /settings/sessions/{id}:
     delete:
       tags:
@@ -4152,6 +4210,7 @@ components:
       required:
         - name
         - currency
+        - avatar
       properties:
         name:
           type: string
@@ -4159,11 +4218,16 @@ components:
         currency:
           type: string
           example: EUR
+        avatar:
+          type: string
+          description: Emoji used as the user's avatar
+          example: 🐷
     UpdateProfileRequest:
       type: object
       required:
         - name
         - currency
+        - avatar
       properties:
         name:
           type: string
@@ -4171,6 +4235,10 @@ components:
         currency:
           type: string
           example: EUR
+        avatar:
+          type: string
+          description: Emoji used as the user's avatar
+          example: 🐷
     PreferencesResponse:
       type: object
       required:
@@ -4178,6 +4246,9 @@ components:
         - dateFormat
         - numberFormat
         - language
+        - compactMode
+        - dashboardLayout
+        - colorTheme
       properties:
         theme:
           $ref: '#/components/schemas/Theme'
@@ -4189,6 +4260,14 @@ components:
           type: string
           description: BCP 47 language tag
           example: en
+        compactMode:
+          type: boolean
+          description: Whether compact mode is enabled
+          example: false
+        dashboardLayout:
+          $ref: '#/components/schemas/DashboardLayout'
+        colorTheme:
+          $ref: '#/components/schemas/ColorTheme'
     UpdatePreferencesRequest:
       type: object
       required:
@@ -4207,6 +4286,15 @@ components:
           type: string
           description: BCP 47 language tag
           example: en
+        compactMode:
+          type: boolean
+          description: Whether compact mode is enabled
+          default: false
+          example: false
+        dashboardLayout:
+          $ref: '#/components/schemas/DashboardLayout'
+        colorTheme:
+          $ref: '#/components/schemas/ColorTheme'
     Theme:
       type: string
       enum:
@@ -4855,3 +4943,29 @@ components:
         code:
           type: string
           example: UNAUTHORIZED
+    DashboardLayout:
+      type: object
+      properties:
+        widgetOrder:
+          type: array
+          items:
+            type: string
+          example:
+            - balance
+            - spending
+            - budget
+        hiddenWidgets:
+          type: array
+          items:
+            type: string
+          example: []
+    ColorTheme:
+      type: string
+      enum:
+        - nebula
+        - sunrise
+        - sage_stone
+        - deep_ocean
+        - warm_rose
+        - moonlit
+      example: nebula

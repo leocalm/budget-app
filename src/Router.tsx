@@ -139,6 +139,11 @@ const DashboardV2Page = lazy(() =>
     default: module.DashboardV2Page,
   }))
 );
+const SettingsV2Page = lazy(() =>
+  import('./pages/v2/Settings.page').then((module) => ({
+    default: module.SettingsV2Page,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -230,7 +235,7 @@ export function Router() {
         { path: 'vendors', element: withPageLoader(<PlaceholderPage />) },
         { path: 'subscriptions', element: withPageLoader(<PlaceholderPage />) },
         { path: 'overlays', element: withPageLoader(<PlaceholderPage />) },
-        { path: 'settings', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'settings', element: withPageLoader(<SettingsV2Page />) },
         { path: '*', element: withPageLoader(<NotFoundPage />) },
       ],
     },
