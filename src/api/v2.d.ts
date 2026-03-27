@@ -949,6 +949,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/settings/import/data': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Import all data from JSON backup */
+    post: operations['importData'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/settings/sessions/{id}': {
     parameters: {
       query?: never;
@@ -2555,12 +2572,22 @@ export interface components {
       name: string;
       /** @example EUR */
       currency: string;
+      /**
+       * @description Emoji used as the user's avatar
+       * @example 🐷
+       */
+      avatar: string;
     };
     UpdateProfileRequest: {
       /** @example Leonardo */
       name: string;
       /** @example EUR */
       currency: string;
+      /**
+       * @description Emoji used as the user's avatar
+       * @example 🐷
+       */
+      avatar: string;
     };
     PreferencesResponse: {
       theme: components['schemas']['Theme'];
@@ -2571,6 +2598,13 @@ export interface components {
        * @example en
        */
       language: string;
+      /**
+       * @description Whether compact mode is enabled
+       * @example false
+       */
+      compactMode: boolean;
+      dashboardLayout: components['schemas']['DashboardLayout'];
+      colorTheme: components['schemas']['ColorTheme'];
     };
     UpdatePreferencesRequest: {
       theme: components['schemas']['Theme'];
@@ -2581,6 +2615,14 @@ export interface components {
        * @example en
        */
       language: string;
+      /**
+       * @description Whether compact mode is enabled
+       * @default false
+       * @example false
+       */
+      compactMode: boolean;
+      dashboardLayout?: components['schemas']['DashboardLayout'];
+      colorTheme?: components['schemas']['ColorTheme'];
     };
     /**
      * @example dark
@@ -2991,6 +3033,25 @@ export interface components {
       /** @example UNAUTHORIZED */
       code?: string;
     };
+    DashboardLayout: {
+      /**
+       * @example [
+       *       "balance",
+       *       "spending",
+       *       "budget"
+       *     ]
+       */
+      widgetOrder?: string[];
+      /** @example [] */
+      hiddenWidgets?: string[];
+      /** @description Account IDs to display as individual cards on the dashboard. If omitted, all active accounts are shown. */
+      visibleAccountIds?: string[];
+    };
+    /**
+     * @example nebula
+     * @enum {string}
+     */
+    ColorTheme: 'nebula' | 'sunrise' | 'sage_stone' | 'deep_ocean' | 'warm_rose' | 'moonlit';
   };
   responses: {
     /** @description Unauthorized */
@@ -4980,6 +5041,58 @@ export interface operations {
           'application/json': Record<string, never>;
         };
       };
+      401: components['responses']['Unauthorized'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  importData: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @description List of account objects to import */
+          accounts?: Record<string, never>[];
+          /** @description List of category objects to import */
+          categories?: Record<string, never>[];
+          /** @description List of transaction objects to import */
+          transactions?: Record<string, never>[];
+        };
+      };
+    };
+    responses: {
+      /** @description Import completed successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            imported?: {
+              /**
+               * @description Number of accounts imported
+               * @example 3
+               */
+              accounts?: number;
+              /**
+               * @description Number of categories imported
+               * @example 10
+               */
+              categories?: number;
+              /**
+               * @description Number of transactions imported
+               * @example 150
+               */
+              transactions?: number;
+            };
+          };
+        };
+      };
+      400: components['responses']['BadRequest'];
       401: components['responses']['Unauthorized'];
       500: components['responses']['InternalServerError'];
     };

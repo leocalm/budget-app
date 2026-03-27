@@ -16,7 +16,7 @@ import { DEFAULT_COLOR_THEME, surfaces, themes, type ColorTheme } from './tokens
 type ColorMode = 'light' | 'dark';
 
 interface ThemeContextValue {
-  /** The active color theme (moonlit/nebula/frost/twilight) */
+  /** The active color theme */
   colorTheme: ColorTheme;
   /** Switch color theme — persists to localStorage */
   setColorTheme: (theme: ColorTheme) => void;
@@ -41,7 +41,12 @@ function readStoredTheme(): ColorTheme {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (
       stored &&
-      (stored === 'moonlit' || stored === 'nebula' || stored === 'frost' || stored === 'twilight')
+      (stored === 'nebula' ||
+        stored === 'sunrise' ||
+        stored === 'sage_stone' ||
+        stored === 'deep_ocean' ||
+        stored === 'warm_rose' ||
+        stored === 'moonlit')
     ) {
       return stored;
     }
