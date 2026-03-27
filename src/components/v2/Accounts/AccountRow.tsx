@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ActionIcon, Badge, Menu, Progress, Text } from '@mantine/core';
+import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useAccountBalanceHistory } from '@/hooks/v2/useAccounts';
@@ -162,56 +162,4 @@ function AllowanceExtra({ account }: { account: AccountSummary }) {
       )}
     </div>
   );
-}
-
-// Credit card row with limit bar — used as a wrapper around AccountRow content
-interface CreditCardExtraProps {
-  currentBalance: number;
-  spendLimit: number | null;
-  statementCloseDay?: number | null;
-  typeColor: string;
-}
-
-export function CreditCardExtra({
-  currentBalance,
-  spendLimit,
-  statementCloseDay,
-  typeColor,
-}: CreditCardExtraProps) {
-  const limit = spendLimit ?? 0;
-  const hasLimit = limit > 0;
-  const available = hasLimit ? Math.max(limit - currentBalance, 0) : 0;
-  const usedPct = hasLimit ? Math.min(Math.round((currentBalance / limit) * 100), 100) : 0;
-
-  if (!hasLimit && statementCloseDay == null) {
-    return null;
-  }
-
-  return (
-    <div className={classes.creditCardExtra}>
-      {hasLimit && (
-        <div className={classes.creditLimitInfo}>
-          <Text fz="xs" c="dimmed" mb={2}>
-            <CurrencyValue cents={available} /> available of <CurrencyValue cents={limit} />
-          </Text>
-          <Progress value={usedPct} size={4} radius="xl" color={typeColor} />
-        </div>
-      )}
-      {statementCloseDay != null && (
-        <Text fz="xs" c="dimmed" ff="var(--mantine-font-family-monospace)">
-          Statement closes {getOrdinalDay(statementCloseDay)}
-        </Text>
-      )}
-    </div>
-  );
-}
-
-function getOrdinalDay(day: number): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const lastDay = new Date(year, month + 1, 0).getDate();
-  const clamped = Math.min(day, lastDay);
-  const date = new Date(year, month, clamped);
-  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }

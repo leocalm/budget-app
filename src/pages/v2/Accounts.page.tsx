@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -7,6 +7,7 @@ import { AccountFormDrawer, AccountRow, AccountsNetPosition } from '@/components
 import classes from '@/components/v2/Accounts/Accounts.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccountsSummary, useArchiveAccount, useUnarchiveAccount } from '@/hooks/v2/useAccounts';
+import { toast } from '@/lib/toast';
 
 type AccountSummary = components['schemas']['AccountSummaryResponse'];
 type AccountType = AccountSummary['type'];
@@ -75,11 +76,21 @@ export function AccountsV2Page() {
   };
 
   const handleArchive = async (id: string) => {
-    await archiveMutation.mutateAsync(id);
+    try {
+      await archiveMutation.mutateAsync(id);
+      toast.success({ message: 'Account archived' });
+    } catch {
+      toast.error({ message: 'Failed to archive account' });
+    }
   };
 
   const handleUnarchive = async (id: string) => {
-    await unarchiveMutation.mutateAsync(id);
+    try {
+      await unarchiveMutation.mutateAsync(id);
+      toast.success({ message: 'Account unarchived' });
+    } catch {
+      toast.error({ message: 'Failed to unarchive account' });
+    }
   };
 
   if (!selectedPeriodId) {
@@ -223,15 +234,14 @@ export function AccountsV2Page() {
       {/* Archived */}
       {archivedAccounts.length > 0 && (
         <Stack gap="sm">
-          <Text
-            fz="sm"
-            fw={600}
-            c="dimmed"
+          <UnstyledButton
             className={classes.archivedToggle}
             onClick={() => setShowArchived((v) => !v)}
           >
-            {showArchived ? '▾' : '▸'} Archived accounts ({archivedAccounts.length})
-          </Text>
+            <Text fz="sm" fw={600} c="dimmed">
+              {showArchived ? '▾' : '▸'} Archived accounts ({archivedAccounts.length})
+            </Text>
+          </UnstyledButton>
           {showArchived &&
             archivedAccounts.map((acct) => (
               <AccountRow

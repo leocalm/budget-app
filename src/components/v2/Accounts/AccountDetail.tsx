@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -10,6 +10,7 @@ import {
   useArchiveAccount,
   useUnarchiveAccount,
 } from '@/hooks/v2/useAccounts';
+import { toast } from '@/lib/toast';
 import { useV2Theme } from '@/theme/v2';
 import type { AccountExt } from '../Dashboard/AccountCard.types';
 import { formatDate } from '../Dashboard/AccountCardSections';
@@ -38,7 +39,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   if (isError) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor fz="sm" c="var(--v2-primary)" onClick={() => navigate('/v2/accounts')}>
+        <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
           ← Accounts
         </Anchor>
         <div className={classes.centeredState}>
@@ -59,7 +60,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   if (!data) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor fz="sm" c="var(--v2-primary)" onClick={() => navigate('/v2/accounts')}>
+        <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
           ← Accounts
         </Anchor>
         <div className={classes.centeredState}>
@@ -77,11 +78,21 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   const changePrefix = acct.netChangeThisPeriod > 0 ? '+' : acct.netChangeThisPeriod < 0 ? '-' : '';
 
   const handleArchive = async () => {
-    await archiveMutation.mutateAsync(accountId);
+    try {
+      await archiveMutation.mutateAsync(accountId);
+      toast.success({ message: `${acct.name} archived` });
+    } catch {
+      toast.error({ message: 'Failed to archive account' });
+    }
   };
 
   const handleUnarchive = async () => {
-    await unarchiveMutation.mutateAsync(accountId);
+    try {
+      await unarchiveMutation.mutateAsync(accountId);
+      toast.success({ message: `${acct.name} unarchived` });
+    } catch {
+      toast.error({ message: 'Failed to unarchive account' });
+    }
   };
 
   return (

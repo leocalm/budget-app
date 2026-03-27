@@ -14,6 +14,7 @@ import {
 import type { components } from '@/api/v2';
 import { useAccount, useCreateAccount, useUpdateAccount } from '@/hooks/v2/useAccounts';
 import { useCurrencies } from '@/hooks/v2/useCurrencies';
+import { toast } from '@/lib/toast';
 import classes from './Accounts.module.css';
 
 type AccountType = 'Checking' | 'Savings' | 'CreditCard' | 'Allowance' | 'Wallet';
@@ -62,6 +63,11 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     () => (currencies ?? []).map((c) => ({ value: c.id, label: `${c.symbol} ${c.name}` })),
     [currencies]
   );
+
+  const selectedCurrencySymbol = useMemo(() => {
+    const found = (currencies ?? []).find((c) => c.id === currencyId);
+    return found?.symbol ?? '';
+  }, [currencies, currencyId]);
 
   // Set default currency when list loads
   useEffect(() => {
@@ -117,13 +123,18 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
       }
     }
 
-    if (isEdit && editAccountId) {
-      await updateMutation.mutateAsync({ id: editAccountId, body });
-    } else {
-      await createMutation.mutateAsync(body);
+    try {
+      if (isEdit && editAccountId) {
+        await updateMutation.mutateAsync({ id: editAccountId, body });
+        toast.success({ message: 'Account updated' });
+      } else {
+        await createMutation.mutateAsync(body);
+        toast.success({ message: 'Account created' });
+      }
+      onClose();
+    } catch {
+      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} account` });
     }
-
-    onClose();
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
@@ -200,7 +211,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
           onChange={setInitialBalance}
           decimalScale={2}
           fixedDecimalScale
-          prefix="$"
+          prefix={selectedCurrencySymbol ? `${selectedCurrencySymbol} ` : ''}
           allowNegative
         />
 
@@ -224,7 +235,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
             onChange={setSpendLimit}
             decimalScale={2}
             fixedDecimalScale
-            prefix="$"
+            prefix={selectedCurrencySymbol ? `${selectedCurrencySymbol} ` : ''}
             min={0}
           />
         )}
@@ -261,7 +272,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
               onChange={setTopUpAmount}
               decimalScale={2}
               fixedDecimalScale
-              prefix="$"
+              prefix={selectedCurrencySymbol ? `${selectedCurrencySymbol} ` : ''}
               min={0}
             />
             <Select
