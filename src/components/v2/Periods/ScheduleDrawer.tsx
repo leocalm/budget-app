@@ -99,43 +99,20 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
   const patternPreview = useMemo(() => {
     const now = new Date();
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    const shortMonths = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
+    const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const startDate = new Date(now.getFullYear(), now.getMonth(), Number(startDay) || 1);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + Number(periodDuration) - 1);
+
     return namePattern
-      .replace('{MONTH}', monthNames[now.getMonth()])
-      .replace('{MONTH_SHORT}', shortMonths[now.getMonth()])
-      .replace('{YEAR}', String(now.getFullYear()))
-      .replace('{YEAR_SHORT}', String(now.getFullYear()).slice(-2))
-      .replace('{START_DATE}', `${shortMonths[now.getMonth()]} 1`)
-      .replace('{END_DATE}', `${shortMonths[now.getMonth()]} 30`)
+      .replace('{MONTH}', startDate.toLocaleDateString('en-US', { month: 'long' }))
+      .replace('{MONTH_SHORT}', startDate.toLocaleDateString('en-US', { month: 'short' }))
+      .replace('{YEAR}', String(startDate.getFullYear()))
+      .replace('{YEAR_SHORT}', String(startDate.getFullYear()).slice(-2))
+      .replace('{START_DATE}', fmt(startDate))
+      .replace('{END_DATE}', fmt(endDate))
       .replace('{PERIOD_NUMBER}', '1');
-  }, [namePattern]);
+  }, [namePattern, startDay, periodDuration]);
 
   const handleSubmit = async () => {
     try {
@@ -211,7 +188,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="xs">
                 Recurrence Method
               </Text>
-              <Stack gap="xs">
+              <Stack gap="xs" role="radiogroup" aria-label="Recurrence method">
                 <RecurrenceOption
                   value="dayOfMonth"
                   label="Day of month"
