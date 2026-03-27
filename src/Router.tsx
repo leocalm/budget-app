@@ -144,6 +144,16 @@ const SettingsV2Page = lazy(() =>
     default: module.SettingsV2Page,
   }))
 );
+const AccountsV2Page = lazy(() =>
+  import('./pages/v2/Accounts.page').then((module) => ({
+    default: module.AccountsV2Page,
+  }))
+);
+const AccountDetailV2Page = lazy(() =>
+  import('./pages/v2/AccountDetail.page').then((module) => ({
+    default: module.AccountDetailV2Page,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -228,7 +238,8 @@ export function Router() {
         { index: true, element: <Navigate to="/v2/dashboard" replace /> },
         { path: 'dashboard', element: withPageLoader(<DashboardV2Page />) },
         { path: 'transactions', element: withPageLoader(<PlaceholderPage />) },
-        { path: 'accounts', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'accounts', element: withPageLoader(<AccountsV2Page />) },
+        { path: 'accounts/:id', element: withPageLoader(<AccountDetailV2Page />) },
         { path: 'categories', element: withPageLoader(<PlaceholderPage />) },
         { path: 'targets', element: withPageLoader(<PlaceholderPage />) },
         { path: 'periods', element: withPageLoader(<PlaceholderPage />) },

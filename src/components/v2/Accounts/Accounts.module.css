@@ -1,0 +1,354 @@
+/* ------------------------------------------------------------------ */
+/* Accounts List Page                                                 */
+/* ------------------------------------------------------------------ */
+
+/* Page header: title + subtitle on left, add button on right */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Net Position summary card */
+.netPositionCard {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.netPositionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.netPositionHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.breakdownLegend {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legendDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Breakdown bar (liquid / protected / debt) */
+.barTrack {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  gap: 2px;
+  margin-top: var(--mantine-spacing-sm);
+}
+
+.barSegment {
+  height: 100%;
+  border-radius: 3px;
+  min-width: 4px;
+}
+
+/* Account type group */
+.typeGroupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* Account Row (list item)                                            */
+/* ------------------------------------------------------------------ */
+
+.accountRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.accountRow:hover {
+  background-color: var(--v2-elevated);
+}
+
+.accountRowArchived {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+  opacity: 0.5;
+}
+
+.accountColorDot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.accountInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.accountNameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.accountMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.sparklineCell {
+  flex-shrink: 0;
+  width: 140px;
+}
+
+.balanceCell {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 90px;
+}
+
+.kebabCell {
+  flex-shrink: 0;
+}
+
+/* Credit card utilization sub-row */
+.creditCardExtra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mantine-spacing-md);
+  padding-top: var(--mantine-spacing-xs);
+  margin-top: var(--mantine-spacing-xs);
+  border-top: 1px solid var(--v2-border);
+}
+
+.creditLimitInfo {
+  flex: 1;
+}
+
+/* Allowance sub-row */
+.allowanceExtra {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  padding-top: var(--mantine-spacing-xs);
+  margin-top: var(--mantine-spacing-xs);
+  border-top: 1px solid var(--v2-border);
+  flex-wrap: wrap;
+}
+
+.allowanceItem {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+/* Archived toggle */
+.archivedToggle {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Account Detail Page                                                */
+/* ------------------------------------------------------------------ */
+
+.detailCard {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--mantine-spacing-sm);
+}
+
+.metricBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+}
+
+.detailRows {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-sm);
+}
+
+.dateBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty / Loading / Error states                                     */
+/* ------------------------------------------------------------------ */
+
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-lg);
+  background-color: var(--v2-card);
+}
+
+/* Skeleton row for loading state */
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Drawer form                                                        */
+/* ------------------------------------------------------------------ */
+
+.typeSelector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--mantine-spacing-xs);
+}
+
+.typeButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.typeButton:hover {
+  border-color: var(--v2-primary);
+}
+
+.typeButtonActive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  border: 1px solid var(--v2-primary);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 48em) {
+  .netPositionHero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .breakdownLegend {
+    gap: var(--mantine-spacing-sm);
+  }
+
+  .accountRow,
+  .accountRowArchived {
+    flex-wrap: wrap;
+    gap: var(--mantine-spacing-xs);
+    padding: var(--mantine-spacing-sm);
+  }
+
+  .sparklineCell {
+    display: none;
+  }
+
+  .balanceCell {
+    min-width: unset;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .typeSelector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .creditCardExtra {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dateGrid {
+    grid-template-columns: 1fr;
+  }
+}
