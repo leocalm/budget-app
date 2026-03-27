@@ -129,8 +129,8 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
               <div key={i} className={classes.accountRow}>
                 <Skeleton width={8} height={8} radius="xl" />
                 <Skeleton width={120} height={12} />
-                <span className={classes.accountLeader} />
                 <Skeleton width={60} height={12} />
+                <span className={classes.accountLeader} />
                 <Skeleton width={70} height={12} />
               </div>
             ))
@@ -143,10 +143,10 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
                 <Text fz="sm" fw={500} className={classes.accountName}>
                   {account.name}
                 </Text>
-                <span className={classes.accountLeader} />
                 <Text fz="xs" c="dimmed" className={classes.accountType}>
                   {ACCOUNT_TYPE_LABELS[account.type] ?? account.type}
                 </Text>
+                <span className={classes.accountLeader} />
                 <Text
                   fz="sm"
                   fw={600}
