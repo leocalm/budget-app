@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import {
   useAccountBalanceHistory,
@@ -11,7 +13,6 @@ import {
 import { useV2Theme } from '@/theme/v2';
 import type { AccountExt } from '../Dashboard/AccountCard.types';
 import { formatDate } from '../Dashboard/AccountCardSections';
-import { AccountSparkline } from '../Dashboard/AccountSparkline';
 import { getAccountTypeColor, getAccountTypeLabel } from '../Dashboard/accountTypeColors';
 import { AccountFormDrawer } from './AccountFormDrawer';
 import classes from './Accounts.module.css';
@@ -125,25 +126,26 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
         </Menu>
       </div>
 
-      {/* Hero: balance + sparkline */}
+      {/* Hero: balance */}
       <div className={classes.detailCard}>
-        <div className={classes.detailHeroRow}>
-          <div className={classes.detailHeroLeft}>
-            <Text fz={36} fw={700} lh={1} ff="var(--mantine-font-family-monospace)">
-              <CurrencyValue cents={acct.currentBalance} />
-            </Text>
-            <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)" mt={4}>
-              <span>
-                {changePrefix}
-                <CurrencyValue cents={Math.abs(acct.netChangeThisPeriod)} />
-              </span>{' '}
-              this period
-            </Text>
-          </div>
-          <div className={classes.detailSparkline}>
-            <AccountSparkline history={history ?? undefined} acctName={acct.name} />
-          </div>
-        </div>
+        <Text fz={36} fw={700} lh={1} ff="var(--mantine-font-family-monospace)">
+          <CurrencyValue cents={acct.currentBalance} />
+        </Text>
+        <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)" mt={4}>
+          <span>
+            {changePrefix}
+            <CurrencyValue cents={Math.abs(acct.netChangeThisPeriod)} />
+          </span>{' '}
+          this period
+        </Text>
+      </div>
+
+      {/* Balance history chart — own card */}
+      <div className={classes.detailCard}>
+        <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
+          Balance History
+        </Text>
+        <DetailSparkline history={history ?? undefined} acctName={acct.name} />
       </div>
 
       {/* Metrics grid */}
@@ -331,17 +333,54 @@ function DateBox({ label, day }: { label: string; day: number }) {
   );
 }
 
+type HistoryPoint = components['schemas']['AccountBalanceHistoryPoint'];
+
+function DetailSparkline({ history, acctName }: { history?: HistoryPoint[]; acctName?: string }) {
+  const { accents } = useV2Theme();
+
+  if (!history || history.length < 2) {
+    return (
+      <Text fz="sm" c="dimmed" ta="center" py="xl">
+        Not enough data to show a chart yet.
+      </Text>
+    );
+  }
+
+  const data = history.map((p) => ({ day: p.date, value: p.balance }));
+  const label = acctName ? `Balance history for ${acctName}` : 'Balance history';
+
+  return (
+    <div data-testid="detail-sparkline" role="img" aria-label={label}>
+      <AreaChart
+        h={200}
+        data={data}
+        dataKey="day"
+        series={[{ name: 'value', color: accents.tertiary }]}
+        gridAxis="none"
+        withXAxis={false}
+        withYAxis={false}
+        withDots={false}
+        withTooltip={false}
+        strokeWidth={1.5}
+        fillOpacity={0.1}
+        curveType="monotone"
+      />
+    </div>
+  );
+}
+
 function AccountDetailSkeleton() {
   return (
     <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
       <Skeleton width={80} height={14} />
       <Skeleton width={200} height={28} />
       <div className={classes.detailCard}>
-        <Stack gap="sm">
-          <Skeleton width={180} height={36} />
-          <Skeleton width={120} height={14} />
-          <Skeleton height={56} radius="md" />
-        </Stack>
+        <Skeleton width={180} height={36} mb={8} />
+        <Skeleton width={120} height={14} />
+      </div>
+      <div className={classes.detailCard}>
+        <Skeleton width={100} height={12} mb="sm" />
+        <Skeleton height={200} radius="md" />
       </div>
       <div className={classes.metricsGrid}>
         <div className={classes.metricBox}>

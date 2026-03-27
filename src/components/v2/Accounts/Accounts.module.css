@@ -200,23 +200,6 @@
   background-color: var(--v2-card);
 }
 
-.detailHeroRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--mantine-spacing-md);
-}
-
-.detailHeroLeft {
-  flex-shrink: 0;
-}
-
-.detailSparkline {
-  flex: 1;
-  max-width: 250px;
-  align-self: center;
-}
-
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -354,15 +337,6 @@
 
   .metricsGrid {
     grid-template-columns: 1fr;
-  }
-
-  .detailHeroRow {
-    flex-direction: column;
-  }
-
-  .detailSparkline {
-    max-width: 100%;
-    width: 100%;
   }
 
   .typeSelector {
