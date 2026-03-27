@@ -105,6 +105,59 @@
   }
 }
 
+/* Account list */
+.accountList {
+  margin-top: var(--mantine-spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.accountRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  padding: 5px var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-sm);
+}
+
+.accountRow:hover {
+  background-color: var(--v2-elevated);
+}
+
+.accountColor {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.accountName {
+  flex-shrink: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40%;
+}
+
+.accountLeader {
+  flex: 1;
+  align-self: flex-end;
+  /* 0.35em scales with font-size so the line sits near the text baseline */
+  margin-bottom: 0.35em;
+  border-bottom: 1px dashed var(--v2-border);
+}
+
+.accountBalance {
+  flex-shrink: 0;
+}
+
+.accountType {
+  flex-shrink: 0;
+}
+
 /* Error/empty centered state */
 .centeredState {
   display: flex;

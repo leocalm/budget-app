@@ -6,9 +6,11 @@ import { V2ThemeProvider } from '@/theme/v2';
 import { NetPositionCard } from './NetPositionCard';
 
 type NetPosition = components['schemas']['NetPosition'];
+type AccountSummaryResponse = components['schemas']['AccountSummaryResponse'];
 
 const PERIOD_ID = 'mock-period-1';
 const ENDPOINT = '*/api/v2/dashboard/net-position*';
+const ACCOUNTS_ENDPOINT = '*/api/v2/accounts/summary*';
 
 const mockPositive: NetPosition = {
   total: 1284000,
@@ -45,6 +47,57 @@ const mockEmpty: NetPosition = {
   protectedAmount: 0,
   debtAmount: 0,
 };
+
+const mockAccounts: AccountSummaryResponse[] = [
+  {
+    id: 'acc-1',
+    name: 'Main Checking',
+    color: '#4dabf7',
+    type: 'Checking',
+    status: 'active',
+    currentBalance: -75467,
+    netChangeThisPeriod: -12000,
+    nextTransfer: null,
+    balanceAfterNextTransfer: null,
+    numberOfTransactions: 14,
+  },
+  {
+    id: 'acc-2',
+    name: 'Savings Account',
+    color: '#69db7c',
+    type: 'Savings',
+    status: 'active',
+    currentBalance: 796000,
+    netChangeThisPeriod: 50000,
+    nextTransfer: null,
+    balanceAfterNextTransfer: null,
+    numberOfTransactions: 2,
+  },
+  {
+    id: 'acc-3',
+    name: 'Dinning out',
+    color: '#ffa94d',
+    type: 'Allowance',
+    status: 'active',
+    currentBalance: 21500,
+    netChangeThisPeriod: -8000,
+    nextTransfer: null,
+    balanceAfterNextTransfer: null,
+    numberOfTransactions: 5,
+  },
+  {
+    id: 'acc-4',
+    name: 'Visa',
+    color: '#f06595',
+    type: 'CreditCard',
+    status: 'active',
+    currentBalance: 66700,
+    netChangeThisPeriod: 10000,
+    nextTransfer: null,
+    balanceAfterNextTransfer: null,
+    numberOfTransactions: 8,
+  },
+];
 
 const HISTORY_ENDPOINT = '*/api/v2/dashboard/net-position-history*';
 
@@ -96,6 +149,7 @@ const mockHistory = [
 const successHandler = (data: NetPosition) => [
   http.get(ENDPOINT, () => HttpResponse.json(data)),
   http.get(HISTORY_ENDPOINT, () => HttpResponse.json(mockHistory)),
+  http.get(ACCOUNTS_ENDPOINT, () => HttpResponse.json({ data: mockAccounts, nextCursor: null })),
 ];
 
 const meta: Meta<typeof NetPositionCard> = {

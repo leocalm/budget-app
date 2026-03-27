@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Anchor, Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { useAccountsSummary } from '@/hooks/v2/useAccounts';
 import { useDashboardNetPosition, useDashboardNetPositionHistory } from '@/hooks/v2/useDashboard';
 import { useV2Theme } from '@/theme/v2';
 import { NetPositionBreakdownBar } from './NetPositionBreakdownBar';
@@ -11,10 +12,20 @@ interface NetPositionCardProps {
   periodId: string;
 }
 
+const ACCOUNT_TYPE_LABELS: Record<string, string> = {
+  Checking: 'Checking',
+  Savings: 'Savings',
+  CreditCard: 'Credit Card',
+  Allowance: 'Allowance',
+  Wallet: 'Wallet',
+};
+
 export function NetPositionCard({ periodId }: NetPositionCardProps) {
   const { data, isLoading, isError, refetch } = useDashboardNetPosition(periodId);
   const { data: history } = useDashboardNetPositionHistory(periodId);
+  const { data: accountsSummary, isLoading: isAccountsLoading } = useAccountsSummary(periodId);
   const { accents } = useV2Theme();
+  const accounts = accountsSummary?.data ?? [];
 
   if (isLoading) {
     return <NetPositionCardSkeleton />;
@@ -110,6 +121,43 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
           </div>
         </>
       )}
+
+      {/* Account list */}
+      <div className={classes.accountList}>
+        {isAccountsLoading
+          ? Array.from({ length: data.numberOfAccounts }).map((_, i) => (
+              <div key={i} className={classes.accountRow}>
+                <Skeleton width={8} height={8} radius="xl" />
+                <Skeleton width={120} height={12} />
+                <Skeleton width={60} height={12} />
+                <span className={classes.accountLeader} />
+                <Skeleton width={70} height={12} />
+              </div>
+            ))
+          : accounts.map((account) => (
+              <div key={account.id} className={classes.accountRow}>
+                <span
+                  className={classes.accountColor}
+                  style={{ backgroundColor: account.color || 'var(--v2-border)' }}
+                />
+                <Text fz="sm" fw={500} className={classes.accountName}>
+                  {account.name}
+                </Text>
+                <Text fz="xs" c="dimmed" className={classes.accountType}>
+                  {ACCOUNT_TYPE_LABELS[account.type] ?? account.type}
+                </Text>
+                <span className={classes.accountLeader} />
+                <Text
+                  fz="sm"
+                  fw={600}
+                  ff="var(--mantine-font-family-monospace)"
+                  className={classes.accountBalance}
+                >
+                  <CurrencyValue cents={account.currentBalance} />
+                </Text>
+              </div>
+            ))}
+      </div>
     </div>
   );
 }
