@@ -2845,6 +2845,8 @@ components:
         - length
         - remainingDays
         - numberOfTransactions
+        - totalSpent
+        - totalBudgeted
       properties:
         id:
           type: string
@@ -2899,6 +2901,18 @@ components:
             - past
           description: Status of the period
           example: active
+        totalSpent:
+          type: integer
+          format: int64
+          description: Total amount spent in the period, in cents
+          example: 50000
+          minimum: 0
+        totalBudgeted:
+          type: integer
+          format: int64
+          description: Total budgeted amount for the period, in cents
+          example: 100000
+          minimum: 0
       discriminator:
         propertyName: periodType
         mapping:

@@ -31,6 +31,8 @@ const activePeriod = {
   remainingDays: 14,
   numberOfTransactions: 47,
   status: 'active' as const,
+  totalSpent: 125000,
+  totalBudgeted: 300000,
   duration: { durationUnits: 31, durationUnit: 'days' as const },
 };
 
@@ -43,6 +45,8 @@ const pastPeriod = {
   remainingDays: null,
   numberOfTransactions: 32,
   status: 'past' as const,
+  totalSpent: 280000,
+  totalBudgeted: 300000,
   duration: { durationUnits: 28, durationUnit: 'days' as const },
 };
 
