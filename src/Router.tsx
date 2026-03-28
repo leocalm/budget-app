@@ -169,6 +169,21 @@ const VendorDetailV2Page = lazy(() =>
     default: module.VendorDetailV2Page,
   }))
 );
+const CategoriesV2Page = lazy(() =>
+  import('./pages/v2/Categories.page').then((module) => ({
+    default: module.CategoriesV2Page,
+  }))
+);
+const CategoryDetailV2Page = lazy(() =>
+  import('./pages/v2/CategoryDetail.page').then((module) => ({
+    default: module.CategoryDetailV2Page,
+  }))
+);
+const TargetsV2Page = lazy(() =>
+  import('./pages/v2/Targets.page').then((module) => ({
+    default: module.TargetsV2Page,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -255,8 +270,9 @@ export function Router() {
         { path: 'transactions', element: withPageLoader(<PlaceholderPage />) },
         { path: 'accounts', element: withPageLoader(<AccountsV2Page />) },
         { path: 'accounts/:id', element: withPageLoader(<AccountDetailV2Page />) },
-        { path: 'categories', element: withPageLoader(<PlaceholderPage />) },
-        { path: 'targets', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'categories', element: withPageLoader(<CategoriesV2Page />) },
+        { path: 'categories/:id', element: withPageLoader(<CategoryDetailV2Page />) },
+        { path: 'targets', element: withPageLoader(<TargetsV2Page />) },
         { path: 'periods', element: withPageLoader(<PeriodsV2Page />) },
         { path: 'vendors', element: withPageLoader(<VendorsV2Page />) },
         { path: 'vendors/:id', element: withPageLoader(<VendorDetailV2Page />) },

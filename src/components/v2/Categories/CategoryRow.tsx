@@ -1,0 +1,130 @@
+import { useNavigate } from 'react-router-dom';
+import { ActionIcon, Badge, Menu, Progress, Text } from '@mantine/core';
+import type { components } from '@/api/v2';
+import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import classes from './Categories.module.css';
+
+type CategorySummary = components['schemas']['CategorySummaryItem'];
+
+const BEHAVIOR_LABELS: Record<string, string> = {
+  fixed: 'Fixed',
+  variable: 'Variable',
+  subscription: 'Subscription',
+};
+
+interface CategoryRowProps {
+  category: CategorySummary;
+  onEdit: (id: string) => void;
+  onArchive: (id: string) => void;
+  onUnarchive: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export function CategoryRow({
+  category,
+  onEdit,
+  onArchive,
+  onUnarchive,
+  onDelete,
+}: CategoryRowProps) {
+  const navigate = useNavigate();
+  const isArchived = category.status === 'inactive';
+  const hasBudget = category.budgeted != null && category.budgeted > 0;
+  const spentPct = hasBudget
+    ? Math.min(Math.round((category.actual / category.budgeted!) * 100), 100)
+    : 0;
+
+  return (
+    <div
+      className={isArchived ? classes.categoryRowArchived : classes.categoryRow}
+      onClick={() => navigate(`/v2/categories/${category.id}`)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigate(`/v2/categories/${category.id}`);
+        }
+      }}
+    >
+      {/* Icon */}
+      <div className={classes.iconBadge} style={{ backgroundColor: `${category.color}26` }}>
+        {category.icon}
+      </div>
+
+      {/* Name + meta */}
+      <div className={classes.categoryInfo}>
+        <div className={classes.categoryNameRow}>
+          <Text fz="md" fw={600} truncate>
+            {category.name}
+          </Text>
+          {category.behavior && (
+            <Badge size="xs" variant="light" color="var(--v2-primary)">
+              {BEHAVIOR_LABELS[category.behavior] ?? category.behavior}
+            </Badge>
+          )}
+        </div>
+        <Text fz="xs" c="dimmed">
+          {category.type === 'income'
+            ? 'Incoming'
+            : category.type === 'transfer'
+              ? 'Transfer'
+              : 'Outgoing'}
+          {hasBudget && (
+            <>
+              {' '}
+              · <CurrencyValue cents={category.budgeted!} /> budgeted
+            </>
+          )}
+        </Text>
+      </div>
+
+      {/* Progress bar */}
+      {hasBudget && (
+        <div className={classes.progressCell}>
+          <Progress value={spentPct} size={6} radius="xl" color={category.color} />
+          <Text fz="xs" c="dimmed" ta="right" mt={2}>
+            {spentPct}%
+          </Text>
+        </div>
+      )}
+
+      {/* Amount */}
+      <div className={classes.amountCell}>
+        <Text fz="sm" fw={600} ff="var(--mantine-font-family-monospace)">
+          <CurrencyValue cents={category.actual} />
+        </Text>
+      </div>
+
+      {/* Kebab */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+        <Menu position="bottom-end" withinPortal>
+          <Menu.Target>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="sm"
+              aria-label={`Actions for ${category.name}`}
+            >
+              <Text fz="lg" lh={1}>
+                ⋮
+              </Text>
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            {!isArchived && <Menu.Item onClick={() => onEdit(category.id)}>Edit</Menu.Item>}
+            {isArchived ? (
+              <Menu.Item onClick={() => onUnarchive(category.id)}>Unarchive</Menu.Item>
+            ) : (
+              <Menu.Item onClick={() => onArchive(category.id)}>Archive</Menu.Item>
+            )}
+            <Menu.Item color="red" onClick={() => onDelete(category.id)}>
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </div>
+    </div>
+  );
+}

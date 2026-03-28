@@ -257,6 +257,7 @@ export function AccountsV2Page() {
       )}
 
       <AccountFormDrawer
+        key={editAccountId ?? 'create'}
         opened={drawerOpened}
         onClose={closeDrawer}
         editAccountId={editAccountId}

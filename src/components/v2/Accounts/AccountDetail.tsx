@@ -192,7 +192,12 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
       {acct.type === 'Allowance' && <AllowanceDetail acct={acct} />}
       {acct.type === 'CreditCard' && <CreditCardDetail acct={acct} />}
 
-      <AccountFormDrawer opened={drawerOpened} onClose={closeDrawer} editAccountId={accountId} />
+      <AccountFormDrawer
+        key={accountId}
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        editAccountId={accountId}
+      />
     </Stack>
   );
 }

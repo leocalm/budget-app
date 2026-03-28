@@ -105,6 +105,22 @@ export function useDeleteCategory() {
   });
 }
 
+export function useCategoryDetail(id: string, periodId: string) {
+  return useQuery({
+    queryKey: v2QueryKeys.categories.detail(id, periodId),
+    queryFn: async () => {
+      const { data, error } = await apiClient.GET('/categories/{id}/detail', {
+        params: { path: { id }, query: { periodId } },
+      });
+      if (error) {
+        throw error;
+      }
+      return data;
+    },
+    enabled: Boolean(id) && Boolean(periodId),
+  });
+}
+
 export function useArchiveCategory() {
   const queryClient = useQueryClient();
   return useMutation({

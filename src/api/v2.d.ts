@@ -633,6 +633,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/categories/{id}/detail': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get category detail for a period */
+    get: operations['getCategoryDetail'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/categories/{id}/archive': {
     parameters: {
       query?: never;
@@ -2418,6 +2435,12 @@ export interface components {
        */
       description?: string | null;
       /**
+       * @description Category budget behavior
+       * @example variable
+       * @enum {string|null}
+       */
+      behavior?: 'fixed' | 'variable' | 'subscription' | null;
+      /**
        * Format: uuid
        * @description Parent category ID
        * @example 123e4567-e89b-12d3-a456-426655440000
@@ -2425,6 +2448,85 @@ export interface components {
       parentId?: string | null;
     };
     UpdateCategoryRequest: components['schemas']['CreateCategoryRequest'];
+    CategoryTrendItem: {
+      /**
+       * Format: uuid
+       * @description Period ID
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      periodId: string;
+      /**
+       * @description Period name
+       * @example March 2026
+       */
+      periodName: string;
+      /**
+       * Format: int64
+       * @description Total spend in cents for this period
+       * @example 12000
+       */
+      totalSpend: number;
+    };
+    CategoryTransactionItem: {
+      /**
+       * Format: uuid
+       * @description Transaction ID
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      id: string;
+      /**
+       * Format: date
+       * @description Transaction date
+       * @example 2026-03-15
+       */
+      date: string;
+      /**
+       * Format: int64
+       * @description Transaction amount in cents
+       * @example 2500
+       */
+      amount: number;
+      /**
+       * @description Transaction description
+       * @example Weekly groceries
+       */
+      description: string;
+      /**
+       * Format: uuid
+       * @description Vendor ID
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      vendorId?: string | null;
+      /**
+       * @description Vendor name
+       * @example Whole Foods
+       */
+      vendorName?: string | null;
+    };
+    CategoryDetailResponse: components['schemas']['CategoryResponse'] & {
+      /**
+       * Format: int64
+       * @description Total spend in cents for the requested period
+       * @example 12000
+       */
+      periodSpend: number;
+      /**
+       * Format: int64
+       * @description Number of transactions in the requested period
+       * @example 5
+       */
+      transactionCount: number;
+      /**
+       * Format: int64
+       * @description Budgeted amount in cents (null if no target set)
+       * @example 15000
+       */
+      budgeted: number | null;
+      /** @description Spending trend across the last 6 periods */
+      trend: components['schemas']['CategoryTrendItem'][];
+      /** @description Recent transactions in this category for the period */
+      recentTransactions: components['schemas']['CategoryTransactionItem'][];
+    };
     /**
      * @description Target status
      * @example active
@@ -4687,6 +4789,36 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  getCategoryDetail: {
+    parameters: {
+      query: {
+        /** @description The ID of the period */
+        periodId: components['parameters']['PeriodId'];
+      };
+      header?: never;
+      path: {
+        /** @description Entity id */
+        id: components['parameters']['Id'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CategoryDetailResponse'];
+        };
       };
       400: components['responses']['BadRequest'];
       401: components['responses']['Unauthorized'];

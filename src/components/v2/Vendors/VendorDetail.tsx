@@ -241,7 +241,12 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
         </div>
       )}
 
-      <VendorFormDrawer opened={editOpened} onClose={closeEdit} editVendor={vendor} />
+      <VendorFormDrawer
+        key={vendorId}
+        opened={editOpened}
+        onClose={closeEdit}
+        editVendor={vendor}
+      />
       <MergeVendorModal
         opened={mergeOpened}
         onClose={closeMerge}

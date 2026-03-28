@@ -88,22 +88,8 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     }
   }, [isEdit, editData]);
 
-  // Reset form when drawer opens for create
-  useEffect(() => {
-    if (opened && !isEdit) {
-      setType('Checking');
-      setName('');
-      setColor('#6B8FD4');
-      setInitialBalance(0);
-      setSpendLimit('');
-      setTopUpAmount('');
-      setTopUpCycle('weekly');
-      setTopUpDay(1);
-      setStatementCloseDay('');
-      setPaymentDueDay('');
-      // Keep currencyId as default
-    }
-  }, [opened, isEdit]);
+  // Reset effect removed — parent uses key={editAccountId ?? 'create'}
+  // to force remount, so useState initializers handle the reset.
 
   const handleSubmit = async () => {
     const balanceCents = Math.round(Number(initialBalance) * 100);

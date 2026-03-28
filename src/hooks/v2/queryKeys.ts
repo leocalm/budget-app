@@ -30,6 +30,7 @@ export const v2QueryKeys = {
     list: (params?: Record<string, unknown>) => ['categories', params] as const,
     overview: (periodId: string) => ['categories', 'overview', periodId] as const,
     options: () => ['categories', 'options'] as const,
+    detail: (id: string, periodId: string) => ['categories', id, 'detail', periodId] as const,
   },
 
   // Category Targets

@@ -1,0 +1,303 @@
+/* ------------------------------------------------------------------ */
+/* Categories List Page                                               */
+/* ------------------------------------------------------------------ */
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-md);
+}
+
+/* Stats bar */
+.statsBar {
+  display: flex;
+  gap: 1px;
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+}
+
+.statItem {
+  flex: 1;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  background-color: var(--v2-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Category Row                                                       */
+/* ------------------------------------------------------------------ */
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.categoryRow:hover {
+  background-color: var(--v2-elevated);
+}
+
+.categoryRowArchived {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+  opacity: 0.5;
+}
+
+.categoryRowArchived:hover {
+  background-color: var(--v2-elevated);
+}
+
+.iconBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.categoryInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.categoryNameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.progressCell {
+  flex-shrink: 0;
+  width: 100px;
+}
+
+.amountCell {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 80px;
+}
+
+.kebabCell {
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Category Detail Page                                               */
+/* ------------------------------------------------------------------ */
+
+.detailCard {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--mantine-spacing-sm);
+}
+
+.metricBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+}
+
+.transactionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--v2-border);
+}
+
+.transactionRow:last-child {
+  border-bottom: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Targets Page                                                       */
+/* ------------------------------------------------------------------ */
+
+.targetRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.targetInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.targetValue {
+  flex-shrink: 0;
+  min-width: 90px;
+  text-align: right;
+}
+
+.targetActual {
+  flex-shrink: 0;
+  min-width: 80px;
+  text-align: right;
+}
+
+.targetProgress {
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.targetActions {
+  flex-shrink: 0;
+}
+
+.groupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* Create Category Form                                               */
+/* ------------------------------------------------------------------ */
+
+.typeSelector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-xs);
+}
+
+.behaviorSelector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--mantine-spacing-xs);
+}
+
+.selectorButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.selectorButton:hover {
+  border-color: var(--v2-primary);
+}
+
+.selectorButtonActive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  border: 1px solid var(--v2-primary);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+  cursor: pointer;
+}
+
+.iconGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.iconOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--mantine-radius-md);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.iconOption:hover {
+  background-color: var(--v2-elevated);
+}
+
+.iconOptionActive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--mantine-radius-md);
+  cursor: pointer;
+  background-color: var(--v2-elevated);
+  border: 1px solid var(--v2-primary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty / Loading / Error states                                     */
+/* ------------------------------------------------------------------ */
+
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-lg);
+  background-color: var(--v2-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 48em) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .progressCell {
+    display: none;
+  }
+
+  .statsBar {
+    flex-direction: column;
+  }
+
+  .typeSelector {
+    grid-template-columns: 1fr;
+  }
+}

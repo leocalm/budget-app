@@ -24,7 +24,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
   const updateMutation = useUpdateBudgetPeriod();
 
   const [name, setName] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [periodType, setPeriodType] = useState<PeriodType>('duration');
   const [durationUnits, setDurationUnits] = useState<number | string>(30);
   const [durationUnit, setDurationUnit] = useState<DurationUnit>('days');
@@ -46,18 +46,6 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
       }
     }
   }, [isEdit, editData]);
-
-  // Reset form when drawer opens for create
-  useEffect(() => {
-    if (opened && !isEdit) {
-      setName('');
-      setStartDate(new Date().toISOString().split('T')[0]);
-      setPeriodType('duration');
-      setDurationUnits(30);
-      setDurationUnit('days');
-      setManualEndDate('');
-    }
-  }, [opened, isEdit]);
 
   const isPastPeriod = isEdit && editData?.status === 'past';
 

@@ -27,13 +27,6 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
     }
   }, [isEdit, editVendor]);
 
-  useEffect(() => {
-    if (opened && !isEdit) {
-      setName('');
-      setDescription('');
-    }
-  }, [opened, isEdit]);
-
   const handleSubmit = async () => {
     const body: components['schemas']['CreateVendorRequest'] = {
       name: name.trim(),
