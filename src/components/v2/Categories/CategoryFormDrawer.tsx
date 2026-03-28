@@ -94,6 +94,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
       icon,
       color,
       description: description.trim() || undefined,
+      behavior: type === 'expense' ? behavior : undefined,
     };
 
     try {

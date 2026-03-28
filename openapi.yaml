@@ -3985,6 +3985,17 @@ components:
             - 'null'
           description: Category description
           example: Monthly grocery shopping
+        behavior:
+          type:
+            - string
+            - 'null'
+          enum:
+            - fixed
+            - variable
+            - subscription
+            - null
+          description: Category budget behavior
+          example: variable
         parentId:
           type:
             - string

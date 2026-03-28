@@ -2435,6 +2435,12 @@ export interface components {
        */
       description?: string | null;
       /**
+       * @description Category budget behavior
+       * @example variable
+       * @enum {string|null}
+       */
+      behavior?: 'fixed' | 'variable' | 'subscription' | null;
+      /**
        * Format: uuid
        * @description Parent category ID
        * @example 123e4567-e89b-12d3-a456-426655440000
