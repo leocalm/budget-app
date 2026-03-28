@@ -1013,15 +1013,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/form@npm:^8.3.16":
-  version: 8.3.16
-  resolution: "@mantine/form@npm:8.3.16"
+"@mantine/form@npm:^8.3.18":
+  version: 8.3.18
+  resolution: "@mantine/form@npm:8.3.18"
   dependencies:
     fast-deep-equal: "npm:^3.1.3"
     klona: "npm:^2.0.6"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: 10c0/592898bace1ff5cc8dc0dc803ec9c124b4c9cf93f39e5fc5fc2ef288965d90326830cb1a671249da170c732080f205a663d22e5ceb6aef56acea73c4496bb4cd
+  checksum: 10c0/ca920a1a2cc00abb28988e168661f18c53b7f5f81cb5f697eddda88c1207d3f56598cceb12aa49977c123c92d9f307b31e9c3d0086428df69eb6ed78a9b6a88b
   languageName: node
   linkType: hard
 
@@ -6075,7 +6075,7 @@ __metadata:
     "@mantine/charts": "npm:^8.3.16"
     "@mantine/core": "npm:^8.3.16"
     "@mantine/dates": "npm:^8.3.17"
-    "@mantine/form": "npm:^8.3.16"
+    "@mantine/form": "npm:^8.3.18"
     "@mantine/hooks": "npm:^8.3.15"
     "@mantine/notifications": "npm:^8.3.17"
     "@storybook/addon-themes": "npm:10.2.13"
