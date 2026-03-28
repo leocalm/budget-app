@@ -100,6 +100,14 @@ export const v2QueryKeys = {
     status: () => ['two-factor', 'status'] as const,
   },
 
+  // Subscriptions
+  subscriptions: {
+    all: () => ['subscriptions'] as const,
+    list: (status?: string) => ['subscriptions', status] as const,
+    detail: (id: string) => ['subscriptions', id] as const,
+    upcoming: (limit?: number) => ['subscriptions', 'upcoming', limit] as const,
+  },
+
   // Vendors
   vendors: {
     all: () => ['vendors'] as const,

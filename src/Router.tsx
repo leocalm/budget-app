@@ -189,6 +189,16 @@ const TransactionsV2Page = lazy(() =>
     default: module.TransactionsV2Page,
   }))
 );
+const SubscriptionsV2Page = lazy(() =>
+  import('./pages/v2/Subscriptions.page').then((module) => ({
+    default: module.SubscriptionsV2Page,
+  }))
+);
+const SubscriptionDetailV2Page = lazy(() =>
+  import('./pages/v2/SubscriptionDetail.page').then((module) => ({
+    default: module.SubscriptionDetailV2Page,
+  }))
+);
 
 const Layout = () => {
   const location = useLocation();
@@ -281,7 +291,8 @@ export function Router() {
         { path: 'periods', element: withPageLoader(<PeriodsV2Page />) },
         { path: 'vendors', element: withPageLoader(<VendorsV2Page />) },
         { path: 'vendors/:id', element: withPageLoader(<VendorDetailV2Page />) },
-        { path: 'subscriptions', element: withPageLoader(<PlaceholderPage />) },
+        { path: 'subscriptions', element: withPageLoader(<SubscriptionsV2Page />) },
+        { path: 'subscriptions/:id', element: withPageLoader(<SubscriptionDetailV2Page />) },
         { path: 'overlays', element: withPageLoader(<PlaceholderPage />) },
         { path: 'settings', element: withPageLoader(<SettingsV2Page />) },
         { path: '*', element: withPageLoader(<NotFoundPage />) },

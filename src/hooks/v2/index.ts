@@ -12,3 +12,4 @@ export * from './useOverlays';
 export * from './useSettings';
 export * from './useCurrencies';
 export * from './useOnboarding';
+export * from './useSubscriptions';

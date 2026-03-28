@@ -1391,6 +1391,77 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/subscriptions/upcoming': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get upcoming subscription charges */
+    get: operations['getUpcomingCharges'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/subscriptions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List subscriptions */
+    get: operations['listSubscriptions'];
+    put?: never;
+    /** Create subscription */
+    post: operations['createSubscription'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/subscriptions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get subscription detail */
+    get: operations['getSubscription'];
+    /** Update subscription */
+    put: operations['updateSubscription'];
+    post?: never;
+    /** Delete subscription */
+    delete: operations['deleteSubscription'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/subscriptions/{id}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Cancel subscription */
+    post: operations['cancelSubscription'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3365,6 +3436,244 @@ export interface components {
      * @enum {string}
      */
     ColorTheme: 'nebula' | 'sunrise' | 'sage_stone' | 'deep_ocean' | 'warm_rose' | 'moonlit';
+    /**
+     * @description Current status of the subscription
+     * @example active
+     * @enum {string}
+     */
+    SubscriptionStatus: 'active' | 'cancelled' | 'paused';
+    /**
+     * @description How often the subscription is billed
+     * @example monthly
+     * @enum {string}
+     */
+    BillingCycle: 'monthly' | 'quarterly' | 'yearly';
+    SubscriptionResponse: {
+      /**
+       * Format: uuid
+       * @description Subscription ID
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      id: string;
+      /**
+       * @description Name of the subscription
+       * @example Netflix
+       */
+      name: string;
+      /**
+       * Format: uuid
+       * @description Category ID this subscription belongs to
+       * @example 123e4567-e89b-12d3-a456-426655440001
+       */
+      categoryId: string;
+      /**
+       * Format: uuid
+       * @description Optional vendor ID associated with this subscription
+       * @example null
+       */
+      vendorId?: string | null;
+      /**
+       * Format: int64
+       * @description Billing amount in smallest currency unit (e.g. cents)
+       * @example 1599
+       */
+      billingAmount: number;
+      billingCycle: components['schemas']['BillingCycle'];
+      /**
+       * Format: int32
+       * @description Day of month the subscription is billed (1–31)
+       * @example 15
+       */
+      billingDay: number;
+      /**
+       * Format: date
+       * @description Date of the next expected charge
+       * @example 2026-04-15
+       */
+      nextChargeDate: string;
+      status: components['schemas']['SubscriptionStatus'];
+      /**
+       * Format: date-time
+       * @description Timestamp when the subscription was cancelled, if applicable
+       * @example null
+       */
+      cancelledAt?: string | null;
+      /**
+       * Format: date-time
+       * @description Timestamp when the subscription was created
+       * @example 2026-01-01T00:00:00Z
+       */
+      createdAt: string;
+      /**
+       * Format: date-time
+       * @description Timestamp when the subscription was last updated
+       * @example 2026-03-01T00:00:00Z
+       */
+      updatedAt: string;
+    };
+    BillingEventResponse: {
+      /**
+       * Format: uuid
+       * @description Billing event ID
+       * @example 123e4567-e89b-12d3-a456-426655440010
+       */
+      id: string;
+      /**
+       * Format: uuid
+       * @description The subscription this billing event belongs to
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      subscriptionId: string;
+      /**
+       * Format: uuid
+       * @description Linked transaction ID, if the charge was matched to a real transaction
+       * @example null
+       */
+      transactionId?: string | null;
+      /**
+       * Format: int64
+       * @description Billed amount in smallest currency unit (e.g. cents)
+       * @example 1599
+       */
+      amount: number;
+      /**
+       * Format: date
+       * @description Date the billing event occurred
+       * @example 2026-03-15
+       */
+      date: string;
+      /**
+       * @description Whether this billing event was automatically detected from transactions
+       * @example true
+       */
+      detected: boolean;
+      /**
+       * @description Whether this billing event occurred after the subscription was cancelled
+       * @example false
+       */
+      postCancellation: boolean;
+    };
+    SubscriptionDetailResponse: components['schemas']['SubscriptionResponse'] & {
+      /** @description Historical billing events for this subscription */
+      billingHistory: components['schemas']['BillingEventResponse'][];
+    };
+    /** @description List of subscriptions */
+    SubscriptionListResponse: components['schemas']['SubscriptionResponse'][];
+    UpcomingChargeItem: {
+      /**
+       * Format: uuid
+       * @description Subscription ID
+       * @example 123e4567-e89b-12d3-a456-426655440000
+       */
+      subscriptionId: string;
+      /**
+       * @description Name of the subscription
+       * @example Netflix
+       */
+      name: string;
+      /**
+       * Format: int64
+       * @description Amount of the upcoming charge in smallest currency unit (e.g. cents)
+       * @example 1599
+       */
+      billingAmount: number;
+      billingCycle: components['schemas']['BillingCycle'];
+      /**
+       * Format: date
+       * @description Date of the upcoming charge
+       * @example 2026-04-15
+       */
+      nextChargeDate: string;
+      /**
+       * Format: uuid
+       * @description Optional vendor ID
+       * @example null
+       */
+      vendorId?: string | null;
+      /**
+       * @description Optional vendor name
+       * @example Netflix Inc.
+       */
+      vendorName?: string | null;
+    };
+    /** @description List of upcoming subscription charges */
+    UpcomingChargesResponse: components['schemas']['UpcomingChargeItem'][];
+    CreateSubscriptionRequest: {
+      /**
+       * @description Name of the subscription
+       * @example Netflix
+       */
+      name: string;
+      /**
+       * Format: uuid
+       * @description Category ID this subscription belongs to
+       * @example 123e4567-e89b-12d3-a456-426655440001
+       */
+      categoryId: string;
+      /**
+       * Format: uuid
+       * @description Optional vendor ID associated with this subscription
+       * @example null
+       */
+      vendorId?: string | null;
+      /**
+       * Format: int64
+       * @description Billing amount in smallest currency unit (e.g. cents)
+       * @example 1599
+       */
+      billingAmount: number;
+      billingCycle: components['schemas']['BillingCycle'];
+      /**
+       * Format: int32
+       * @description Day of month the subscription is billed (1–31)
+       * @example 15
+       */
+      billingDay: number;
+      /**
+       * Format: date
+       * @description Date of the next expected charge
+       * @example 2026-04-15
+       */
+      nextChargeDate: string;
+    };
+    UpdateSubscriptionRequest: {
+      /**
+       * @description Name of the subscription
+       * @example Netflix
+       */
+      name: string;
+      /**
+       * Format: uuid
+       * @description Category ID this subscription belongs to
+       * @example 123e4567-e89b-12d3-a456-426655440001
+       */
+      categoryId: string;
+      /**
+       * Format: uuid
+       * @description Optional vendor ID associated with this subscription
+       * @example null
+       */
+      vendorId?: string | null;
+      /**
+       * Format: int64
+       * @description Billing amount in smallest currency unit (e.g. cents)
+       * @example 1599
+       */
+      billingAmount: number;
+      billingCycle: components['schemas']['BillingCycle'];
+      /**
+       * Format: int32
+       * @description Day of month the subscription is billed (1–31)
+       * @example 15
+       */
+      billingDay: number;
+      /**
+       * Format: date
+       * @description Date of the next expected charge
+       * @example 2026-04-15
+       */
+      nextChargeDate: string;
+    };
   };
   responses: {
     /** @description Unauthorized */
@@ -6175,6 +6484,196 @@ export interface operations {
         };
       };
       401: components['responses']['Unauthorized'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  getUpcomingCharges: {
+    parameters: {
+      query?: {
+        /** @description Maximum number of upcoming charges to return (1–50, default 10) */
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UpcomingChargesResponse'];
+        };
+      };
+      401: components['responses']['Unauthorized'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  listSubscriptions: {
+    parameters: {
+      query?: {
+        /** @description Filter by subscription status */
+        status?: components['schemas']['SubscriptionStatus'];
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionListResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  createSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateSubscriptionRequest'];
+      };
+    };
+    responses: {
+      /** @description Subscription created */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      422: components['responses']['UnprocessableEntity'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  getSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Entity id */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionDetailResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  updateSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Entity id */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateSubscriptionRequest'];
+      };
+    };
+    responses: {
+      /** @description Subscription updated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      422: components['responses']['UnprocessableEntity'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  deleteSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Entity id */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Subscription deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
+      500: components['responses']['InternalServerError'];
+    };
+  };
+  cancelSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Entity id */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Subscription cancelled */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SubscriptionResponse'];
+        };
+      };
+      400: components['responses']['BadRequest'];
+      401: components['responses']['Unauthorized'];
+      404: components['responses']['NotFound'];
       500: components['responses']['InternalServerError'];
     };
   };
