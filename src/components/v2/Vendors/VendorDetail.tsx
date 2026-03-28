@@ -118,7 +118,12 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
 
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" size="lg" aria-label="Vendor actions">
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="lg"
+              aria-label={`Actions for ${vendor.name}`}
+            >
               <Text fz="xl" lh={1}>
                 ⋮
               </Text>

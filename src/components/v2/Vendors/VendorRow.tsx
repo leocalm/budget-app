@@ -74,7 +74,12 @@ export function VendorRow({
       <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" size="sm" aria-label="Vendor actions">
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="sm"
+              aria-label={`Actions for ${vendor.name}`}
+            >
               <Text fz="lg" lh={1}>
                 ⋮
               </Text>

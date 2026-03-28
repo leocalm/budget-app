@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Group, Modal, Select, Stack, Text } from '@mantine/core';
 import { useMergeVendor, useVendorsOptions } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
@@ -19,6 +19,12 @@ export function MergeVendorModal({
   const { data: options } = useVendorsOptions();
   const mergeMutation = useMergeVendor();
   const [targetId, setTargetId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (opened) {
+      setTargetId(null);
+    }
+  }, [opened]);
 
   const vendorOptions = (options ?? [])
     .filter((v) => v.id !== sourceVendorId)
