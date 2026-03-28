@@ -174,19 +174,11 @@
 @media (max-width: 48em) {
   .vendorRow,
   .vendorRowArchived {
-    flex-wrap: wrap;
-    gap: var(--mantine-spacing-xs);
-  }
-
-  .vendorStats {
-    width: 100%;
-    justify-content: space-between;
-    gap: var(--mantine-spacing-sm);
+    padding: var(--mantine-spacing-sm);
   }
 
   .vendorStat {
     min-width: unset;
-    text-align: left;
   }
 
   .metricsGrid {
