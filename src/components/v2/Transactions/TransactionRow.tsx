@@ -131,6 +131,29 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             <CurrencyValue cents={Math.abs(transaction.amount)} />
           </Text>
         </div>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <Menu position="bottom-end" withinPortal>
+            <Menu.Target>
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                size="xs"
+                aria-label={`Actions for ${transaction.description}`}
+              >
+                <Text fz="sm" lh={1}>
+                  ⋮
+                </Text>
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item onClick={() => onEdit(transaction)}>Edit</Menu.Item>
+              <Menu.Item color="red" onClick={() => onDelete(transaction.id)}>
+                Delete
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </div>
       </div>
     </>
   );

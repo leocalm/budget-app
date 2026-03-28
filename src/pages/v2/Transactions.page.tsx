@@ -70,27 +70,31 @@ export function TransactionsV2Page() {
     isFetchingNextPage,
   } = useInfiniteTransactions(filters);
 
-  // Infinite scroll observer
+  // Infinite scroll observer — only recreate when hasNextPage changes
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-      if (!node) {
-        return;
-      }
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      });
-      observerRef.current.observe(node);
-    },
-    [hasNextPage, isFetchingNextPage, fetchNextPage]
-  );
+  const stableCallbacks = useRef({ fetchNextPage, hasNextPage, isFetchingNextPage });
+  stableCallbacks.current = { fetchNextPage, hasNextPage, isFetchingNextPage };
 
-  // Cleanup observer
+  const loadMoreRef = useCallback((node: HTMLDivElement | null) => {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    if (!node) {
+      return;
+    }
+    observerRef.current = new IntersectionObserver((entries) => {
+      const {
+        hasNextPage: has,
+        isFetchingNextPage: fetching,
+        fetchNextPage: fetch,
+      } = stableCallbacks.current;
+      if (entries[0].isIntersecting && has && !fetching) {
+        fetch();
+      }
+    });
+    observerRef.current.observe(node);
+  }, []);
+
   useEffect(() => {
     return () => {
       if (observerRef.current) {
@@ -100,7 +104,9 @@ export function TransactionsV2Page() {
   }, []);
 
   // Flatten pages + group by date
-  const { dateGroups, totalInflows, totalOutflows, totalCount } = useMemo(() => {
+  const apiTotalCount = infiniteData?.pages[0]?.totalCount ?? 0;
+
+  const { dateGroups, totalInflows, totalOutflows } = useMemo(() => {
     const allTxns = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
     let inflows = 0;
     let outflows = 0;
@@ -113,6 +119,10 @@ export function TransactionsV2Page() {
       }
       groupMap.get(key)!.push(txn);
 
+      // Skip transfers — they don't affect inflow/outflow totals
+      if (txn.transactionType === 'transfer') {
+        continue;
+      }
       if (txn.category.type === 'income') {
         inflows += txn.amount;
       } else if (txn.category.type === 'expense') {
@@ -130,6 +140,9 @@ export function TransactionsV2Page() {
         year: 'numeric',
       });
       const total = txns.reduce((sum, t) => {
+        if (t.transactionType === 'transfer') {
+          return sum;
+        }
         if (t.category.type === 'income') {
           return sum + t.amount;
         }
@@ -146,7 +159,6 @@ export function TransactionsV2Page() {
       dateGroups: groups,
       totalInflows: inflows,
       totalOutflows: outflows,
-      totalCount: allTxns.length,
     };
   }, [infiniteData]);
 
@@ -218,7 +230,7 @@ export function TransactionsV2Page() {
             Transactions
           </Text>
           <Text c="dimmed" fz="sm">
-            {totalCount} transactions
+            {apiTotalCount} transactions
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
@@ -359,7 +371,7 @@ export function TransactionsV2Page() {
             Transactions
           </Text>
           <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
-            {totalCount}
+            {apiTotalCount}
           </Text>
         </div>
       </div>
@@ -419,14 +431,16 @@ export function TransactionsV2Page() {
         </Stack>
       ))}
 
-      {/* Infinite scroll sentinel */}
-      {hasNextPage && <div ref={loadMoreRef} style={{ height: 1 }} />}
+      {/* Loading more */}
       {isFetchingNextPage && (
         <Stack gap="xs">
           <Skeleton height={54} radius="lg" />
           <Skeleton height={54} radius="lg" />
         </Stack>
       )}
+
+      {/* Infinite scroll sentinel — placed after skeletons to avoid re-trigger */}
+      {hasNextPage && !isFetchingNextPage && <div ref={loadMoreRef} style={{ height: 1 }} />}
 
       <TransactionFormDrawer
         key={editTxn?.id ?? 'create'}
