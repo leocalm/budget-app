@@ -262,7 +262,12 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
         </div>
       )}
 
-      <CategoryFormDrawer opened={editOpened} onClose={closeEdit} editCategory={cat} />
+      <CategoryFormDrawer
+        key={categoryId}
+        opened={editOpened}
+        onClose={closeEdit}
+        editCategory={cat}
+      />
     </Stack>
   );
 }

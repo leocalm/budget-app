@@ -274,7 +274,12 @@ export function VendorsV2Page() {
         </>
       )}
 
-      <VendorFormDrawer opened={formOpened} onClose={closeForm} editVendor={editVendor} />
+      <VendorFormDrawer
+        key={editVendor?.id ?? 'create'}
+        opened={formOpened}
+        onClose={closeForm}
+        editVendor={editVendor}
+      />
       <MergeVendorModal
         opened={mergeOpened}
         onClose={closeMerge}

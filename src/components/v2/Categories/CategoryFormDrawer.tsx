@@ -76,17 +76,6 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
     }
   }, [isEdit, editCategory]);
 
-  useEffect(() => {
-    if (opened && !isEdit) {
-      setName('');
-      setType('expense');
-      setBehavior('variable');
-      setIcon('🛒');
-      setColor('#8B7EC8');
-      setDescription('');
-    }
-  }, [opened, isEdit]);
-
   const handleSubmit = async () => {
     const body: components['schemas']['CreateCategoryRequest'] = {
       name: name.trim(),

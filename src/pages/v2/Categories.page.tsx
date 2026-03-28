@@ -325,7 +325,12 @@ export function CategoriesV2Page() {
         </>
       )}
 
-      <CategoryFormDrawer opened={formOpened} onClose={closeForm} editCategory={editCategory} />
+      <CategoryFormDrawer
+        key={editCategory?.id ?? 'create'}
+        opened={formOpened}
+        onClose={closeForm}
+        editCategory={editCategory}
+      />
     </Stack>
   );
 }

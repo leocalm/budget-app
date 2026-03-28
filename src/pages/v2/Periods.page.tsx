@@ -172,6 +172,7 @@ export function PeriodsV2Page() {
       ))}
 
       <PeriodFormDrawer
+        key={editPeriodId ?? 'create'}
         opened={periodDrawerOpened}
         onClose={closePeriodDrawer}
         editPeriodId={editPeriodId}
