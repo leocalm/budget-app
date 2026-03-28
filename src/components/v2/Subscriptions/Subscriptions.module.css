@@ -1,0 +1,211 @@
+/* ------------------------------------------------------------------ */
+/* Subscriptions List Page                                            */
+/* ------------------------------------------------------------------ */
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--mantine-spacing-md);
+}
+
+.statsBar {
+  display: flex;
+  gap: 1px;
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+}
+
+.statItem {
+  flex: 1;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  background-color: var(--v2-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Upcoming charges timeline                                          */
+/* ------------------------------------------------------------------ */
+
+.upcomingCard {
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.upcomingRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: 6px 0;
+}
+
+.upcomingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.upcomingInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.upcomingAmount {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* ------------------------------------------------------------------ */
+/* Subscription Row                                                   */
+/* ------------------------------------------------------------------ */
+
+.subRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.subRow:hover {
+  background-color: var(--v2-elevated);
+}
+
+.subRowCancelled {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: background-color 120ms ease;
+}
+
+.subRowCancelled:hover {
+  background-color: var(--v2-elevated);
+}
+
+.subIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.subInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.subAmount {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 70px;
+}
+
+.subDate {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 70px;
+}
+
+.kebabCell {
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Subscription Detail                                                */
+/* ------------------------------------------------------------------ */
+
+.detailCard {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--v2-border);
+  background-color: var(--v2-card);
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--mantine-spacing-sm);
+}
+
+.metricBox {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+}
+
+.billingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--v2-border);
+}
+
+.billingRow:last-child {
+  border-bottom: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty / Loading / Error                                            */
+/* ------------------------------------------------------------------ */
+
+.centeredState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-lg);
+  background-color: var(--v2-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 48em) {
+  .statsBar {
+    flex-direction: column;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .subDate {
+    display: none;
+  }
+}
