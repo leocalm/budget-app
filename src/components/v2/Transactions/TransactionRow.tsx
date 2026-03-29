@@ -1,4 +1,5 @@
-import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
+import { useState } from 'react';
+import { ActionIcon, Badge, Button, Group, Menu, Popover, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import classes from './Transactions.module.css';
@@ -20,6 +21,7 @@ interface TransactionRowProps {
 }
 
 export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRowProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const isIncome = transaction.category.type === 'income';
   const isTransfer = transaction.transactionType === 'transfer';
   const amountPrefix = isIncome ? '+' : isTransfer ? '' : '-';
@@ -97,9 +99,33 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item onClick={() => onEdit(transaction)}>Edit</Menu.Item>
-              <Menu.Item color="red" onClick={() => onDelete(transaction.id)}>
-                Delete
-              </Menu.Item>
+              <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
+                <Popover.Target>
+                  <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
+                    Delete
+                  </Menu.Item>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Text fz="sm" mb="xs">
+                    Delete this transaction?
+                  </Text>
+                  <Group gap="xs">
+                    <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size="xs"
+                      color="red"
+                      onClick={() => {
+                        setConfirmOpen(false);
+                        onDelete(transaction.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Group>
+                </Popover.Dropdown>
+              </Popover>
             </Menu.Dropdown>
           </Menu>
         </div>
@@ -155,9 +181,33 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item onClick={() => onEdit(transaction)}>Edit</Menu.Item>
-              <Menu.Item color="red" onClick={() => onDelete(transaction.id)}>
-                Delete
-              </Menu.Item>
+              <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
+                <Popover.Target>
+                  <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
+                    Delete
+                  </Menu.Item>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Text fz="sm" mb="xs">
+                    Delete this transaction?
+                  </Text>
+                  <Group gap="xs">
+                    <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size="xs"
+                      color="red"
+                      onClick={() => {
+                        setConfirmOpen(false);
+                        onDelete(transaction.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Group>
+                </Popover.Dropdown>
+              </Popover>
             </Menu.Dropdown>
           </Menu>
         </div>
