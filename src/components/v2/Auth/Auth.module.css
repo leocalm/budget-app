@@ -1,0 +1,138 @@
+/* ------------------------------------------------------------------ */
+/* Split-screen auth layout                                           */
+/* ------------------------------------------------------------------ */
+
+.splitLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* Left panel: gradient + branding */
+.brandPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-lg);
+  padding: var(--mantine-spacing-xl);
+  background: linear-gradient(125deg, #8b7ec8 0%, #c48ba0 100%);
+}
+
+.brandLogo {
+  max-width: 120px;
+  height: auto;
+}
+
+/* Right panel: form content */
+.formPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl) 36px;
+  background-color: var(--v2-card);
+  overflow-y: auto;
+}
+
+.formContent {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Session expired banner                                             */
+/* ------------------------------------------------------------------ */
+
+.expiredBanner {
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  background-color: rgb(196 139 160 / 15%);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+/* ------------------------------------------------------------------ */
+/* Password strength bar                                              */
+/* ------------------------------------------------------------------ */
+
+.strengthBar {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.strengthSegment {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--v2-elevated);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2FA code input                                                     */
+/* ------------------------------------------------------------------ */
+
+.codeInput {
+  letter-spacing: 0.5em;
+  text-align: center;
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 24px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Recovery codes grid                                                */
+/* ------------------------------------------------------------------ */
+
+.codesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-xs);
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--v2-elevated);
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer link row                                                    */
+/* ------------------------------------------------------------------ */
+
+.footerLink {
+  text-align: center;
+  margin-top: var(--mantine-spacing-lg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Success screen                                                     */
+/* ------------------------------------------------------------------ */
+
+.successContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xl) 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive: mobile stacks brand panel as banner                    */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 48em) {
+  .splitLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .brandPanel {
+    padding: var(--mantine-spacing-lg) var(--mantine-spacing-md);
+    min-height: unset;
+  }
+
+  .brandLogo {
+    max-width: 80px;
+  }
+
+  .formPanel {
+    padding: var(--mantine-spacing-lg) var(--mantine-spacing-md);
+  }
+}

@@ -205,6 +205,26 @@ const OnboardingV2Page = lazy(() =>
   }))
 );
 
+// V2 Auth pages — lazy loaded individually
+const V2AuthLayoutComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2AuthLayout }))
+);
+const V2LoginPageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2LoginPage }))
+);
+const V2RegisterPageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2RegisterPage }))
+);
+const V2ForgotPasswordPageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2ForgotPasswordPage }))
+);
+const V2ResetPasswordPageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2ResetPasswordPage }))
+);
+const V2UnlockAccountPageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2UnlockAccountPage }))
+);
+
 const Layout = () => {
   const location = useLocation();
 
@@ -314,6 +334,18 @@ export function Router() {
       element: (
         <ProtectedRoute skipOnboardingGuard>{withPageLoader(<OnboardingV2Page />)}</ProtectedRoute>
       ),
+    },
+    {
+      path: '/v2/auth',
+      element: withPageLoader(<V2AuthLayoutComponent />),
+      children: [
+        { index: true, element: <Navigate to="/v2/auth/login" replace /> },
+        { path: 'login', element: withPageLoader(<V2LoginPageComponent />) },
+        { path: 'register', element: withPageLoader(<V2RegisterPageComponent />) },
+        { path: 'forgot-password', element: withPageLoader(<V2ForgotPasswordPageComponent />) },
+        { path: 'reset-password', element: withPageLoader(<V2ResetPasswordPageComponent />) },
+        { path: 'unlock', element: withPageLoader(<V2UnlockAccountPageComponent />) },
+      ],
     },
     {
       path: '/auth',
