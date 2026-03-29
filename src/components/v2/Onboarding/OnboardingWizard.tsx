@@ -1,18 +1,20 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core';
 import piggyCloud from '@/assets/icons/png/gradient/piggy-pulse-cloud.svg';
+import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useAuth } from '@/context/AuthContext';
 import { useCreateAccount } from '@/hooks/v2/useAccounts';
 import { useCurrencies } from '@/hooks/v2/useCurrencies';
 import { useCompleteOnboarding } from '@/hooks/v2/useOnboarding';
-import { useUpdateProfile } from '@/hooks/v2/useSettings';
+import { useProfile, useUpdateProfile } from '@/hooks/v2/useSettings';
 import { toast } from '@/lib/toast';
 import classes from './Onboarding.module.css';
 
 type AccountType = 'Checking' | 'Savings' | 'Wallet';
 
 interface AccountEntry {
+  key: number;
   name: string;
   type: AccountType;
   balance: number | string;
@@ -31,6 +33,7 @@ export function OnboardingWizard() {
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
   const { data: currencies } = useCurrencies();
+  const { data: profile } = useProfile();
   const updateProfile = useUpdateProfile();
   const createAccount = useCreateAccount();
   const completeOnboarding = useCompleteOnboarding();
@@ -43,34 +46,33 @@ export function OnboardingWizard() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [appliedCategories, setAppliedCategories] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const accountIdCounter = useRef(0);
 
-  // Fetch templates on categories step
-  const fetchTemplates = useCallback(async () => {
-    if (templates.length > 0) {
-      return;
+  const apiBase = import.meta.env.DEV ? '/api/v2' : 'https://api.piggy-pulse.com/v2';
+
+  // Fetch templates when entering categories step
+  const templatesFetched = useRef(false);
+  useEffect(() => {
+    if (step === 4 && !templatesFetched.current) {
+      templatesFetched.current = true;
+      fetch(`${apiBase}/onboarding/category-templates`, { credentials: 'include' })
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => setTemplates(data))
+        .catch(() => {});
     }
-    try {
-      const res = await fetch('/api/v2/onboarding/category-templates', { credentials: 'include' });
-      if (res.ok) {
-        const data = await res.json();
-        setTemplates(data);
-      }
-    } catch {
-      // Silently fail — user can still skip
-    }
-  }, [templates.length]);
+  }, [step, apiBase]);
 
   const handleNext = async () => {
     if (step === 1) {
-      // Save currency
+      // Save currency via profile update, preserving existing name/avatar
       if (!selectedCurrency) {
         return;
       }
       try {
         await updateProfile.mutateAsync({
-          name: '', // Will be preserved by backend
+          name: profile?.name ?? '',
           currency: selectedCurrency,
-          avatar: '🐷',
+          avatar: profile?.avatar ?? '🐷',
         });
       } catch {
         toast.error({ message: 'Failed to save currency' });
@@ -79,7 +81,8 @@ export function OnboardingWizard() {
     }
 
     if (step === 3) {
-      // Create accounts
+      // Create accounts — stop on first failure
+      let failed = false;
       for (const acct of accounts) {
         if (acct.name.trim()) {
           try {
@@ -92,33 +95,32 @@ export function OnboardingWizard() {
             });
           } catch {
             toast.error({ message: `Failed to create account "${acct.name}"` });
+            failed = true;
+            break;
           }
         }
       }
+      if (failed) {
+        return;
+      }
     }
 
-    if (step === 4) {
+    if (step === 4 && selectedTemplate) {
       // Apply template
-      if (selectedTemplate) {
-        try {
-          const res = await fetch('/api/v2/onboarding/apply-template', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ templateId: selectedTemplate }),
-          });
-          if (res.ok) {
-            const cats = await res.json();
-            setAppliedCategories(cats.map((c: { name: string }) => c.name));
-          }
-        } catch {
-          toast.error({ message: 'Failed to apply template' });
+      try {
+        const res = await fetch(`${apiBase}/onboarding/apply-template`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ templateId: selectedTemplate }),
+        });
+        if (res.ok) {
+          const cats = await res.json();
+          setAppliedCategories(cats.map((c: { name: string }) => c.name));
         }
+      } catch {
+        toast.error({ message: 'Failed to apply template' });
       }
-    }
-
-    if (step === 4) {
-      await fetchTemplates();
     }
 
     setStep((s) => s + 1);
@@ -353,7 +355,7 @@ export function OnboardingWizard() {
           </Text>
           <Stack gap="sm">
             {accounts.map((acct, i) => (
-              <div key={i} className={classes.accountEntry}>
+              <div key={acct.key} className={classes.accountEntry}>
                 <Group grow mb="xs">
                   <TextInput
                     placeholder="Account name"
@@ -399,7 +401,13 @@ export function OnboardingWizard() {
             <Button
               variant="subtle"
               size="sm"
-              onClick={() => setAccounts([...accounts, { name: '', type: 'Checking', balance: 0 }])}
+              onClick={() => {
+                accountIdCounter.current += 1;
+                setAccounts([
+                  ...accounts,
+                  { key: accountIdCounter.current, name: '', type: 'Checking', balance: 0 },
+                ]);
+              }}
             >
               + Add account
             </Button>
@@ -409,14 +417,7 @@ export function OnboardingWizard() {
               Back
             </Button>
             <div className={classes.navRight}>
-              <Button
-                variant="subtle"
-                c="dimmed"
-                onClick={() => {
-                  setStep(4);
-                  fetchTemplates();
-                }}
-              >
+              <Button variant="subtle" c="dimmed" onClick={() => setStep(4)}>
                 Skip for now
               </Button>
               <Button onClick={handleNext}>Continue</Button>
@@ -542,10 +543,10 @@ export function OnboardingWizard() {
                 </Text>
                 {accounts
                   .filter((a) => a.name.trim())
-                  .map((a, i) => (
-                    <Text key={i} fz="sm" fw={500}>
-                      {a.name} · {a.type} · {selectedCurrencyData?.symbol}
-                      {Number(a.balance).toFixed(2)}
+                  .map((a) => (
+                    <Text key={a.key} fz="sm" fw={500}>
+                      {a.name} · {a.type} ·{' '}
+                      <CurrencyValue cents={Math.round(Number(a.balance) * 100)} />
                     </Text>
                   ))}
               </div>
