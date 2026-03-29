@@ -190,33 +190,16 @@ export function DashboardV2Page() {
     [visibleItems]
   );
 
-  // Compute which items should span full width.
-  // Heroes always full. For non-heroes, process in runs between heroes.
-  // Each run fills a 2-column grid left-to-right. If a run has odd count,
-  // the LAST non-hero in that run spans full width.
+  // Heroes always span full width (2 columns). Everything else flows
+  // naturally into the 2-column grid.
   const fullWidthIds = useMemo(() => {
     const full = new Set<string>();
-
-    // Split into segments separated by heroes
-    const segments: string[][] = [[]];
     for (const id of visibleItems) {
       const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
-      const isHero = def?.isHero && !isAccountItem(id);
-      if (isHero) {
+      if (def?.isHero && !isAccountItem(id)) {
         full.add(id);
-        segments.push([]); // new segment after hero
-      } else {
-        segments[segments.length - 1].push(id);
       }
     }
-
-    // For each segment, if odd count, last item goes full-width
-    for (const seg of segments) {
-      if (seg.length % 2 === 1) {
-        full.add(seg[seg.length - 1]);
-      }
-    }
-
     return full;
   }, [visibleItems]);
 
