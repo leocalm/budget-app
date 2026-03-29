@@ -113,20 +113,35 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Equal-height grid rows                                             */
+/* Dashboard view grid                                                */
 /* ------------------------------------------------------------------ */
 
-.equalHeightGrid {
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mantine-spacing-lg);
   align-items: stretch;
 }
 
 .gridCell {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .gridCell > * {
   flex: 1;
+}
+
+@media (max-width: 48em) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  /* On mobile all items are full-width */
+  .gridCell {
+    grid-column: 1 / -1 !important;
+  }
 }
 
 /* ------------------------------------------------------------------ */

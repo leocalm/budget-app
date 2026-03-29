@@ -17,7 +17,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ActionIcon, Button, SimpleGrid, Stack, Text, Title, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Button, Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   AccountCard,
@@ -190,36 +190,35 @@ export function DashboardV2Page() {
     [visibleItems]
   );
 
-  // Group items into render rows respecting user order.
-  // Hero widgets get their own full-width row. Non-hero widgets are
-  // paired into 2-column rows. A trailing single non-hero gets full width.
-  const renderRows = useMemo(() => {
-    const result: Array<{ type: 'full'; id: string } | { type: 'pair'; ids: string[] }> = [];
-    let pendingHalf: string | null = null;
+  // Determine which items should span full width.
+  // Heroes are always full. Non-hero items are paired into 2-column rows,
+  // but each consecutive run of non-heroes is independent — if a run has
+  // an odd count, the last item in that run gets full width.
+  const fullWidthIds = useMemo(() => {
+    const full = new Set<string>();
+    let currentRun: string[] = [];
+
+    const flushRun = () => {
+      if (currentRun.length % 2 === 1) {
+        full.add(currentRun[currentRun.length - 1]);
+      }
+      currentRun = [];
+    };
 
     for (const id of visibleItems) {
       const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
       const isHero = def?.isHero && !isAccountItem(id);
 
       if (isHero) {
-        if (pendingHalf) {
-          result.push({ type: 'full', id: pendingHalf });
-          pendingHalf = null;
-        }
-        result.push({ type: 'full', id });
-      } else if (pendingHalf) {
-        result.push({ type: 'pair', ids: [pendingHalf, id] });
-        pendingHalf = null;
+        flushRun();
+        full.add(id);
       } else {
-        pendingHalf = id;
+        currentRun.push(id);
       }
     }
+    flushRun();
 
-    if (pendingHalf) {
-      result.push({ type: 'full', id: pendingHalf });
-    }
-
-    return result;
+    return full;
   }, [visibleItems]);
 
   if (!selectedPeriodId) {
@@ -290,39 +289,21 @@ export function DashboardV2Page() {
           </UnstyledButton>
         </DndContext>
       ) : (
-        <>
-          {renderRows.map((row, i) => {
-            if (row.type === 'full') {
-              return (
-                <div key={row.id}>
-                  {isAccountItem(row.id) ? (
-                    <AccountCard accountId={getAccountId(row.id)} periodId={selectedPeriodId} />
-                  ) : (
-                    renderWidget(row.id, selectedPeriodId)
-                  )}
-                </div>
-              );
-            }
-            return (
-              <SimpleGrid
-                key={`pair-${i}`}
-                cols={{ base: 1, sm: 2 }}
-                spacing="lg"
-                className={customizeClasses.equalHeightGrid}
-              >
-                {row.ids.map((id) => (
-                  <div key={id} className={customizeClasses.gridCell}>
-                    {isAccountItem(id) ? (
-                      <AccountCard accountId={getAccountId(id)} periodId={selectedPeriodId} />
-                    ) : (
-                      renderWidget(id, selectedPeriodId)
-                    )}
-                  </div>
-                ))}
-              </SimpleGrid>
-            );
-          })}
-        </>
+        <div className={customizeClasses.dashboardGrid}>
+          {visibleItems.map((id) => (
+            <div
+              key={id}
+              className={customizeClasses.gridCell}
+              style={fullWidthIds.has(id) ? { gridColumn: '1 / -1' } : undefined}
+            >
+              {isAccountItem(id) ? (
+                <AccountCard accountId={getAccountId(id)} periodId={selectedPeriodId} />
+              ) : (
+                renderWidget(id, selectedPeriodId)
+              )}
+            </div>
+          ))}
+        </div>
       )}
 
       <AddWidgetModal
