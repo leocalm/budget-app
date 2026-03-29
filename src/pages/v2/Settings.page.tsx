@@ -11,6 +11,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { TwoFactorSetupModal } from '@/components/v2/Settings/TwoFactorSetupModal';
 import { useAuth } from '@/context/AuthContext';
 import { useAccounts } from '@/hooks/v2/useAccounts';
 import {
@@ -197,6 +198,7 @@ export function SettingsV2Page() {
 
   const [disable2faModalOpen, disable2faModal] = useDisclosure(false);
   const [disable2faCode, setDisable2faCode] = useState('');
+  const [setup2faModalOpen, setup2faModal] = useDisclosure(false);
 
   const [deleteModalOpen, deleteModal] = useDisclosure(false);
   const [deleteConfirmPassword, setDeleteConfirmPassword] = useState('');
@@ -1028,7 +1030,12 @@ export function SettingsV2Page() {
                       </Button>
                     </>
                   ) : (
-                    <Button color="var(--v2-primary)" size="compact-xs" radius={8}>
+                    <Button
+                      color="var(--v2-primary)"
+                      size="compact-xs"
+                      radius={8}
+                      onClick={setup2faModal.open}
+                    >
                       Enable 2FA
                     </Button>
                   )}
@@ -1259,6 +1266,9 @@ export function SettingsV2Page() {
           Permanently Delete My Account
         </Button>
       </Modal>
+
+      {/* 2FA Setup */}
+      <TwoFactorSetupModal opened={setup2faModalOpen} onClose={setup2faModal.close} />
     </div>
   );
 }
