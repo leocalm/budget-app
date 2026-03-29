@@ -205,18 +205,39 @@ export function DashboardV2Page() {
     );
   }
 
-  // Separate hero from grid items for view mode
-  const heroItems = visibleItems.filter((id) => {
-    const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
-    return def?.isHero;
-  });
-  const gridItems = visibleItems.filter((id) => {
-    if (isAccountItem(id)) {
-      return true; // accounts are grid items
+  // Group items into render rows respecting user order.
+  // Hero widgets get their own full-width row. Non-hero widgets are
+  // paired into 2-column rows. A trailing single non-hero gets full width.
+  const renderRows = useMemo(() => {
+    const result: Array<{ type: 'full'; id: string } | { type: 'pair'; ids: string[] }> = [];
+    let pendingHalf: string | null = null;
+
+    for (const id of visibleItems) {
+      const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
+      const isHero = def?.isHero && !isAccountItem(id);
+
+      if (isHero) {
+        // Flush any pending half-width item as full width
+        if (pendingHalf) {
+          result.push({ type: 'full', id: pendingHalf });
+          pendingHalf = null;
+        }
+        result.push({ type: 'full', id });
+      } else if (pendingHalf) {
+        result.push({ type: 'pair', ids: [pendingHalf, id] });
+        pendingHalf = null;
+      } else {
+        pendingHalf = id;
+      }
     }
-    const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
-    return def && !def.isHero;
-  });
+
+    // Trailing single item → full width
+    if (pendingHalf) {
+      result.push({ type: 'full', id: pendingHalf });
+    }
+
+    return result;
+  }, [visibleItems]);
 
   return (
     <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
@@ -272,23 +293,37 @@ export function DashboardV2Page() {
         </DndContext>
       ) : (
         <>
-          {heroItems.map((id) => (
-            <div key={id}>{renderWidget(id, selectedPeriodId)}</div>
-          ))}
-
-          {gridItems.length > 0 && (
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-              {gridItems.map((id) => (
-                <div key={id}>
-                  {isAccountItem(id) ? (
-                    <AccountCard accountId={getAccountId(id)} periodId={selectedPeriodId} />
+          {renderRows.map((row, i) => {
+            if (row.type === 'full') {
+              return (
+                <div key={row.id}>
+                  {isAccountItem(row.id) ? (
+                    <AccountCard accountId={getAccountId(row.id)} periodId={selectedPeriodId} />
                   ) : (
-                    renderWidget(id, selectedPeriodId)
+                    renderWidget(row.id, selectedPeriodId)
                   )}
                 </div>
-              ))}
-            </SimpleGrid>
-          )}
+              );
+            }
+            return (
+              <SimpleGrid
+                key={`pair-${i}`}
+                cols={{ base: 1, sm: 2 }}
+                spacing="lg"
+                className={customizeClasses.equalHeightGrid}
+              >
+                {row.ids.map((id) => (
+                  <div key={id} className={customizeClasses.gridCell}>
+                    {isAccountItem(id) ? (
+                      <AccountCard accountId={getAccountId(id)} periodId={selectedPeriodId} />
+                    ) : (
+                      renderWidget(id, selectedPeriodId)
+                    )}
+                  </div>
+                ))}
+              </SimpleGrid>
+            );
+          })}
         </>
       )}
 
