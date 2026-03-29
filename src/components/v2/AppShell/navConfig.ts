@@ -10,7 +10,6 @@ import {
   IconCategory,
   IconChartBar,
   IconLayoutDashboard,
-  IconLink,
   IconList,
   IconReceipt2,
   IconRepeat,
@@ -53,7 +52,6 @@ export const navGroups: NavGroupConfig[] = [
       { icon: IconBuildingBank, label: 'Accounts', to: '/v2/accounts' },
       { icon: IconRepeat, label: 'Subscriptions', to: '/v2/subscriptions' },
       { icon: IconList, label: 'Vendors', to: '/v2/vendors' },
-      { icon: IconLink, label: 'Overlays', to: '/v2/overlays' },
     ],
   },
 ];
@@ -72,6 +70,5 @@ export const moreDrawerItems: NavItemConfig[] = [
   { icon: IconTarget, label: 'Targets', to: '/v2/targets' },
   { icon: IconRepeat, label: 'Subscriptions', to: '/v2/subscriptions' },
   { icon: IconList, label: 'Vendors', to: '/v2/vendors' },
-  { icon: IconLink, label: 'Overlays', to: '/v2/overlays' },
   { icon: IconSettings, label: 'Settings', to: '/v2/settings' },
 ];
