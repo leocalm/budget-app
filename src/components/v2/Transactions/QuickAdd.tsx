@@ -138,7 +138,7 @@ export function QuickAdd() {
         </div>
       </div>
       <Text fz="xs" c="dimmed" mt={4}>
-        Press Enter to add and continue. Tab between fields.
+        Press Enter to add and continue. Category and account are kept for consecutive entries.
       </Text>
     </div>
   );

@@ -44,6 +44,7 @@ export function OnboardingWizard() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [appliedCategories, setAppliedCategories] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const completionLock = useRef(false);
   const accountIdCounter = useRef(0);
 
   const handleNext = async () => {
@@ -107,12 +108,17 @@ export function OnboardingWizard() {
   };
 
   const handleComplete = async () => {
+    if (completionLock.current) {
+      return;
+    }
+    completionLock.current = true;
     setIsSubmitting(true);
     try {
       await completeOnboarding.mutateAsync();
       await refreshUser();
       navigate('/v2/dashboard');
     } catch {
+      completionLock.current = false;
       toast.error({ message: 'Failed to complete onboarding' });
     } finally {
       setIsSubmitting(false);
@@ -120,12 +126,17 @@ export function OnboardingWizard() {
   };
 
   const handleGoToTransactions = async () => {
+    if (completionLock.current) {
+      return;
+    }
+    completionLock.current = true;
     setIsSubmitting(true);
     try {
       await completeOnboarding.mutateAsync();
       await refreshUser();
       navigate('/v2/transactions', { state: { openCreateDrawer: true } });
     } catch {
+      completionLock.current = false;
       toast.error({ message: 'Failed to complete onboarding' });
     } finally {
       setIsSubmitting(false);

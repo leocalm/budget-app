@@ -155,6 +155,8 @@ export function TransactionsV2Page() {
       return { date: dateStr, label, transactions: txns, total };
     });
 
+    groups.sort((a, b) => b.date.localeCompare(a.date));
+
     return {
       dateGroups: groups,
       totalInflows: inflows,
