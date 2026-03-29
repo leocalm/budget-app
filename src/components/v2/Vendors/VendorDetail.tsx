@@ -174,7 +174,11 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
 
       {/* Spending trend chart */}
       {vendor.trend.length >= 2 && (
-        <div className={classes.detailCard}>
+        <div
+          className={classes.detailCard}
+          role="img"
+          aria-label={`Spending trend for ${vendor.name}`}
+        >
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
             Spending at this vendor — Last {vendor.trend.length} Periods
           </Text>

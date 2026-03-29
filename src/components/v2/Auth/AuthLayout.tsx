@@ -27,7 +27,7 @@ export function V2AuthLayout() {
         </Text>
         <Text
           fz="sm"
-          c="rgba(255,255,255,0.7)"
+          c="rgba(255,255,255,0.85)"
           ta="center"
           maw={300}
           className={classes.brandTagline}

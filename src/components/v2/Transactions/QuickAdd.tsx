@@ -60,7 +60,7 @@ export function QuickAdd() {
   };
 
   return (
-    <div className={classes.quickAddCard}>
+    <div className={classes.quickAddCard} data-testid="quick-add-form">
       <Text fz="xs" fw={600} c="dimmed" mb="xs">
         ⚡ Quick Add
       </Text>

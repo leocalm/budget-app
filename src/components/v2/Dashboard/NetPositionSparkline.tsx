@@ -30,7 +30,7 @@ export function NetPositionSparkline({
       : generateSyntheticData(total, change);
 
   return (
-    <div data-testid="net-position-sparkline">
+    <div data-testid="net-position-sparkline" role="img" aria-label="Net position trend">
       <AreaChart
         h={60}
         data={data}

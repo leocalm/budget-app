@@ -30,6 +30,7 @@ export function VendorRow({
   return (
     <div
       className={classes.vendorRow}
+      data-testid={`vendor-row-${vendor.id}`}
       data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/vendors/${vendor.id}`)}
       role="button"
@@ -72,7 +73,11 @@ export function VendorRow({
 
       {/* Kebab */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={classes.kebabCell}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon

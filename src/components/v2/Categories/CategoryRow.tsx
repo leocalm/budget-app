@@ -37,6 +37,7 @@ export function CategoryRow({
   return (
     <div
       className={classes.categoryRow}
+      data-testid={`category-row-${category.id}`}
       data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/categories/${category.id}`)}
       role="button"
@@ -99,7 +100,11 @@ export function CategoryRow({
 
       {/* Kebab */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={classes.kebabCell}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon

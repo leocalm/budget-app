@@ -31,6 +31,7 @@ export function PeriodCard({
   return (
     <div
       className={isCurrent ? classes.periodCardCurrent : classes.periodCard}
+      data-testid={`period-card-${period.id}`}
       onClick={() => onSelect(period.id)}
       role="button"
       tabIndex={0}
@@ -106,7 +107,11 @@ export function PeriodCard({
 
       {/* Kebab menu */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={classes.kebabCell}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon variant="subtle" color="gray" size="sm" aria-label="Period actions">

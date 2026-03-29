@@ -30,7 +30,11 @@ export function CurrentPeriodSparkline({
       : generateSyntheticData(spent, daysElapsed);
 
   return (
-    <div data-testid="current-period-sparkline">
+    <div
+      data-testid="current-period-sparkline"
+      role="img"
+      aria-label="Current period spending trend"
+    >
       <AreaChart
         h={60}
         data={data}

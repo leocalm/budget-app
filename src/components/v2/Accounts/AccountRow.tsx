@@ -32,6 +32,7 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
   return (
     <div
       className={classes.accountRow}
+      data-testid={`account-row-${account.id}`}
       data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/accounts/${account.id}`)}
       role="button"
@@ -102,7 +103,11 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
 
       {/* Kebab menu */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={classes.kebabCell}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon variant="subtle" color="gray" size="sm">

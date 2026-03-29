@@ -31,6 +31,7 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
       {/* Desktop row */}
       <div
         className={classes.txnRow}
+        data-testid={`transaction-row-${transaction.id}`}
         onClick={() => onEdit(transaction)}
         role="button"
         tabIndex={0}
@@ -82,8 +83,12 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
           </Text>
         </div>
 
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-        <div className={classes.kebabCell} onClick={(e) => e.stopPropagation()}>
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+        <div
+          className={classes.kebabCell}
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
           <Menu position="bottom-end" withinPortal>
             <Menu.Target>
               <ActionIcon
@@ -134,6 +139,7 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
       {/* Mobile row */}
       <div
         className={classes.mobileTxnRow}
+        data-testid={`transaction-row-mobile-${transaction.id}`}
         onClick={() => onEdit(transaction)}
         role="button"
         tabIndex={0}
@@ -164,8 +170,8 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             <CurrencyValue cents={Math.abs(transaction.amount)} />
           </Text>
         </div>
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-        <div onClick={(e) => e.stopPropagation()}>
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+        <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
           <Menu position="bottom-end" withinPortal>
             <Menu.Target>
               <ActionIcon
