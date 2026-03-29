@@ -120,17 +120,13 @@ export function DashboardV2Page() {
 
   const saveEditing = async () => {
     try {
-      const currentPrefs = prefsData!;
-      // Derive visibleAccountIds from the order
+      if (!prefsData) {
+        return;
+      }
       const accountIdsInOrder = editOrder.filter((id) => isAccountItem(id)).map(getAccountId);
 
       await updatePrefs.mutateAsync({
-        theme: currentPrefs.theme,
-        dateFormat: currentPrefs.dateFormat,
-        numberFormat: currentPrefs.numberFormat,
-        language: currentPrefs.language,
-        compactMode: currentPrefs.compactMode,
-        colorTheme: currentPrefs.colorTheme,
+        ...prefsData,
         dashboardLayout: {
           widgetOrder: editOrder,
           hiddenWidgets: Array.from(editHidden),
@@ -264,7 +260,11 @@ export function DashboardV2Page() {
             </Stack>
           </SortableContext>
 
-          <UnstyledButton className={customizeClasses.addWidgetButton} onClick={openModal}>
+          <UnstyledButton
+            className={customizeClasses.addWidgetButton}
+            onClick={openModal}
+            aria-label="Add widget"
+          >
             <Text fz="sm" c="dimmed">
               + Add widget
             </Text>
