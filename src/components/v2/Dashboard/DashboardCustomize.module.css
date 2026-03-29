@@ -138,7 +138,6 @@
     grid-template-columns: 1fr;
   }
 
-  /* On mobile all items are full-width */
   .gridCell {
     grid-column: 1 / -1 !important;
   }
