@@ -1,20 +1,29 @@
 import { useMemo, useState } from 'react';
-import { Alert, Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
+import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PeriodCard, PeriodFormDrawer, ScheduleDrawer } from '@/components/v2/Periods';
 import classes from '@/components/v2/Periods/Periods.module.css';
 import { groupPeriods } from '@/components/v2/PeriodSelector/periodUtils';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
-  useBudgetPeriods,
   useBudgetPeriodSchedule,
   useDeleteBudgetPeriod,
+  useInfiniteBudgetPeriods,
 } from '@/hooks/v2/useBudgetPeriods';
+import { useInfiniteScroll } from '@/hooks/v2/useInfiniteScroll';
 import { toast } from '@/lib/toast';
 
 export function PeriodsV2Page() {
   const { setSelectedPeriodId } = useBudgetPeriodSelection();
-  const { data: periodsData, isLoading, isError, refetch } = useBudgetPeriods({ limit: 200 });
+  const {
+    data: infiniteData,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteBudgetPeriods();
   const { data: schedule } = useBudgetPeriodSchedule();
   const deleteMutation = useDeleteBudgetPeriod();
   const [periodDrawerOpened, { open: openPeriodDrawer, close: closePeriodDrawer }] =
@@ -23,7 +32,12 @@ export function PeriodsV2Page() {
     useDisclosure(false);
   const [editPeriodId, setEditPeriodId] = useState<string | null>(null);
 
-  const periods = periodsData?.data ?? [];
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+  });
+  const periods = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
   const isAutoGenActive = schedule?.scheduleType === 'automatic';
 
   const groups = useMemo(() => groupPeriods(periods), [periods]);
@@ -171,12 +185,13 @@ export function PeriodsV2Page() {
         </Stack>
       ))}
 
-      {periodsData?.hasMore && (
-        <Alert variant="light" color="yellow" mt="xs">
-          Showing {periods.length} of {periodsData.totalCount} periods. Some periods are not
-          displayed.
-        </Alert>
+      {isFetchingNextPage && (
+        <Stack gap="xs">
+          <Skeleton height={72} radius="lg" />
+          <Skeleton height={72} radius="lg" />
+        </Stack>
       )}
+      {hasNextPage && !isFetchingNextPage && <div ref={loadMoreRef} style={{ height: 1 }} />}
 
       <PeriodFormDrawer
         key={editPeriodId ?? 'create'}
