@@ -1,15 +1,10 @@
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { CYCLE_LABELS } from './subscriptionUtils';
 import classes from './Subscriptions.module.css';
 
 type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
-
-const CYCLE_LABELS: Record<string, string> = {
-  monthly: '/mo',
-  quarterly: '/qtr',
-  yearly: '/yr',
-};
 
 interface SubscriptionRowProps {
   subscription: SubscriptionResponse;

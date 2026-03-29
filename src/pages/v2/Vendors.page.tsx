@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
+import { Alert, Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -272,6 +272,13 @@ export function VendorsV2Page() {
             </Stack>
           )}
         </>
+      )}
+
+      {vendorsData?.hasMore && (
+        <Alert variant="light" color="yellow" mt="xs">
+          Showing {vendors.length} of {vendorsData.totalCount} vendors. Some vendors are not
+          displayed.
+        </Alert>
       )}
 
       <VendorFormDrawer

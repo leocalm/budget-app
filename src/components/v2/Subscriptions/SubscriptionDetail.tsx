@@ -16,13 +16,8 @@ import { useDeleteSubscription, useSubscription } from '@/hooks/v2/useSubscripti
 import { toast } from '@/lib/toast';
 import { CancelSubscriptionModal } from './CancelSubscriptionModal';
 import { SubscriptionFormDrawer } from './SubscriptionFormDrawer';
+import { CYCLE_LABELS, ordinal } from './subscriptionUtils';
 import classes from './Subscriptions.module.css';
-
-const CYCLE_LABELS: Record<string, string> = {
-  monthly: '/mo',
-  quarterly: '/qtr',
-  yearly: '/yr',
-};
 
 interface SubscriptionDetailProps {
   subscriptionId: string;
@@ -270,10 +265,4 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       )}
     </Stack>
   );
-}
-
-function ordinal(n: number): string {
-  const s = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }

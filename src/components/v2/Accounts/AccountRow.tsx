@@ -31,7 +31,8 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
 
   return (
     <div
-      className={isArchived ? classes.accountRowArchived : classes.accountRow}
+      className={classes.accountRow}
+      data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/accounts/${account.id}`)}
       role="button"
       tabIndex={0}

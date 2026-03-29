@@ -36,7 +36,8 @@ export function CategoryRow({
 
   return (
     <div
-      className={isArchived ? classes.categoryRowArchived : classes.categoryRow}
+      className={classes.categoryRow}
+      data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/categories/${category.id}`)}
       role="button"
       tabIndex={0}

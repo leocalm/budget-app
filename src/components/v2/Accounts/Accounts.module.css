@@ -96,16 +96,7 @@
   background-color: var(--v2-elevated);
 }
 
-.accountRowArchived {
-  display: flex;
-  align-items: center;
-  gap: var(--mantine-spacing-sm);
-  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
-  border-radius: var(--mantine-radius-lg);
-  border: 1px solid var(--v2-border);
-  background-color: var(--v2-card);
-  cursor: pointer;
-  transition: background-color 120ms ease;
+.accountRow[data-archived] {
   opacity: 0.5;
 }
 
@@ -320,8 +311,7 @@
     gap: var(--mantine-spacing-sm);
   }
 
-  .accountRow,
-  .accountRowArchived {
+  .accountRow {
     flex-wrap: wrap;
     gap: var(--mantine-spacing-xs);
     padding: var(--mantine-spacing-sm);

@@ -29,7 +29,8 @@ export function VendorRow({
 
   return (
     <div
-      className={isArchived ? classes.vendorRowArchived : classes.vendorRow}
+      className={classes.vendorRow}
+      data-archived={isArchived || undefined}
       onClick={() => navigate(`/v2/vendors/${vendor.id}`)}
       role="button"
       tabIndex={0}

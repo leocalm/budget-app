@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
+import { Alert, Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PeriodCard, PeriodFormDrawer, ScheduleDrawer } from '@/components/v2/Periods';
 import classes from '@/components/v2/Periods/Periods.module.css';
@@ -170,6 +170,13 @@ export function PeriodsV2Page() {
           ))}
         </Stack>
       ))}
+
+      {periodsData?.hasMore && (
+        <Alert variant="light" color="yellow" mt="xs">
+          Showing {periods.length} of {periodsData.totalCount} periods. Some periods are not
+          displayed.
+        </Alert>
+      )}
 
       <PeriodFormDrawer
         key={editPeriodId ?? 'create'}

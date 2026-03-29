@@ -4,14 +4,9 @@ import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useCancelSubscription } from '@/hooks/v2/useSubscriptions';
 import { toast } from '@/lib/toast';
+import { CYCLE_LABELS } from './subscriptionUtils';
 
 type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
-
-const CYCLE_LABELS: Record<string, string> = {
-  monthly: '/mo',
-  quarterly: '/qtr',
-  yearly: '/yr',
-};
 
 interface CancelSubscriptionModalProps {
   opened: boolean;
