@@ -104,11 +104,18 @@ export function DashboardV2Page() {
       order = [...DEFAULT_WIDGET_ORDER, ...activeAccounts.map((a) => `${ACCOUNT_PREFIX}${a.id}`)];
     }
 
-    // Filter: not hidden, and must be a known widget or account item
+    // Filter: not hidden, must be a known widget or existing account
     const knownWidgetIds = new Set(WIDGET_DEFINITIONS.map((w) => w.id));
-    const activeItems = order.filter(
-      (id) => !hidden.has(id) && (isAccountItem(id) || knownWidgetIds.has(id))
-    );
+    const activeAccountIds = new Set(activeAccounts.map((a) => a.id));
+    const activeItems = order.filter((id) => {
+      if (hidden.has(id)) {
+        return false;
+      }
+      if (isAccountItem(id)) {
+        return activeAccountIds.has(getAccountId(id));
+      }
+      return knownWidgetIds.has(id);
+    });
     return { order, hidden, activeItems };
   }, [prefsData, activeAccounts]);
 
@@ -125,6 +132,7 @@ export function DashboardV2Page() {
   const saveEditing = async () => {
     try {
       if (!prefsData) {
+        toast.error({ message: 'Preferences not loaded yet. Please try again.' });
         return;
       }
       const accountIdsInOrder = editOrder.filter((id) => isAccountItem(id)).map(getAccountId);
@@ -253,7 +261,12 @@ export function DashboardV2Page() {
             <Button variant="subtle" size="sm" onClick={() => setIsEditing(false)}>
               Cancel
             </Button>
-            <Button size="sm" onClick={saveEditing} loading={updatePrefs.isPending}>
+            <Button
+              size="sm"
+              onClick={saveEditing}
+              loading={updatePrefs.isPending}
+              disabled={!prefsData}
+            >
               Done
             </Button>
           </div>
