@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PiggyPulse — Lavender Midnight Variations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #0c0b12;
+        color: #e5e3ea;
+        line-height: 1.5;
+      }
+      body.light {
+        background: #f5f3f8;
+        color: #1c1924;
+      }
+
+      .toggle-bar {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: inherit;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+      }
+      .toggle-btn {
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 8px;
+        border: 1px solid rgba(128, 128, 128, 0.3);
+        background: rgba(128, 128, 128, 0.08);
+        color: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        opacity: 0.6;
+      }
+      .toggle-btn.active {
+        opacity: 1;
+        background: rgba(128, 128, 128, 0.2);
+        border-color: rgba(128, 128, 128, 0.4);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 24px;
+      }
+
+      .page-title {
+        font-family: 'Calistoga', serif;
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .page-subtitle {
+        text-align: center;
+        font-size: 15px;
+        opacity: 0.5;
+        margin-bottom: 48px;
+      }
+
+      .nav-bar {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 48px;
+      }
+      .nav-bar a {
+        font-size: 13px;
+        font-weight: 600;
+        color: inherit;
+        opacity: 0.5;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(128, 128, 128, 0.2);
+        transition: all 0.2s;
+      }
+      .nav-bar a:hover {
+        opacity: 1;
+        border-color: rgba(128, 128, 128, 0.4);
+      }
+
+      /* ── Palette Section ── */
+      .palette-section {
+        margin-bottom: 56px;
+        scroll-margin-top: 80px;
+      }
+      .palette-header {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 6px;
+      }
+      .palette-name {
+        font-family: 'Calistoga', serif;
+        font-size: 26px;
+      }
+      .palette-tag {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 6px;
+        background: rgba(128, 128, 128, 0.15);
+        opacity: 0.6;
+      }
+      .palette-desc {
+        font-size: 14px;
+        opacity: 0.55;
+        margin-bottom: 24px;
+        max-width: 620px;
+      }
+
+      .palette-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 860px) {
+        .palette-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── Mini Dashboard ── */
+      .mini-dash {
+        border-radius: 16px;
+        padding: 24px;
+        border: 1px solid var(--p-border);
+        background: var(--p-bg);
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .mini-dash h2 {
+        font-family: 'Calistoga', serif;
+        font-size: 24px;
+        margin-bottom: 4px;
+        background: var(--p-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .mini-dash .sub {
+        font-size: 13px;
+        color: var(--p-muted);
+        margin-bottom: 20px;
+      }
+      .mini-featured {
+        background: var(--p-featured-bg);
+        border: 1px solid var(--p-featured-border);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 14px;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .mini-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--p-muted);
+        margin-bottom: 6px;
+      }
+      .mini-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--p-text);
+        margin-bottom: 2px;
+      }
+      .mini-meta {
+        font-size: 12px;
+        color: var(--p-muted);
+      }
+      .mini-progress {
+        height: 6px;
+        border-radius: 99px;
+        background: var(--p-elevated);
+        overflow: hidden;
+        margin: 12px 0 6px;
+      }
+      .mini-progress-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: var(--p-gradient);
+        width: 62%;
+      }
+      .mini-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .mini-card {
+        background: var(--p-card);
+        border: 1px solid var(--p-border);
+        border-radius: 12px;
+        padding: 14px;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .mini-card .mv {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--p-text);
+      }
+
+      /* Category bars */
+      .mini-cats {
+        background: var(--p-card);
+        border: 1px solid var(--p-border);
+        border-radius: 12px;
+        padding: 14px;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .mini-cat {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+      }
+      .mini-cat:not(:last-child) {
+        border-bottom: 1px solid var(--p-border);
+      }
+      .mini-cat-name {
+        font-size: 12px;
+        font-weight: 500;
+        width: 72px;
+        flex-shrink: 0;
+        color: var(--p-text);
+      }
+      .mini-cat-bar-bg {
+        flex: 1;
+        height: 6px;
+        border-radius: 99px;
+        background: var(--p-elevated);
+        overflow: hidden;
+      }
+      .mini-cat-bar {
+        height: 100%;
+        border-radius: 99px;
+      }
+      .mini-cat-amt {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--p-muted);
+        width: 70px;
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      /* ── Swatch Column ── */
+      .swatch-col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .swatch-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .sw {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 4px;
+        border: 1px solid rgba(128, 128, 128, 0.15);
+      }
+      .sw span {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8px;
+        font-weight: 500;
+        opacity: 0.8;
+      }
+      .sw-dark span {
+        color: #eee;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .sw-light span {
+        color: #333;
+      }
+      .swatch-group-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.4;
+        margin-bottom: 4px;
+      }
+      .gradient-strip {
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .gradient-strip span {
+        font-family: 'Calistoga', serif;
+        font-size: 16px;
+        color: #fff;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+      }
+      .mini-btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .mini-btn {
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+      .mini-badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .mini-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 5px;
+      }
+
+      hr.sep {
+        border: none;
+        border-top: 1px solid rgba(128, 128, 128, 0.12);
+        margin: 0;
+      }
+    </style>
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  </head>
+  <body>
+    <div class="toggle-bar">
+      <button class="toggle-btn active" onclick="setTheme('dark')">Dark Mode</button>
+      <button class="toggle-btn" onclick="setTheme('light')">Light Mode</button>
+    </div>
+
+    <div class="container">
+      <div class="page-title">Lavender Midnight Variations</div>
+      <div class="page-subtitle">
+        Based on Palette B — no gold/yellow, deeper midnight surfaces &middot; Toggle dark/light
+        above
+      </div>
+
+      <div class="nav-bar">
+        <a href="#moonlit">B1. Moonlit</a>
+        <a href="#nebula">B2. Nebula</a>
+        <a href="#frost">B3. Frost</a>
+        <a href="#twilight">B4. Twilight</a>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- B1: MOONLIT — Lavender + Cool Silver    -->
+      <!-- ═══════════════════════════════════════ -->
+      <div
+        class="palette-section"
+        id="moonlit"
+        style="
+          --p-primary: #8b7ec8;
+          --p-secondary: #a8b4c4;
+          --p-bg: #0d0c14;
+          --p-card: #161520;
+          --p-elevated: #1e1d2b;
+          --p-text: #e0dee8;
+          --p-muted: #706c82;
+          --p-border: #28263a;
+          --p-gradient: linear-gradient(135deg, #8b7ec8, #a8b4c4);
+          --p-featured-bg: linear-gradient(
+            135deg,
+            rgba(139, 126, 200, 0.12),
+            rgba(168, 180, 196, 0.08)
+          );
+          --p-featured-border: rgba(139, 126, 200, 0.22);
+          --p-data-a: #8b7ec8;
+          --p-data-b: #a8b4c4;
+          --p-data-c: #7aadcf;
+          --p-data-d: #b088a0;
+          --p-destructive: #c4786a;
+        "
+      >
+        <div class="palette-header">
+          <div class="palette-name">B1. Moonlit</div>
+          <span class="palette-tag">Lavender + Cool Silver</span>
+        </div>
+        <div class="palette-desc">
+          Quiet moonlight on still water. Lavender primary with silver as the secondary —
+          restrained, elegant, purely cool-toned. The most minimal of the set.
+        </div>
+
+        <div class="palette-content">
+          <div class="mini-dash">
+            <h2>Dashboard</h2>
+            <div class="sub">Your financial pulse, at a glance</div>
+            <div class="mini-featured">
+              <div class="mini-label">Current Period</div>
+              <div class="mini-value">$2,847.50</div>
+              <div class="mini-meta">of $4,500 budgeted &middot; 12 days left</div>
+              <div class="mini-progress"><div class="mini-progress-fill"></div></div>
+            </div>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mini-label">Remaining</div>
+                <div class="mv">$1,652</div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-label">Daily Pace</div>
+                <div class="mv">$149.70</div>
+              </div>
+            </div>
+            <div class="mini-cats">
+              <div class="mini-label">Variable Categories</div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Groceries</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 72%; background: var(--p-data-a)"></div>
+                </div>
+                <div class="mini-cat-amt">$432/$600</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Dining</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 45%; background: var(--p-data-b)"></div>
+                </div>
+                <div class="mini-cat-amt">$135/$300</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Transport</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 88%; background: var(--p-data-c)"></div>
+                </div>
+                <div class="mini-cat-amt">$176/$200</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Shopping</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 30%; background: var(--p-data-d)"></div>
+                </div>
+                <div class="mini-cat-amt">$90/$300</div>
+              </div>
+            </div>
+          </div>
+          <div class="swatch-col">
+            <div>
+              <div class="swatch-group-label">Core Colors</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>#8B7EC8</span></div>
+                <div class="sw sw-dark" style="background: #a8b4c4"><span>#A8B4C4</span></div>
+                <div class="sw sw-dark" style="background: #c4786a"><span>#C4786A</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Data Tones</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>Lav</span></div>
+                <div class="sw sw-dark" style="background: #a8b4c4"><span>Silver</span></div>
+                <div class="sw sw-dark" style="background: #7aadcf"><span>Sky</span></div>
+                <div class="sw sw-dark" style="background: #b088a0"><span>Mauve</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Dark)</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #0d0c14"><span>BG</span></div>
+                <div class="sw sw-dark" style="background: #161520"><span>Card</span></div>
+                <div class="sw sw-dark" style="background: #1e1d2b"><span>Elev</span></div>
+                <div class="sw sw-dark" style="background: #28263a"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Light)</div>
+              <div class="swatch-row">
+                <div class="sw sw-light" style="background: #f5f4fa"><span>BG</span></div>
+                <div class="sw sw-light" style="background: #ffffff; border-color: #e4e1ee">
+                  <span>Card</span>
+                </div>
+                <div class="sw sw-light" style="background: #edebf4"><span>Elev</span></div>
+                <div class="sw sw-light" style="background: #dbd8e6"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Brand Gradient</div>
+              <div
+                class="gradient-strip"
+                style="background: linear-gradient(135deg, #8b7ec8, #a8b4c4)"
+              >
+                <span>PiggyPulse</span>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Buttons</div>
+              <div class="mini-btns">
+                <button class="mini-btn" style="background: #8b7ec8; color: #fff">Primary</button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(168, 180, 196, 0.15);
+                    color: #a8b4c4;
+                    border: 1px solid rgba(168, 180, 196, 0.3);
+                  "
+                >
+                  Secondary
+                </button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(196, 120, 106, 0.15);
+                    color: #c4786a;
+                    border: 1px solid rgba(196, 120, 106, 0.25);
+                  "
+                >
+                  Destructive
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Badges</div>
+              <div class="mini-badges">
+                <span
+                  class="mini-badge"
+                  style="background: rgba(139, 126, 200, 0.15); color: #8b7ec8"
+                  >72% used</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(168, 180, 196, 0.15); color: #a8b4c4"
+                  >$149/day</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(122, 173, 207, 0.15); color: #7aadcf"
+                  >12 days</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(176, 136, 160, 0.15); color: #b088a0"
+                  >78% stable</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep" />
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- B2: NEBULA — Lavender + Soft Rose       -->
+      <!-- ═══════════════════════════════════════ -->
+      <div
+        class="palette-section"
+        id="nebula"
+        style="
+          --p-primary: #8b7ec8;
+          --p-secondary: #c48ba0;
+          --p-bg: #0e0c15;
+          --p-card: #171521;
+          --p-elevated: #201e2d;
+          --p-text: #e3e0ea;
+          --p-muted: #736e84;
+          --p-border: #2a283c;
+          --p-gradient: linear-gradient(135deg, #8b7ec8, #c48ba0);
+          --p-featured-bg: linear-gradient(
+            135deg,
+            rgba(139, 126, 200, 0.12),
+            rgba(196, 139, 160, 0.09)
+          );
+          --p-featured-border: rgba(139, 126, 200, 0.22);
+          --p-data-a: #8b7ec8;
+          --p-data-b: #c48ba0;
+          --p-data-c: #7ca8c4;
+          --p-data-d: #9aa0cc;
+          --p-destructive: #c4786a;
+        "
+      >
+        <div class="palette-header">
+          <div class="palette-name">B2. Nebula</div>
+          <span class="palette-tag">Lavender + Dusty Rose</span>
+        </div>
+        <div class="palette-desc">
+          A soft nebula glow. Lavender and rose are analogous — they blend seamlessly into a
+          warm-cool duality that feels gentle and intimate. Piggy energy.
+        </div>
+
+        <div class="palette-content">
+          <div class="mini-dash">
+            <h2>Dashboard</h2>
+            <div class="sub">Your financial pulse, at a glance</div>
+            <div class="mini-featured">
+              <div class="mini-label">Current Period</div>
+              <div class="mini-value">$2,847.50</div>
+              <div class="mini-meta">of $4,500 budgeted &middot; 12 days left</div>
+              <div class="mini-progress"><div class="mini-progress-fill"></div></div>
+            </div>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mini-label">Remaining</div>
+                <div class="mv">$1,652</div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-label">Daily Pace</div>
+                <div class="mv">$149.70</div>
+              </div>
+            </div>
+            <div class="mini-cats">
+              <div class="mini-label">Variable Categories</div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Groceries</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 72%; background: var(--p-data-a)"></div>
+                </div>
+                <div class="mini-cat-amt">$432/$600</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Dining</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 45%; background: var(--p-data-b)"></div>
+                </div>
+                <div class="mini-cat-amt">$135/$300</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Transport</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 88%; background: var(--p-data-c)"></div>
+                </div>
+                <div class="mini-cat-amt">$176/$200</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Shopping</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 30%; background: var(--p-data-d)"></div>
+                </div>
+                <div class="mini-cat-amt">$90/$300</div>
+              </div>
+            </div>
+          </div>
+          <div class="swatch-col">
+            <div>
+              <div class="swatch-group-label">Core Colors</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>#8B7EC8</span></div>
+                <div class="sw sw-dark" style="background: var(--p-secondary)">
+                  <span>Rose</span>
+                </div>
+                <div class="sw sw-dark" style="background: #c4786a"><span>#C4786A</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Data Tones</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>Lav</span></div>
+                <div class="sw sw-dark" style="background: var(--p-data-b)"><span>Rose</span></div>
+                <div class="sw sw-dark" style="background: #7ca8c4"><span>Steel</span></div>
+                <div class="sw sw-dark" style="background: #9aa0cc"><span>Peri</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Dark)</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #0e0c15"><span>BG</span></div>
+                <div class="sw sw-dark" style="background: #171521"><span>Card</span></div>
+                <div class="sw sw-dark" style="background: #201e2d"><span>Elev</span></div>
+                <div class="sw sw-dark" style="background: #2a283c"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Light)</div>
+              <div class="swatch-row">
+                <div class="sw sw-light" style="background: #f7f4fa"><span>BG</span></div>
+                <div class="sw sw-light" style="background: #ffffff; border-color: #e8e3ee">
+                  <span>Card</span>
+                </div>
+                <div class="sw sw-light" style="background: #efecf5"><span>Elev</span></div>
+                <div class="sw sw-light" style="background: #ddd9e8"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Brand Gradient</div>
+              <div class="gradient-strip" style="background: var(--p-gradient)">
+                <span>PiggyPulse</span>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Buttons</div>
+              <div class="mini-btns">
+                <button class="mini-btn" style="background: #8b7ec8; color: #fff">Primary</button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: color-mix(in srgb, var(--p-secondary) 15%, transparent);
+                    color: var(--p-secondary);
+                    border: 1px solid color-mix(in srgb, var(--p-secondary) 30%, transparent);
+                  "
+                >
+                  Secondary
+                </button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(196, 120, 106, 0.15);
+                    color: #c4786a;
+                    border: 1px solid rgba(196, 120, 106, 0.25);
+                  "
+                >
+                  Destructive
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Badges</div>
+              <div class="mini-badges">
+                <span
+                  class="mini-badge"
+                  style="background: rgba(139, 126, 200, 0.15); color: #8b7ec8"
+                  >72% used</span
+                >
+                <span
+                  class="mini-badge"
+                  style="
+                    background: color-mix(in srgb, var(--p-secondary) 15%, transparent);
+                    color: var(--p-secondary);
+                  "
+                  >$149/day</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(124, 168, 196, 0.15); color: #7ca8c4"
+                  >12 days</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(154, 160, 204, 0.15); color: #9aa0cc"
+                  >78% stable</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep" />
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- B3: FROST — Lavender + Ice Blue         -->
+      <!-- ═══════════════════════════════════════ -->
+      <div
+        class="palette-section"
+        id="frost"
+        style="
+          --p-primary: #8b7ec8;
+          --p-secondary: #6ea4c0;
+          --p-bg: #0b0d14;
+          --p-card: #141720;
+          --p-elevated: #1c202c;
+          --p-text: #dfe2ea;
+          --p-muted: #6b7288;
+          --p-border: #262a3a;
+          --p-gradient: linear-gradient(135deg, #8b7ec8, #6ea4c0);
+          --p-featured-bg: linear-gradient(
+            135deg,
+            rgba(139, 126, 200, 0.12),
+            rgba(110, 164, 192, 0.09)
+          );
+          --p-featured-border: rgba(139, 126, 200, 0.22);
+          --p-data-a: #8b7ec8;
+          --p-data-b: #6ea4c0;
+          --p-data-c: #a88cb4;
+          --p-data-d: #7c98b4;
+          --p-destructive: #c4786a;
+        "
+      >
+        <div class="palette-header">
+          <div class="palette-name">B3. Frost</div>
+          <span class="palette-tag">Lavender + Ice Blue</span>
+        </div>
+        <div class="palette-desc">
+          Crystal clear midnight. Lavender warms the ice blue, creating a crisp but not cold
+          pairing. Strong data readability — numbers feel precise against this palette.
+        </div>
+
+        <div class="palette-content">
+          <div class="mini-dash">
+            <h2>Dashboard</h2>
+            <div class="sub">Your financial pulse, at a glance</div>
+            <div class="mini-featured">
+              <div class="mini-label">Current Period</div>
+              <div class="mini-value">$2,847.50</div>
+              <div class="mini-meta">of $4,500 budgeted &middot; 12 days left</div>
+              <div class="mini-progress"><div class="mini-progress-fill"></div></div>
+            </div>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mini-label">Remaining</div>
+                <div class="mv">$1,652</div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-label">Daily Pace</div>
+                <div class="mv">$149.70</div>
+              </div>
+            </div>
+            <div class="mini-cats">
+              <div class="mini-label">Variable Categories</div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Groceries</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 72%; background: var(--p-data-a)"></div>
+                </div>
+                <div class="mini-cat-amt">$432/$600</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Dining</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 45%; background: var(--p-data-b)"></div>
+                </div>
+                <div class="mini-cat-amt">$135/$300</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Transport</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 88%; background: var(--p-data-c)"></div>
+                </div>
+                <div class="mini-cat-amt">$176/$200</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Shopping</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 30%; background: var(--p-data-d)"></div>
+                </div>
+                <div class="mini-cat-amt">$90/$300</div>
+              </div>
+            </div>
+          </div>
+          <div class="swatch-col">
+            <div>
+              <div class="swatch-group-label">Core Colors</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>#8B7EC8</span></div>
+                <div class="sw sw-dark" style="background: #6ea4c0"><span>#6EA4C0</span></div>
+                <div class="sw sw-dark" style="background: #c4786a"><span>#C4786A</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Data Tones</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #8b7ec8"><span>Lav</span></div>
+                <div class="sw sw-dark" style="background: #6ea4c0"><span>Ice</span></div>
+                <div class="sw sw-dark" style="background: #a88cb4"><span>Plum</span></div>
+                <div class="sw sw-dark" style="background: #7c98b4"><span>Slate</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Dark)</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #0b0d14"><span>BG</span></div>
+                <div class="sw sw-dark" style="background: #141720"><span>Card</span></div>
+                <div class="sw sw-dark" style="background: #1c202c"><span>Elev</span></div>
+                <div class="sw sw-dark" style="background: #262a3a"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Light)</div>
+              <div class="swatch-row">
+                <div class="sw sw-light" style="background: #f3f5fa"><span>BG</span></div>
+                <div class="sw sw-light" style="background: #ffffff; border-color: #e1e4ee">
+                  <span>Card</span>
+                </div>
+                <div class="sw sw-light" style="background: #ebedf5"><span>Elev</span></div>
+                <div class="sw sw-light" style="background: #d6dae6"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Brand Gradient</div>
+              <div
+                class="gradient-strip"
+                style="background: linear-gradient(135deg, #8b7ec8, #6ea4c0)"
+              >
+                <span>PiggyPulse</span>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Buttons</div>
+              <div class="mini-btns">
+                <button class="mini-btn" style="background: #8b7ec8; color: #fff">Primary</button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(110, 164, 192, 0.15);
+                    color: #6ea4c0;
+                    border: 1px solid rgba(110, 164, 192, 0.3);
+                  "
+                >
+                  Secondary
+                </button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(196, 120, 106, 0.15);
+                    color: #c4786a;
+                    border: 1px solid rgba(196, 120, 106, 0.25);
+                  "
+                >
+                  Destructive
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Badges</div>
+              <div class="mini-badges">
+                <span
+                  class="mini-badge"
+                  style="background: rgba(139, 126, 200, 0.15); color: #8b7ec8"
+                  >72% used</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(110, 164, 192, 0.15); color: #6ea4c0"
+                  >$149/day</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(168, 140, 180, 0.15); color: #a88cb4"
+                  >12 days</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(124, 152, 180, 0.15); color: #7c98b4"
+                  >78% stable</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep" />
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- B4: TWILIGHT — Deeper Lav + Soft Teal   -->
+      <!-- ═══════════════════════════════════════ -->
+      <div
+        class="palette-section"
+        id="twilight"
+        style="
+          --p-primary: #7b6fb8;
+          --p-secondary: #6b9ea8;
+          --p-bg: #0a0a12;
+          --p-card: #13131e;
+          --p-elevated: #1b1b2a;
+          --p-text: #dcdae6;
+          --p-muted: #686580;
+          --p-border: #252438;
+          --p-gradient: linear-gradient(135deg, #7b6fb8, #6b9ea8);
+          --p-featured-bg: linear-gradient(
+            135deg,
+            rgba(123, 111, 184, 0.12),
+            rgba(107, 158, 168, 0.09)
+          );
+          --p-featured-border: rgba(123, 111, 184, 0.22);
+          --p-data-a: #7b6fb8;
+          --p-data-b: #6b9ea8;
+          --p-data-c: #9c82b0;
+          --p-data-d: #8090b8;
+          --p-destructive: #b87068;
+        "
+      >
+        <div class="palette-header">
+          <div class="palette-name">B4. Twilight</div>
+          <span class="palette-tag">Deep Lavender + Muted Teal</span>
+        </div>
+        <div class="palette-desc">
+          The deepest midnight of the set. A slightly darker, more muted lavender paired with quiet
+          teal. Maximum calm — the app equivalent of a dimmed room with soft light.
+        </div>
+
+        <div class="palette-content">
+          <div class="mini-dash">
+            <h2>Dashboard</h2>
+            <div class="sub">Your financial pulse, at a glance</div>
+            <div class="mini-featured">
+              <div class="mini-label">Current Period</div>
+              <div class="mini-value">$2,847.50</div>
+              <div class="mini-meta">of $4,500 budgeted &middot; 12 days left</div>
+              <div class="mini-progress"><div class="mini-progress-fill"></div></div>
+            </div>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mini-label">Remaining</div>
+                <div class="mv">$1,652</div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-label">Daily Pace</div>
+                <div class="mv">$149.70</div>
+              </div>
+            </div>
+            <div class="mini-cats">
+              <div class="mini-label">Variable Categories</div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Groceries</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 72%; background: var(--p-data-a)"></div>
+                </div>
+                <div class="mini-cat-amt">$432/$600</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Dining</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 45%; background: var(--p-data-b)"></div>
+                </div>
+                <div class="mini-cat-amt">$135/$300</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Transport</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 88%; background: var(--p-data-c)"></div>
+                </div>
+                <div class="mini-cat-amt">$176/$200</div>
+              </div>
+              <div class="mini-cat">
+                <div class="mini-cat-name">Shopping</div>
+                <div class="mini-cat-bar-bg">
+                  <div class="mini-cat-bar" style="width: 30%; background: var(--p-data-d)"></div>
+                </div>
+                <div class="mini-cat-amt">$90/$300</div>
+              </div>
+            </div>
+          </div>
+          <div class="swatch-col">
+            <div>
+              <div class="swatch-group-label">Core Colors</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #7b6fb8"><span>#7B6FB8</span></div>
+                <div class="sw sw-dark" style="background: #6b9ea8"><span>#6B9EA8</span></div>
+                <div class="sw sw-dark" style="background: #b87068"><span>#B87068</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Data Tones</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #7b6fb8"><span>Lav</span></div>
+                <div class="sw sw-dark" style="background: #6b9ea8"><span>Teal</span></div>
+                <div class="sw sw-dark" style="background: #9c82b0"><span>Grape</span></div>
+                <div class="sw sw-dark" style="background: #8090b8"><span>Storm</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Dark)</div>
+              <div class="swatch-row">
+                <div class="sw sw-dark" style="background: #0a0a12"><span>BG</span></div>
+                <div class="sw sw-dark" style="background: #13131e"><span>Card</span></div>
+                <div class="sw sw-dark" style="background: #1b1b2a"><span>Elev</span></div>
+                <div class="sw sw-dark" style="background: #252438"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Surfaces (Light)</div>
+              <div class="swatch-row">
+                <div class="sw sw-light" style="background: #f4f3f9"><span>BG</span></div>
+                <div class="sw sw-light" style="background: #ffffff; border-color: #e2dfec">
+                  <span>Card</span>
+                </div>
+                <div class="sw sw-light" style="background: #eceaf4"><span>Elev</span></div>
+                <div class="sw sw-light" style="background: #d8d5e4"><span>Bdr</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Brand Gradient</div>
+              <div
+                class="gradient-strip"
+                style="background: linear-gradient(135deg, #7b6fb8, #6b9ea8)"
+              >
+                <span>PiggyPulse</span>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Buttons</div>
+              <div class="mini-btns">
+                <button class="mini-btn" style="background: #7b6fb8; color: #fff">Primary</button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(107, 158, 168, 0.15);
+                    color: #6b9ea8;
+                    border: 1px solid rgba(107, 158, 168, 0.3);
+                  "
+                >
+                  Secondary
+                </button>
+                <button
+                  class="mini-btn"
+                  style="
+                    background: rgba(184, 112, 104, 0.15);
+                    color: #b87068;
+                    border: 1px solid rgba(184, 112, 104, 0.25);
+                  "
+                >
+                  Destructive
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="swatch-group-label">Badges</div>
+              <div class="mini-badges">
+                <span
+                  class="mini-badge"
+                  style="background: rgba(123, 111, 184, 0.15); color: #7b6fb8"
+                  >72% used</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(107, 158, 168, 0.15); color: #6b9ea8"
+                  >$149/day</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(156, 130, 176, 0.15); color: #9c82b0"
+                  >12 days</span
+                >
+                <span
+                  class="mini-badge"
+                  style="background: rgba(128, 144, 184, 0.15); color: #8090b8"
+                  >78% stable</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 80px"></div>
+    </div>
+
+    <script>
+      function setTheme(mode) {
+        document.body.classList.toggle('light', mode === 'light');
+        document.querySelectorAll('.toggle-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode));
+        });
+
+        const lightSurfaces = {
+          moonlit: {
+            bg: '#F5F4FA',
+            card: '#FFFFFF',
+            elevated: '#EDEBF4',
+            border: '#DBD8E6',
+            text: '#1C1924',
+            muted: '#7E7A90',
+          },
+          nebula: {
+            bg: '#F7F4FA',
+            card: '#FFFFFF',
+            elevated: '#EFECF5',
+            border: '#DDD9E8',
+            text: '#1C1924',
+            muted: '#7E7A90',
+          },
+          frost: {
+            bg: '#F3F5FA',
+            card: '#FFFFFF',
+            elevated: '#EBEDF5',
+            border: '#D6DAE6',
+            text: '#181C24',
+            muted: '#6B7288',
+          },
+          twilight: {
+            bg: '#F4F3F9',
+            card: '#FFFFFF',
+            elevated: '#ECEAF4',
+            border: '#D8D5E4',
+            text: '#161420',
+            muted: '#686580',
+          },
+        };
+        const darkSurfaces = {
+          moonlit: {
+            bg: '#0D0C14',
+            card: '#161520',
+            elevated: '#1E1D2B',
+            border: '#28263A',
+            text: '#E0DEE8',
+            muted: '#706C82',
+          },
+          nebula: {
+            bg: '#0E0C15',
+            card: '#171521',
+            elevated: '#201E2D',
+            border: '#2A283C',
+            text: '#E3E0EA',
+            muted: '#736E84',
+          },
+          frost: {
+            bg: '#0B0D14',
+            card: '#141720',
+            elevated: '#1C202C',
+            border: '#262A3A',
+            text: '#DFE2EA',
+            muted: '#6B7288',
+          },
+          twilight: {
+            bg: '#0A0A12',
+            card: '#13131E',
+            elevated: '#1B1B2A',
+            border: '#252438',
+            text: '#DCDAE6',
+            muted: '#686580',
+          },
+        };
+
+        // Nebula light mode: lighten the rose secondary for better contrast on white
+        const nebulaAccents = {
+          light: {
+            secondary: '#D4A0B6',
+            dataB: '#D4A0B6',
+            gradient: 'linear-gradient(135deg, #7B6DB8, #D4A0B6)',
+          },
+          dark: {
+            secondary: '#C48BA0',
+            dataB: '#C48BA0',
+            gradient: 'linear-gradient(135deg, #8B7EC8, #C48BA0)',
+          },
+        };
+
+        document.querySelectorAll('.palette-section').forEach((section) => {
+          const id = section.id;
+          const v = mode === 'light' ? lightSurfaces[id] : darkSurfaces[id];
+          if (v) {
+            section.style.setProperty('--p-bg', v.bg);
+            section.style.setProperty('--p-card', v.card);
+            section.style.setProperty('--p-elevated', v.elevated);
+            section.style.setProperty('--p-border', v.border);
+            section.style.setProperty('--p-text', v.text);
+            section.style.setProperty('--p-muted', v.muted);
+          }
+          // Swap nebula accents
+          if (id === 'nebula') {
+            const na = nebulaAccents[mode];
+            section.style.setProperty('--p-secondary', na.secondary);
+            section.style.setProperty('--p-data-b', na.dataB);
+            section.style.setProperty('--p-gradient', na.gradient);
+            // Update featured bg
+            const prim = mode === 'light' ? '#7B6DB8' : '#8B7EC8';
+            section.style.setProperty(
+              '--p-featured-bg',
+              `linear-gradient(135deg, rgba(139,126,200,0.10), ${hexToRgba(na.secondary, 0.08)})`
+            );
+            section.style.setProperty('--p-featured-border', hexToRgba(prim, 0.18));
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

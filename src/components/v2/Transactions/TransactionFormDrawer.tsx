@@ -56,12 +56,8 @@ export function TransactionFormDrawer({
       setCategoryId(editTransaction.category.id);
       setFromAccountId(editTransaction.fromAccount.id);
       setVendorId(editTransaction.vendor?.id ?? null);
-      if (
-        editTransaction.transactionType === 'transfer' &&
-        'toAccount' in editTransaction &&
-        editTransaction.toAccount
-      ) {
-        setToAccountId(editTransaction.toAccount.id);
+      if (editTransaction.transactionType === 'transfer' && editTransaction.toAccount) {
+        setToAccountId((editTransaction.toAccount as components['schemas']['AccountRef']).id);
       }
     }
   }, [isEdit, editTransaction]);

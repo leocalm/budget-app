@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '@mantine/core';
@@ -318,21 +319,24 @@ function CreditCardDetail({ acct }: { acct: AccountExt }) {
 }
 
 function DateBox({ label, day }: { label: string; day: number }) {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const lastDay = new Date(year, month + 1, 0).getDate();
-  const clamped = Math.min(day, lastDay);
-  const thisMonth = new Date(year, month, clamped);
-  const nextDate =
-    thisMonth > now
-      ? thisMonth
-      : new Date(year, month + 1, Math.min(day, new Date(year, month + 2, 0).getDate()));
-  const msUntil = nextDate.getTime() - new Date(year, now.getMonth(), now.getDate()).getTime();
-  const daysUntil = Math.ceil(msUntil / (1000 * 60 * 60 * 24));
-  const formatted = nextDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-  const daysLabel =
-    daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`;
+  const { formatted, daysLabel } = useMemo(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    const clamped = Math.min(day, lastDay);
+    const thisMonth = new Date(year, month, clamped);
+    const nextDate =
+      thisMonth > now
+        ? thisMonth
+        : new Date(year, month + 1, Math.min(day, new Date(year, month + 2, 0).getDate()));
+    const msUntil = nextDate.getTime() - new Date(year, now.getMonth(), now.getDate()).getTime();
+    const daysUntil = Math.ceil(msUntil / (1000 * 60 * 60 * 24));
+    return {
+      formatted: nextDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+      daysLabel: daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`,
+    };
+  }, [day]);
 
   return (
     <div className={classes.dateBox}>

@@ -37,12 +37,12 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
       setStartDate(editData.startDate);
       setPeriodType(editData.periodType);
       if (editData.periodType === 'duration' && 'duration' in editData) {
-        const dur = editData.duration as { durationUnits: number; durationUnit: DurationUnit };
+        const dur = (editData as components['schemas']['DurationBased']).duration;
         setDurationUnits(dur.durationUnits);
-        setDurationUnit(dur.durationUnit);
+        setDurationUnit(dur.durationUnit as DurationUnit);
       }
       if (editData.periodType === 'manualEndDate' && 'manualEndDate' in editData) {
-        setManualEndDate(editData.manualEndDate as string);
+        setManualEndDate((editData as components['schemas']['ManualEndDate']).manualEndDate);
       }
     }
   }, [isEdit, editData]);
@@ -75,13 +75,14 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
     try {
       if (isEdit && editPeriodId) {
-        const updateBody = {
-          ...body,
-          periodType: 'UpdatePeriodRequest' as const,
+        const { periodType: _, ...rest } = body;
+        const updateBody: components['schemas']['UpdatePeriodRequest'] = {
+          ...rest,
+          periodType: 'UpdatePeriodRequest',
         };
         await updateMutation.mutateAsync({
           id: editPeriodId,
-          body: updateBody as components['schemas']['UpdatePeriodRequest'],
+          body: updateBody,
         });
         toast.success({ message: 'Period updated' });
       } else {

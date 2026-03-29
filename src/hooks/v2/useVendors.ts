@@ -141,12 +141,12 @@ export function useVendorDetail(id: string, periodId: string) {
   });
 }
 
-export function useVendorStats(periodId: string) {
+export function useVendorStats(periodId: string | null) {
   return useQuery({
-    queryKey: v2QueryKeys.vendors.stats(periodId),
+    queryKey: v2QueryKeys.vendors.stats(periodId ?? ''),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/vendors/stats', {
-        params: { query: { periodId } },
+        params: { query: { periodId: periodId! } },
       });
       if (error) {
         throw error;

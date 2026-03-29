@@ -19,14 +19,14 @@ export function useAccounts(params: { cursor?: string; limit?: number } = {}) {
 }
 
 export function useAccountsSummary(
-  periodId: string,
+  periodId: string | null,
   params: { cursor?: string; limit?: number } = {}
 ) {
   return useQuery({
-    queryKey: v2QueryKeys.accounts.summary(periodId, params),
+    queryKey: v2QueryKeys.accounts.summary(periodId ?? '', params),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/accounts/summary', {
-        params: { query: { periodId, ...params } },
+        params: { query: { periodId: periodId!, ...params } },
       });
       if (error) {
         throw error;

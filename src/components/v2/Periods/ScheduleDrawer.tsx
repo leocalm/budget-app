@@ -140,13 +140,12 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
       };
 
       if (isExisting) {
-        const updateBody = {
-          ...body,
-          scheduleType: 'UpdatePeriodScheduleRequest' as const,
+        const { scheduleType: _, ...rest } = body;
+        const updateBody: components['schemas']['UpdatePeriodScheduleRequest'] = {
+          ...rest,
+          scheduleType: 'UpdatePeriodScheduleRequest',
         };
-        await updateMutation.mutateAsync(
-          updateBody as unknown as components['schemas']['UpdatePeriodScheduleRequest']
-        );
+        await updateMutation.mutateAsync(updateBody);
         toast.success({ message: 'Schedule updated' });
       } else {
         await createMutation.mutateAsync(body);

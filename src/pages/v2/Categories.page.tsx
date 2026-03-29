@@ -23,7 +23,7 @@ export function CategoriesV2Page() {
     isLoading,
     isError,
     refetch,
-  } = useCategoriesOverview(selectedPeriodId ?? '');
+  } = useCategoriesOverview(selectedPeriodId);
   const archiveMutation = useArchiveCategory();
   const unarchiveMutation = useUnarchiveCategory();
   const deleteMutation = useDeleteCategory();

@@ -24,12 +24,7 @@ const TYPE_LABELS: Record<AccountType, string> = {
 
 export function AccountsV2Page() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const {
-    data: summaryData,
-    isLoading,
-    isError,
-    refetch,
-  } = useAccountsSummary(selectedPeriodId ?? '');
+  const { data: summaryData, isLoading, isError, refetch } = useAccountsSummary(selectedPeriodId);
   const archiveMutation = useArchiveAccount();
   const unarchiveMutation = useUnarchiveAccount();
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);

@@ -3,12 +3,12 @@ import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
 
-export function useCategoryTargets(periodId: string) {
+export function useCategoryTargets(periodId: string | null) {
   return useQuery({
-    queryKey: v2QueryKeys.categoryTargets.list(periodId),
+    queryKey: v2QueryKeys.categoryTargets.list(periodId ?? ''),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/targets', {
-        params: { query: { periodId } },
+        params: { query: { periodId: periodId! } },
       });
       if (error) {
         throw error;

@@ -11,12 +11,7 @@ type TargetItem = components['schemas']['TargetItem'];
 
 export function TargetsV2Page() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const {
-    data: targetsData,
-    isLoading,
-    isError,
-    refetch,
-  } = useCategoryTargets(selectedPeriodId ?? '');
+  const { data: targetsData, isLoading, isError, refetch } = useCategoryTargets(selectedPeriodId);
   const targets = targetsData?.targets ?? [];
   const summary = targetsData?.summary;
 

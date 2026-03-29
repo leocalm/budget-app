@@ -4,6 +4,14 @@ import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import classes from './Transactions.module.css';
 
 type TransactionResponse = components['schemas']['TransactionResponse'];
+type AccountRef = components['schemas']['AccountRef'];
+
+function getTransferToAccount(txn: TransactionResponse): AccountRef | null {
+  if (txn.transactionType === 'transfer' && txn.toAccount) {
+    return txn.toAccount as AccountRef;
+  }
+  return null;
+}
 
 interface TransactionRowProps {
   transaction: TransactionResponse;
@@ -67,9 +75,8 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
           <Text fz="xs" c="dimmed">
             {transaction.fromAccount.name}
             {isTransfer &&
-              'toAccount' in transaction &&
-              transaction.toAccount &&
-              ` → ${transaction.toAccount.name}`}
+              getTransferToAccount(transaction) &&
+              ` → ${getTransferToAccount(transaction)!.name}`}
           </Text>
         </div>
 

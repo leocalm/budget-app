@@ -18,12 +18,12 @@ export function useCategories(params: { cursor?: string; limit?: number } = {}) 
   });
 }
 
-export function useCategoriesOverview(periodId: string) {
+export function useCategoriesOverview(periodId: string | null) {
   return useQuery({
-    queryKey: v2QueryKeys.categories.overview(periodId),
+    queryKey: v2QueryKeys.categories.overview(periodId ?? ''),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/categories/overview', {
-        params: { query: { periodId } },
+        params: { query: { periodId: periodId! } },
       });
       if (error) {
         throw error;

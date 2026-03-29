@@ -20,7 +20,7 @@ type VendorSummary = components['schemas']['VendorSummaryResponse'];
 export function VendorsV2Page() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: vendorsData, isLoading, isError, refetch } = useVendors({ limit: 200 });
-  const { data: stats } = useVendorStats(selectedPeriodId ?? '');
+  const { data: stats } = useVendorStats(selectedPeriodId);
   const archiveMutation = useArchiveVendor();
   const unarchiveMutation = useUnarchiveVendor();
   const deleteMutation = useDeleteVendor();
