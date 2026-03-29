@@ -73,13 +73,6 @@ export const WIDGET_DEFINITIONS: WidgetDefinition[] = [
     desc: 'Recurring charges timeline',
     defaultVisible: false,
   },
-  {
-    id: 'budget_stability',
-    emoji: '\u{1F4CA}',
-    name: 'Budget Stability',
-    desc: 'Historical consistency',
-    defaultVisible: false,
-  },
 ];
 
 /** Default widget order — hero cards first, then grid cards */

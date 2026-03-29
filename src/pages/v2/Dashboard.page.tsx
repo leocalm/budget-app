@@ -42,6 +42,16 @@ import { useAccounts } from '@/hooks/v2/useAccounts';
 import { usePreferences, useUpdatePreferences } from '@/hooks/v2/useSettings';
 import { toast } from '@/lib/toast';
 
+const ACCOUNT_PREFIX = 'account:';
+
+function isAccountItem(id: string): boolean {
+  return id.startsWith(ACCOUNT_PREFIX);
+}
+
+function getAccountId(itemId: string): string {
+  return itemId.slice(ACCOUNT_PREFIX.length);
+}
+
 function renderWidget(widgetId: string, periodId: string) {
   switch (widgetId) {
     case 'current_period':
@@ -78,30 +88,42 @@ export function DashboardV2Page() {
 
   const accounts = accountsData?.data ?? [];
   const activeAccounts = accounts.filter((a) => a.status === 'active');
+  const accountMap = useMemo(() => new Map(activeAccounts.map((a) => [a.id, a])), [activeAccounts]);
 
+  // Build the full order: widgets + account items
   const layout = useMemo(() => {
     const prefs = prefsData?.dashboardLayout;
-    const order = prefs?.widgetOrder?.length ? prefs.widgetOrder : DEFAULT_WIDGET_ORDER;
+    const savedOrder = prefs?.widgetOrder ?? [];
     const hidden = new Set(prefs?.hiddenWidgets ?? []);
-    const visibleAccountIds = prefs?.visibleAccountIds ?? null;
-    const activeWidgets = order.filter((id) => !hidden.has(id));
-    return { order, hidden, activeWidgets, visibleAccountIds };
-  }, [prefsData]);
 
+    // If no saved order, build default: default widgets + all active accounts
+    let order: string[];
+    if (savedOrder.length > 0) {
+      order = savedOrder;
+    } else {
+      order = [...DEFAULT_WIDGET_ORDER, ...activeAccounts.map((a) => `${ACCOUNT_PREFIX}${a.id}`)];
+    }
+
+    const activeItems = order.filter((id) => !hidden.has(id));
+    return { order, hidden, activeItems };
+  }, [prefsData, activeAccounts]);
+
+  // Editable state
   const [editOrder, setEditOrder] = useState<string[]>([]);
   const [editHidden, setEditHidden] = useState<Set<string>>(new Set());
-  const [editAccountIds, setEditAccountIds] = useState<string[] | null>(null);
 
   const startEditing = () => {
-    setEditOrder([...layout.activeWidgets]);
+    setEditOrder([...layout.activeItems]);
     setEditHidden(new Set(layout.hidden));
-    setEditAccountIds(layout.visibleAccountIds ? [...layout.visibleAccountIds] : null);
     setIsEditing(true);
   };
 
   const saveEditing = async () => {
     try {
       const currentPrefs = prefsData!;
+      // Derive visibleAccountIds from the order
+      const accountIdsInOrder = editOrder.filter((id) => isAccountItem(id)).map(getAccountId);
+
       await updatePrefs.mutateAsync({
         theme: currentPrefs.theme,
         dateFormat: currentPrefs.dateFormat,
@@ -112,7 +134,7 @@ export function DashboardV2Page() {
         dashboardLayout: {
           widgetOrder: editOrder,
           hiddenWidgets: Array.from(editHidden),
-          visibleAccountIds: editAccountIds ?? undefined,
+          visibleAccountIds: accountIdsInOrder.length > 0 ? accountIdsInOrder : undefined,
         },
       });
       setIsEditing(false);
@@ -122,22 +144,10 @@ export function DashboardV2Page() {
     }
   };
 
-  const handleRemoveWidget = useCallback((id: string) => {
+  const handleRemoveItem = useCallback((id: string) => {
     setEditOrder((prev) => prev.filter((w) => w !== id));
     setEditHidden((prev) => new Set([...prev, id]));
   }, []);
-
-  const handleRemoveAccount = useCallback(
-    (accountId: string) => {
-      setEditAccountIds((prev) => {
-        if (prev === null) {
-          return activeAccounts.filter((a) => a.id !== accountId).map((a) => a.id);
-        }
-        return prev.filter((id) => id !== accountId);
-      });
-    },
-    [activeAccounts]
-  );
 
   const handleAddWidget = useCallback((id: string) => {
     setEditHidden((prev) => {
@@ -149,12 +159,13 @@ export function DashboardV2Page() {
   }, []);
 
   const handleAddAccount = useCallback((accountId: string) => {
-    setEditAccountIds((prev) => {
-      if (prev === null) {
-        return null;
-      }
-      return prev.includes(accountId) ? prev : [...prev, accountId];
+    const itemId = `${ACCOUNT_PREFIX}${accountId}`;
+    setEditHidden((prev) => {
+      const next = new Set(prev);
+      next.delete(itemId);
+      return next;
     });
+    setEditOrder((prev) => (prev.includes(itemId) ? prev : [...prev, itemId]));
   }, []);
 
   const sensors = useSensors(
@@ -174,23 +185,13 @@ export function DashboardV2Page() {
     }
   }, []);
 
-  const visibleWidgetIds = isEditing ? editOrder : layout.activeWidgets;
-  const visibleAccounts = useMemo(() => {
-    const ids = isEditing ? editAccountIds : layout.visibleAccountIds;
-    if (ids === null) {
-      return activeAccounts;
-    }
-    const idSet = new Set(ids);
-    return activeAccounts.filter((a) => idSet.has(a.id));
-  }, [isEditing, editAccountIds, layout.visibleAccountIds, activeAccounts]);
+  const visibleItems = isEditing ? editOrder : layout.activeItems;
 
-  const activeWidgetIdSet = useMemo(
-    () => new Set(isEditing ? editOrder : layout.activeWidgets),
-    [isEditing, editOrder, layout.activeWidgets]
-  );
+  // For the add modal
+  const activeItemIdSet = useMemo(() => new Set(visibleItems), [visibleItems]);
   const activeAccountIdSet = useMemo(
-    () => new Set(visibleAccounts.map((a) => a.id)),
-    [visibleAccounts]
+    () => new Set(visibleItems.filter(isAccountItem).map(getAccountId)),
+    [visibleItems]
   );
 
   if (!selectedPeriodId) {
@@ -208,11 +209,15 @@ export function DashboardV2Page() {
     );
   }
 
-  const heroWidgetIds = visibleWidgetIds.filter((id) => {
+  // Separate hero from grid items for view mode
+  const heroItems = visibleItems.filter((id) => {
     const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
     return def?.isHero;
   });
-  const gridWidgetIds = visibleWidgetIds.filter((id) => {
+  const gridItems = visibleItems.filter((id) => {
+    if (isAccountItem(id)) {
+      return true; // accounts are grid items
+    }
     const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
     return def && !def.isHero;
   });
@@ -249,44 +254,15 @@ export function DashboardV2Page() {
           <SortableContext items={editOrder} strategy={verticalListSortingStrategy}>
             <Stack gap="sm">
               {editOrder.map((id) => (
-                <SortableWidgetPlaceholder key={id} id={id} onRemove={handleRemoveWidget} />
+                <SortableItemPlaceholder
+                  key={id}
+                  id={id}
+                  accountMap={accountMap}
+                  onRemove={handleRemoveItem}
+                />
               ))}
             </Stack>
           </SortableContext>
-
-          {visibleAccounts.length > 0 && (
-            <Stack gap="sm">
-              <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-                Account Cards
-              </Text>
-              {visibleAccounts.map((acct) => (
-                <div key={acct.id} className={customizeClasses.placeholderCard}>
-                  <span className={customizeClasses.dragHandle}>
-                    <Text fz="sm" c="dimmed">
-                      🏦
-                    </Text>
-                  </span>
-                  <div className={customizeClasses.placeholderInfo}>
-                    <Text fz="sm" fw={600}>
-                      {acct.name}
-                    </Text>
-                    <Text fz="xs" c="dimmed">
-                      Individual account card
-                    </Text>
-                  </div>
-                  <ActionIcon
-                    variant="subtle"
-                    color="gray"
-                    size="sm"
-                    onClick={() => handleRemoveAccount(acct.id)}
-                    aria-label={`Remove ${acct.name}`}
-                  >
-                    <Text fz="sm">✕</Text>
-                  </ActionIcon>
-                </div>
-              ))}
-            </Stack>
-          )}
 
           <UnstyledButton className={customizeClasses.addWidgetButton} onClick={openModal}>
             <Text fz="sm" c="dimmed">
@@ -296,33 +272,22 @@ export function DashboardV2Page() {
         </DndContext>
       ) : (
         <>
-          {heroWidgetIds.map((id) => (
+          {heroItems.map((id) => (
             <div key={id}>{renderWidget(id, selectedPeriodId)}</div>
           ))}
 
-          {gridWidgetIds.length > 0 && (
+          {gridItems.length > 0 && (
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-              {gridWidgetIds.map((id) => (
-                <div key={id}>{renderWidget(id, selectedPeriodId)}</div>
+              {gridItems.map((id) => (
+                <div key={id}>
+                  {isAccountItem(id) ? (
+                    <AccountCard accountId={getAccountId(id)} periodId={selectedPeriodId} />
+                  ) : (
+                    renderWidget(id, selectedPeriodId)
+                  )}
+                </div>
               ))}
             </SimpleGrid>
-          )}
-
-          {visibleAccounts.length > 0 && (
-            <>
-              <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mt="md">
-                Your Accounts
-              </Text>
-              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-                {visibleAccounts.map((account) => (
-                  <AccountCard
-                    key={account.id}
-                    accountId={account.id}
-                    periodId={selectedPeriodId}
-                  />
-                ))}
-              </SimpleGrid>
-            </>
           )}
         </>
       )}
@@ -330,7 +295,7 @@ export function DashboardV2Page() {
       <AddWidgetModal
         opened={modalOpened}
         onClose={closeModal}
-        activeWidgetIds={activeWidgetIdSet}
+        activeWidgetIds={activeItemIdSet}
         accounts={activeAccounts}
         activeAccountIds={activeAccountIdSet}
         onAddWidget={handleAddWidget}
@@ -340,11 +305,17 @@ export function DashboardV2Page() {
   );
 }
 
-function SortableWidgetPlaceholder({
+// ---------------------------------------------------------------------------
+// Sortable placeholder — handles both widgets and account cards
+// ---------------------------------------------------------------------------
+
+function SortableItemPlaceholder({
   id,
+  accountMap,
   onRemove,
 }: {
   id: string;
+  accountMap: Map<string, { name: string }>;
   onRemove: (id: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -356,7 +327,21 @@ function SortableWidgetPlaceholder({
     transition,
   };
 
-  const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
+  let emoji: string;
+  let name: string;
+  let desc: string;
+
+  if (isAccountItem(id)) {
+    const acct = accountMap.get(getAccountId(id));
+    emoji = '🏦';
+    name = acct?.name ?? 'Account';
+    desc = 'Individual account card';
+  } else {
+    const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
+    emoji = def?.emoji ?? '📦';
+    name = def?.name ?? id;
+    desc = def?.desc ?? '';
+  }
 
   return (
     <div
@@ -372,10 +357,10 @@ function SortableWidgetPlaceholder({
       </span>
       <div className={customizeClasses.placeholderInfo}>
         <Text fz="sm" fw={600}>
-          {def?.emoji} {def?.name ?? id}
+          {emoji} {name}
         </Text>
         <Text fz="xs" c="dimmed">
-          {def?.desc ?? ''}
+          {desc}
         </Text>
       </div>
       <ActionIcon
@@ -383,7 +368,7 @@ function SortableWidgetPlaceholder({
         color="gray"
         size="sm"
         onClick={() => onRemove(id)}
-        aria-label={`Remove ${def?.name ?? id}`}
+        aria-label={`Remove ${name}`}
       >
         <Text fz="sm">✕</Text>
       </ActionIcon>
