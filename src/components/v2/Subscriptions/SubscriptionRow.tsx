@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -25,6 +26,7 @@ export function SubscriptionRow({
   onCancel,
   onDelete,
 }: SubscriptionRowProps) {
+  const { t } = useTranslation('v2');
   const isCancelled = subscription.status === 'cancelled';
   const cycleLabel = CYCLE_LABELS[subscription.billingCycle] ?? '';
 
@@ -38,7 +40,11 @@ export function SubscriptionRow({
   const next = new Date(`${subscription.nextChargeDate}T00:00:00`);
   const daysUntil = Math.ceil((next.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   const timeLabel =
-    daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`;
+    daysUntil === 0
+      ? t('common.today')
+      : daysUntil === 1
+        ? t('common.tomorrow')
+        : t('common.inDays', { count: daysUntil });
 
   return (
     <div
@@ -66,7 +72,7 @@ export function SubscriptionRow({
           {subscription.name}
         </Text>
         <Text fz="xs" c="dimmed">
-          {isCancelled ? 'Cancelled' : `Next: ${nextDate}`}
+          {isCancelled ? t('common.cancelled') : `Next: ${nextDate}`}
         </Text>
       </div>
 
@@ -107,14 +113,14 @@ export function SubscriptionRow({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={() => onEdit(subscription.id)}>Edit</Menu.Item>
+            <Menu.Item onClick={() => onEdit(subscription.id)}>{t('common.edit')}</Menu.Item>
             {!isCancelled && (
               <Menu.Item color="orange" onClick={() => onCancel(subscription)}>
-                Cancel
+                {t('common.cancel')}
               </Menu.Item>
             )}
             <Menu.Item color="red" onClick={() => onDelete(subscription.id)}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

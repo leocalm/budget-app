@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import type { AccountExt } from './AccountCard.types';
@@ -54,10 +55,12 @@ interface HeroSubtitleProps {
 
 /** Subtitle line beneath the hero balance — varies by account type. */
 export function HeroSubtitle({ acct, changePrefix }: HeroSubtitleProps) {
+  const { t } = useTranslation('v2');
+
   if (acct.type === 'CreditCard') {
     return (
       <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)" mt={4}>
-        current balance
+        {t('dashboard.account.currentBalance')}
       </Text>
     );
   }
@@ -74,7 +77,7 @@ export function HeroSubtitle({ acct, changePrefix }: HeroSubtitleProps) {
         {changePrefix}
         <CurrencyValue cents={Math.abs(acct.netChangeThisPeriod)} />
       </span>{' '}
-      this period
+      {t('common.thisPeriod')}
     </Text>
   );
 }

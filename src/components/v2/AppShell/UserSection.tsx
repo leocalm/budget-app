@@ -1,4 +1,5 @@
 import { IconLogout, IconMoon, IconSettings, IconSun } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Avatar, Group, Menu, Stack, Text, useMantineColorScheme } from '@mantine/core';
 import { useAuth } from '@/context/AuthContext';
@@ -14,6 +15,7 @@ interface UserSectionProps {
 }
 
 export function UserSection({ name, email, collapsed }: UserSectionProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -43,7 +45,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
               radius="xl"
               data-testid="user-avatar"
               style={{ cursor: 'pointer' }}
-              aria-label="User menu"
+              aria-label={t('appShell.userMenu')}
             >
               {initials}
             </Avatar>
@@ -53,11 +55,11 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
               leftSection={<IconSettings size={14} />}
               onClick={() => navigate('/v2/settings')}
             >
-              Settings
+              {t('common.settings')}
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item leftSection={<IconLogout size={14} />} color="red" onClick={handleLogout}>
-              Log out
+              {t('common.logOut')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -105,7 +107,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
         variant="subtle"
         size="sm"
         onClick={toggleColorScheme}
-        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        aria-label={isDark ? t('appShell.switchToLightMode') : t('appShell.switchToDarkMode')}
       >
         {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
       </ActionIcon>

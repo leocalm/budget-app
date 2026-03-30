@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDashboardTopVendors } from '@/hooks/v2/useDashboard';
@@ -8,6 +9,7 @@ interface TopVendorsCardProps {
 }
 
 export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardTopVendors(periodId);
 
   if (isLoading) {
@@ -19,13 +21,13 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
       <div className={classes.card} data-testid="top-vendors-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Top Vendors
+            {t('dashboard.topVendors.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your top vendors.
+            {t('dashboard.topVendors.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -37,10 +39,10 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
       <div className={classes.card} data-testid="top-vendors-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Top Vendors
+            {t('dashboard.topVendors.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            No vendor transactions this period.
+            {t('dashboard.topVendors.empty')}
           </Text>
         </div>
       </div>
@@ -51,7 +53,7 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
     <div className={classes.card} data-testid="top-vendors-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Top Vendors
+          {t('dashboard.topVendors.title')}
         </Text>
       </div>
 
@@ -63,7 +65,7 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
               fw={700}
               c="dimmed"
               className={classes.vendorRank}
-              aria-label={`Rank ${index + 1}`}
+              aria-label={t('dashboard.topVendors.rankAria', { rank: index + 1 })}
             >
               {index + 1}
             </Text>
@@ -72,7 +74,7 @@ export function TopVendorsCard({ periodId }: TopVendorsCardProps) {
                 {vendor.vendorName}
               </Text>
               <Text fz="xs" c="dimmed">
-                {vendor.transactionCount} txns
+                {t('dashboard.topVendors.txns', { count: vendor.transactionCount })}
               </Text>
             </div>
             <div className={classes.vendorRight}>

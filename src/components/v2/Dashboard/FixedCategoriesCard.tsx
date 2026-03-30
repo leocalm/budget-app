@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Progress, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDashboardFixedCategories } from '@/hooks/v2/useDashboard';
@@ -9,6 +10,7 @@ interface FixedCategoriesCardProps {
 }
 
 export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardFixedCategories(periodId);
   const { accents } = useV2Theme();
 
@@ -21,13 +23,13 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
       <div className={classes.card} data-testid="fixed-categories-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Fixed Categories
+            {t('dashboard.fixedCategories.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your fixed expenses.
+            {t('dashboard.fixedCategories.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -41,11 +43,10 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
       <div className={classes.card} data-testid="fixed-categories-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Fixed Categories
+            {t('dashboard.fixedCategories.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            No fixed categories configured yet. Set a category as &ldquo;fixed&rdquo; and assign a
-            budget to track it here.
+            {t('dashboard.fixedCategories.empty')}
           </Text>
         </div>
       </div>
@@ -60,10 +61,13 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
     <div className={classes.card} data-testid="fixed-categories-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Fixed Categories
+          {t('dashboard.fixedCategories.title')}
         </Text>
         <Text fz="xs" fw={600} c="var(--v2-primary)">
-          {categories.length} {categories.length === 1 ? 'category' : 'categories'}
+          {t('dashboard.fixedCategories.categoryCount', {
+            count: categories.length,
+            label: categories.length === 1 ? t('common.category') : t('common.categories'),
+          })}
         </Text>
       </div>
 
@@ -82,7 +86,7 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
         radius="xl"
         color={accents.tertiary}
         className={classes.overallBar}
-        aria-label={`Overall fixed expenses paid: ${Math.round(overallPct)}%`}
+        aria-label={t('dashboard.fixedCategories.overallAria', { pct: Math.round(overallPct) })}
       />
 
       <ScrollArea className={classes.scrollArea} type="auto" offsetScrollbars={false}>
@@ -109,6 +113,8 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
 }
 
 function StatusBadge({ status }: { status: 'paid' | 'partial' | 'pending' }) {
+  const { t } = useTranslation('v2');
+
   const colorMap = {
     paid: 'var(--v2-tertiary)',
     partial: 'var(--v2-primary)',
@@ -116,9 +122,9 @@ function StatusBadge({ status }: { status: 'paid' | 'partial' | 'pending' }) {
   } as const;
 
   const labelMap = {
-    paid: 'Paid',
-    partial: 'Partial',
-    pending: 'Pending',
+    paid: t('dashboard.fixedCategories.paid'),
+    partial: t('dashboard.fixedCategories.partial'),
+    pending: t('dashboard.fixedCategories.pending'),
   } as const;
 
   return (

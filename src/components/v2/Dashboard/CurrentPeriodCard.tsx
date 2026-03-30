@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Progress, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useBudgetPeriods } from '@/hooks/v2/useBudgetPeriods';
@@ -15,6 +16,7 @@ interface CurrentPeriodCardProps {
 }
 
 export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardCurrentPeriod(periodId);
   const { data: history } = useDashboardCurrentPeriodHistory(periodId);
   const { data: periodsData } = useBudgetPeriods({ limit: 20 });
@@ -31,13 +33,13 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Current Period
+            {t('dashboard.currentPeriod.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your period data.
+            {t('dashboard.currentPeriod.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -49,10 +51,10 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Current Period
+            {t('dashboard.currentPeriod.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            No budget period configured yet.
+            {t('dashboard.currentPeriod.empty')}
           </Text>
         </div>
       </div>
@@ -77,10 +79,10 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       {/* Header */}
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Current Period · {dateRange}
+          {t('dashboard.currentPeriod.title')} · {dateRange}
         </Text>
         <Text fz="xs" c="dimmed">
-          {data.daysRemaining} days left
+          {t('dashboard.currentPeriod.daysLeft', { count: data.daysRemaining })}
         </Text>
       </div>
 
@@ -102,7 +104,7 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
                 )}
               </>
             ) : (
-              'no budget set'
+              t('dashboard.currentPeriod.noBudgetSet')
             )}
           </Text>
         </div>
@@ -115,7 +117,7 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       <div className={classes.progressSection}>
         <div className={classes.progressRow} data-testid="progress-row-time">
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" className={classes.progressLabel}>
-            Time
+            {t('dashboard.currentPeriod.timeLabel')}
           </Text>
           <Progress
             value={timePct}
@@ -123,7 +125,7 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
             radius="xl"
             color={accents.primary}
             className={classes.progressBar}
-            aria-label={`Time elapsed: ${timePct}%`}
+            aria-label={t('dashboard.currentPeriod.timeElapsed', { pct: timePct })}
           />
           <Text fz="xs" c="dimmed" className={classes.progressPct}>
             {timePct}%
@@ -132,7 +134,7 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
         {hasBudget && (
           <div className={classes.progressRow} data-testid="progress-row-budget">
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" className={classes.progressLabel}>
-              Budget
+              {t('dashboard.currentPeriod.budgetLabel')}
             </Text>
             <Progress
               value={Math.min(budgetPct, 100)}
@@ -140,7 +142,9 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
               radius="xl"
               color={accents.secondary}
               className={classes.progressBar}
-              aria-label={`Budget used: ${Math.min(budgetPct, 100)}%`}
+              aria-label={t('dashboard.currentPeriod.budgetUsed', {
+                pct: Math.min(budgetPct, 100),
+              })}
             />
             <Text fz="xs" c="dimmed" className={classes.progressPct}>
               {Math.min(budgetPct, 100)}%
@@ -153,12 +157,12 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       <div className={classes.statsGrid} data-testid="stats-grid">
         {hasBudget ? (
           <>
-            <StatItem label="Remaining" cents={remaining} />
-            <StatItem label="Per Day Left" cents={perDayLeft} />
-            <StatItem label="Projected" cents={data.projectedSpend} />
+            <StatItem label={t('dashboard.currentPeriod.remaining')} cents={remaining} />
+            <StatItem label={t('dashboard.currentPeriod.perDayLeft')} cents={perDayLeft} />
+            <StatItem label={t('dashboard.currentPeriod.projected')} cents={data.projectedSpend} />
           </>
         ) : (
-          <StatItem label="Total Spent This Period" cents={data.spent} />
+          <StatItem label={t('dashboard.currentPeriod.totalSpentThisPeriod')} cents={data.spent} />
         )}
       </div>
     </div>

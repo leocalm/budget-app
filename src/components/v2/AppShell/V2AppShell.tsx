@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { AppShell, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { PeriodSelector } from '@/components/v2/PeriodSelector';
 import { useMe } from '@/hooks/v2/useAuth';
+import { usePreferences } from '@/hooks/v2/useSettings';
 import { BottomNav } from './BottomNav';
 import { MobileHeader } from './MobileHeader';
 import { Sidebar } from './Sidebar';
@@ -12,9 +15,18 @@ const SIDEBAR_COLLAPSED_WIDTH = 60;
 
 export function V2AppShell() {
   const theme = useMantineTheme();
+  const { i18n } = useTranslation();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [collapsed, { toggle: toggleCollapse }] = useDisclosure(false);
   const { data: user } = useMe();
+  const { data: prefs } = usePreferences();
+
+  // Sync language from user preferences on app load
+  useEffect(() => {
+    if (prefs?.language && prefs.language !== i18n.language) {
+      void i18n.changeLanguage(prefs.language);
+    }
+  }, [prefs?.language, i18n]);
 
   const userName = user?.name ?? 'User';
   const userEmail = user?.email ?? '';

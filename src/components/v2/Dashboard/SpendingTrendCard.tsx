@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { BarChart } from '@mantine/charts';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -12,6 +13,7 @@ interface SpendingTrendCardProps {
 }
 
 export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardSpendingTrend(periodId);
   const { accents } = useV2Theme();
   const displayCurrency = useDisplayCurrency();
@@ -25,13 +27,13 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
       <div className={classes.card} data-testid="spending-trend-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Spending Trend
+            {t('dashboard.spendingTrend.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your spending trend.
+            {t('dashboard.spendingTrend.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -43,10 +45,10 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
       <div className={classes.card} data-testid="spending-trend-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Spending Trend
+            {t('dashboard.spendingTrend.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Need at least 2 closed periods to show a spending trend.
+            {t('dashboard.spendingTrend.empty')}
           </Text>
         </div>
       </div>
@@ -69,17 +71,17 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
     <div className={classes.card} data-testid="spending-trend-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Spending Trend
+          {t('dashboard.spendingTrend.title')}
         </Text>
         <Text fz="xs" c="dimmed">
-          Last {data.periods.length} periods
+          {t('dashboard.spendingTrend.lastPeriods', { count: data.periods.length })}
         </Text>
       </div>
 
       <div
         className={classes.chartWrapper}
         role="img"
-        aria-label={`Bar chart showing spending over the last ${data.periods.length} budget periods`}
+        aria-label={t('dashboard.spendingTrend.chartAria', { count: data.periods.length })}
       >
         <BarChart
           h={160}
@@ -99,7 +101,7 @@ export function SpendingTrendCard({ periodId }: SpendingTrendCardProps) {
 
       <div className={classes.averageRow}>
         <Text fz="xs" fw={600} c="dimmed">
-          Period average
+          {t('dashboard.spendingTrend.periodAverage')}
         </Text>
         <Text fz="sm" fw={600} ff="var(--mantine-font-family-monospace)">
           <CurrencyValue cents={data.periodAverage} />

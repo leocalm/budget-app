@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core';
 import { ApiError } from '@/api/errors';
@@ -9,6 +10,7 @@ import { toast } from '@/lib/toast';
 import classes from './Auth.module.css';
 
 export function V2LoginPage() {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const location = useLocation();
   const { refreshUser } = useAuth();
@@ -42,16 +44,16 @@ export function V2LoginPage() {
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.status === 401) {
-          toast.error({ message: 'Invalid email or password' });
+          toast.error({ message: t('auth.login.errorInvalidCredentials') });
         } else if (err.status === 429) {
-          toast.error({ message: 'Too many attempts. Please wait and try again.' });
+          toast.error({ message: t('auth.login.errorTooManyAttempts') });
         } else if (err.status === 423) {
-          toast.error({ message: 'Account locked. Check your email for an unlock link.' });
+          toast.error({ message: t('auth.login.errorAccountLocked') });
         } else {
-          toast.error({ message: 'Unable to sign in. Please try again.' });
+          toast.error({ message: t('auth.login.errorGeneric') });
         }
       } else {
-        toast.error({ message: 'Something went wrong' });
+        toast.error({ message: t('auth.login.errorUnknown') });
       }
     }
   };
@@ -70,7 +72,7 @@ export function V2LoginPage() {
         navigate(redirectPath, { replace: true });
       }
     } catch {
-      toast.error({ message: 'Invalid code. Please try again.' });
+      toast.error({ message: t('auth.twoFactor.errorInvalidCode') });
     } finally {
       setVerifying2FA(false);
     }
@@ -81,16 +83,18 @@ export function V2LoginPage() {
     return (
       <Stack gap="md">
         <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-          {useRecoveryCode ? 'Recovery code' : 'Enter verification code'}
+          {useRecoveryCode ? t('auth.twoFactor.recoveryTitle') : t('auth.twoFactor.title')}
         </Text>
         <Text fz="sm" c="dimmed">
-          {useRecoveryCode
-            ? 'Enter one of your recovery codes.'
-            : 'Enter the 6-digit code from your authenticator app.'}
+          {useRecoveryCode ? t('auth.twoFactor.recoverySubtitle') : t('auth.twoFactor.subtitle')}
         </Text>
 
         <TextInput
-          placeholder={useRecoveryCode ? 'XXXX-XXXX' : '000000'}
+          placeholder={
+            useRecoveryCode
+              ? t('auth.twoFactor.recoveryPlaceholder')
+              : t('auth.twoFactor.placeholder')
+          }
           value={code}
           onChange={(e) => setCode(e.currentTarget.value)}
           className={useRecoveryCode ? undefined : classes.codeInput}
@@ -104,12 +108,14 @@ export function V2LoginPage() {
         />
 
         <Button onClick={handle2FAVerify} loading={verifying2FA} fullWidth>
-          Verify
+          {t('auth.twoFactor.verifyButton')}
         </Button>
 
         <Text fz="sm" ta="center">
           <Anchor c="var(--v2-primary)" onClick={() => setUseRecoveryCode(!useRecoveryCode)}>
-            {useRecoveryCode ? 'Use authenticator code instead' : 'Or use a recovery code'}
+            {useRecoveryCode
+              ? t('auth.twoFactor.useAuthenticator')
+              : t('auth.twoFactor.useRecoveryCode')}
           </Anchor>
         </Text>
       </Stack>
@@ -121,28 +127,28 @@ export function V2LoginPage() {
       {isSessionExpired && (
         <div className={classes.expiredBanner}>
           <Text fz="sm" fw={500} c="#c48ba0">
-            Your session has expired. Please sign in again.
+            {t('auth.login.sessionExpired')}
           </Text>
         </div>
       )}
 
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-        Sign in
+        {t('auth.login.title')}
       </Text>
       <Text fz="sm" c="dimmed">
-        Access your financial pulse.
+        {t('auth.login.subtitle')}
       </Text>
 
       <TextInput
-        label="Email"
-        placeholder="you@example.com"
+        label={t('auth.login.emailLabel')}
+        placeholder={t('auth.login.emailPlaceholder')}
         value={email}
         onChange={(e) => setEmail(e.currentTarget.value)}
         type="email"
       />
       <TextInput
-        label="Password"
-        placeholder="Enter your password"
+        label={t('auth.login.passwordLabel')}
+        placeholder={t('auth.login.passwordPlaceholder')}
         value={password}
         onChange={(e) => setPassword(e.currentTarget.value)}
         type="password"
@@ -155,7 +161,7 @@ export function V2LoginPage() {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Checkbox
-          label="Remember me"
+          label={t('auth.login.rememberMe')}
           checked={rememberMe}
           onChange={(e) => setRememberMe(e.currentTarget.checked)}
           size="sm"
@@ -167,19 +173,19 @@ export function V2LoginPage() {
           fw={600}
           c="var(--v2-primary)"
         >
-          Forgot password?
+          {t('auth.login.forgotPassword')}
         </Anchor>
       </div>
 
       <Button onClick={handleLogin} loading={loginMutation.isPending} fullWidth size="md">
-        Sign In
+        {t('auth.login.submitButton')}
       </Button>
 
       <div className={classes.footerLink}>
         <Text fz="sm" c="dimmed">
-          Don&apos;t have an account?{' '}
+          {t('auth.login.noAccount')}{' '}
           <Anchor component={Link} to="/v2/auth/register" c="var(--v2-primary)" fw={600}>
-            Create one
+            {t('auth.login.createOne')}
           </Anchor>
         </Text>
       </div>

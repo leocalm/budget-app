@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -25,6 +26,7 @@ interface TwoFactorSetupModalProps {
 }
 
 export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProps) {
+  const { t } = useTranslation('v2');
   const enableMutation = useEnableTwoFactor();
   const regenerateCodesMutation = useRegenerateBackupCodes();
 
@@ -66,7 +68,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
         }
       })
       .catch(() => {
-        toast.error({ message: 'Failed to start 2FA setup' });
+        toast.error({ message: t('settings.twoFactorSetup.setupFailed') });
         onClose();
       });
   }, [opened]); // Only re-run when opened changes; mutations are stable refs
@@ -97,9 +99,9 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
       }
 
       setStep('codes');
-      toast.success({ message: 'Two-factor authentication enabled' });
+      toast.success({ message: t('settings.twoFactorSetup.enabled') });
     } catch {
-      toast.error({ message: 'Invalid code. Please try again.' });
+      toast.error({ message: t('settings.twoFactorSetup.invalidCode') });
     } finally {
       setVerifying(false);
     }
@@ -127,7 +129,11 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
     <Modal
       opened={opened}
       onClose={step === 'codes' ? handleDone : onClose}
-      title={step === 'codes' ? 'Save your recovery codes' : 'Set up two-factor authentication'}
+      title={
+        step === 'codes'
+          ? t('settings.twoFactorSetup.codesTitle')
+          : t('settings.twoFactorSetup.setupTitle')
+      }
       size="md"
       closeOnClickOutside={step !== 'codes'}
       styles={{
@@ -140,7 +146,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
         <Stack gap="md" align="center" py="xl">
           <Loader size="md" />
           <Text fz="sm" c="dimmed">
-            Preparing 2FA setup...
+            {t('settings.twoFactorSetup.loading')}
           </Text>
         </Stack>
       )}
@@ -149,8 +155,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
       {step === 'qr' && (
         <Stack gap="md">
           <Text fz="sm" c="dimmed">
-            Scan this QR code with your authenticator app (Google Authenticator, Authy, Microsoft
-            Authenticator, etc.)
+            {t('settings.twoFactorSetup.scanQr')}
           </Text>
 
           <div
@@ -164,7 +169,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
           </div>
 
           <Text fz="xs" c="dimmed">
-            Can&apos;t scan? Enter this code manually:
+            {t('settings.twoFactorSetup.cantScan')}
           </Text>
           <Group gap="xs">
             <TextInput
@@ -177,14 +182,14 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
             <CopyButton value={secret}>
               {({ copied, copy }) => (
                 <Button size="sm" variant="subtle" onClick={copy}>
-                  {copied ? 'Copied' : 'Copy'}
+                  {copied ? t('settings.twoFactorSetup.copied') : t('settings.twoFactorSetup.copy')}
                 </Button>
               )}
             </CopyButton>
           </Group>
 
           <Button onClick={() => setStep('verify')} fullWidth>
-            Next
+            {t('common.next')}
           </Button>
         </Stack>
       )}
@@ -193,7 +198,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
       {step === 'verify' && (
         <Stack gap="md">
           <Text fz="sm" c="dimmed">
-            Enter the 6-digit code from your authenticator app to confirm setup.
+            {t('settings.twoFactorSetup.enterCode')}
           </Text>
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -210,10 +215,10 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
 
           <Group justify="flex-end">
             <Button variant="subtle" onClick={() => setStep('qr')}>
-              Back
+              {t('common.back')}
             </Button>
             <Button onClick={handleVerify} loading={verifying} disabled={code.length < 6}>
-              Verify &amp; Enable 2FA
+              {t('settings.twoFactorSetup.verifyAndEnable')}
             </Button>
           </Group>
         </Stack>
@@ -223,8 +228,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
       {step === 'codes' && (
         <Stack gap="md">
           <Alert variant="light" color="orange">
-            Save these recovery codes in a safe place. They are your backup if you lose access to
-            your authenticator app.
+            {t('settings.twoFactorSetup.saveCodesAlert')}
           </Alert>
 
           {backupCodes.length > 0 ? (
@@ -247,19 +251,21 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
             </div>
           ) : (
             <Text fz="sm" c="dimmed" ta="center">
-              Recovery codes could not be generated. You can regenerate them from settings.
+              {t('settings.twoFactorSetup.codesFailedFallback')}
             </Text>
           )}
 
           {backupCodes.length > 0 && (
             <Group>
               <Button variant="subtle" size="sm" onClick={handleDownload}>
-                Download
+                {t('settings.twoFactorSetup.download')}
               </Button>
               <CopyButton value={codesText}>
                 {({ copied, copy }) => (
                   <Button variant="subtle" size="sm" onClick={copy}>
-                    {copied ? 'Copied' : 'Copy All'}
+                    {copied
+                      ? t('settings.twoFactorSetup.copied')
+                      : t('settings.twoFactorSetup.copyAll')}
                   </Button>
                 )}
               </CopyButton>
@@ -267,13 +273,13 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
           )}
 
           <Checkbox
-            label="I have saved my recovery codes"
+            label={t('settings.twoFactorSetup.savedCodes')}
             checked={savedCodes}
             onChange={(e) => setSavedCodes(e.currentTarget.checked)}
           />
 
           <Button onClick={handleDone} fullWidth disabled={!savedCodes && backupCodes.length > 0}>
-            Done
+            {t('common.done')}
           </Button>
         </Stack>
       )}

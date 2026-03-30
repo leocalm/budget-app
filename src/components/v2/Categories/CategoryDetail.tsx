@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Button, Menu, Progress, Skeleton, Stack, Text } from '@mantine/core';
@@ -20,6 +21,7 @@ interface CategoryDetailProps {
 }
 
 export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useCategoryDetail(categoryId, periodId);
   const { accents } = useV2Theme();
@@ -56,15 +58,15 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Anchor component={Link} to="/v2/categories" fz="sm" c="var(--v2-primary)">
-          ← Categories
+          {t('categories.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            {isError ? 'Something went wrong loading this category.' : 'Category not found.'}
+            {isError ? t('categories.detailLoadError') : t('categories.notFound')}
           </Text>
           {isError && (
             <Button size="xs" variant="light" onClick={() => refetch()}>
-              Retry
+              {t('common.retry')}
             </Button>
           )}
         </div>
@@ -81,28 +83,28 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
   const handleArchive = async () => {
     try {
       await archiveMutation.mutateAsync(categoryId);
-      toast.success({ message: `${cat.name} archived` });
+      toast.success({ message: t('categories.archivedNamed', { name: cat.name }) });
     } catch {
-      toast.error({ message: 'Failed to archive category' });
+      toast.error({ message: t('categories.archiveFailed') });
     }
   };
 
   const handleUnarchive = async () => {
     try {
       await unarchiveMutation.mutateAsync(categoryId);
-      toast.success({ message: `${cat.name} unarchived` });
+      toast.success({ message: t('categories.unarchivedNamed', { name: cat.name }) });
     } catch {
-      toast.error({ message: 'Failed to unarchive category' });
+      toast.error({ message: t('categories.unarchiveFailed') });
     }
   };
 
   const handleDelete = async () => {
     try {
       await deleteMutation.mutateAsync(categoryId);
-      toast.success({ message: 'Category deleted' });
+      toast.success({ message: t('categories.deleted') });
       navigate('/v2/categories');
     } catch {
-      toast.error({ message: 'Failed to delete category' });
+      toast.error({ message: t('categories.deleteFailed') });
     }
   };
 
@@ -112,7 +114,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
       <div className={classes.detailHeader}>
         <div>
           <Anchor component={Link} to="/v2/categories" fz="sm" c="var(--v2-primary)">
-            ← Categories
+            {t('categories.breadcrumb')}
           </Anchor>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
             <div className={classes.iconBadge} style={{ backgroundColor: `${cat.color}26` }}>
@@ -145,14 +147,14 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={openEdit}>Edit</Menu.Item>
+            <Menu.Item onClick={openEdit}>{t('common.edit')}</Menu.Item>
             {cat.status === 'inactive' ? (
-              <Menu.Item onClick={handleUnarchive}>Unarchive</Menu.Item>
+              <Menu.Item onClick={handleUnarchive}>{t('common.unarchive')}</Menu.Item>
             ) : (
-              <Menu.Item onClick={handleArchive}>Archive</Menu.Item>
+              <Menu.Item onClick={handleArchive}>{t('common.archive')}</Menu.Item>
             )}
             <Menu.Item color="red" onClick={handleDelete}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -177,7 +179,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
       <div className={classes.metricsGrid}>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Spent
+            {t('categories.spent')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={cat.periodSpend} />
@@ -185,7 +187,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Budget
+            {t('categories.budget')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             {hasBudget ? <CurrencyValue cents={cat.budgeted!} /> : '—'}
@@ -193,7 +195,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Transactions
+            {t('accounts.transactions')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             {cat.transactionCount}
@@ -202,7 +204,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
         {hasBudget && (
           <div className={classes.metricBox}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-              Remaining
+              {t('categories.remaining')}
             </Text>
             <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={Math.max(cat.budgeted! - cat.periodSpend, 0)} />
@@ -219,11 +221,11 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
           aria-label={`Spending trend for ${cat.name}`}
         >
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Spending Trend — Last {cat.trend.length} Periods
+            {t('categories.spendingTrend', { count: cat.trend.length })}
           </Text>
           <AreaChart
             h={200}
-            data={cat.trend.map((t) => ({ period: t.periodName, value: t.totalSpend }))}
+            data={cat.trend.map((tr) => ({ period: tr.periodName, value: tr.totalSpend }))}
             dataKey="period"
             series={[{ name: 'value', color: cat.color || accents.primary }]}
             gridAxis="none"
@@ -242,7 +244,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
       {cat.recentTransactions.length > 0 && (
         <div className={classes.detailCard}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Recent Transactions
+            {t('categories.recentTransactions')}
           </Text>
           {cat.recentTransactions.map((txn) => (
             <div key={txn.id} className={classes.transactionRow}>

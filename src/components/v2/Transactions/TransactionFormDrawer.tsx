@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Drawer,
@@ -31,6 +32,7 @@ export function TransactionFormDrawer({
   onClose,
   editTransaction,
 }: TransactionFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editTransaction;
   const createMutation = useCreateTransaction();
   const updateMutation = useUpdateTransaction();
@@ -92,10 +94,10 @@ export function TransactionFormDrawer({
         };
         if (isEdit && editTransaction) {
           await updateMutation.mutateAsync({ id: editTransaction.id, body });
-          toast.success({ message: 'Transaction updated' });
+          toast.success({ message: t('transactions.updated') });
         } else {
           await createMutation.mutateAsync(body);
-          toast.success({ message: 'Transfer added' });
+          toast.success({ message: t('transactions.transferAdded') });
         }
       } else {
         const body: components['schemas']['CreateTransactionRequest'] = {
@@ -109,15 +111,17 @@ export function TransactionFormDrawer({
         };
         if (isEdit && editTransaction) {
           await updateMutation.mutateAsync({ id: editTransaction.id, body });
-          toast.success({ message: 'Transaction updated' });
+          toast.success({ message: t('transactions.updated') });
         } else {
           await createMutation.mutateAsync(body);
-          toast.success({ message: 'Transaction added' });
+          toast.success({ message: t('transactions.created') });
         }
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} transaction` });
+      toast.error({
+        message: t('transactions.saveFailed', { action: isEdit ? 'update' : 'create' }),
+      });
     }
   };
 
@@ -132,7 +136,13 @@ export function TransactionFormDrawer({
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Transaction' : isTransfer ? 'Add Transfer' : 'Add Transaction'}
+      title={
+        isEdit
+          ? t('transactions.form.editTitle')
+          : isTransfer
+            ? t('transactions.form.addTransferTitle')
+            : t('transactions.form.addTitle')
+      }
       position="right"
       size="md"
       styles={{
@@ -143,11 +153,11 @@ export function TransactionFormDrawer({
       <Stack gap="md">
         {/* Transfer toggle */}
         <Switch
-          label="Transfer between accounts"
+          label={t('transactions.form.transferToggle')}
           description={
             isTransfer
-              ? 'Category and vendor are not applicable for transfers'
-              : 'Toggle on to move money between your accounts'
+              ? t('transactions.form.transferOnDesc')
+              : t('transactions.form.transferOffDesc')
           }
           checked={isTransfer}
           onChange={(e) => setIsTransfer(e.currentTarget.checked)}
@@ -156,8 +166,12 @@ export function TransactionFormDrawer({
 
         {/* Description */}
         <TextInput
-          label="Description"
-          placeholder={isTransfer ? 'e.g. Allowance pay' : 'e.g. Whole Foods groceries'}
+          label={t('transactions.form.description')}
+          placeholder={
+            isTransfer
+              ? t('transactions.form.descriptionTransferPlaceholder')
+              : t('transactions.form.descriptionPlaceholder')
+          }
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
           required
@@ -166,7 +180,7 @@ export function TransactionFormDrawer({
         {/* Amount + Date */}
         <Group grow>
           <NumberInput
-            label="Amount"
+            label={t('transactions.form.amount')}
             value={amount}
             onChange={setAmount}
             decimalScale={2}
@@ -175,7 +189,7 @@ export function TransactionFormDrawer({
             required
           />
           <TextInput
-            label="Date"
+            label={t('transactions.form.date')}
             type="date"
             value={date}
             onChange={(e) => setDate(e.currentTarget.value)}
@@ -185,7 +199,7 @@ export function TransactionFormDrawer({
 
         {/* Category — hidden for transfers in a simplified way */}
         <Select
-          label="Category"
+          label={t('transactions.form.category')}
           data={categoryOptions}
           value={categoryId}
           onChange={setCategoryId}
@@ -195,7 +209,7 @@ export function TransactionFormDrawer({
 
         {/* From Account */}
         <Select
-          label={isTransfer ? 'From Account' : 'Account'}
+          label={isTransfer ? t('transactions.form.fromAccount') : t('transactions.form.account')}
           data={accountOptions}
           value={fromAccountId}
           onChange={setFromAccountId}
@@ -206,7 +220,7 @@ export function TransactionFormDrawer({
         {/* To Account (transfers only) */}
         {isTransfer && (
           <Select
-            label="To Account"
+            label={t('transactions.form.toAccount')}
             data={accountOptions.filter((a) => a.value !== fromAccountId)}
             value={toAccountId}
             onChange={setToAccountId}
@@ -218,7 +232,7 @@ export function TransactionFormDrawer({
         {/* Vendor (regular only) */}
         {!isTransfer && (
           <Select
-            label="Vendor (optional)"
+            label={t('transactions.form.vendorOptional')}
             data={vendorOptions}
             value={vendorId}
             onChange={setVendorId}
@@ -230,18 +244,22 @@ export function TransactionFormDrawer({
         {/* Transfer summary */}
         {isTransfer && fromName && toName && amount && (
           <Text fz="xs" c="dimmed">
-            {fromName} → {toName} · <CurrencyValue cents={Math.round(Number(amount) * 100)} /> will
-            be subtracted from source and added to destination
+            {fromName} → {toName} · <CurrencyValue cents={Math.round(Number(amount) * 100)} />{' '}
+            {t('transactions.form.transferSummaryFull')}
           </Text>
         )}
 
         {/* Submit */}
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : isTransfer ? 'Add Transfer' : 'Add Transaction'}
+            {isEdit
+              ? t('common.saveChanges')
+              : isTransfer
+                ? t('transactions.form.addTransferButton')
+                : t('transactions.form.addTransactionButton')}
           </Button>
         </Group>
       </Stack>

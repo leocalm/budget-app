@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '@mantine/core';
@@ -25,6 +26,7 @@ interface AccountDetailProps {
 }
 
 export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useAccountDetails(accountId, periodId);
   const { data: history } = useAccountBalanceHistory(accountId, periodId);
@@ -41,17 +43,17 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
-          ← Accounts
+          {t('accounts.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
           <Text fz="sm" fw={600}>
-            Account
+            {t('accounts.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading this account.
+            {t('accounts.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -62,11 +64,11 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
-          ← Accounts
+          {t('accounts.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            Account not found.
+            {t('accounts.notFound')}
           </Text>
         </div>
       </Stack>
@@ -81,18 +83,18 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   const handleArchive = async () => {
     try {
       await archiveMutation.mutateAsync(accountId);
-      toast.success({ message: `${acct.name} archived` });
+      toast.success({ message: t('accounts.archivedNamed', { name: acct.name }) });
     } catch {
-      toast.error({ message: 'Failed to archive account' });
+      toast.error({ message: t('accounts.archiveFailed') });
     }
   };
 
   const handleUnarchive = async () => {
     try {
       await unarchiveMutation.mutateAsync(accountId);
-      toast.success({ message: `${acct.name} unarchived` });
+      toast.success({ message: t('accounts.unarchivedNamed', { name: acct.name }) });
     } catch {
-      toast.error({ message: 'Failed to unarchive account' });
+      toast.error({ message: t('accounts.unarchiveFailed') });
     }
   };
 
@@ -102,7 +104,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
       <div className={classes.pageHeader}>
         <div>
           <Anchor fz="sm" c="var(--v2-primary)" onClick={() => navigate('/v2/accounts')}>
-            ← Accounts
+            {t('accounts.breadcrumb')}
           </Anchor>
           <Text fz={24} fw={700} ff="var(--mantine-font-family-headings)" mt={4}>
             {acct.name}
@@ -126,12 +128,12 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={openDrawer}>Edit</Menu.Item>
+            <Menu.Item onClick={openDrawer}>{t('common.edit')}</Menu.Item>
             {isArchived ? (
-              <Menu.Item onClick={handleUnarchive}>Unarchive</Menu.Item>
+              <Menu.Item onClick={handleUnarchive}>{t('common.unarchive')}</Menu.Item>
             ) : (
               <Menu.Item color="red" onClick={handleArchive}>
-                Archive
+                {t('common.archive')}
               </Menu.Item>
             )}
           </Menu.Dropdown>
@@ -148,14 +150,14 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
             {changePrefix}
             <CurrencyValue cents={Math.abs(acct.netChangeThisPeriod)} />
           </span>{' '}
-          this period
+          {t('common.thisPeriod')}
         </Text>
       </div>
 
       {/* Balance history chart — own card */}
       <div className={classes.detailCard}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-          Balance History
+          {t('accounts.balanceHistory')}
         </Text>
         <DetailSparkline history={history ?? undefined} acctName={acct.name} />
       </div>
@@ -164,7 +166,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
       <div className={classes.metricsGrid}>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Inflows
+            {t('accounts.inflows')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.inflow} />
@@ -172,7 +174,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Outflows
+            {t('accounts.outflows')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.outflow} />
@@ -180,7 +182,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Transactions
+            {t('accounts.transactions')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             {acct.numberOfTransactions}
@@ -204,15 +206,16 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
 }
 
 function CheckingDetail({ acct }: { acct: AccountExt }) {
+  const { t } = useTranslation('v2');
   return (
     <div className={classes.detailCard}>
       <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-        Checking Details
+        {t('accounts.checkingDetails')}
       </Text>
       <div className={classes.detailRows}>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Avg Daily Balance
+            {t('accounts.avgDailyBalance')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.avgDailyBalance} />
@@ -224,18 +227,19 @@ function CheckingDetail({ acct }: { acct: AccountExt }) {
 }
 
 function AllowanceDetail({ acct }: { acct: AccountExt }) {
+  const { t } = useTranslation('v2');
   const available = Math.max(acct.currentBalance, 0);
   const balanceAfterTopUp = acct.balanceAfterNextTransfer ?? acct.currentBalance;
 
   return (
     <div className={classes.detailCard}>
       <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-        Allowance Details
+        {t('accounts.allowanceDetails')}
       </Text>
       <div className={classes.detailRows}>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Available
+            {t('accounts.availableLabel')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={available} />
@@ -243,15 +247,15 @@ function AllowanceDetail({ acct }: { acct: AccountExt }) {
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Next top-up
+            {t('accounts.nextTopUpLabel')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
-            {acct.nextTransfer ? formatDate(acct.nextTransfer) : '—'}
+            {acct.nextTransfer ? formatDate(acct.nextTransfer, t) : '—'}
           </Text>
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            After top-up
+            {t('accounts.afterTopUpLabel')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={balanceAfterTopUp} />
@@ -259,7 +263,7 @@ function AllowanceDetail({ acct }: { acct: AccountExt }) {
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Spent this cycle
+            {t('accounts.spentThisCycle')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.spentThisCycle} />
@@ -268,7 +272,7 @@ function AllowanceDetail({ acct }: { acct: AccountExt }) {
         {acct.topUpAmount != null && acct.topUpAmount > 0 && (
           <div className={classes.detailRow}>
             <Text fz="sm" c="dimmed">
-              Top-up amount
+              {t('accounts.topUpAmount')}
             </Text>
             <Text fz="sm" ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={acct.topUpAmount} /> / {acct.topUpCycle ?? 'week'}
@@ -281,23 +285,26 @@ function AllowanceDetail({ acct }: { acct: AccountExt }) {
 }
 
 function CreditCardDetail({ acct }: { acct: AccountExt }) {
+  const { t } = useTranslation('v2');
   return (
     <div className={classes.detailCard}>
       <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-        Credit Card Details
+        {t('accounts.creditCardDetails')}
       </Text>
       {(acct.statementCloseDay != null || acct.paymentDueDay != null) && (
         <div className={classes.dateGrid} style={{ marginBottom: 'var(--mantine-spacing-sm)' }}>
           {acct.statementCloseDay != null && (
-            <DateBox label="Statement closes" day={acct.statementCloseDay} />
+            <DateBox label={t('accounts.statementCloses')} day={acct.statementCloseDay} />
           )}
-          {acct.paymentDueDay != null && <DateBox label="Payment due" day={acct.paymentDueDay} />}
+          {acct.paymentDueDay != null && (
+            <DateBox label={t('accounts.paymentDue')} day={acct.paymentDueDay} />
+          )}
         </div>
       )}
       <div className={classes.detailRows}>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Current balance
+            {t('accounts.currentBalance')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.currentBalance} />
@@ -306,7 +313,7 @@ function CreditCardDetail({ acct }: { acct: AccountExt }) {
         {acct.spendLimit != null && acct.spendLimit > 0 && (
           <div className={classes.detailRow}>
             <Text fz="sm" c="dimmed">
-              Credit limit
+              {t('accounts.creditLimit')}
             </Text>
             <Text fz="sm" ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={acct.spendLimit} />
@@ -319,6 +326,7 @@ function CreditCardDetail({ acct }: { acct: AccountExt }) {
 }
 
 function DateBox({ label, day }: { label: string; day: number }) {
+  const { t } = useTranslation('v2');
   const { formatted, daysLabel } = useMemo(() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -334,9 +342,14 @@ function DateBox({ label, day }: { label: string; day: number }) {
     const daysUntil = Math.ceil(msUntil / (1000 * 60 * 60 * 24));
     return {
       formatted: nextDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-      daysLabel: daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`,
+      daysLabel:
+        daysUntil === 0
+          ? t('common.today')
+          : daysUntil === 1
+            ? t('common.tomorrow')
+            : t('common.inDays', { count: daysUntil }),
     };
-  }, [day]);
+  }, [day, t]);
 
   return (
     <div className={classes.dateBox}>
@@ -356,18 +369,21 @@ function DateBox({ label, day }: { label: string; day: number }) {
 type HistoryPoint = components['schemas']['AccountBalanceHistoryPoint'];
 
 function DetailSparkline({ history, acctName }: { history?: HistoryPoint[]; acctName?: string }) {
+  const { t } = useTranslation('v2');
   const { accents } = useV2Theme();
 
   if (!history || history.length < 2) {
     return (
       <Text fz="sm" c="dimmed" ta="center" py="xl">
-        Not enough data to show a chart yet.
+        {t('accounts.notEnoughData')}
       </Text>
     );
   }
 
   const data = history.map((p) => ({ day: p.date, value: p.balance }));
-  const label = acctName ? `Balance history for ${acctName}` : 'Balance history';
+  const label = acctName
+    ? t('accounts.balanceHistoryFor', { name: acctName })
+    : t('accounts.balanceHistoryLabel');
 
   return (
     <div data-testid="detail-sparkline" role="img" aria-label={label}>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ActionIcon,
@@ -24,6 +25,7 @@ interface SubscriptionDetailProps {
 }
 
 export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useSubscription(subscriptionId);
   const deleteMutation = useDeleteSubscription();
@@ -52,15 +54,15 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Anchor component={Link} to="/v2/subscriptions" fz="sm" c="var(--v2-primary)">
-          ← Subscriptions
+          {t('subscriptions.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            {isError ? 'Something went wrong.' : 'Subscription not found.'}
+            {isError ? t('common.somethingWentWrong') : t('subscriptions.notFound')}
           </Text>
           {isError && (
             <Button size="xs" variant="light" onClick={() => refetch()}>
-              Retry
+              {t('common.retry')}
             </Button>
           )}
         </div>
@@ -80,10 +82,10 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
   const handleDelete = async () => {
     try {
       await deleteMutation.mutateAsync(subscriptionId);
-      toast.success({ message: 'Subscription deleted' });
+      toast.success({ message: t('subscriptions.deleted') });
       navigate('/v2/subscriptions');
     } catch {
-      toast.error({ message: 'Failed to delete subscription' });
+      toast.error({ message: t('subscriptions.deleteFailed') });
     }
   };
 
@@ -92,7 +94,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       <div className={classes.detailHeader}>
         <div>
           <Anchor component={Link} to="/v2/subscriptions" fz="sm" c="var(--v2-primary)">
-            ← Subscriptions
+            {t('subscriptions.breadcrumb')}
           </Anchor>
           <Text fz={24} fw={700} ff="var(--mantine-font-family-headings)" mt={4}>
             {sub.name}
@@ -121,14 +123,14 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={openEdit}>Edit</Menu.Item>
+            <Menu.Item onClick={openEdit}>{t('common.edit')}</Menu.Item>
             {!isCancelled && (
               <Menu.Item color="orange" onClick={openCancel}>
-                Cancel
+                {t('common.cancel')}
               </Menu.Item>
             )}
             <Menu.Item color="red" onClick={handleDelete}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -136,9 +138,8 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
 
       {/* Post-cancellation alert */}
       {postCancellationEvents.length > 0 && (
-        <Alert variant="light" color="red" title="Unexpected charge after cancellation">
-          {postCancellationEvents.length} charge(s) recorded after this subscription was cancelled.
-          Review the billing history below.
+        <Alert variant="light" color="red" title={t('subscriptions.unexpectedCharge')}>
+          {t('subscriptions.unexpectedChargeDesc', { count: postCancellationEvents.length })}
         </Alert>
       )}
 
@@ -146,7 +147,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       <div className={classes.detailCard}>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Amount
+            {t('subscriptions.amount')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={sub.billingAmount} />
@@ -155,7 +156,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Billing day
+            {t('subscriptions.billingDay')}
           </Text>
           <Text fz="sm">
             {ordinal(sub.billingDay)} of each{' '}
@@ -168,7 +169,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Next charge
+            {t('subscriptions.nextChargeDate')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
             {new Date(`${sub.nextChargeDate}T00:00:00`).toLocaleDateString(undefined, {
@@ -180,7 +181,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            Status
+            {t('subscriptions.status')}
           </Text>
           <Text fz="sm" c={isCancelled ? 'dimmed' : 'var(--v2-primary)'}>
             {sub.status}
@@ -192,7 +193,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       <div className={classes.metricsGrid}>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            This Year
+            {t('subscriptions.thisYear')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={thisYear} />
@@ -200,7 +201,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            All-time
+            {t('subscriptions.allTime')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={allTimeTotal} />
@@ -208,7 +209,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Active Since
+            {t('subscriptions.activeSince')}
           </Text>
           <Text fz="lg" fw={600}>
             {new Date(sub.createdAt).toLocaleDateString(undefined, {
@@ -223,7 +224,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       {billingHistory.length > 0 && (
         <div className={classes.detailCard}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Billing History
+            {t('subscriptions.billingHistory')}
           </Text>
           {billingHistory.map((event) => (
             <div key={event.id} className={classes.billingRow}>
@@ -237,12 +238,12 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
                 </Text>
                 {event.postCancellation && (
                   <Text fz="xs" c="var(--v2-destructive)">
-                    Post-cancellation
+                    {t('subscriptions.postCancellation')}
                   </Text>
                 )}
                 {event.detected && (
                   <Text fz="xs" c="dimmed">
-                    Auto-detected
+                    {t('subscriptions.autoDetected')}
                   </Text>
                 )}
               </div>

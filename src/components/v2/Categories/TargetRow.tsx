@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Progress, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -12,6 +13,7 @@ interface TargetRowProps {
 }
 
 export function TargetRow({ target }: TargetRowProps) {
+  const { t } = useTranslation('v2');
   const excludeMutation = useExcludeCategoryTarget();
 
   const hasTarget = target.currentTarget != null && target.currentTarget > 0;
@@ -24,9 +26,9 @@ export function TargetRow({ target }: TargetRowProps) {
   const handleExclude = async () => {
     try {
       await excludeMutation.mutateAsync(target.id);
-      toast.success({ message: `${target.name} excluded from targets` });
+      toast.success({ message: t('targets.excluded', { name: target.name }) });
     } catch {
-      toast.error({ message: 'Failed to exclude category' });
+      toast.error({ message: t('targets.excludeFailed') });
     }
   };
 
@@ -39,7 +41,7 @@ export function TargetRow({ target }: TargetRowProps) {
         </Text>
         {target.previousTarget != null && target.previousTarget > 0 && (
           <Text fz="xs" c="dimmed">
-            Previous: <CurrencyValue cents={target.previousTarget} />
+            {t('common.previous')}: <CurrencyValue cents={target.previousTarget} />
           </Text>
         )}
       </div>
@@ -74,7 +76,7 @@ export function TargetRow({ target }: TargetRowProps) {
             size="sm"
             onClick={handleExclude}
             aria-label={`Exclude ${target.name}`}
-            title="Exclude from targets"
+            title={t('targets.excludeFromTargets')}
           >
             <Text fz="xs">✕</Text>
           </ActionIcon>

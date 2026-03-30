@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Badge,
   Button,
@@ -34,6 +35,7 @@ interface DateGroup {
 }
 
 export function TransactionsV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const deleteMutation = useDeleteTransaction();
   const { data: categoryOptions } = useCategoriesOptions();
@@ -151,9 +153,9 @@ export function TransactionsV2Page() {
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success({ message: 'Transaction deleted' });
+      toast.success({ message: t('transactions.deleted') });
     } catch {
-      toast.error({ message: 'Failed to delete transaction' });
+      toast.error({ message: t('transactions.deleteFailed') });
     }
   };
 
@@ -170,10 +172,10 @@ export function TransactionsV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Transactions
+          {t('transactions.title')}
         </Text>
         <Text c="dimmed" fz="sm">
-          No budget period selected.
+          {t('common.noPeriodSelectedShort')}
         </Text>
       </Stack>
     );
@@ -183,14 +185,14 @@ export function TransactionsV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Transactions
+          {t('transactions.title')}
         </Text>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your transactions.
+            {t('transactions.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -203,14 +205,14 @@ export function TransactionsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Transactions
+            {t('transactions.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            {apiTotalCount} transactions
+            {t('transactions.subtitle', { count: apiTotalCount })}
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
-          + Add Transaction
+          {t('transactions.addTransaction')}
         </Button>
       </div>
 
@@ -218,7 +220,7 @@ export function TransactionsV2Page() {
       <div className={classes.filtersRow}>
         <div className={classes.searchInput}>
           <TextInput
-            placeholder="Search by description or amount..."
+            placeholder={t('transactions.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.currentTarget.value)}
             size="sm"
@@ -236,7 +238,13 @@ export function TransactionsV2Page() {
               onClick={() => setDirection(d === 'all' ? null : d)}
             >
               <Text fz="xs" fw={500}>
-                {d === 'all' ? 'All' : d === 'income' ? 'In' : d === 'expense' ? 'Out' : 'Transfer'}
+                {d === 'all'
+                  ? t('transactions.directionAll')
+                  : d === 'income'
+                    ? t('transactions.directionIn')
+                    : d === 'expense'
+                      ? t('transactions.directionOut')
+                      : t('transactions.directionTransfer')}
               </Text>
             </UnstyledButton>
           ))}
@@ -319,7 +327,7 @@ export function TransactionsV2Page() {
       <div className={classes.statsBar}>
         <div className={classes.statItem}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Inflows
+            {t('transactions.inflows')}
           </Text>
           <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={totalInflows} />
@@ -327,7 +335,7 @@ export function TransactionsV2Page() {
         </div>
         <div className={classes.statItem}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Outflows
+            {t('transactions.outflows')}
           </Text>
           <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={totalOutflows} />
@@ -335,7 +343,7 @@ export function TransactionsV2Page() {
         </div>
         <div className={classes.statItem}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Net
+            {t('transactions.net')}
           </Text>
           <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
             {totalInflows - totalOutflows >= 0 ? '+' : ''}
@@ -344,7 +352,7 @@ export function TransactionsV2Page() {
         </div>
         <div className={classes.statItem}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Transactions
+            {t('transactions.transactionsCount')}
           </Text>
           <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
             {apiTotalCount}
@@ -369,16 +377,16 @@ export function TransactionsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>📝</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No transactions yet
+            {t('transactions.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
             {debouncedSearch || hasActiveFilters
-              ? 'No transactions match your filters. Try adjusting your search or filters.'
-              : 'Add your first transaction to start tracking your spending and income.'}
+              ? t('transactions.emptyFilterDescription')
+              : t('transactions.emptyDescription')}
           </Text>
           {!debouncedSearch && !hasActiveFilters && (
             <Button size="sm" onClick={handleCreate}>
-              + Add Your First Transaction
+              {t('transactions.addFirstTransaction')}
             </Button>
           )}
         </div>
@@ -392,7 +400,8 @@ export function TransactionsV2Page() {
               {group.label}
             </Text>
             <Text fz="xs" c="dimmed" ff="var(--mantine-font-family-monospace)">
-              {group.transactions.length} transactions · {group.total >= 0 ? '+' : ''}
+              {t('transactions.dateGroupCount', { count: group.transactions.length })} ·{' '}
+              {group.total >= 0 ? '+' : ''}
               <CurrencyValue cents={group.total} />
             </Text>
           </div>

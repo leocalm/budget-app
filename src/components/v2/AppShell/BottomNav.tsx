@@ -1,4 +1,5 @@
 import { IconDots } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Drawer, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -7,6 +8,7 @@ import { bottomNavItems, moreDrawerItems } from './navConfig';
 import classes from './AppShell.module.css';
 
 export function BottomNav() {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { accents } = useV2Theme();
@@ -16,7 +18,11 @@ export function BottomNav() {
 
   return (
     <>
-      <nav className={classes.bottomNav} data-testid="bottom-nav" aria-label="Main navigation">
+      <nav
+        className={classes.bottomNav}
+        data-testid="bottom-nav"
+        aria-label={t('appShell.mainNavigation')}
+      >
         {bottomNavItems.map((item) => {
           const active = isActive(item.to);
           return (
@@ -24,7 +30,7 @@ export function BottomNav() {
               key={item.to}
               className={classes.bottomNavItem}
               onClick={() => navigate(item.to)}
-              data-testid={`bottom-nav-${item.label.toLowerCase()}`}
+              data-testid={`bottom-nav-${item.labelKey.split('.').pop()}`}
               aria-current={active ? 'page' : undefined}
             >
               <item.icon size={20} stroke={1.5} color={active ? accents.primary : undefined} />
@@ -33,7 +39,7 @@ export function BottomNav() {
                 fw={active ? 600 : 400}
                 style={{ color: active ? accents.primary : undefined }}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Text>
             </UnstyledButton>
           );
@@ -46,7 +52,7 @@ export function BottomNav() {
           data-testid="bottom-nav-more"
         >
           <IconDots size={20} />
-          <Text fz={10}>More</Text>
+          <Text fz={10}>{t('appShell.more')}</Text>
         </UnstyledButton>
       </nav>
 
@@ -56,7 +62,7 @@ export function BottomNav() {
         onClose={closeDrawer}
         position="bottom"
         size="auto"
-        title="More"
+        title={t('appShell.more')}
         data-testid="more-drawer"
       >
         <Stack gap={0}>
@@ -79,7 +85,7 @@ export function BottomNav() {
                   fw={active ? 500 : 400}
                   style={{ color: active ? accents.primary : undefined }}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Text>
               </UnstyledButton>
             );

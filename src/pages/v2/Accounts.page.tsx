@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
@@ -20,14 +21,15 @@ type AccountType = AccountSummary['type'];
 const TYPE_ORDER: AccountType[] = ['Checking', 'Allowance', 'Wallet', 'Savings', 'CreditCard'];
 
 const TYPE_LABELS: Record<AccountType, string> = {
-  Checking: 'Checking',
-  Allowance: 'Allowance',
-  Wallet: 'Wallets',
-  Savings: 'Savings',
-  CreditCard: 'Credit Cards',
+  Checking: 'accounts.types.checking',
+  Allowance: 'accounts.types.allowance',
+  Wallet: 'accounts.types.wallets',
+  Savings: 'accounts.types.savings',
+  CreditCard: 'accounts.types.creditCards',
 };
 
 export function AccountsV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: infiniteData,
@@ -91,18 +93,18 @@ export function AccountsV2Page() {
   const handleArchive = async (id: string) => {
     try {
       await archiveMutation.mutateAsync(id);
-      toast.success({ message: 'Account archived' });
+      toast.success({ message: t('accounts.archived') });
     } catch {
-      toast.error({ message: 'Failed to archive account' });
+      toast.error({ message: t('accounts.archiveFailed') });
     }
   };
 
   const handleUnarchive = async (id: string) => {
     try {
       await unarchiveMutation.mutateAsync(id);
-      toast.success({ message: 'Account unarchived' });
+      toast.success({ message: t('accounts.unarchived') });
     } catch {
-      toast.error({ message: 'Failed to unarchive account' });
+      toast.error({ message: t('accounts.unarchiveFailed') });
     }
   };
 
@@ -111,10 +113,10 @@ export function AccountsV2Page() {
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Accounts
+            {t('accounts.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            No budget period selected. Please select a period to view your accounts.
+            {t('accounts.noPeriodDescription')}
           </Text>
         </div>
       </Stack>
@@ -139,7 +141,7 @@ export function AccountsV2Page() {
             Something went wrong loading your accounts.
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -182,14 +184,14 @@ export function AccountsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Accounts
+            {t('accounts.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Your financial accounts at a glance
+            {t('accounts.subtitle')}
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
-          + Add Account
+          {t('accounts.addAccount')}
         </Button>
       </div>
 
@@ -198,14 +200,13 @@ export function AccountsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>⍑</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No accounts yet
+            {t('accounts.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Add your first account to start tracking balances. You can add checking, savings, credit
-            cards, wallets, or allowance accounts.
+            {t('accounts.emptyDescription')}
           </Text>
           <Button size="sm" onClick={handleCreate}>
-            + Add Your First Account
+            {t('accounts.addFirstAccount')}
           </Button>
         </div>
       )}
@@ -224,7 +225,7 @@ export function AccountsV2Page() {
           <Stack key={type} gap="sm">
             <div className={classes.typeGroupHeader}>
               <Text fz="xs" fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.88px' }}>
-                {TYPE_LABELS[type]}
+                {t(TYPE_LABELS[type])}
               </Text>
               <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)">
                 <CurrencyLabel cents={groupTotals[type] ?? 0} isDebt={type === 'CreditCard'} />
@@ -252,7 +253,8 @@ export function AccountsV2Page() {
             onClick={() => setShowArchived((v) => !v)}
           >
             <Text fz="sm" fw={600} c="dimmed">
-              {showArchived ? '▾' : '▸'} Archived accounts ({archivedAccounts.length})
+              {showArchived ? '▾' : '▸'}{' '}
+              {t('accounts.archivedAccounts', { count: archivedAccounts.length })}
             </Text>
           </UnstyledButton>
           {showArchived &&

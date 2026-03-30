@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PeriodCard, PeriodFormDrawer, ScheduleDrawer } from '@/components/v2/Periods';
@@ -14,6 +15,7 @@ import { useInfiniteScroll } from '@/hooks/v2/useInfiniteScroll';
 import { toast } from '@/lib/toast';
 
 export function PeriodsV2Page() {
+  const { t } = useTranslation('v2');
   const { setSelectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: infiniteData,
@@ -40,7 +42,7 @@ export function PeriodsV2Page() {
   const periods = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
   const isAutoGenActive = schedule?.scheduleType === 'automatic';
 
-  const groups = useMemo(() => groupPeriods(periods), [periods]);
+  const groups = useMemo(() => groupPeriods(periods, t), [periods, t]);
 
   const handleCreate = () => {
     setEditPeriodId(null);
@@ -55,9 +57,9 @@ export function PeriodsV2Page() {
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success({ message: 'Period deleted' });
+      toast.success({ message: t('periods.deleted') });
     } catch {
-      toast.error({ message: 'Failed to delete period' });
+      toast.error({ message: t('periods.deleteFailed') });
     }
   };
 
@@ -83,7 +85,7 @@ export function PeriodsV2Page() {
             Something went wrong loading your periods.
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -123,10 +125,10 @@ export function PeriodsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Periods
+            {t('periods.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Manage your budget periods
+            {t('periods.subtitle')}
           </Text>
         </div>
         <div className={classes.headerActions}>
@@ -138,11 +140,11 @@ export function PeriodsV2Page() {
               }}
             />
             <Text fz="xs" fw={500} c={isAutoGenActive ? undefined : 'dimmed'}>
-              {isAutoGenActive ? 'Auto-generation active' : 'Auto-generation inactive'}
+              {isAutoGenActive ? t('periods.autoGenActive') : t('periods.autoGenInactive')}
             </Text>
           </UnstyledButton>
           <Button size="sm" onClick={handleCreate}>
-            + New Period
+            {t('periods.newPeriod')}
           </Button>
         </div>
       </div>
@@ -152,14 +154,13 @@ export function PeriodsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>📅</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No periods yet
+            {t('periods.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Create your first budget period to start tracking spending, or enable auto-generation to
-            have periods created automatically.
+            {t('periods.emptyDescription')}
           </Text>
           <Button size="sm" onClick={handleCreate}>
-            + Create First Period
+            {t('periods.createFirstPeriod')}
           </Button>
         </div>
       )}

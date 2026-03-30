@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core';
 import piggyCloud from '@/assets/icons/png/gradient/piggy-pulse-cloud.svg';
@@ -28,6 +29,7 @@ interface AccountEntry {
 const STEPS = ['Welcome', 'Currency', 'Periods', 'Accounts', 'Categories'];
 
 export function OnboardingWizard() {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
   const { data: currencies } = useCurrencies();
@@ -62,7 +64,7 @@ export function OnboardingWizard() {
           avatar: profile?.avatar ?? '🐷',
         });
       } catch {
-        toast.error({ message: 'Failed to save currency' });
+        toast.error({ message: t('onboarding.currency.saveFailed') });
         return;
       }
     }
@@ -82,7 +84,7 @@ export function OnboardingWizard() {
           namePattern: '{MONTH} {YEAR}',
         });
       } catch {
-        toast.error({ message: 'Failed to set up periods' });
+        toast.error({ message: t('onboarding.periods.setupFailed') });
         return;
       }
     }
@@ -101,7 +103,7 @@ export function OnboardingWizard() {
               currencyId: currencies?.find((c) => c.code === selectedCurrency)?.id ?? '',
             });
           } catch {
-            toast.error({ message: `Failed to create account "${acct.name}"` });
+            toast.error({ message: t('onboarding.accounts.createFailed', { name: acct.name }) });
             failed = true;
             break;
           }
@@ -118,7 +120,7 @@ export function OnboardingWizard() {
         const cats = await applyTemplate.mutateAsync(selectedTemplate);
         setAppliedCategories((cats ?? []).map((c) => c.name));
       } catch {
-        toast.error({ message: 'Failed to apply template' });
+        toast.error({ message: t('onboarding.categories.applyFailed') });
       }
     }
 
@@ -141,7 +143,7 @@ export function OnboardingWizard() {
       navigate('/v2/dashboard');
     } catch {
       completionLock.current = false;
-      toast.error({ message: 'Failed to complete onboarding' });
+      toast.error({ message: t('onboarding.complete.completeFailed') });
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +161,7 @@ export function OnboardingWizard() {
       navigate('/v2/transactions', { state: { openCreateDrawer: true } });
     } catch {
       completionLock.current = false;
-      toast.error({ message: 'Failed to complete onboarding' });
+      toast.error({ message: t('onboarding.complete.completeFailed') });
     } finally {
       setIsSubmitting(false);
     }
@@ -204,7 +206,7 @@ export function OnboardingWizard() {
 
       {/* Logo */}
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center" mb="md">
-        PiggyPulse
+        {t('onboarding.appName')}
       </Text>
 
       {/* Step 0: Welcome */}
@@ -214,37 +216,36 @@ export function OnboardingWizard() {
             <img src={piggyCloud} alt="PiggyPulse mascot" />
           </div>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            Welcome to PiggyPulse
+            {t('onboarding.welcome.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4}>
-            Your financial pulse — calm, clear, and entirely yours.
+            {t('onboarding.welcome.subtitle')}
           </Text>
           <Stack gap="xs" mt="lg">
             <Text fz="sm">
               <Text span fw={600}>
-                No judgment
+                {t('onboarding.welcome.noJudgment')}
               </Text>{' '}
               — we don&apos;t label spending as good or bad
             </Text>
             <Text fz="sm">
               <Text span fw={600}>
-                Just clarity
+                {t('onboarding.welcome.justClarity')}
               </Text>{' '}
               — see your data, understand your patterns
             </Text>
             <Text fz="sm">
               <Text span fw={600}>
-                Your rules
+                {t('onboarding.welcome.yourRules')}
               </Text>{' '}
               — you decide what your numbers mean
             </Text>
           </Stack>
           <Text fz="xs" c="dimmed" mt="lg" fs="italic" ta="center">
-            &ldquo;PiggyPulse shows you reality through data. We don&apos;t celebrate or criticize —
-            you decide what your numbers mean.&rdquo;
+            {t('onboarding.welcome.quote')}
           </Text>
           <Button fullWidth mt="xl" size="md" onClick={() => setStep(1)}>
-            Let&apos;s get started
+            {t('onboarding.welcome.getStarted')}
           </Button>
         </div>
       )}
@@ -253,16 +254,16 @@ export function OnboardingWizard() {
       {step === 1 && (
         <div className={classes.card}>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            Choose your currency
+            {t('onboarding.currency.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            This is the only required step.
+            {t('onboarding.currency.requiredStep')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            All your accounts and transactions will use this currency.
+            {t('onboarding.currency.description')}
           </Text>
           <TextInput
-            placeholder="Search currencies..."
+            placeholder={t('onboarding.currency.searchPlaceholder')}
             value={currencySearch}
             onChange={(e) => setCurrencySearch(e.currentTarget.value)}
             mb="sm"
@@ -304,14 +305,14 @@ export function OnboardingWizard() {
           </div>
           <div className={classes.navButtons}>
             <Button variant="subtle" onClick={handleBack}>
-              Back
+              {t('common.back')}
             </Button>
             <Button onClick={handleNext} disabled={!selectedCurrency}>
-              Continue
+              {t('common.continue')}
             </Button>
           </div>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Currently, PiggyPulse don't support multiple currencies. This feature is coming soon.
+            {t('onboarding.currency.multiCurrencyNote')}
           </Text>
         </div>
       )}
@@ -320,17 +321,16 @@ export function OnboardingWizard() {
       {step === 2 && (
         <div className={classes.card}>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            How PiggyPulse tracks time
+            {t('onboarding.periods.title')}
           </Text>
           <Text fz="sm" c="dimmed" mt="md">
-            Periods are time windows that organize your transactions. Think of them as chapters in
-            your financial story — each one has a start date, an end date.
+            {t('onboarding.periods.description1')}
           </Text>
           <Text fz="sm" c="dimmed" mt="sm">
-            Transactions fall into periods based on their date — no manual assignment needed.
+            {t('onboarding.periods.description2')}
           </Text>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mt="xl" mb="xs">
-            We&apos;ll set you up with the default:
+            {t('onboarding.periods.defaultLabel')}
           </Text>
           <Stack
             gap="xs"
@@ -341,20 +341,20 @@ export function OnboardingWizard() {
             }}
           >
             <Text fz="sm" fw={500}>
-              Monthly periods, starting on the 1st
+              {t('onboarding.periods.defaultMonthly')}
             </Text>
             <Text fz="sm" fw={500}>
-              3 periods prepared in advance
+              {t('onboarding.periods.defaultAhead')}
             </Text>
           </Stack>
           <Text fz="sm" c="dimmed" mt="sm" ta="center">
-            You can change these settings later in Periods → Schedule.
+            {t('onboarding.periods.changeHint')}
           </Text>
           <div className={classes.navButtons}>
             <Button variant="subtle" onClick={handleBack}>
-              Back
+              {t('common.back')}
             </Button>
-            <Button onClick={handleNext}>Continue</Button>
+            <Button onClick={handleNext}>{t('common.continue')}</Button>
           </div>
         </div>
       )}
@@ -363,21 +363,20 @@ export function OnboardingWizard() {
       {step === 3 && (
         <div className={classes.card}>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            Add your accounts
+            {t('onboarding.accounts.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Where does your money live? Accounts represent your real accounts, and are not connected
-            to your bank.
+            {t('onboarding.accounts.description1')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Add as many as you&apos;d like — or skip and add them later.
+            {t('onboarding.accounts.description2')}
           </Text>
           <Stack gap="sm">
             {accounts.map((acct, i) => (
               <div key={acct.key} className={classes.accountEntry}>
                 <Group grow mb="xs">
                   <TextInput
-                    placeholder="Account name"
+                    placeholder={t('onboarding.accounts.accountNamePlaceholder')}
                     value={acct.name}
                     onChange={(e) => {
                       const next = [...accounts];
@@ -402,7 +401,7 @@ export function OnboardingWizard() {
                   />
                 </Group>
                 <NumberInput
-                  placeholder="Current balance"
+                  placeholder={t('onboarding.accounts.currentBalance')}
                   value={acct.balance}
                   onChange={(v) => {
                     const next = [...accounts];
@@ -413,7 +412,7 @@ export function OnboardingWizard() {
                   fixedDecimalScale
                   prefix={selectedCurrencyData?.symbol ? `${selectedCurrencyData.symbol} ` : ''}
                   size="sm"
-                  description="Your real-world balance right now"
+                  description={t('onboarding.accounts.balanceDesc')}
                 />
               </div>
             ))}
@@ -428,18 +427,18 @@ export function OnboardingWizard() {
                 ]);
               }}
             >
-              + Add account
+              {t('onboarding.accounts.addAccount')}
             </Button>
           </Stack>
           <div className={classes.navButtons}>
             <Button variant="subtle" onClick={handleBack}>
-              Back
+              {t('common.back')}
             </Button>
             <div className={classes.navRight}>
               <Button variant="subtle" c="dimmed" onClick={() => setStep(4)}>
-                Skip for now
+                {t('common.skipForNow')}
               </Button>
-              <Button onClick={handleNext}>Continue</Button>
+              <Button onClick={handleNext}>{t('common.continue')}</Button>
             </div>
           </div>
         </div>
@@ -449,13 +448,13 @@ export function OnboardingWizard() {
       {step === 4 && (
         <div className={classes.card}>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            Set up categories
+            {t('onboarding.categories.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Categories help you organize your transactions, and set-up targets.
+            {t('onboarding.categories.description1')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Pick a starting template — you can add, remove, or change categories anytime.
+            {t('onboarding.categories.description2')}
           </Text>
           <div className={classes.templateGrid}>
             {(templates ?? []).map((t) => (
@@ -500,15 +499,15 @@ export function OnboardingWizard() {
             </div>
           )}
           <Text fz="xs" c="dimmed" mt="sm" ta="center">
-            Colors auto-assigned by direction + behavior. You can customize categories anytime.
+            {t('onboarding.categories.colorHint')}
           </Text>
           <div className={classes.navButtons}>
             <Button variant="subtle" onClick={handleBack}>
-              Back
+              {t('common.back')}
             </Button>
             <div className={classes.navRight}>
               <Button variant="subtle" c="dimmed" onClick={() => setStep(5)}>
-                Skip for now
+                {t('common.skipForNow')}
               </Button>
               <Button onClick={handleNext} disabled={!selectedTemplate}>
                 Continue
@@ -525,17 +524,17 @@ export function OnboardingWizard() {
             <img src={piggyCloud} alt="PiggyPulse mascot" />
           </div>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
-            You&apos;re all set!
+            {t('onboarding.complete.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Your dashboard is ready. Here&apos;s what we configured:
+            {t('onboarding.complete.subtitle')}
           </Text>
 
           <Stack gap={0}>
             {/* Currency */}
             <div className={classes.summarySection}>
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-                Currency
+                {t('onboarding.complete.currency')}
               </Text>
               <Text fz="sm" fw={500}>
                 {selectedCurrencyData
@@ -547,13 +546,13 @@ export function OnboardingWizard() {
             {/* Periods */}
             <div className={classes.summarySection}>
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-                Periods
+                {t('onboarding.complete.periods')}
               </Text>
               <Text fz="sm" fw={500}>
-                Monthly, starting on the 1st
+                {t('onboarding.complete.periodsDefault')}
               </Text>
               <Text fz="xs" c="dimmed">
-                3 periods prepared in advance
+                {t('onboarding.periods.defaultAhead')}
               </Text>
             </div>
 
@@ -591,7 +590,7 @@ export function OnboardingWizard() {
           </Stack>
 
           <Button fullWidth mt="xl" size="md" onClick={handleComplete} loading={isSubmitting}>
-            Go to Dashboard
+            {t('onboarding.complete.goToDashboard')}
           </Button>
           <Button
             fullWidth
@@ -601,7 +600,7 @@ export function OnboardingWizard() {
             onClick={handleGoToTransactions}
             loading={isSubmitting}
           >
-            Add your first transaction
+            {t('onboarding.complete.addFirstTransaction')}
           </Button>
         </div>
       )}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, Drawer, Group, NumberInput, Select, Stack, TextInput } from '@mantine/core';
 import type { components } from '@/api/v2';
 import {
@@ -18,6 +19,7 @@ interface PeriodFormDrawerProps {
 }
 
 export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editPeriodId;
   const { data: editData } = useBudgetPeriod(editPeriodId ?? '');
   const createMutation = useCreateBudgetPeriod();
@@ -84,14 +86,14 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
           id: editPeriodId,
           body: updateBody,
         });
-        toast.success({ message: 'Period updated' });
+        toast.success({ message: t('periods.updated') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Period created' });
+        toast.success({ message: t('periods.created') });
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} period` });
+      toast.error({ message: t('periods.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }
   };
 
@@ -102,7 +104,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Period' : 'Create Period'}
+      title={isEdit ? t('periods.form.editTitle') : t('periods.form.createTitle')}
       position="right"
       size="md"
       styles={{
@@ -112,15 +114,15 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
     >
       <Stack gap="md">
         {isPastPeriod && (
-          <Alert variant="light" color="orange" title="Warning">
-            Changing dates on a past period will shift transactions between periods.
+          <Alert variant="light" color="orange" title={t('periods.form.pastPeriodWarning')}>
+            {t('periods.form.pastPeriodMessage')}
           </Alert>
         )}
 
         {/* Period name */}
         <TextInput
-          label="Period Name"
-          placeholder="e.g. April 2026"
+          label={t('periods.form.periodName')}
+          placeholder={t('periods.form.periodNamePlaceholder')}
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
@@ -128,7 +130,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
         {/* Start date */}
         <TextInput
-          label="Start Date"
+          label={t('periods.form.startDate')}
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.currentTarget.value)}
@@ -138,10 +140,10 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {/* Period type */}
         {!isEdit && (
           <Select
-            label="Period Type"
+            label={t('periods.form.periodType')}
             data={[
-              { value: 'duration', label: 'Duration-based' },
-              { value: 'manualEndDate', label: 'Manual end date' },
+              { value: 'duration', label: t('periods.form.durationBased') },
+              { value: 'manualEndDate', label: t('periods.form.manualEndDate') },
             ]}
             value={periodType}
             onChange={(v) => setPeriodType((v as PeriodType) ?? 'duration')}
@@ -152,18 +154,18 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {periodType === 'duration' && (
           <Group grow>
             <NumberInput
-              label="Duration"
+              label={t('periods.form.duration')}
               value={durationUnits}
               onChange={setDurationUnits}
               min={1}
               max={366}
             />
             <Select
-              label="Unit"
+              label={t('periods.form.unit')}
               data={[
-                { value: 'days', label: 'Days' },
-                { value: 'weeks', label: 'Weeks' },
-                { value: 'months', label: 'Months' },
+                { value: 'days', label: t('periods.form.days') },
+                { value: 'weeks', label: t('periods.form.weeks') },
+                { value: 'months', label: t('periods.form.months') },
               ]}
               value={durationUnit}
               onChange={(v) => setDurationUnit((v as DurationUnit) ?? 'days')}
@@ -174,7 +176,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {/* Manual end date */}
         {periodType === 'manualEndDate' && (
           <TextInput
-            label="End Date"
+            label={t('periods.form.endDate')}
             type="date"
             value={manualEndDate}
             onChange={(e) => setManualEndDate(e.currentTarget.value)}
@@ -185,10 +187,10 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {/* Submit */}
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : 'Create Period'}
+            {isEdit ? t('common.saveChanges') : t('periods.form.createButton')}
           </Button>
         </Group>
       </Stack>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { IconChevronLeft } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, AppShell, Group, Image, ScrollArea, Stack, Text } from '@mantine/core';
 import { useV2Theme } from '@/theme/v2';
 import { navGroups } from './navConfig';
@@ -27,10 +28,11 @@ const LOGO_PATHS: Record<string, string> = {
 };
 
 export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: SidebarProps) {
+  const { t } = useTranslation('v2');
   const { colorTheme } = useV2Theme();
   const logoSrc = LOGO_PATHS[colorTheme] ?? LOGO_PATHS.nebula;
 
-  const logo = <Image src={logoSrc} alt="PiggyPulse" w={28} h={28} />;
+  const logo = <Image src={logoSrc} alt={t('common.piggyPulse')} w={28} h={28} />;
 
   return (
     <>
@@ -47,7 +49,7 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
                 onToggleCollapse();
               }
             }}
-            aria-label="Expand sidebar"
+            aria-label={t('appShell.expandSidebar')}
             data-testid="sidebar-toggle"
             style={{ cursor: 'pointer' }}
           >
@@ -63,14 +65,14 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
                 ff="var(--mantine-font-family-headings)"
                 className={classes.brandText}
               >
-                PiggyPulse
+                {t('common.piggyPulse')}
               </Text>
             </Group>
             <ActionIcon
               variant="subtle"
               size="xs"
               onClick={onToggleCollapse}
-              aria-label="Collapse sidebar"
+              aria-label={t('appShell.collapseSidebar')}
               data-testid="sidebar-toggle"
             >
               <IconChevronLeft size={14} />
@@ -90,12 +92,12 @@ export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: S
       <AppShell.Section grow component={ScrollArea} p={collapsed ? 'md' : 'xs'}>
         <Stack gap={0} align={collapsed ? 'center' : undefined}>
           {navGroups.map((group) => (
-            <NavGroup key={group.label} label={group.label} collapsed={collapsed}>
+            <NavGroup key={group.labelKey} label={t(group.labelKey)} collapsed={collapsed}>
               {group.items.map((item) => (
                 <NavItem
                   key={item.to}
                   icon={item.icon}
-                  label={item.label}
+                  label={t(item.labelKey)}
                   to={item.to}
                   collapsed={collapsed}
                   dot={item.dot}

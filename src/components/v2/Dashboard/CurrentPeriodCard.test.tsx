@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { MantineProvider } from '@mantine/core';
 import type { components } from '@/api/v2';
+import i18n from '@/i18n';
 import { V2ThemeProvider } from '@/theme/v2';
 import { CurrentPeriodCard } from './CurrentPeriodCard';
 
@@ -75,11 +77,13 @@ function mockPeriodsHook(
 }
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <MantineProvider>
-    <MemoryRouter>
-      <V2ThemeProvider colorMode="dark">{children}</V2ThemeProvider>
-    </MemoryRouter>
-  </MantineProvider>
+  <I18nextProvider i18n={i18n}>
+    <MantineProvider>
+      <MemoryRouter>
+        <V2ThemeProvider colorMode="dark">{children}</V2ThemeProvider>
+      </MemoryRouter>
+    </MantineProvider>
+  </I18nextProvider>
 );
 
 describe('CurrentPeriodCard', () => {

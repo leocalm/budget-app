@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -10,6 +11,7 @@ import { useCategoryTargets } from '@/hooks/v2/useCategoryTargets';
 type TargetItem = components['schemas']['TargetItem'];
 
 export function TargetsV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: targetsData, isLoading, isError, refetch } = useCategoryTargets(selectedPeriodId);
   const targets = targetsData?.targets ?? [];
@@ -34,10 +36,10 @@ export function TargetsV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Targets
+          {t('targets.title')}
         </Text>
         <Text c="dimmed" fz="sm">
-          No budget period selected.
+          {t('common.noPeriodSelectedShort')}
         </Text>
       </Stack>
     );
@@ -47,14 +49,14 @@ export function TargetsV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Targets
+          {t('targets.title')}
         </Text>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your targets.
+            {t('targets.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -79,10 +81,10 @@ export function TargetsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Targets
+            {t('targets.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Budget targets for this period. Edit targets in Categories.
+            {t('targets.subtitle')}
           </Text>
         </div>
       </div>
@@ -92,7 +94,7 @@ export function TargetsV2Page() {
         <div className={classes.statsBar}>
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-              Period
+              {t('targets.period')}
             </Text>
             <Text fz="md" fw={600}>
               {summary.periodName}
@@ -100,7 +102,7 @@ export function TargetsV2Page() {
           </div>
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-              Expense Budget
+              {t('targets.expenseBudget')}
             </Text>
             <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={summary.currentPosition} />
@@ -108,7 +110,7 @@ export function TargetsV2Page() {
           </div>
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-              Income Target
+              {t('targets.incomeTarget')}
             </Text>
             <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={summary.incomeTarget} />
@@ -116,7 +118,7 @@ export function TargetsV2Page() {
           </div>
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-              With Targets
+              {t('targets.withTargets')}
             </Text>
             <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
               {summary.categoriesWithTargets.withTargets} / {summary.categoriesWithTargets.total}
@@ -130,10 +132,10 @@ export function TargetsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>🎯</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No targets set
+            {t('targets.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Set budget targets when creating or editing categories.
+            {t('targets.emptyDescription')}
           </Text>
         </div>
       )}
@@ -146,22 +148,22 @@ export function TargetsV2Page() {
         >
           <div className={classes.targetInfo}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              Category
+              {t('targets.category')}
             </Text>
           </div>
           <div className={classes.targetValue}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              Target
+              {t('targets.target')}
             </Text>
           </div>
           <div className={classes.targetActual}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              Actual
+              {t('targets.actual')}
             </Text>
           </div>
           <div className={classes.targetProgress}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              Progress
+              {t('targets.progress')}
             </Text>
           </div>
           <div className={classes.targetActions} />
@@ -172,7 +174,7 @@ export function TargetsV2Page() {
       {incomeTargets.length > 0 && (
         <Stack gap="xs">
           <Text fz="xs" fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.88px' }}>
-            Incoming
+            {t('common.incoming')}
           </Text>
           {incomeTargets.map((t) => (
             <TargetRow key={t.id} target={t} />
@@ -184,7 +186,7 @@ export function TargetsV2Page() {
       {expenseTargets.length > 0 && (
         <Stack gap="xs">
           <Text fz="xs" fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.88px' }}>
-            Outgoing
+            {t('common.outgoing')}
           </Text>
           {expenseTargets.map((t) => (
             <TargetRow key={t.id} target={t} />

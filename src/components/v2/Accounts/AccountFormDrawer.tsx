@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   ColorInput,
@@ -20,18 +21,18 @@ import classes from './Accounts.module.css';
 type AccountType = 'Checking' | 'Savings' | 'CreditCard' | 'Allowance' | 'Wallet';
 type CreateReq = components['schemas']['CreateAccountRequest'];
 
-const ACCOUNT_TYPES: { value: AccountType; label: string; icon: string }[] = [
-  { value: 'Checking', label: 'Checking', icon: '🏦' },
-  { value: 'Savings', label: 'Savings', icon: '🐷' },
-  { value: 'CreditCard', label: 'Credit Card', icon: '💳' },
-  { value: 'Wallet', label: 'Wallet', icon: '👛' },
-  { value: 'Allowance', label: 'Allowance', icon: '🎒' },
+const ACCOUNT_TYPES: { value: AccountType; labelKey: string; icon: string }[] = [
+  { value: 'Checking', labelKey: 'accounts.types.checking', icon: '🏦' },
+  { value: 'Savings', labelKey: 'accounts.types.savings', icon: '🐷' },
+  { value: 'CreditCard', labelKey: 'accounts.types.creditCard', icon: '💳' },
+  { value: 'Wallet', labelKey: 'accounts.types.wallet', icon: '👛' },
+  { value: 'Allowance', labelKey: 'accounts.types.allowance', icon: '🎒' },
 ];
 
-const TOP_UP_CYCLES: { value: string; label: string }[] = [
-  { value: 'weekly', label: 'Weekly' },
-  { value: 'bi-weekly', label: 'Bi-weekly' },
-  { value: 'monthly', label: 'Monthly' },
+const TOP_UP_CYCLES: { value: string; labelKey: string }[] = [
+  { value: 'weekly', labelKey: 'accounts.topUpCycles.weekly' },
+  { value: 'bi-weekly', labelKey: 'accounts.topUpCycles.biWeekly' },
+  { value: 'monthly', labelKey: 'accounts.topUpCycles.monthly' },
 ];
 
 interface AccountFormDrawerProps {
@@ -41,6 +42,7 @@ interface AccountFormDrawerProps {
 }
 
 export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editAccountId;
   const { data: editData } = useAccount(editAccountId ?? '');
   const { data: currencies } = useCurrencies();
@@ -112,14 +114,14 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     try {
       if (isEdit && editAccountId) {
         await updateMutation.mutateAsync({ id: editAccountId, body });
-        toast.success({ message: 'Account updated' });
+        toast.success({ message: t('accounts.updated') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Account created' });
+        toast.success({ message: t('accounts.created') });
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} account` });
+      toast.error({ message: t('accounts.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }
   };
 
@@ -130,7 +132,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Account' : 'Create Account'}
+      title={isEdit ? t('accounts.form.editTitle') : t('accounts.form.createTitle')}
       position="right"
       size="md"
       styles={{
@@ -143,18 +145,20 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {!isEdit && (
           <div>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-              Account Type
+              {t('accounts.form.accountType')}
             </Text>
             <div className={classes.typeSelector}>
-              {ACCOUNT_TYPES.map((t) => (
+              {ACCOUNT_TYPES.map((acctType) => (
                 <UnstyledButton
-                  key={t.value}
-                  className={type === t.value ? classes.typeButtonActive : classes.typeButton}
-                  onClick={() => setType(t.value)}
+                  key={acctType.value}
+                  className={
+                    type === acctType.value ? classes.typeButtonActive : classes.typeButton
+                  }
+                  onClick={() => setType(acctType.value)}
                 >
-                  <Text fz="lg">{t.icon}</Text>
+                  <Text fz="lg">{acctType.icon}</Text>
                   <Text fz="xs" fw={500}>
-                    {t.label}
+                    {t(acctType.labelKey)}
                   </Text>
                 </UnstyledButton>
               ))}
@@ -164,8 +168,8 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Name */}
         <TextInput
-          label="Account Name"
-          placeholder="e.g. Main Checking"
+          label={t('accounts.form.accountName')}
+          placeholder={t('accounts.form.accountNamePlaceholder')}
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
@@ -174,7 +178,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Color */}
         <ColorInput
-          label="Color"
+          label={t('accounts.form.color')}
           value={color}
           onChange={setColor}
           format="hex"
@@ -192,7 +196,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Initial balance */}
         <NumberInput
-          label="Initial Balance"
+          label={t('accounts.form.initialBalance')}
           value={initialBalance}
           onChange={setInitialBalance}
           decimalScale={2}
@@ -203,7 +207,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Currency */}
         <Select
-          label="Currency"
+          label={t('accounts.form.currency')}
           data={currencyOptions}
           value={currencyId}
           onChange={(v) => setCurrencyId(v ?? '')}
@@ -213,9 +217,11 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {/* Credit Card / Allowance: Spend Limit */}
         {(type === 'CreditCard' || type === 'Allowance') && (
           <NumberInput
-            label="Spend Limit"
+            label={t('accounts.form.spendLimit')}
             description={
-              type === 'CreditCard' ? 'Credit limit on the card' : 'Maximum spending per cycle'
+              type === 'CreditCard'
+                ? t('accounts.form.spendLimitCreditCard')
+                : t('accounts.form.spendLimitAllowance')
             }
             value={spendLimit}
             onChange={setSpendLimit}
@@ -230,16 +236,16 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {type === 'CreditCard' && (
           <>
             <NumberInput
-              label="Statement Close Day"
-              description="Day of month (1-31)"
+              label={t('accounts.form.statementCloseDay')}
+              description={t('accounts.form.dayOfMonth')}
               value={statementCloseDay}
               onChange={setStatementCloseDay}
               min={1}
               max={31}
             />
             <NumberInput
-              label="Payment Due Day"
-              description="Day of month (1-31)"
+              label={t('accounts.form.paymentDueDay')}
+              description={t('accounts.form.dayOfMonth')}
               value={paymentDueDay}
               onChange={setPaymentDueDay}
               min={1}
@@ -252,8 +258,8 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {type === 'Allowance' && (
           <>
             <NumberInput
-              label="Top-up Amount"
-              description="Amount added each cycle"
+              label={t('accounts.form.topUpAmount')}
+              description={t('accounts.form.topUpAmountDesc')}
               value={topUpAmount}
               onChange={setTopUpAmount}
               decimalScale={2}
@@ -262,17 +268,17 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
               min={0}
             />
             <Select
-              label="Top-up Cycle"
-              data={TOP_UP_CYCLES}
+              label={t('accounts.form.topUpCycle')}
+              data={TOP_UP_CYCLES.map((c) => ({ value: c.value, label: t(c.labelKey) }))}
               value={topUpCycle}
               onChange={setTopUpCycle}
             />
             <NumberInput
-              label="Top-up Day"
+              label={t('accounts.form.topUpDay')}
               description={
                 topUpCycle === 'weekly' || topUpCycle === 'bi-weekly'
-                  ? 'Day of week (0=Sun, 6=Sat)'
-                  : 'Day of month (1-31)'
+                  ? t('accounts.form.topUpDayWeek')
+                  : t('accounts.form.topUpDayMonth')
               }
               value={topUpDay}
               onChange={setTopUpDay}
@@ -285,10 +291,10 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {/* Submit */}
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : 'Create Account'}
+            {isEdit ? t('common.saveChanges') : t('accounts.form.createTitle')}
           </Button>
         </Group>
       </Stack>

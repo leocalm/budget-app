@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Button, Group, Menu, Popover, Progress, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -22,9 +23,10 @@ export function PeriodCard({
   onDelete,
   onSelect,
 }: PeriodCardProps) {
+  const { t } = useTranslation('v2');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const isCurrent = period.status === 'active';
-  const badgeText = periodBadgeText(period);
+  const badgeText = periodBadgeText(period, t);
   const dateRange = periodDateRange(period);
   const progress = periodProgress(period);
 
@@ -55,7 +57,7 @@ export function PeriodCard({
           )}
         </div>
         <Text fz="xs" c="dimmed">
-          {dateRange} · {period.length} days
+          {dateRange} · {t('periods.days', { count: period.length })}
         </Text>
         {isCurrent && (
           <Progress
@@ -72,7 +74,7 @@ export function PeriodCard({
       <div className={classes.periodStats}>
         <div className={classes.periodStat}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Spend
+            {t('periods.spend')}
           </Text>
           <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
             {period.totalSpent > 0 ? <CurrencyValue cents={period.totalSpent} /> : '—'}
@@ -80,7 +82,7 @@ export function PeriodCard({
         </div>
         <div className={classes.periodStat}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Budget
+            {t('periods.budget')}
           </Text>
           <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
             {period.totalBudgeted > 0 ? <CurrencyValue cents={period.totalBudgeted} /> : '—'}
@@ -88,7 +90,7 @@ export function PeriodCard({
         </div>
         <div className={classes.periodStat}>
           <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            Txns
+            {t('periods.txns')}
           </Text>
           <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
             {period.numberOfTransactions}
@@ -114,27 +116,32 @@ export function PeriodCard({
       >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" size="sm" aria-label="Period actions">
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="sm"
+              aria-label={t('periods.periodActions')}
+            >
               <Text fz="lg" lh={1}>
                 ⋮
               </Text>
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={() => onEdit(period.id)}>Edit</Menu.Item>
+            <Menu.Item onClick={() => onEdit(period.id)}>{t('common.edit')}</Menu.Item>
             <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
               <Popover.Target>
                 <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
-                  Delete
+                  {t('common.delete')}
                 </Menu.Item>
               </Popover.Target>
               <Popover.Dropdown>
                 <Text fz="sm" mb="xs">
-                  Delete &ldquo;{period.name}&rdquo;?
+                  {t('periods.deleteConfirm', { name: period.name })}
                 </Text>
                 <Group gap="xs">
                   <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
-                    Cancel
+                    {t('common.cancel')}
                   </Button>
                   <Button
                     size="xs"
@@ -144,7 +151,7 @@ export function PeriodCard({
                       onDelete(period.id);
                     }}
                   >
-                    Delete
+                    {t('common.delete')}
                   </Button>
                 </Group>
               </Popover.Dropdown>

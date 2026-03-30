@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, NumberInput, Select, Text, TextInput } from '@mantine/core';
 import { useAccountsOptions } from '@/hooks/v2/useAccounts';
 import { useCategoriesOptions } from '@/hooks/v2/useCategories';
@@ -8,6 +9,7 @@ import { toast } from '@/lib/toast';
 import classes from './Transactions.module.css';
 
 export function QuickAdd() {
+  const { t } = useTranslation('v2');
   const createMutation = useCreateTransaction();
   const { data: categories } = useCategoriesOptions();
   const { data: accounts } = useAccountsOptions();
@@ -42,13 +44,13 @@ export function QuickAdd() {
         vendorId: vendorId || undefined,
         transactionType: 'regular',
       });
-      toast.success({ message: 'Transaction added' });
+      toast.success({ message: t('transactions.quickAdd.success') });
       setDescription('');
       setAmount('');
       setDate(new Date().toISOString().split('T')[0]);
       setVendorId(null);
     } catch {
-      toast.error({ message: 'Failed to add transaction' });
+      toast.error({ message: t('transactions.quickAdd.failed') });
     }
   };
 
@@ -62,12 +64,12 @@ export function QuickAdd() {
   return (
     <div className={classes.quickAddCard} data-testid="quick-add-form">
       <Text fz="xs" fw={600} c="dimmed" mb="xs">
-        ⚡ Quick Add
+        {t('transactions.quickAdd.title')}
       </Text>
       <div className={classes.quickAddRow}>
         <div className={classes.quickAddField}>
           <TextInput
-            placeholder="Description"
+            placeholder={t('transactions.quickAdd.descriptionPlaceholder')}
             size="xs"
             value={description}
             onChange={(e) => setDescription(e.currentTarget.value)}
@@ -76,7 +78,7 @@ export function QuickAdd() {
         </div>
         <div className={classes.quickAddSmall}>
           <NumberInput
-            placeholder="Amount"
+            placeholder={t('transactions.quickAdd.amountPlaceholder')}
             size="xs"
             value={amount}
             onChange={setAmount}
@@ -97,7 +99,7 @@ export function QuickAdd() {
         </div>
         <div className={classes.quickAddSmall}>
           <Select
-            placeholder="Category"
+            placeholder={t('transactions.quickAdd.categoryPlaceholder')}
             size="xs"
             data={categoryOptions}
             value={categoryId}
@@ -107,7 +109,7 @@ export function QuickAdd() {
         </div>
         <div className={classes.quickAddSmall}>
           <Select
-            placeholder="Account"
+            placeholder={t('transactions.quickAdd.accountPlaceholder')}
             size="xs"
             data={accountOptions}
             value={accountId}
@@ -117,7 +119,7 @@ export function QuickAdd() {
         </div>
         <div className={classes.quickAddSmall}>
           <Select
-            placeholder="Vendor"
+            placeholder={t('transactions.quickAdd.vendorPlaceholder')}
             size="xs"
             data={vendorOptions}
             value={vendorId}
@@ -133,12 +135,12 @@ export function QuickAdd() {
             loading={createMutation.isPending}
             disabled={!description.trim() || !amount || !categoryId || !accountId}
           >
-            Add
+            {t('common.add')}
           </Button>
         </div>
       </div>
       <Text fz="xs" c="dimmed" mt={4}>
-        Press Enter to add and continue. Category and account are kept for consecutive entries.
+        {t('transactions.quickAdd.hint')}
       </Text>
     </div>
   );

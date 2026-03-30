@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, Stack, Text, TextInput } from '@mantine/core';
 import { usePasswordStrength } from '@/hooks/usePasswordStrength';
@@ -8,6 +9,7 @@ import { PasswordStrengthBar } from './PasswordStrengthBar';
 import classes from './Auth.module.css';
 
 export function V2ResetPasswordPage() {
+  const { t } = useTranslation('v2');
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') ?? '';
   const resetMutation = useResetPassword();
@@ -35,7 +37,7 @@ export function V2ResetPasswordPage() {
       await resetMutation.mutateAsync({ token, password });
       setSuccess(true);
     } catch {
-      toast.error({ message: 'Reset link has expired. Please request a new one.' });
+      toast.error({ message: t('auth.resetPassword.errorExpired') });
     }
   };
 
@@ -44,16 +46,16 @@ export function V2ResetPasswordPage() {
       <div className={classes.successContent}>
         <Text fz={32}>✓</Text>
         <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-          Password updated
+          {t('auth.resetPassword.successTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
-          Your password has been reset successfully.
+          {t('auth.resetPassword.successMessage')}
         </Text>
         <Text fz="sm" c="dimmed">
-          You can now sign in with your new password.
+          {t('auth.resetPassword.successSubtext')}
         </Text>
         <Button component={Link} to="/v2/auth/login" size="md" mt="md">
-          Go to Sign In
+          {t('auth.resetPassword.goToSignIn')}
         </Button>
       </div>
     );
@@ -63,13 +65,13 @@ export function V2ResetPasswordPage() {
     return (
       <div className={classes.successContent}>
         <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-          Invalid reset link
+          {t('auth.resetPassword.invalidLinkTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
-          This link has expired or is invalid.
+          {t('auth.resetPassword.invalidLinkMessage')}
         </Text>
         <Button component={Link} to="/v2/auth/forgot-password" size="md" mt="md">
-          Request a new link
+          {t('auth.resetPassword.requestNewLink')}
         </Button>
       </div>
     );
@@ -78,15 +80,15 @@ export function V2ResetPasswordPage() {
   return (
     <Stack gap="md">
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-        Set a new password
+        {t('auth.resetPassword.title')}
       </Text>
       <Text fz="sm" c="dimmed">
-        Make it strong and unique.
+        {t('auth.resetPassword.subtitle')}
       </Text>
 
       <div>
         <TextInput
-          label="New password"
+          label={t('auth.resetPassword.newPasswordLabel')}
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           type="password"
@@ -94,12 +96,14 @@ export function V2ResetPasswordPage() {
         {password && <PasswordStrengthBar score={strength.score} />}
       </div>
       <TextInput
-        label="Confirm password"
+        label={t('auth.resetPassword.confirmPasswordLabel')}
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.currentTarget.value)}
         type="password"
         error={
-          confirmPassword && password !== confirmPassword ? 'Passwords do not match' : undefined
+          confirmPassword && password !== confirmPassword
+            ? t('auth.resetPassword.passwordsDoNotMatch')
+            : undefined
         }
         onKeyDown={(e) => {
           if (e.key === 'Enter' && isValid) {
@@ -115,7 +119,7 @@ export function V2ResetPasswordPage() {
         size="md"
         disabled={!isValid}
       >
-        Reset Password
+        {t('auth.resetPassword.submitButton')}
       </Button>
     </Stack>
   );

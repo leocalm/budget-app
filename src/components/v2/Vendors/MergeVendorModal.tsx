@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Modal, Select, Stack, Text } from '@mantine/core';
 import { useMergeVendor, useVendorsOptions } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
@@ -16,6 +17,7 @@ export function MergeVendorModal({
   sourceVendorId,
   sourceVendorName,
 }: MergeVendorModalProps) {
+  const { t } = useTranslation('v2');
   const { data: options } = useVendorsOptions();
   const mergeMutation = useMergeVendor();
   const [targetId, setTargetId] = useState<string | null>(null);
@@ -37,10 +39,10 @@ export function MergeVendorModal({
 
     try {
       await mergeMutation.mutateAsync({ id: sourceVendorId, targetVendorId: targetId });
-      toast.success({ message: `Merged "${sourceVendorName}" into target vendor` });
+      toast.success({ message: t('vendors.merge.success', { name: sourceVendorName }) });
       onClose();
     } catch {
-      toast.error({ message: 'Failed to merge vendor' });
+      toast.error({ message: t('vendors.merge.failed') });
     }
   };
 
@@ -48,7 +50,7 @@ export function MergeVendorModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Merge Vendor"
+      title={t('vendors.merge.title')}
       styles={{
         body: { backgroundColor: 'var(--v2-bg)' },
         header: { backgroundColor: 'var(--v2-bg)' },
@@ -56,17 +58,16 @@ export function MergeVendorModal({
     >
       <Stack gap="md">
         <Text fz="sm" c="dimmed">
-          All transactions from &ldquo;{sourceVendorName}&rdquo; will be transferred to the target
-          vendor. The source vendor will be deleted.
+          {t('vendors.merge.description', { name: sourceVendorName })}
         </Text>
 
         <Text fz="sm" fw={600}>
-          Source: {sourceVendorName}
+          {t('vendors.merge.source', { name: sourceVendorName })}
         </Text>
 
         <Select
-          label="Merge into"
-          placeholder="Select target vendor..."
+          label={t('vendors.merge.mergeInto')}
+          placeholder={t('vendors.merge.selectTarget')}
           data={vendorOptions}
           value={targetId}
           onChange={setTargetId}
@@ -75,7 +76,7 @@ export function MergeVendorModal({
 
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={mergeMutation.isPending}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             color="red"
@@ -83,7 +84,7 @@ export function MergeVendorModal({
             loading={mergeMutation.isPending}
             disabled={!targetId}
           >
-            Merge &amp; Delete Source
+            {t('vendors.merge.mergeAndDelete')}
           </Button>
         </Group>
       </Stack>

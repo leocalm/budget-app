@@ -1,8 +1,10 @@
 export interface WidgetDefinition {
   id: string;
   emoji: string;
-  name: string;
-  desc: string;
+  /** i18n key for name (v2 namespace, e.g. 'settings.widgets.currentPeriod.name') */
+  nameKey: string;
+  /** i18n key for description */
+  descKey: string;
   defaultVisible: boolean;
   isHero?: boolean;
 }
@@ -11,66 +13,66 @@ export const WIDGET_DEFINITIONS: WidgetDefinition[] = [
   {
     id: 'current_period',
     emoji: '\u{1F4CA}',
-    name: 'Current Period',
-    desc: 'Budget progress for the active period',
+    nameKey: 'settings.widgets.currentPeriod.name',
+    descKey: 'settings.widgets.currentPeriod.description',
     defaultVisible: true,
     isHero: true,
   },
   {
     id: 'net_position',
     emoji: '\u{1F4B0}',
-    name: 'Net Position',
-    desc: 'Total across all accounts',
+    nameKey: 'settings.widgets.netPosition.name',
+    descKey: 'settings.widgets.netPosition.description',
     defaultVisible: true,
     isHero: true,
   },
   {
     id: 'cash_flow',
     emoji: '\u{1F4B8}',
-    name: 'Cash Flow',
-    desc: 'Inflows vs outflows',
+    nameKey: 'settings.widgets.cashFlow.name',
+    descKey: 'settings.widgets.cashFlow.description',
     defaultVisible: true,
   },
   {
     id: 'recent_transactions',
     emoji: '\u{1F9FE}',
-    name: 'Recent Transactions',
-    desc: 'Latest activity',
+    nameKey: 'settings.widgets.recentTransactions.name',
+    descKey: 'settings.widgets.recentTransactions.description',
     defaultVisible: true,
   },
   {
     id: 'spending_trend',
     emoji: '\u{1F4C8}',
-    name: 'Spending Trend',
-    desc: 'Spend over time',
+    nameKey: 'settings.widgets.spendingTrend.name',
+    descKey: 'settings.widgets.spendingTrend.description',
     defaultVisible: false,
   },
   {
     id: 'top_vendors',
     emoji: '\u{1F3EA}',
-    name: 'Top Vendors',
-    desc: 'Where money goes',
+    nameKey: 'settings.widgets.topVendors.name',
+    descKey: 'settings.widgets.topVendors.description',
     defaultVisible: false,
   },
   {
     id: 'variable_categories',
     emoji: '\u{1F4CB}',
-    name: 'Variable Categories',
-    desc: 'Discretionary spending tracker',
+    nameKey: 'settings.widgets.variableCategories.name',
+    descKey: 'settings.widgets.variableCategories.description',
     defaultVisible: true,
   },
   {
     id: 'fixed_categories',
     emoji: '\u2705',
-    name: 'Fixed Categories',
-    desc: 'Predictable expenses checklist',
+    nameKey: 'settings.widgets.fixedCategories.name',
+    descKey: 'settings.widgets.fixedCategories.description',
     defaultVisible: false,
   },
   {
     id: 'subscriptions',
     emoji: '\u{1F504}',
-    name: 'Subscriptions',
-    desc: 'Recurring charges timeline',
+    nameKey: 'settings.widgets.subscriptions.name',
+    descKey: 'settings.widgets.subscriptions.description',
     defaultVisible: false,
   },
 ];

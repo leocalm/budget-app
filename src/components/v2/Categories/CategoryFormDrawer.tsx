@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Drawer,
@@ -54,6 +55,7 @@ interface CategoryFormDrawerProps {
 }
 
 export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editCategory;
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
@@ -90,14 +92,16 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
     try {
       if (isEdit && editCategory) {
         await updateMutation.mutateAsync({ id: editCategory.id, body });
-        toast.success({ message: 'Category updated' });
+        toast.success({ message: t('categories.updated') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Category created' });
+        toast.success({ message: t('categories.created') });
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} category` });
+      toast.error({
+        message: t('categories.saveFailed', { action: isEdit ? 'update' : 'create' }),
+      });
     }
   };
 
@@ -108,7 +112,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Category' : 'Add Category'}
+      title={isEdit ? t('categories.form.editTitle') : t('categories.form.createTitle')}
       position="right"
       size="md"
       styles={{
@@ -121,17 +125,19 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         {!isEdit && (
           <div>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-              Type
+              {t('categories.form.type')}
             </Text>
             <div className={classes.typeSelector}>
-              {(['income', 'expense'] as const).map((t) => (
+              {(['income', 'expense'] as const).map((catType) => (
                 <UnstyledButton
-                  key={t}
-                  className={type === t ? classes.selectorButtonActive : classes.selectorButton}
-                  onClick={() => setType(t)}
+                  key={catType}
+                  className={
+                    type === catType ? classes.selectorButtonActive : classes.selectorButton
+                  }
+                  onClick={() => setType(catType)}
                 >
                   <Text fz="sm" fw={500}>
-                    {t === 'income' ? 'Incoming' : 'Outgoing'}
+                    {catType === 'income' ? t('common.incoming') : t('common.outgoing')}
                   </Text>
                 </UnstyledButton>
               ))}
@@ -143,7 +149,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         {type === 'expense' && (
           <div>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-              Behavior
+              {t('categories.form.behavior')}
             </Text>
             <div className={classes.behaviorSelector}>
               {(['fixed', 'variable', 'subscription'] as const).map((b) => (
@@ -154,7 +160,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
                 >
                   <Text fz="lg">{b === 'fixed' ? '📌' : b === 'variable' ? '📊' : '🔄'}</Text>
                   <Text fz="xs" fw={500}>
-                    {b.charAt(0).toUpperCase() + b.slice(1)}
+                    {t(`categories.behaviors.${b}`)}
                   </Text>
                 </UnstyledButton>
               ))}
@@ -164,8 +170,8 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
 
         {/* Name */}
         <TextInput
-          label="Category Name"
-          placeholder="e.g. Groceries"
+          label={t('categories.form.categoryName')}
+          placeholder={t('categories.form.categoryNamePlaceholder')}
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
@@ -174,7 +180,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         {/* Icon picker */}
         <div>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Icon
+            {t('categories.form.icon')}
           </Text>
           <div className={classes.iconGrid}>
             {CATEGORY_ICONS.map((i) => (
@@ -191,8 +197,8 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
 
         {/* Description */}
         <Textarea
-          label="Description"
-          placeholder="Optional description"
+          label={t('categories.form.description')}
+          placeholder={t('categories.form.descriptionPlaceholder')}
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
           maxLength={500}
@@ -202,8 +208,8 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
 
         {/* Budget Target */}
         <NumberInput
-          label="Budget Target"
-          description="Monthly spending or income target (optional)"
+          label={t('categories.form.budgetTarget')}
+          description={t('categories.form.budgetTargetDesc')}
           placeholder="0.00"
           value={target}
           onChange={setTarget}
@@ -215,10 +221,10 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         {/* Submit */}
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : 'Create Category'}
+            {isEdit ? t('common.saveChanges') : t('categories.form.createButton')}
           </Button>
         </Group>
       </Stack>

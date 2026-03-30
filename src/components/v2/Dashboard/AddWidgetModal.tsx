@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Modal, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { WIDGET_DEFINITIONS } from './widgetDefinitions';
@@ -24,11 +25,13 @@ export function AddWidgetModal({
   onAddWidget,
   onAddAccount,
 }: AddWidgetModalProps) {
+  const { t } = useTranslation('v2');
+
   return (
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Add Widget"
+      title={t('dashboard.addWidget')}
       size="lg"
       styles={{
         body: { backgroundColor: 'var(--v2-bg)' },
@@ -36,7 +39,7 @@ export function AddWidgetModal({
       }}
     >
       <Text fz="sm" c="dimmed" mb="md">
-        Choose a widget to add to your dashboard.
+        {t('dashboard.addWidgetHint')}
       </Text>
 
       <div className={classes.widgetGrid}>
@@ -64,10 +67,10 @@ export function AddWidgetModal({
             >
               <Text fz={24}>{w.emoji}</Text>
               <Text fz="sm" fw={600}>
-                {w.name}
+                {t(w.nameKey)}
               </Text>
               <Text fz="xs" c="dimmed">
-                {isActive ? 'Already added' : w.desc}
+                {isActive ? t('dashboard.alreadyAdded') : t(w.descKey)}
               </Text>
             </div>
           );
@@ -101,7 +104,7 @@ export function AddWidgetModal({
                 {acct.name}
               </Text>
               <Text fz="xs" c="dimmed">
-                {isActive ? 'Already added' : 'Individual account'}
+                {isActive ? t('dashboard.alreadyAdded') : t('dashboard.accountCard')}
               </Text>
             </div>
           );

@@ -1,29 +1,30 @@
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Text } from '@mantine/core';
 import piggyWhite from '@/assets/images/piggy-pulse-white.svg';
 import classes from './Auth.module.css';
 
-const PAGE_TAGLINES: Record<string, string> = {
-  login: 'Welcome back. Your data is right where you left it.',
-  register: 'Start your journey toward financial clarity.',
-  'forgot-password': 'No worries — we will help you get back in.',
-  'reset-password': 'Almost there. Choose a new password.',
-  unlock: 'Verify your identity to continue.',
+const PAGE_TAGLINE_KEYS: Record<string, string> = {
+  login: 'auth.tagline.login',
+  register: 'auth.tagline.register',
+  'forgot-password': 'auth.tagline.forgotPassword',
+  'reset-password': 'auth.tagline.resetPassword',
+  unlock: 'auth.tagline.unlock',
 };
 
-const DEFAULT_TAGLINE = 'Your financial pulse — calm, clear, and entirely yours.';
-
 export function V2AuthLayout() {
+  const { t } = useTranslation('v2');
   const location = useLocation();
   const page = location.pathname.split('/').pop() ?? '';
-  const tagline = PAGE_TAGLINES[page] ?? DEFAULT_TAGLINE;
+  const taglineKey = PAGE_TAGLINE_KEYS[page] ?? 'auth.tagline.default';
+  const tagline = t(taglineKey);
   return (
     <div className={classes.splitLayout}>
       {/* Left: gradient branding panel */}
       <div className={classes.brandPanel}>
-        <img src={piggyWhite} alt="PiggyPulse" className={classes.brandLogo} />
+        <img src={piggyWhite} alt={t('common.piggyPulse')} className={classes.brandLogo} />
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)" c="white">
-          PiggyPulse
+          {t('common.piggyPulse')}
         </Text>
         <Text
           fz="sm"

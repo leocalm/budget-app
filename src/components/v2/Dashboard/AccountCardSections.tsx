@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Progress, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import type { AccountExt } from './AccountCard.types';
@@ -8,22 +9,29 @@ import classes from './AccountCard.module.css';
 // ---------------------------------------------------------------------------
 
 export function StandardSection({ acct }: { acct: AccountExt }) {
+  const { t } = useTranslation('v2');
   const boxes: { label: string; value: React.ReactNode }[] = [];
 
   if (acct.type === 'Checking') {
-    boxes.push({ label: 'Transactions', value: acct.numberOfTransactions });
+    boxes.push({ label: t('dashboard.account.transactions'), value: acct.numberOfTransactions });
     boxes.push({
-      label: 'Avg Daily Balance',
+      label: t('dashboard.account.avgDailyBalance'),
       value: <CurrencyValue cents={acct.avgDailyBalance} />,
     });
   } else if (acct.type === 'Savings') {
-    boxes.push({ label: 'Inflows', value: <CurrencyValue cents={acct.inflow} /> });
-    boxes.push({ label: 'Outflows', value: <CurrencyValue cents={acct.outflow} /> });
+    boxes.push({
+      label: t('dashboard.account.inflows'),
+      value: <CurrencyValue cents={acct.inflow} />,
+    });
+    boxes.push({
+      label: t('dashboard.account.outflows'),
+      value: <CurrencyValue cents={acct.outflow} />,
+    });
   } else {
     // Wallet (and any future account types)
-    boxes.push({ label: 'Transactions', value: acct.numberOfTransactions });
+    boxes.push({ label: t('dashboard.account.transactions'), value: acct.numberOfTransactions });
     boxes.push({
-      label: 'Period Change',
+      label: t('dashboard.account.periodChange'),
       value: <CurrencyValue cents={acct.netChangeThisPeriod} />,
     });
   }
@@ -49,16 +57,23 @@ export function StandardSection({ acct }: { acct: AccountExt }) {
 // ---------------------------------------------------------------------------
 
 export function AllowanceSection({ acct }: { acct: AccountExt }) {
+  const { t } = useTranslation('v2');
   const available = Math.max(acct.currentBalance, 0);
   const balanceAfterTopUp = acct.balanceAfterNextTransfer ?? acct.currentBalance;
   const isOverspent = acct.currentBalance < 0;
 
   const rows = [
-    { label: 'Available to spend', value: <CurrencyValue cents={available} /> },
-    { label: 'Next top-up', value: acct.nextTransfer ? formatDate(acct.nextTransfer) : '—' },
-    { label: 'Balance after top-up', value: <CurrencyValue cents={balanceAfterTopUp} /> },
+    { label: t('dashboard.account.availableToSpend'), value: <CurrencyValue cents={available} /> },
     {
-      label: isOverspent ? 'Overspent' : 'Spent this cycle',
+      label: t('dashboard.account.nextTopUp'),
+      value: acct.nextTransfer ? formatDate(acct.nextTransfer, t) : '\u2014',
+    },
+    {
+      label: t('dashboard.account.balanceAfterTopUp'),
+      value: <CurrencyValue cents={balanceAfterTopUp} />,
+    },
+    {
+      label: isOverspent ? t('dashboard.account.overspent') : t('dashboard.account.spentThisCycle'),
       value: (
         <CurrencyValue cents={isOverspent ? Math.abs(acct.currentBalance) : acct.spentThisCycle} />
       ),
@@ -92,6 +107,7 @@ interface CreditCardSectionProps {
 }
 
 export function CreditCardSection({ acct, typeColor }: CreditCardSectionProps) {
+  const { t } = useTranslation('v2');
   const limit = acct.spendLimit ?? 0;
   const hasLimit = limit > 0;
   const available = hasLimit ? Math.max(limit - acct.currentBalance, 0) : 0;
@@ -103,10 +119,10 @@ export function CreditCardSection({ acct, typeColor }: CreditCardSectionProps) {
         <div className={classes.limitSection}>
           <div className={classes.limitRow}>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              <CurrencyValue cents={available} /> available
+              <CurrencyValue cents={available} /> {t('dashboard.account.available')}
             </Text>
             <Text fz="xs" c="dimmed" ff="var(--mantine-font-family-monospace)">
-              <CurrencyValue cents={limit} /> limit
+              <CurrencyValue cents={limit} /> {t('dashboard.account.limit')}
             </Text>
           </div>
           <Progress
@@ -114,22 +130,24 @@ export function CreditCardSection({ acct, typeColor }: CreditCardSectionProps) {
             size={8}
             radius="xl"
             color={typeColor}
-            aria-label={`Credit used: ${usedPct}% of limit`}
+            aria-label={t('dashboard.account.creditUsed', { pct: usedPct })}
           />
         </div>
       )}
       {(acct.statementCloseDay != null || acct.paymentDueDay != null) && (
         <div className={classes.dateGrid}>
           {acct.statementCloseDay != null && (
-            <DateBox label="Statement closes" day={acct.statementCloseDay} />
+            <DateBox label={t('dashboard.account.statementCloses')} day={acct.statementCloseDay} />
           )}
-          {acct.paymentDueDay != null && <DateBox label="Payment due" day={acct.paymentDueDay} />}
+          {acct.paymentDueDay != null && (
+            <DateBox label={t('dashboard.account.paymentDue')} day={acct.paymentDueDay} />
+          )}
         </div>
       )}
       <div className={classes.statsGrid}>
         <div className={classes.statBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Balance
+            {t('dashboard.account.balance')}
           </Text>
           <Text fz="md" fw={500} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={acct.currentBalance} />
@@ -137,7 +155,7 @@ export function CreditCardSection({ acct, typeColor }: CreditCardSectionProps) {
         </div>
         <div className={classes.statBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Transactions
+            {t('dashboard.account.transactions')}
           </Text>
           <Text fz="md" fw={500} ff="var(--mantine-font-family-monospace)">
             {acct.numberOfTransactions}
@@ -153,6 +171,7 @@ export function CreditCardSection({ acct, typeColor }: CreditCardSectionProps) {
 // ---------------------------------------------------------------------------
 
 function DateBox({ label, day }: { label: string; day: number }) {
+  const { t } = useTranslation('v2');
   const now = new Date();
   const nextDate = getNextDateForDay(day, now);
   const msUntil = nextDate.getTime() - now.setHours(0, 0, 0, 0);
@@ -160,7 +179,11 @@ function DateBox({ label, day }: { label: string; day: number }) {
 
   const formatted = nextDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   const daysLabel =
-    daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `In ${daysUntil} days`;
+    daysUntil === 0
+      ? t('dashboard.account.today')
+      : daysUntil === 1
+        ? t('dashboard.account.tomorrow')
+        : t('dashboard.account.inDays', { count: daysUntil });
 
   return (
     <div className={classes.dateBox}>
@@ -213,7 +236,10 @@ function daysInMonth(year: number, month: number): number {
  * Formats an ISO date string (YYYY-MM-DD) as a relative label.
  * Parses without timezone shifting by using the year/month/day parts directly.
  */
-export function formatDate(dateStr: string): string {
+export function formatDate(
+  dateStr: string,
+  t: (key: string, opts?: Record<string, unknown>) => string
+): string {
   const [y, m, d] = dateStr.split('-').map(Number);
   const date = new Date(y, m - 1, d);
   const today = new Date();
@@ -221,10 +247,10 @@ export function formatDate(dateStr: string): string {
   const daysUntil = Math.ceil((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   const formatted = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   if (daysUntil === 0) {
-    return `${formatted} (Today)`;
+    return `${formatted} ${t('dashboard.account.todayParens')}`;
   }
   if (daysUntil > 0) {
-    return `${formatted} (in ${daysUntil} days)`;
+    return `${formatted} ${t('dashboard.account.inDaysParens', { count: daysUntil })}`;
   }
   return formatted;
 }

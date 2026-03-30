@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -21,6 +22,7 @@ import { toast } from '@/lib/toast';
 type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
 
 export function SubscriptionsV2Page() {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data: subsData, isLoading, isError, refetch } = useSubscriptions();
   const { data: upcomingData } = useUpcomingCharges(5);
@@ -103,9 +105,9 @@ export function SubscriptionsV2Page() {
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success({ message: 'Subscription deleted' });
+      toast.success({ message: t('subscriptions.deleted') });
     } catch {
-      toast.error({ message: 'Failed to delete subscription' });
+      toast.error({ message: t('subscriptions.deleteFailed') });
     }
   };
 
@@ -113,14 +115,14 @@ export function SubscriptionsV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Subscriptions
+          {t('subscriptions.title')}
         </Text>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your subscriptions.
+            {t('subscriptions.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -150,14 +152,14 @@ export function SubscriptionsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Subscriptions
+            {t('subscriptions.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Track your recurring charges
+            {t('subscriptions.subtitle')}
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
-          + Add Subscription
+          {t('subscriptions.addSubscription')}
         </Button>
       </div>
 
@@ -166,14 +168,13 @@ export function SubscriptionsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>🔄</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No subscriptions yet
+            {t('subscriptions.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Create a category with &lsquo;Subscription&rsquo; behavior to start tracking recurring
-            charges. You&apos;ll see billing dates, costs, and payment history.
+            {t('subscriptions.emptyDescription')}
           </Text>
           <Button size="sm" onClick={handleCreate}>
-            + Add Your First Subscription
+            {t('subscriptions.addFirstSubscription')}
           </Button>
         </div>
       )}
@@ -184,18 +185,20 @@ export function SubscriptionsV2Page() {
           <div className={classes.statsBar}>
             <div className={classes.statItem}>
               <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                Monthly Cost
+                {t('subscriptions.monthlyCost')}
               </Text>
               <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                 <CurrencyValue cents={monthlyCost} />
               </Text>
               <Text fz="xs" c="dimmed">
-                {activeSubs.filter((s) => s.billingCycle === 'monthly').length} monthly
+                {t('subscriptions.monthlyCount', {
+                  count: activeSubs.filter((s) => s.billingCycle === 'monthly').length,
+                })}
               </Text>
             </div>
             <div className={classes.statItem}>
               <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                Yearly Total
+                {t('subscriptions.yearlyTotal')}
               </Text>
               <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                 <CurrencyValue cents={yearlyTotal} />
@@ -203,7 +206,7 @@ export function SubscriptionsV2Page() {
             </div>
             <div className={classes.statItem}>
               <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                Active
+                {t('subscriptions.activeCount')}
               </Text>
               <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                 {activeSubs.length}
@@ -211,7 +214,7 @@ export function SubscriptionsV2Page() {
             </div>
             <div className={classes.statItem}>
               <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                Next Charge
+                {t('subscriptions.nextCharge')}
               </Text>
               {nextCharge ? (
                 <>
@@ -237,7 +240,7 @@ export function SubscriptionsV2Page() {
           {upcomingData && upcomingData.length > 0 && (
             <div className={classes.upcomingCard}>
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-                Upcoming Charges
+                {t('subscriptions.upcomingCharges')}
               </Text>
               {upcomingData.map((item, i) => {
                 const date = new Date(`${item.nextChargeDate}T00:00:00`);
@@ -246,12 +249,12 @@ export function SubscriptionsV2Page() {
                 const days = Math.ceil((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
                 const timeLabel =
                   days === 0
-                    ? 'Today'
+                    ? t('common.today')
                     : days === 1
-                      ? 'Tomorrow'
+                      ? t('common.tomorrow')
                       : days < 30
-                        ? `In ${days} days`
-                        : `In ${Math.round(days / 30)} months`;
+                        ? t('common.inDays', { count: days })
+                        : t('common.inMonths', { count: Math.round(days / 30) });
 
                 return (
                   <div key={item.subscriptionId + i} className={classes.upcomingRow}>
@@ -291,7 +294,7 @@ export function SubscriptionsV2Page() {
           {/* Active subscriptions */}
           <Stack gap="sm">
             <Text fz="xs" fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.88px' }}>
-              Active Subscriptions
+              {t('subscriptions.activeSubscriptions')}
             </Text>
             {activeSubs.map((sub) => {
               const cat = categoryMap.get(sub.categoryId);
@@ -314,7 +317,7 @@ export function SubscriptionsV2Page() {
           {pausedSubs.length > 0 && (
             <Stack gap="sm">
               <Text fz="xs" fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.88px' }}>
-                Paused
+                {t('common.paused')}
               </Text>
               {pausedSubs.map((sub) => {
                 const cat = categoryMap.get(sub.categoryId);
@@ -339,7 +342,8 @@ export function SubscriptionsV2Page() {
             <Stack gap="sm">
               <UnstyledButton onClick={() => setShowCancelled((v) => !v)}>
                 <Text fz="sm" fw={600} c="dimmed">
-                  {showCancelled ? '▾' : '▸'} Cancelled ({cancelledSubs.length})
+                  {showCancelled ? '▾' : '▸'}{' '}
+                  {t('subscriptions.cancelledCount', { count: cancelledSubs.length })}
                 </Text>
               </UnstyledButton>
               {showCancelled &&

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
@@ -17,6 +18,7 @@ import { toast } from '@/lib/toast';
 type CategorySummary = components['schemas']['CategorySummaryItem'];
 
 export function CategoriesV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: overviewData,
@@ -74,27 +76,27 @@ export function CategoriesV2Page() {
   const handleArchive = async (id: string) => {
     try {
       await archiveMutation.mutateAsync(id);
-      toast.success({ message: 'Category archived' });
+      toast.success({ message: t('categories.archived') });
     } catch {
-      toast.error({ message: 'Failed to archive category' });
+      toast.error({ message: t('categories.archiveFailed') });
     }
   };
 
   const handleUnarchive = async (id: string) => {
     try {
       await unarchiveMutation.mutateAsync(id);
-      toast.success({ message: 'Category unarchived' });
+      toast.success({ message: t('categories.unarchived') });
     } catch {
-      toast.error({ message: 'Failed to unarchive category' });
+      toast.error({ message: t('categories.unarchiveFailed') });
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success({ message: 'Category deleted' });
+      toast.success({ message: t('categories.deleted') });
     } catch {
-      toast.error({ message: 'Failed to delete category' });
+      toast.error({ message: t('categories.deleteFailed') });
     }
   };
 
@@ -102,10 +104,10 @@ export function CategoriesV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Categories
+          {t('categories.title')}
         </Text>
         <Text c="dimmed" fz="sm">
-          No budget period selected.
+          {t('common.noPeriodSelectedShort')}
         </Text>
       </Stack>
     );
@@ -115,17 +117,17 @@ export function CategoriesV2Page() {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          Categories
+          {t('categories.title')}
         </Text>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Categories
+            {t('categories.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your categories.
+            {t('categories.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -156,14 +158,14 @@ export function CategoriesV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Categories
+            {t('categories.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Your budgeting structure
+            {t('categories.subtitle')}
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
-          + Add Category
+          {t('categories.addCategory')}
         </Button>
       </div>
 
@@ -172,14 +174,13 @@ export function CategoriesV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>📂</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No categories yet
+            {t('categories.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Create your first category to start categorizing transactions and define your budgeting
-            structure.
+            {t('categories.emptyDescription')}
           </Text>
           <Button size="sm" onClick={handleCreate}>
-            + Add Your First Category
+            {t('categories.addFirstCategory')}
           </Button>
         </div>
       )}
@@ -191,7 +192,7 @@ export function CategoriesV2Page() {
             <div className={classes.statsBar}>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Expense Budget
+                  {t('categories.expenseBudget')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {summary.totalBudgeted != null ? (
@@ -203,7 +204,7 @@ export function CategoriesV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Income Target
+                  {t('categories.incomeTarget')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {summary.totalBudgetedIncoming != null ? (
@@ -215,7 +216,7 @@ export function CategoriesV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Total Spent
+                  {t('categories.totalSpent')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   <CurrencyValue cents={summary.totalSpent} />
@@ -223,7 +224,7 @@ export function CategoriesV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Categories
+                  {t('categories.categoriesCount')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {incomeCategories.length + expenseCategories.length}
@@ -231,7 +232,7 @@ export function CategoriesV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Unbudgeted
+                  {t('categories.unbudgeted')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {
@@ -246,7 +247,7 @@ export function CategoriesV2Page() {
 
           {/* Search */}
           <TextInput
-            placeholder="Search categories..."
+            placeholder={t('categories.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.currentTarget.value)}
           />
@@ -262,11 +263,11 @@ export function CategoriesV2Page() {
                   c="dimmed"
                   style={{ letterSpacing: '0.88px' }}
                 >
-                  Incoming
+                  {t('common.incoming')}
                 </Text>
                 <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)">
                   <CurrencyValue cents={incomeCategories.reduce((sum, c) => sum + c.actual, 0)} />{' '}
-                  this period
+                  {t('common.thisPeriod')}
                 </Text>
               </div>
               {incomeCategories.map((cat) => (
@@ -293,11 +294,11 @@ export function CategoriesV2Page() {
                   c="dimmed"
                   style={{ letterSpacing: '0.88px' }}
                 >
-                  Outgoing
+                  {t('common.outgoing')}
                 </Text>
                 <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)">
                   <CurrencyValue cents={expenseCategories.reduce((sum, c) => sum + c.actual, 0)} />{' '}
-                  this period
+                  {t('common.thisPeriod')}
                 </Text>
               </div>
               {expenseCategories.map((cat) => (
@@ -318,7 +319,8 @@ export function CategoriesV2Page() {
             <Stack gap="sm">
               <UnstyledButton onClick={() => setShowArchived((v) => !v)}>
                 <Text fz="sm" fw={600} c="dimmed">
-                  {showArchived ? '▾' : '▸'} Archived ({archivedCategories.length})
+                  {showArchived ? '▾' : '▸'}{' '}
+                  {t('categories.archivedCount', { count: archivedCategories.length })}
                 </Text>
               </UnstyledButton>
               {showArchived &&

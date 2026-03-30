@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Divider, ScrollArea, Stack, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { PeriodGapWarning } from './PeriodGapWarning';
@@ -20,7 +21,8 @@ export function PeriodDropdown({
   onSelect,
   isInGap,
 }: PeriodDropdownProps) {
-  const groups = groupPeriods(periods);
+  const { t } = useTranslation('v2');
+  const groups = groupPeriods(periods, t);
 
   return (
     <ScrollArea.Autosize mah={400} data-testid="period-dropdown">
@@ -54,7 +56,7 @@ export function PeriodDropdown({
 
         {groups.length === 0 && !isInGap && (
           <Text fz="sm" c="dimmed" ta="center" py="md">
-            No periods found
+            {t('periodSelector.noPeriodsFound')}
           </Text>
         )}
       </Stack>
