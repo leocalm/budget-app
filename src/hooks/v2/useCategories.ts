@@ -59,6 +59,8 @@ export function useCreateCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
+      queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
     },
   });
 }
@@ -84,6 +86,8 @@ export function useUpdateCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
+      queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
     },
   });
 }

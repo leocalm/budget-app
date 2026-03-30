@@ -2419,6 +2419,11 @@ export interface components {
        * @example Monthly grocery shopping
        */
       description: string | null;
+      /**
+       * @description Budget target in cents (null if no target set)
+       * @example 15000
+       */
+      target?: number | null;
     };
     CategoryManagementListItem: components['schemas']['CategoryBase'] & {
       /**
@@ -2551,6 +2556,11 @@ export interface components {
        * @example 123e4567-e89b-12d3-a456-426655440000
        */
       parentId?: string | null;
+      /**
+       * @description Budget target amount in cents (optional)
+       * @example 15000
+       */
+      target?: number | null;
     };
     UpdateCategoryRequest: components['schemas']['CreateCategoryRequest'];
     CategoryTrendItem: {

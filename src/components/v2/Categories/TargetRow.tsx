@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { ActionIcon, NumberInput, Progress, Text } from '@mantine/core';
+import { ActionIcon, Progress, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
-import { useExcludeCategoryTarget, useUpdateCategoryTarget } from '@/hooks/v2/useCategoryTargets';
+import { useExcludeCategoryTarget } from '@/hooks/v2/useCategoryTargets';
 import { toast } from '@/lib/toast';
 import classes from './Categories.module.css';
 
@@ -13,12 +12,7 @@ interface TargetRowProps {
 }
 
 export function TargetRow({ target }: TargetRowProps) {
-  const updateMutation = useUpdateCategoryTarget();
   const excludeMutation = useExcludeCategoryTarget();
-  const [editing, setEditing] = useState(false);
-  const [editValue, setEditValue] = useState<number | string>(
-    target.currentTarget != null ? target.currentTarget / 100 : 0
-  );
 
   const hasTarget = target.currentTarget != null && target.currentTarget > 0;
   const isExcluded = target.status === 'excluded';
@@ -26,32 +20,6 @@ export function TargetRow({ target }: TargetRowProps) {
     hasTarget && target.currentTarget! > 0
       ? Math.min(Math.round((target.spentInPeriod / target.currentTarget!) * 100), 100)
       : 0;
-
-  const [saving, setSaving] = useState(false);
-
-  const handleSave = async () => {
-    if (saving) {
-      return;
-    }
-    const cents = Math.round(Number(editValue) * 100);
-    if (cents <= 0) {
-      setEditing(false);
-      return;
-    }
-
-    setSaving(true);
-    try {
-      await updateMutation.mutateAsync({
-        id: target.id,
-        body: { categoryId: target.id, value: cents },
-      });
-      setEditing(false);
-    } catch {
-      toast.error({ message: 'Failed to update target' });
-    } finally {
-      setSaving(false);
-    }
-  };
 
   const handleExclude = async () => {
     try {
@@ -76,44 +44,11 @@ export function TargetRow({ target }: TargetRowProps) {
         )}
       </div>
 
-      {/* Target value — inline editable */}
+      {/* Target value — view only */}
       <div className={classes.targetValue}>
-        {editing ? (
-          <NumberInput
-            size="xs"
-            value={editValue}
-            onChange={setEditValue}
-            decimalScale={2}
-            fixedDecimalScale
-            min={0}
-            style={{ width: 90 }}
-            onBlur={handleSave}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSave();
-              }
-              if (e.key === 'Escape') {
-                setEditing(false);
-              }
-            }}
-            autoFocus
-          />
-        ) : (
-          <Text
-            fz="sm"
-            fw={500}
-            ff="var(--mantine-font-family-monospace)"
-            onClick={() => {
-              if (!isExcluded) {
-                setEditing(true);
-              }
-            }}
-            style={{ cursor: isExcluded ? 'default' : 'pointer' }}
-            title={isExcluded ? undefined : 'Click to edit'}
-          >
-            {hasTarget ? <CurrencyValue cents={target.currentTarget!} /> : '—'}
-          </Text>
-        )}
+        <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
+          {hasTarget ? <CurrencyValue cents={target.currentTarget!} /> : '—'}
+        </Text>
       </div>
 
       {/* Actual spend */}

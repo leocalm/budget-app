@@ -82,7 +82,7 @@ export function TargetsV2Page() {
             Targets
           </Text>
           <Text c="dimmed" fz="sm">
-            Set spending targets for this period
+            Budget targets for this period. Edit targets in Categories.
           </Text>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function TargetsV2Page() {
             No targets set
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Click on any target amount below to set a spending goal for that category.
+            Set budget targets when creating or editing categories.
           </Text>
         </div>
       )}

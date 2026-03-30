@@ -4,6 +4,7 @@ import {
   ColorInput,
   Drawer,
   Group,
+  NumberInput,
   Stack,
   Text,
   Textarea,
@@ -18,7 +19,7 @@ import classes from './Categories.module.css';
 type CategoryType = 'income' | 'expense' | 'transfer';
 type Behavior = 'fixed' | 'variable' | 'subscription';
 type CategoryBase = components['schemas']['CategoryBase'];
-type EditableCategory = CategoryBase & { description?: string | null };
+type EditableCategory = CategoryBase & { description?: string | null; target?: number | null };
 
 const CATEGORY_ICONS = [
   '🏠',
@@ -64,6 +65,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
   const [icon, setIcon] = useState('🛒');
   const [color, setColor] = useState('#8B7EC8');
   const [description, setDescription] = useState('');
+  const [target, setTarget] = useState<number | string>('');
 
   useEffect(() => {
     if (isEdit && editCategory) {
@@ -73,6 +75,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
       setIcon(editCategory.icon);
       setColor(editCategory.color);
       setDescription(editCategory.description ?? '');
+      setTarget(editCategory.target != null ? editCategory.target / 100 : '');
     }
   }, [isEdit, editCategory]);
 
@@ -84,6 +87,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
       color,
       description: description.trim() || undefined,
       behavior: type === 'expense' ? behavior : undefined,
+      target: target !== '' && Number(target) > 0 ? Math.round(Number(target) * 100) : undefined,
     };
 
     try {
@@ -217,6 +221,18 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
           maxLength={500}
           autosize
           minRows={2}
+        />
+
+        {/* Budget Target */}
+        <NumberInput
+          label="Budget Target"
+          description="Monthly spending or income target (optional)"
+          placeholder="0.00"
+          value={target}
+          onChange={setTarget}
+          decimalScale={2}
+          fixedDecimalScale
+          min={0}
         />
 
         {/* Submit */}

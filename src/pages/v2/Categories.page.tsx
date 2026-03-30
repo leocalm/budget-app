@@ -329,7 +329,7 @@ export function CategoriesV2Page() {
         key={editCategory?.id ?? 'create'}
         opened={formOpened}
         onClose={closeForm}
-        editCategory={editCategory}
+        editCategory={editCategory ? { ...editCategory, target: editCategory.budgeted } : null}
       />
     </Stack>
   );
