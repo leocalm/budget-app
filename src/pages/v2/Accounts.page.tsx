@@ -4,8 +4,10 @@ import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
 import { AccountFormDrawer, AccountRow, AccountsNetPosition } from '@/components/v2/Accounts';
 import classes from '@/components/v2/Accounts/Accounts.module.css';
+import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
   useArchiveAccount,
@@ -195,20 +197,37 @@ export function AccountsV2Page() {
         </Button>
       </div>
 
+      {/* Page hint */}
+      <PageHint hintId="accounts" message={t('hints.accounts')} />
+
       {/* Empty state */}
       {!hasAccounts && (
-        <div className={classes.centeredState}>
-          <Text fz={32}>⍑</Text>
-          <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('accounts.emptyTitle')}
-          </Text>
-          <Text fz="sm" c="dimmed" ta="center">
-            {t('accounts.emptyDescription')}
-          </Text>
-          <Button size="sm" onClick={handleCreate}>
-            {t('accounts.addFirstAccount')}
-          </Button>
-        </div>
+        <EmptyState
+          icon="🏦"
+          title={t('accounts.emptyTitle')}
+          message={t('accounts.emptyDescription')}
+          primaryAction={{ label: t('accounts.addFirstAccount'), onClick: handleCreate }}
+          tips={[
+            t('accounts.emptyTips.types'),
+            t('accounts.emptyTips.balance'),
+            t('accounts.emptyTips.archive'),
+          ]}
+          onboardingSteps={[
+            {
+              title: t('accounts.emptySteps.create.title'),
+              description: t('accounts.emptySteps.create.description'),
+            },
+            {
+              title: t('accounts.emptySteps.balance.title'),
+              description: t('accounts.emptySteps.balance.description'),
+            },
+            {
+              title: t('accounts.emptySteps.use.title'),
+              description: t('accounts.emptySteps.use.description'),
+            },
+          ]}
+          data-testid="accounts-empty-state"
+        />
       )}
 
       {/* Net Position */}

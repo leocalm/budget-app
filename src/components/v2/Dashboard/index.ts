@@ -1,4 +1,5 @@
 export { AccountCard } from './AccountCard';
+export { GettingStartedCard } from './GettingStartedCard';
 export { CashFlowCard } from './CashFlowCard';
 export { CurrentPeriodCard } from './CurrentPeriodCard';
 export { FixedCategoriesCard } from './FixedCategoriesCard';

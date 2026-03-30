@@ -25,6 +25,7 @@ import {
   CashFlowCard,
   CurrentPeriodCard,
   FixedCategoriesCard,
+  GettingStartedCard,
   NetPositionCard,
   RecentTransactionsCard,
   SpendingTrendCard,
@@ -38,6 +39,7 @@ import {
   DEFAULT_WIDGET_ORDER,
   WIDGET_DEFINITIONS,
 } from '@/components/v2/Dashboard/widgetDefinitions';
+import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/v2/useAccounts';
 import { usePreferences, useUpdatePreferences } from '@/hooks/v2/useSettings';
@@ -55,6 +57,8 @@ function getAccountId(itemId: string): string {
 
 function renderWidget(widgetId: string, periodId: string) {
   switch (widgetId) {
+    case 'getting_started':
+      return <GettingStartedCard periodId={periodId} />;
     case 'current_period':
       return <CurrentPeriodCard periodId={periodId} />;
     case 'net_position':
@@ -278,6 +282,8 @@ export function DashboardV2Page() {
           </Button>
         )}
       </div>
+
+      <PageHint hintId="dashboard" message={t('hints.dashboard')} />
 
       {isEditing ? (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

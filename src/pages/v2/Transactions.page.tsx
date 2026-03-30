@@ -14,6 +14,8 @@ import {
 import { useDebouncedValue } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { PageHint } from '@/components/v2/PageHint';
 import { QuickAdd, TransactionFormDrawer, TransactionRow } from '@/components/v2/Transactions';
 import classes from '@/components/v2/Transactions/Transactions.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
@@ -372,24 +374,53 @@ export function TransactionsV2Page() {
         </Stack>
       )}
 
+      {/* Page hint */}
+      <PageHint hintId="transactions" message={t('hints.transactions')} />
+
       {/* Empty state */}
       {!isLoading && dateGroups.length === 0 && (
-        <div className={classes.centeredState}>
-          <Text fz={32}>📝</Text>
-          <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('transactions.emptyTitle')}
-          </Text>
-          <Text fz="sm" c="dimmed" ta="center">
-            {debouncedSearch || hasActiveFilters
+        <EmptyState
+          icon="📝"
+          title={t('transactions.emptyTitle')}
+          message={
+            debouncedSearch || hasActiveFilters
               ? t('transactions.emptyFilterDescription')
-              : t('transactions.emptyDescription')}
-          </Text>
-          {!debouncedSearch && !hasActiveFilters && (
-            <Button size="sm" onClick={handleCreate}>
-              {t('transactions.addFirstTransaction')}
-            </Button>
-          )}
-        </div>
+              : t('transactions.emptyDescription')
+          }
+          primaryAction={
+            !debouncedSearch && !hasActiveFilters
+              ? { label: t('transactions.addFirstTransaction'), onClick: handleCreate }
+              : undefined
+          }
+          tips={
+            !debouncedSearch && !hasActiveFilters
+              ? [
+                  t('transactions.emptyTips.quickAdd'),
+                  t('transactions.emptyTips.categorize'),
+                  t('transactions.emptyTips.filters'),
+                ]
+              : undefined
+          }
+          onboardingSteps={
+            !debouncedSearch && !hasActiveFilters
+              ? [
+                  {
+                    title: t('transactions.emptySteps.add.title'),
+                    description: t('transactions.emptySteps.add.description'),
+                  },
+                  {
+                    title: t('transactions.emptySteps.categorize.title'),
+                    description: t('transactions.emptySteps.categorize.description'),
+                  },
+                  {
+                    title: t('transactions.emptySteps.review.title'),
+                    description: t('transactions.emptySteps.review.description'),
+                  },
+                ]
+              : undefined
+          }
+          data-testid="transactions-empty-state"
+        />
       )}
 
       {/* Date-grouped transactions */}

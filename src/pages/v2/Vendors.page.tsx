@@ -4,6 +4,8 @@ import { Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@manti
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { PageHint } from '@/components/v2/PageHint';
 import { MergeVendorModal, VendorFormDrawer, VendorRow } from '@/components/v2/Vendors';
 import classes from '@/components/v2/Vendors/Vendors.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
@@ -191,20 +193,37 @@ export function VendorsV2Page() {
         </Button>
       </div>
 
+      {/* Page hint */}
+      <PageHint hintId="vendors" message={t('hints.vendors')} />
+
       {/* Empty state */}
       {!hasVendors && (
-        <div className={classes.centeredState}>
-          <Text fz={32}>🏪</Text>
-          <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('vendors.emptyTitle')}
-          </Text>
-          <Text fz="sm" c="dimmed" ta="center">
-            {t('vendors.emptyDescription')}
-          </Text>
-          <Button size="sm" onClick={handleCreate}>
-            {t('vendors.addFirstVendor')}
-          </Button>
-        </div>
+        <EmptyState
+          icon="🏪"
+          title={t('vendors.emptyTitle')}
+          message={t('vendors.emptyDescription')}
+          primaryAction={{ label: t('vendors.addFirstVendor'), onClick: handleCreate }}
+          tips={[
+            t('vendors.emptyTips.organize'),
+            t('vendors.emptyTips.merge'),
+            t('vendors.emptyTips.archive'),
+          ]}
+          onboardingSteps={[
+            {
+              title: t('vendors.emptySteps.create.title'),
+              description: t('vendors.emptySteps.create.description'),
+            },
+            {
+              title: t('vendors.emptySteps.link.title'),
+              description: t('vendors.emptySteps.link.description'),
+            },
+            {
+              title: t('vendors.emptySteps.track.title'),
+              description: t('vendors.emptySteps.track.description'),
+            },
+          ]}
+          data-testid="vendors-empty-state"
+        />
       )}
 
       {hasVendors && (
