@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Drawer, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { useCategoriesOptions } from '@/hooks/v2/useCategories';
@@ -12,12 +13,6 @@ import { toast } from '@/lib/toast';
 
 type BillingCycle = components['schemas']['BillingCycle'];
 
-const CYCLE_OPTIONS = [
-  { value: 'monthly', label: 'Monthly' },
-  { value: 'quarterly', label: 'Quarterly' },
-  { value: 'yearly', label: 'Yearly' },
-];
-
 interface SubscriptionFormDrawerProps {
   opened: boolean;
   onClose: () => void;
@@ -29,6 +24,7 @@ export function SubscriptionFormDrawer({
   onClose,
   editSubscriptionId,
 }: SubscriptionFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editSubscriptionId;
   const { data: editData } = useSubscription(editSubscriptionId ?? '');
   const createMutation = useCreateSubscription();
@@ -64,6 +60,12 @@ export function SubscriptionFormDrawer({
   }));
   const vendorOptions = (vendors ?? []).map((v) => ({ value: v.id, label: v.name }));
 
+  const cycleOptions = [
+    { value: 'monthly', label: t('subscriptions.form.cycles.monthly') },
+    { value: 'quarterly', label: t('subscriptions.form.cycles.quarterly') },
+    { value: 'yearly', label: t('subscriptions.form.cycles.yearly') },
+  ];
+
   const handleSubmit = async () => {
     if (!name.trim() || !categoryId || !billingAmount) {
       return;
@@ -82,14 +84,16 @@ export function SubscriptionFormDrawer({
     try {
       if (isEdit && editSubscriptionId) {
         await updateMutation.mutateAsync({ id: editSubscriptionId, body });
-        toast.success({ message: 'Subscription updated' });
+        toast.success({ message: t('subscriptions.form.updated') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Subscription created' });
+        toast.success({ message: t('subscriptions.form.created') });
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} subscription` });
+      toast.error({
+        message: t('subscriptions.form.error', { action: isEdit ? 'update' : 'create' }),
+      });
     }
   };
 
@@ -100,7 +104,7 @@ export function SubscriptionFormDrawer({
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Subscription' : 'Add Subscription'}
+      title={isEdit ? t('subscriptions.form.editTitle') : t('subscriptions.form.createTitle')}
       position="right"
       size="md"
       styles={{
@@ -110,16 +114,16 @@ export function SubscriptionFormDrawer({
     >
       <Stack gap="md">
         <TextInput
-          label="Subscription Name"
-          placeholder="e.g. Netflix"
+          label={t('subscriptions.form.name')}
+          placeholder={t('subscriptions.form.namePlaceholder')}
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
         />
 
         <Select
-          label="Category"
-          description="Link to a category with subscription behavior"
+          label={t('subscriptions.form.category')}
+          description={t('subscriptions.form.categoryDesc')}
           data={categoryOptions}
           value={categoryId}
           onChange={setCategoryId}
@@ -128,7 +132,7 @@ export function SubscriptionFormDrawer({
         />
 
         <Select
-          label="Vendor"
+          label={t('subscriptions.form.vendor')}
           data={vendorOptions}
           value={vendorId}
           onChange={setVendorId}
@@ -137,12 +141,12 @@ export function SubscriptionFormDrawer({
         />
 
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Billing
+          {t('subscriptions.form.billing')}
         </Text>
 
         <Group grow>
           <NumberInput
-            label="Amount"
+            label={t('subscriptions.form.amount')}
             value={billingAmount}
             onChange={setBillingAmount}
             decimalScale={2}
@@ -151,8 +155,8 @@ export function SubscriptionFormDrawer({
             required
           />
           <Select
-            label="Cycle"
-            data={CYCLE_OPTIONS}
+            label={t('subscriptions.form.cycle')}
+            data={cycleOptions}
             value={billingCycle}
             onChange={(v) => setBillingCycle((v as BillingCycle) ?? 'monthly')}
             required
@@ -160,8 +164,8 @@ export function SubscriptionFormDrawer({
         </Group>
 
         <NumberInput
-          label="Billing Day"
-          description="Day of month (1-31)"
+          label={t('subscriptions.form.billingDay')}
+          description={t('subscriptions.form.billingDayDesc')}
           value={billingDay}
           onChange={setBillingDay}
           min={1}
@@ -170,7 +174,7 @@ export function SubscriptionFormDrawer({
         />
 
         <TextInput
-          label="Next Expected Charge"
+          label={t('subscriptions.form.nextCharge')}
           type="date"
           value={nextChargeDate}
           onChange={(e) => setNextChargeDate(e.currentTarget.value)}
@@ -179,10 +183,10 @@ export function SubscriptionFormDrawer({
 
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : 'Create Subscription'}
+            {isEdit ? t('common.saveChanges') : t('subscriptions.form.createButton')}
           </Button>
         </Group>
       </Stack>

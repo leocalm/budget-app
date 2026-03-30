@@ -134,12 +134,22 @@
       "Checking": "Checking",
       "CreditCard": "Credit Cards",
       "Savings": "Savings",
-      "Wallet": "Wallets"
+      "Wallet": "Wallets",
+      "checking": "Checking",
+      "savings": "Savings",
+      "creditCard": "Credit Card",
+      "wallet": "Wallet",
+      "allowance": "Allowance"
     },
     "unarchiveFailed": "Failed to unarchive account",
     "unarchived": "Account unarchived",
     "unarchivedNamed": "{{name}} unarchived",
-    "updated": "Account updated"
+    "updated": "Account updated",
+    "topUpCycles": {
+      "weekly": "Weekly",
+      "biWeekly": "Bi-weekly",
+      "monthly": "Monthly"
+    }
   },
   "appShell": {
     "brand": "PiggyPulse",
@@ -914,7 +924,10 @@
         "tuesday": "Tuesday",
         "wednesday": "Wednesday"
       },
-      "weekendHandling": "Weekend Handling"
+      "weekendHandling": "Weekend Handling",
+      "keepAsIs": "Keep as-is",
+      "moveToMonday": "Move to Monday",
+      "moveToFriday": "Move to Friday"
     },
     "spend": "Spend",
     "subtitle": "Manage your budget periods",
@@ -1253,7 +1266,31 @@
     "unexpectedCharge": "Unexpected charge after cancellation",
     "unexpectedChargeDesc": "{{count}} charges detected since cancellation.",
     "upcomingCharges": "Upcoming Charges",
-    "yearlyTotal": "Yearly Total"
+    "yearlyTotal": "Yearly Total",
+    "form": {
+      "editTitle": "Edit Subscription",
+      "createTitle": "Add Subscription",
+      "name": "Subscription Name",
+      "namePlaceholder": "e.g. Netflix",
+      "category": "Category",
+      "categoryDesc": "Link to a category with subscription behavior",
+      "vendor": "Vendor",
+      "billing": "Billing",
+      "amount": "Amount",
+      "cycle": "Cycle",
+      "billingDay": "Billing Day",
+      "billingDayDesc": "Day of month (1-31)",
+      "nextCharge": "Next Expected Charge",
+      "createButton": "Create Subscription",
+      "updated": "Subscription updated",
+      "created": "Subscription created",
+      "error": "Failed to {{action}} subscription",
+      "cycles": {
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "yearly": "Yearly"
+      }
+    }
   },
   "targets": {
     "actual": "Actual",

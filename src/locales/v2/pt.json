@@ -98,7 +98,12 @@
       "Checking": "Conta à Ordem",
       "CreditCard": "Cartões de Crédito",
       "Savings": "Poupança",
-      "Wallet": "Carteiras"
+      "Wallet": "Carteiras",
+      "checking": "Conta à Ordem",
+      "savings": "Poupança",
+      "creditCard": "Cartão de Crédito",
+      "wallet": "Carteira",
+      "allowance": "Mesada"
     },
     "addFirstAccount": "+ Adicione a Sua Primeira Conta",
     "afterTopUp": "Após carregamento",
@@ -139,7 +144,12 @@
     "unarchiveFailed": "Falha ao desarquivar conta",
     "unarchived": "Conta desarquivada",
     "unarchivedNamed": "{{name}} desarquivada",
-    "updated": "Conta atualizada"
+    "updated": "Conta atualizada",
+    "topUpCycles": {
+      "weekly": "Semanal",
+      "biWeekly": "Quinzenal",
+      "monthly": "Mensal"
+    }
   },
   "appShell": {
     "brand": "PiggyPulse",
@@ -910,7 +920,10 @@
       "saturdayLabel": "Se início cair ao sábado",
       "scheduleFailed": "Falha ao guardar configuração",
       "scheduleSaved": "Calendário atualizado",
-      "sundayLabel": "Se início cair ao domingo"
+      "sundayLabel": "Se início cair ao domingo",
+      "keepAsIs": "Manter como está",
+      "moveToMonday": "Mover para segunda-feira",
+      "moveToFriday": "Mover para sexta-feira"
     },
     "subtitle": "Gerir os seus períodos de orçamento",
     "title": "Períodos",
@@ -1258,7 +1271,31 @@
     "thisYear": "Este Ano",
     "unexpectedCharge": "Cobrança inesperada após cancelamento",
     "unexpectedChargeDesc": "{{count}} cobranças detetadas desde o cancelamento.",
-    "yearlyTotal": "Total Anual"
+    "yearlyTotal": "Total Anual",
+    "form": {
+      "editTitle": "Editar Subscrição",
+      "createTitle": "Adicionar Subscrição",
+      "name": "Nome da Subscrição",
+      "namePlaceholder": "ex. Netflix",
+      "category": "Categoria",
+      "categoryDesc": "Associar a uma categoria com comportamento de subscrição",
+      "vendor": "Fornecedor",
+      "billing": "Cobrança",
+      "amount": "Valor",
+      "cycle": "Ciclo",
+      "billingDay": "Dia de Cobrança",
+      "billingDayDesc": "Dia do mês (1-31)",
+      "nextCharge": "Próxima Cobrança Prevista",
+      "createButton": "Criar Subscrição",
+      "updated": "Subscrição atualizada",
+      "created": "Subscrição criada",
+      "error": "Falha ao {{action}} subscrição",
+      "cycles": {
+        "monthly": "Mensal",
+        "quarterly": "Trimestral",
+        "yearly": "Anual"
+      }
+    }
   },
   "targets": {
     "empty": {

@@ -160,7 +160,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
                 >
                   <Text fz="lg">{b === 'fixed' ? '📌' : b === 'variable' ? '📊' : '🔄'}</Text>
                   <Text fz="xs" fw={500}>
-                    {b.charAt(0).toUpperCase() + b.slice(1)}
+                    {t(`categories.behaviors.${b}`)}
                   </Text>
                 </UnstyledButton>
               ))}

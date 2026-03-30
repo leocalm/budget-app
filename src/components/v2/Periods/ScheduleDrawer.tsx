@@ -264,11 +264,11 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
                 max={366}
               />
               <Select
-                label="Unit"
+                label={t('periods.form.unit')}
                 data={[
-                  { value: 'days', label: 'Days' },
-                  { value: 'weeks', label: 'Weeks' },
-                  { value: 'months', label: 'Months' },
+                  { value: 'days', label: t('periods.form.days') },
+                  { value: 'weeks', label: t('periods.form.weeks') },
+                  { value: 'months', label: t('periods.form.months') },
                 ]}
                 value={durationUnit}
                 onChange={(v) => setDurationUnit((v as DurationUnit) ?? 'days')}
