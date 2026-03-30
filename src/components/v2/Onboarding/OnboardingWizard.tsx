@@ -256,7 +256,10 @@ export function OnboardingWizard() {
             Choose your currency
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            This is the only required step. All amounts in PiggyPulse will use this currency.
+            This is the only required step.
+          </Text>
+          <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
+            All your accounts and transactions will use this currency.
           </Text>
           <TextInput
             placeholder="Search currencies..."
@@ -307,6 +310,9 @@ export function OnboardingWizard() {
               Continue
             </Button>
           </div>
+          <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
+            Currently, PiggyPulse don't support multiple currencies. This feature is coming soon.
+          </Text>
         </div>
       )}
 
@@ -318,7 +324,7 @@ export function OnboardingWizard() {
           </Text>
           <Text fz="sm" c="dimmed" mt="md">
             Periods are time windows that organize your transactions. Think of them as chapters in
-            your financial story — each one has a start date, an end date, and its own budget.
+            your financial story — each one has a start date, an end date.
           </Text>
           <Text fz="sm" c="dimmed" mt="sm">
             Transactions fall into periods based on their date — no manual assignment needed.
@@ -341,7 +347,7 @@ export function OnboardingWizard() {
               3 periods prepared in advance
             </Text>
           </Stack>
-          <Text fz="xs" c="dimmed" mt="sm" ta="center">
+          <Text fz="sm" c="dimmed" mt="sm" ta="center">
             You can change these settings later in Periods → Schedule.
           </Text>
           <div className={classes.navButtons}>
@@ -360,7 +366,11 @@ export function OnboardingWizard() {
             Add your accounts
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
-            Where does your money live? Add as many as you&apos;d like — or skip and add them later.
+            Where does your money live? Accounts represent your real accounts, and are not connected
+            to your bank.
+          </Text>
+          <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
+            Add as many as you&apos;d like — or skip and add them later.
           </Text>
           <Stack gap="sm">
             {accounts.map((acct, i) => (
@@ -440,6 +450,9 @@ export function OnboardingWizard() {
         <div className={classes.card}>
           <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)" ta="center">
             Set up categories
+          </Text>
+          <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
+            Categories help you organize your transactions, and set-up targets.
           </Text>
           <Text fz="sm" c="dimmed" ta="center" mt={4} mb="lg">
             Pick a starting template — you can add, remove, or change categories anytime.
