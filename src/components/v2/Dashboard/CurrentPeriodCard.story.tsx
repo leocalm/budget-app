@@ -42,6 +42,7 @@ const mockHistory: CurrentPeriodHistoryPoint[] = Array.from({ length: 19 }, (_, 
 const mockWithBudget: CurrentPeriod = {
   spent: 284750,
   target: 450000,
+  incomeTarget: 600000,
   daysRemaining: 12,
   daysInPeriod: 31,
   projectedSpend: 438000,
@@ -50,6 +51,7 @@ const mockWithBudget: CurrentPeriod = {
 const mockAheadOfPace: CurrentPeriod = {
   spent: 321000,
   target: 450000,
+  incomeTarget: 0,
   daysRemaining: 18,
   daysInPeriod: 31,
   projectedSpend: 764300,
@@ -58,6 +60,7 @@ const mockAheadOfPace: CurrentPeriod = {
 const mockNoBudget: CurrentPeriod = {
   spent: 284750,
   target: 0,
+  incomeTarget: 0,
   daysRemaining: 12,
   daysInPeriod: 31,
   projectedSpend: 0,

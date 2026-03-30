@@ -94,6 +94,12 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
             {hasBudget ? (
               <>
                 of <CurrencyValue cents={data.target} /> budgeted
+                {data.incomeTarget > 0 && (
+                  <>
+                    {' · '}
+                    <CurrencyValue cents={data.incomeTarget} /> expected income
+                  </>
+                )}
               </>
             ) : (
               'no budget set'

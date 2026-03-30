@@ -104,6 +104,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 0,
       target: 0,
+      incomeTarget: 0,
       daysRemaining: 0,
       daysInPeriod: 0,
       projectedSpend: 0,
@@ -118,6 +119,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 284750,
       target: 450000,
+      incomeTarget: 0,
       daysRemaining: 12,
       daysInPeriod: 31,
       projectedSpend: 438000,
@@ -136,6 +138,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 284750,
       target: 0,
+      incomeTarget: 0,
       daysRemaining: 12,
       daysInPeriod: 31,
       projectedSpend: 0,
@@ -153,6 +156,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 284750,
       target: 0,
+      incomeTarget: 0,
       daysRemaining: 12,
       daysInPeriod: 31,
       projectedSpend: 0,
@@ -168,6 +172,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 0,
       target: 100000,
+      incomeTarget: 0,
       daysRemaining: 0,
       daysInPeriod: 0,
       projectedSpend: 0,
@@ -184,6 +189,7 @@ describe('CurrentPeriodCard', () => {
     mockCurrentPeriodHook({
       spent: 500000,
       target: 450000,
+      incomeTarget: 0,
       daysRemaining: 5,
       daysInPeriod: 31,
       projectedSpend: 600000,

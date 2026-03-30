@@ -191,11 +191,23 @@ export function CategoriesV2Page() {
             <div className={classes.statsBar}>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Total Budgeted
+                  Expense Budget
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {summary.totalBudgeted != null ? (
                     <CurrencyValue cents={summary.totalBudgeted} />
+                  ) : (
+                    '—'
+                  )}
+                </Text>
+              </div>
+              <div className={classes.statItem}>
+                <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+                  Income Target
+                </Text>
+                <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+                  {summary.totalBudgetedIncoming != null ? (
+                    <CurrencyValue cents={summary.totalBudgetedIncoming} />
                   ) : (
                     '—'
                   )}

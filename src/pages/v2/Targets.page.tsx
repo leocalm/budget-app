@@ -100,10 +100,18 @@ export function TargetsV2Page() {
           </div>
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-              Position
+              Expense Budget
             </Text>
             <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
               <CurrencyValue cents={summary.currentPosition} />
+            </Text>
+          </div>
+          <div className={classes.statItem}>
+            <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+              Income Target
+            </Text>
+            <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+              <CurrencyValue cents={summary.incomeTarget} />
             </Text>
           </div>
           <div className={classes.statItem}>

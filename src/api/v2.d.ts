@@ -1524,6 +1524,11 @@ export interface components {
        */
       target: number;
       /**
+       * @description Income target amount for the current period, in cents
+       * @example 60000
+       */
+      incomeTarget: number;
+      /**
        * @description Number of days remaining in the current period
        * @example 10
        */
@@ -2484,6 +2489,11 @@ export interface components {
        */
       totalBudgeted: number | null;
       /**
+       * @description Total incoming budgeted in period in cents
+       * @example 600000
+       */
+      totalBudgetedIncoming: number | null;
+      /**
        * @description Variance between budgeted and actual in cents
        * @example 50000
        */
@@ -2717,6 +2727,11 @@ export interface components {
        * @example 50000
        */
       currentPosition: number;
+      /**
+       * @description Total income target in cents
+       * @example 600000
+       */
+      incomeTarget: number;
       categoriesWithTargets: {
         /**
          * @description Number of categories with targets
