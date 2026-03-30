@@ -1,6 +1,7 @@
 import type { components } from '@/api/v2';
 
 type PeriodResponse = components['schemas']['PeriodResponse'];
+type TFunction = (key: string, opts?: Record<string, unknown>) => string;
 
 export interface PeriodGroup {
   label: string;
@@ -15,33 +16,34 @@ function parseLocalDate(dateStr: string): Date {
 /**
  * Groups periods by status (current/future/past) for the dropdown.
  */
-export function groupPeriods(periods: PeriodResponse[]): PeriodGroup[] {
+export function groupPeriods(periods: PeriodResponse[], t?: TFunction): PeriodGroup[] {
   const current = periods.filter((p) => p.status === 'active');
   const future = periods.filter((p) => p.status === 'upcoming');
   const past = periods.filter((p) => p.status === 'past');
 
+  const label = (key: string, fallback: string) => (t ? t(key) : fallback);
+
   const groups: PeriodGroup[] = [];
   if (current.length > 0) {
-    groups.push({ label: 'Current', periods: current });
+    groups.push({ label: label('periods.groupCurrent', 'Current'), periods: current });
   }
   if (future.length > 0) {
-    groups.push({ label: 'Future', periods: future });
+    groups.push({ label: label('periods.groupFuture', 'Future'), periods: future });
   }
   if (past.length > 0) {
-    groups.push({ label: 'Past', periods: past });
+    groups.push({ label: label('periods.groupPast', 'Past'), periods: past });
   }
   return groups;
 }
 
 /**
  * Builds a human-readable badge for a period.
- * - Active: "14 days left"
- * - Upcoming: "in 15 days"
- * - Past: "13 days ago"
  */
-export function periodBadgeText(period: PeriodResponse): string {
+export function periodBadgeText(period: PeriodResponse, t?: TFunction): string {
   if (period.status === 'active' && period.remainingDays != null) {
-    return `${period.remainingDays} days left`;
+    return t
+      ? t('periods.badgeDaysLeft', { count: period.remainingDays })
+      : `${period.remainingDays} days left`;
   }
 
   const today = new Date();
@@ -50,14 +52,14 @@ export function periodBadgeText(period: PeriodResponse): string {
 
   if (period.status === 'upcoming') {
     const daysUntil = Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    return `in ${daysUntil} days`;
+    return t ? t('periods.badgeInDays', { count: daysUntil }) : `in ${daysUntil} days`;
   }
 
   if (period.status === 'past') {
     const endDate = new Date(start);
     endDate.setDate(endDate.getDate() + period.length - 1);
     const daysAgo = Math.ceil((today.getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24));
-    return `${daysAgo} days ago`;
+    return t ? t('periods.badgeDaysAgo', { count: daysAgo }) : `${daysAgo} days ago`;
   }
 
   return '';

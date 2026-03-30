@@ -922,7 +922,13 @@
       "deleted": "Period deleted"
     },
     "txns": "Txns",
-    "updated": "Period updated"
+    "updated": "Period updated",
+    "groupCurrent": "Current",
+    "groupFuture": "Future",
+    "groupPast": "Past",
+    "badgeDaysLeft": "{{count}} days left",
+    "badgeInDays": "in {{count}} days",
+    "badgeDaysAgo": "{{count}} days ago"
   },
   "placeholder": {
     "comingSoon": "This page is coming soon"

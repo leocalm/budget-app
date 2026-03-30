@@ -930,7 +930,13 @@
     "saveFailed": "Falha ao guardar período",
     "spend": "Gasto",
     "txns": "Trans.",
-    "updated": "Período atualizado"
+    "updated": "Período atualizado",
+    "groupCurrent": "Atual",
+    "groupFuture": "Futuro",
+    "groupPast": "Passado",
+    "badgeDaysLeft": "{{count}} dias restantes",
+    "badgeInDays": "em {{count}} dias",
+    "badgeDaysAgo": "há {{count}} dias"
   },
   "settings": {
     "avatars": {

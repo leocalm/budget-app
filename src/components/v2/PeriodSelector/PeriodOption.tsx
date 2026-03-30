@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Group, Stack, Text, UnstyledButton } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { useV2Theme } from '@/theme/v2';
@@ -12,8 +13,9 @@ interface PeriodOptionProps {
 }
 
 export function PeriodOption({ period, isSelected, onSelect }: PeriodOptionProps) {
+  const { t } = useTranslation('v2');
   const { accents } = useV2Theme();
-  const badge = periodBadgeText(period);
+  const badge = periodBadgeText(period, t);
   const dateRange = periodDateRange(period);
 
   return (

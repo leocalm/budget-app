@@ -22,7 +22,7 @@ export function PeriodDropdown({
   isInGap,
 }: PeriodDropdownProps) {
   const { t } = useTranslation('v2');
-  const groups = groupPeriods(periods);
+  const groups = groupPeriods(periods, t);
 
   return (
     <ScrollArea.Autosize mah={400} data-testid="period-dropdown">

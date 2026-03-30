@@ -26,7 +26,7 @@ export function PeriodCard({
   const { t } = useTranslation('v2');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const isCurrent = period.status === 'active';
-  const badgeText = periodBadgeText(period);
+  const badgeText = periodBadgeText(period, t);
   const dateRange = periodDateRange(period);
   const progress = periodProgress(period);
 

@@ -42,7 +42,7 @@ export function PeriodsV2Page() {
   const periods = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
   const isAutoGenActive = schedule?.scheduleType === 'automatic';
 
-  const groups = useMemo(() => groupPeriods(periods), [periods]);
+  const groups = useMemo(() => groupPeriods(periods, t), [periods, t]);
 
   const handleCreate = () => {
     setEditPeriodId(null);
