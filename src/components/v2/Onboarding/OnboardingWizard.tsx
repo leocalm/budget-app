@@ -5,6 +5,7 @@ import piggyCloud from '@/assets/icons/png/gradient/piggy-pulse-cloud.svg';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useAuth } from '@/context/AuthContext';
 import { useCreateAccount } from '@/hooks/v2/useAccounts';
+import { useCreatePeriodSchedule } from '@/hooks/v2/useBudgetPeriods';
 import { useCurrencies } from '@/hooks/v2/useCurrencies';
 import {
   useApplyTemplate,
@@ -33,6 +34,7 @@ export function OnboardingWizard() {
   const { data: profile } = useProfile();
   const updateProfile = useUpdateProfile();
   const createAccount = useCreateAccount();
+  const createSchedule = useCreatePeriodSchedule();
   const completeOnboarding = useCompleteOnboarding();
   const { data: templates } = useCategoryTemplates();
   const applyTemplate = useApplyTemplate();
@@ -61,6 +63,26 @@ export function OnboardingWizard() {
         });
       } catch {
         toast.error({ message: 'Failed to save currency' });
+        return;
+      }
+    }
+
+    if (step === 2) {
+      // Create default monthly schedule (1st of month, 30 days, 3 ahead)
+      try {
+        await createSchedule.mutateAsync({
+          scheduleType: 'automatic',
+          recurrenceMethod: 'dayOfMonth',
+          startDayOfTheMonth: 1,
+          periodDuration: 1,
+          durationUnit: 'months',
+          generateAhead: 3,
+          saturdayPolicy: 'keep',
+          sundayPolicy: 'keep',
+          namePattern: '{MONTH} {YEAR}',
+        });
+      } catch {
+        toast.error({ message: 'Failed to set up periods' });
         return;
       }
     }
