@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components, operations } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
@@ -17,6 +17,24 @@ export function useVendors(params: VendorListParams = {}) {
       }
       return data;
     },
+  });
+}
+
+export function useInfiniteVendors(pageSize = 50) {
+  return useInfiniteQuery({
+    queryKey: [...v2QueryKeys.vendors.list({}), 'infinite', pageSize],
+    queryFn: async ({ pageParam }) => {
+      const { data, error } = await apiClient.GET('/vendors', {
+        params: { query: { limit: pageSize, cursor: pageParam || undefined } },
+      });
+      if (error) {
+        throw error;
+      }
+      return data!;
+    },
+    initialPageParam: '' as string,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
   });
 }
 

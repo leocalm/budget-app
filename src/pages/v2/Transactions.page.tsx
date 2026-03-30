@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Badge,
   Button,
@@ -18,6 +18,7 @@ import classes from '@/components/v2/Transactions/Transactions.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccountsOptions } from '@/hooks/v2/useAccounts';
 import { useCategoriesOptions } from '@/hooks/v2/useCategories';
+import { useInfiniteScroll } from '@/hooks/v2/useInfiniteScroll';
 import { useDeleteTransaction, useInfiniteTransactions } from '@/hooks/v2/useTransactions';
 import { useVendorsOptions } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
@@ -70,38 +71,11 @@ export function TransactionsV2Page() {
     isFetchingNextPage,
   } = useInfiniteTransactions(filters);
 
-  // Infinite scroll observer — only recreate when hasNextPage changes
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const stableCallbacks = useRef({ fetchNextPage, hasNextPage, isFetchingNextPage });
-  stableCallbacks.current = { fetchNextPage, hasNextPage, isFetchingNextPage };
-
-  const loadMoreRef = useCallback((node: HTMLDivElement | null) => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-    if (!node) {
-      return;
-    }
-    observerRef.current = new IntersectionObserver((entries) => {
-      const {
-        hasNextPage: has,
-        isFetchingNextPage: fetching,
-        fetchNextPage: fetch,
-      } = stableCallbacks.current;
-      if (entries[0].isIntersecting && has && !fetching) {
-        fetch();
-      }
-    });
-    observerRef.current.observe(node);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+  });
 
   // Flatten pages + group by date
   const apiTotalCount = infiniteData?.pages[0]?.totalCount ?? 0;

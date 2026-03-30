@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
@@ -33,6 +33,27 @@ export function useAccountsSummary(
       }
       return data;
     },
+    enabled: !!periodId,
+  });
+}
+
+export function useInfiniteAccountsSummary(periodId: string | null, pageSize = 50) {
+  return useInfiniteQuery({
+    queryKey: [...v2QueryKeys.accounts.summary(periodId ?? ''), 'infinite', pageSize],
+    queryFn: async ({ pageParam }) => {
+      const { data, error } = await apiClient.GET('/accounts/summary', {
+        params: {
+          query: { periodId: periodId!, limit: pageSize, cursor: pageParam || undefined },
+        },
+      });
+      if (error) {
+        throw error;
+      }
+      return data!;
+    },
+    initialPageParam: '' as string,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
     enabled: !!periodId,
   });
 }

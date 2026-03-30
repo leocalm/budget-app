@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react';
-import { Alert, Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
+import { Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { MergeVendorModal, VendorFormDrawer, VendorRow } from '@/components/v2/Vendors';
 import classes from '@/components/v2/Vendors/Vendors.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
+import { useInfiniteScroll } from '@/hooks/v2/useInfiniteScroll';
 import {
   useArchiveVendor,
   useDeleteVendor,
+  useInfiniteVendors,
   useUnarchiveVendor,
-  useVendors,
   useVendorStats,
 } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
@@ -19,11 +20,25 @@ type VendorSummary = components['schemas']['VendorSummaryResponse'];
 
 export function VendorsV2Page() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const { data: vendorsData, isLoading, isError, refetch } = useVendors({ limit: 200 });
+  const {
+    data: infiniteData,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteVendors();
   const { data: stats } = useVendorStats(selectedPeriodId);
   const archiveMutation = useArchiveVendor();
   const unarchiveMutation = useUnarchiveVendor();
   const deleteMutation = useDeleteVendor();
+
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+  });
 
   const [formOpened, { open: openForm, close: closeForm }] = useDisclosure(false);
   const [mergeOpened, { open: openMerge, close: closeMerge }] = useDisclosure(false);
@@ -33,7 +48,7 @@ export function VendorsV2Page() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showArchived, setShowArchived] = useState(false);
 
-  const vendors = vendorsData?.data ?? [];
+  const vendors = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
 
   const { activeVendors, archivedVendors } = useMemo(() => {
     const active: VendorSummary[] = [];
@@ -274,12 +289,13 @@ export function VendorsV2Page() {
         </>
       )}
 
-      {vendorsData?.hasMore && (
-        <Alert variant="light" color="yellow" mt="xs">
-          Showing {vendors.length} of {vendorsData.totalCount} vendors. Some vendors are not
-          displayed.
-        </Alert>
+      {isFetchingNextPage && (
+        <Stack gap="xs">
+          <Skeleton height={54} radius="lg" />
+          <Skeleton height={54} radius="lg" />
+        </Stack>
       )}
+      {hasNextPage && !isFetchingNextPage && <div ref={loadMoreRef} style={{ height: 1 }} />}
 
       <VendorFormDrawer
         key={editVendor?.id ?? 'create'}
