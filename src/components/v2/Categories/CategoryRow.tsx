@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Badge, Menu, Progress, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
@@ -7,9 +8,9 @@ import classes from './Categories.module.css';
 type CategorySummary = components['schemas']['CategorySummaryItem'];
 
 const BEHAVIOR_LABELS: Record<string, string> = {
-  fixed: 'Fixed',
-  variable: 'Variable',
-  subscription: 'Subscription',
+  fixed: 'categories.behaviors.fixed',
+  variable: 'categories.behaviors.variable',
+  subscription: 'categories.behaviors.subscription',
 };
 
 interface CategoryRowProps {
@@ -27,6 +28,7 @@ export function CategoryRow({
   onUnarchive,
   onDelete,
 }: CategoryRowProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const isArchived = category.status === 'inactive';
   const hasBudget = category.budgeted != null && category.budgeted > 0;
@@ -62,20 +64,20 @@ export function CategoryRow({
           </Text>
           {category.behavior && (
             <Badge size="xs" variant="light" color="var(--v2-primary)">
-              {BEHAVIOR_LABELS[category.behavior] ?? category.behavior}
+              {t(BEHAVIOR_LABELS[category.behavior] ?? category.behavior)}
             </Badge>
           )}
         </div>
         <Text fz="xs" c="dimmed">
           {category.type === 'income'
-            ? 'Incoming'
+            ? t('common.incoming')
             : category.type === 'transfer'
-              ? 'Transfer'
-              : 'Outgoing'}
+              ? t('common.transfer')
+              : t('common.outgoing')}
           {hasBudget && (
             <>
               {' '}
-              · <CurrencyValue cents={category.budgeted!} /> budgeted
+              · <CurrencyValue cents={category.budgeted!} /> {t('common.budgeted')}
             </>
           )}
         </Text>
@@ -119,14 +121,18 @@ export function CategoryRow({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            {!isArchived && <Menu.Item onClick={() => onEdit(category.id)}>Edit</Menu.Item>}
+            {!isArchived && (
+              <Menu.Item onClick={() => onEdit(category.id)}>{t('common.edit')}</Menu.Item>
+            )}
             {isArchived ? (
-              <Menu.Item onClick={() => onUnarchive(category.id)}>Unarchive</Menu.Item>
+              <Menu.Item onClick={() => onUnarchive(category.id)}>
+                {t('common.unarchive')}
+              </Menu.Item>
             ) : (
-              <Menu.Item onClick={() => onArchive(category.id)}>Archive</Menu.Item>
+              <Menu.Item onClick={() => onArchive(category.id)}>{t('common.archive')}</Menu.Item>
             )}
             <Menu.Item color="red" onClick={() => onDelete(category.id)}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, Loader, Text } from '@mantine/core';
 import { apiClient } from '@/api/v2client';
@@ -7,6 +8,7 @@ import classes from './Auth.module.css';
 type Status = 'loading' | 'success' | 'error';
 
 export function V2UnlockAccountPage() {
+  const { t } = useTranslation('v2');
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const userId = searchParams.get('user');
@@ -34,7 +36,7 @@ export function V2UnlockAccountPage() {
       <div className={classes.successContent}>
         <Loader size="md" />
         <Text fz="sm" c="dimmed">
-          Unlocking your account...
+          {t('auth.unlock.loading')}
         </Text>
       </div>
     );
@@ -45,13 +47,13 @@ export function V2UnlockAccountPage() {
       <div className={classes.successContent}>
         <Text fz={32}>🔓</Text>
         <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-          Account unlocked
+          {t('auth.unlock.successTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
-          Your account has been unlocked. You can now sign in.
+          {t('auth.unlock.successMessage')}
         </Text>
         <Button component={Link} to="/v2/auth/login" size="md" mt="md">
-          Go to Sign In
+          {t('auth.unlock.goToSignIn')}
         </Button>
       </div>
     );
@@ -60,13 +62,13 @@ export function V2UnlockAccountPage() {
   return (
     <div className={classes.successContent}>
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-        Invalid unlock link
+        {t('auth.unlock.errorTitle')}
       </Text>
       <Text fz="sm" c="dimmed">
-        This link has expired or is invalid.
+        {t('auth.unlock.errorMessage')}
       </Text>
       <Button component={Link} to="/v2/auth/login" size="md" mt="md">
-        Go to Sign In
+        {t('auth.unlock.goToSignIn')}
       </Button>
     </div>
   );

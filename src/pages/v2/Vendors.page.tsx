@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
@@ -19,6 +20,7 @@ import { toast } from '@/lib/toast';
 type VendorSummary = components['schemas']['VendorSummaryResponse'];
 
 export function VendorsV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: infiniteData,
@@ -88,27 +90,27 @@ export function VendorsV2Page() {
   const handleArchive = async (id: string) => {
     try {
       await archiveMutation.mutateAsync(id);
-      toast.success({ message: 'Vendor archived' });
+      toast.success({ message: t('vendors.archived') });
     } catch {
-      toast.error({ message: 'Failed to archive vendor' });
+      toast.error({ message: t('vendors.archiveFailed') });
     }
   };
 
   const handleUnarchive = async (id: string) => {
     try {
       await unarchiveMutation.mutateAsync(id);
-      toast.success({ message: 'Vendor unarchived' });
+      toast.success({ message: t('vendors.unarchived') });
     } catch {
-      toast.error({ message: 'Failed to unarchive vendor' });
+      toast.error({ message: t('vendors.unarchiveFailed') });
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success({ message: 'Vendor deleted' });
+      toast.success({ message: t('vendors.deleted') });
     } catch {
-      toast.error({ message: 'Cannot delete — archive or merge instead' });
+      toast.error({ message: t('vendors.deleteFailedShort') });
     }
   };
 
@@ -126,18 +128,18 @@ export function VendorsV2Page() {
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <div className={classes.pageHeader}>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Vendors
+            {t('vendors.title')}
           </Text>
         </div>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Vendors
+            {t('vendors.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your vendors.
+            {t('vendors.loadError')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </Stack>
@@ -178,14 +180,14 @@ export function VendorsV2Page() {
       <div className={classes.pageHeader}>
         <div>
           <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            Vendors
+            {t('vendors.title')}
           </Text>
           <Text c="dimmed" fz="sm">
-            Where your money goes
+            {t('vendors.subtitle')}
           </Text>
         </div>
         <Button size="sm" onClick={handleCreate}>
-          + Add Vendor
+          {t('vendors.addVendor')}
         </Button>
       </div>
 
@@ -194,14 +196,13 @@ export function VendorsV2Page() {
         <div className={classes.centeredState}>
           <Text fz={32}>🏪</Text>
           <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            No vendors yet
+            {t('vendors.emptyTitle')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            Vendors help you track where your money goes. Add your first vendor to start
-            categorizing spending.
+            {t('vendors.emptyDescription')}
           </Text>
           <Button size="sm" onClick={handleCreate}>
-            + Add Your First Vendor
+            {t('vendors.addFirstVendor')}
           </Button>
         </div>
       )}
@@ -213,7 +214,7 @@ export function VendorsV2Page() {
             <div className={classes.statsBar}>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Active
+                  {t('vendors.active')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   {stats.totalVendors}
@@ -221,7 +222,7 @@ export function VendorsV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Total Spent
+                  {t('vendors.totalSpent')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   <CurrencyValue cents={stats.totalSpendThisPeriod} />
@@ -229,7 +230,7 @@ export function VendorsV2Page() {
               </div>
               <div className={classes.statItem}>
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-                  Avg / Vendor
+                  {t('vendors.avgPerVendor')}
                 </Text>
                 <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
                   <CurrencyValue cents={stats.avgSpendPerVendor} />
@@ -240,7 +241,7 @@ export function VendorsV2Page() {
 
           {/* Search */}
           <TextInput
-            placeholder="Search vendors..."
+            placeholder={t('vendors.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.currentTarget.value)}
           />
@@ -260,7 +261,7 @@ export function VendorsV2Page() {
 
           {activeVendors.length === 0 && searchQuery && (
             <Text fz="sm" c="dimmed" ta="center" py="xl">
-              No vendors match &ldquo;{searchQuery}&rdquo;
+              {t('vendors.noMatch', { query: searchQuery })}
             </Text>
           )}
 
@@ -269,7 +270,8 @@ export function VendorsV2Page() {
             <Stack gap="sm">
               <UnstyledButton onClick={() => setShowArchived((v) => !v)}>
                 <Text fz="sm" fw={600} c="dimmed">
-                  {showArchived ? '▾' : '▸'} Archived vendors ({archivedVendors.length})
+                  {showArchived ? '▾' : '▸'}{' '}
+                  {t('vendors.archivedVendors', { count: archivedVendors.length })}
                 </Text>
               </UnstyledButton>
               {showArchived &&

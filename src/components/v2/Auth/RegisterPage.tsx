@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core';
 import { useAuth } from '@/context/AuthContext';
@@ -9,6 +10,7 @@ import { toast } from '@/lib/toast';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
 
 export function V2RegisterPage() {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
   const registerMutation = useRegister();
@@ -47,36 +49,36 @@ export function V2RegisterPage() {
       await refreshUser(true);
       navigate('/v2/onboarding', { replace: true });
     } catch {
-      toast.error({ message: 'Could not create account. Email may already be in use.' });
+      toast.error({ message: t('auth.register.errorGeneric') });
     }
   };
 
   return (
     <Stack gap="md">
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-        Create your account
+        {t('auth.register.title')}
       </Text>
       <Text fz="sm" c="dimmed">
-        Start your calm budgeting journey.
+        {t('auth.register.subtitle')}
       </Text>
 
       <TextInput
-        label="Name"
-        placeholder="Leonardo"
+        label={t('auth.register.nameLabel')}
+        placeholder={t('auth.register.namePlaceholder')}
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
       />
       <TextInput
-        label="Email"
-        placeholder="leo@example.com"
+        label={t('auth.register.emailLabel')}
+        placeholder={t('auth.register.emailPlaceholder')}
         value={email}
         onChange={(e) => setEmail(e.currentTarget.value)}
         type="email"
       />
       <div>
         <TextInput
-          label="Password"
-          placeholder="MyStr0ngP@ss!"
+          label={t('auth.register.passwordLabel')}
+          placeholder={t('auth.register.passwordPlaceholder')}
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           type="password"
@@ -84,26 +86,28 @@ export function V2RegisterPage() {
         {password && <PasswordStrengthBar score={strength.score} />}
       </div>
       <TextInput
-        label="Confirm password"
-        placeholder="Repeat your password"
+        label={t('auth.register.confirmPasswordLabel')}
+        placeholder={t('auth.register.confirmPasswordPlaceholder')}
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.currentTarget.value)}
         type="password"
         error={
-          confirmPassword && password !== confirmPassword ? 'Passwords do not match' : undefined
+          confirmPassword && password !== confirmPassword
+            ? t('auth.register.passwordsDoNotMatch')
+            : undefined
         }
       />
 
       <Checkbox
         label={
           <Text fz="sm" c="dimmed">
-            I agree to the{' '}
+            {t('auth.register.agreeToTermsPrefix')}{' '}
             <Anchor c="var(--v2-primary)" href="#" target="_blank">
-              Terms of Service
+              {t('auth.register.termsOfService')}
             </Anchor>{' '}
-            and{' '}
+            {t('auth.register.and')}{' '}
             <Anchor c="var(--v2-primary)" href="#" target="_blank">
-              Privacy Policy
+              {t('auth.register.privacyPolicy')}
             </Anchor>
           </Text>
         }
@@ -119,14 +123,14 @@ export function V2RegisterPage() {
         size="md"
         disabled={!isValid}
       >
-        Create Account
+        {t('auth.register.submitButton')}
       </Button>
 
       <div style={{ textAlign: 'center', marginTop: 'var(--mantine-spacing-md)' }}>
         <Text fz="sm" c="dimmed">
-          Already have an account?{' '}
+          {t('auth.register.alreadyHaveAccount')}{' '}
           <Anchor component={Link} to="/v2/auth/login" c="var(--v2-primary)" fw={600}>
-            Sign in
+            {t('auth.register.signIn')}
           </Anchor>
         </Text>
       </div>

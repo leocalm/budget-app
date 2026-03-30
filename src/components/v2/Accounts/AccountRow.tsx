@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
@@ -20,6 +21,7 @@ interface AccountRowProps {
 }
 
 export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }: AccountRowProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data: history } = useAccountBalanceHistory(account.id, periodId);
   const { accents } = useV2Theme();
@@ -67,12 +69,12 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
           </Badge>
           {!isArchived && (
             <Text fz="xs" c="dimmed">
-              {account.numberOfTransactions} txns this period
+              {t('common.txnsThisPeriod', { count: account.numberOfTransactions })}
             </Text>
           )}
           {isArchived && (
             <Text fz="xs" c="dimmed">
-              Archived
+              {t('common.archived')}
             </Text>
           )}
         </div>
@@ -117,15 +119,17 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            {!isArchived && <Menu.Item onClick={() => onEdit(account.id)}>Edit</Menu.Item>}
+            {!isArchived && (
+              <Menu.Item onClick={() => onEdit(account.id)}>{t('common.edit')}</Menu.Item>
+            )}
             <Menu.Item onClick={() => navigate(`/v2/accounts/${account.id}`)}>
-              View details
+              {t('common.viewDetails')}
             </Menu.Item>
             {isArchived ? (
-              <Menu.Item onClick={() => onUnarchive(account.id)}>Unarchive</Menu.Item>
+              <Menu.Item onClick={() => onUnarchive(account.id)}>{t('common.unarchive')}</Menu.Item>
             ) : (
               <Menu.Item color="red" onClick={() => onArchive(account.id)}>
-                Archive
+                {t('common.archive')}
               </Menu.Item>
             )}
           </Menu.Dropdown>
@@ -136,11 +140,12 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
 }
 
 function AllowanceExtra({ account }: { account: AccountSummary }) {
+  const { t } = useTranslation('v2');
   return (
     <div className={classes.allowanceExtra}>
       <div className={classes.allowanceItem}>
         <Text fz="xs" c="dimmed">
-          Available:
+          {t('accounts.available')}
         </Text>
         <Text fz="xs" ff="var(--mantine-font-family-monospace)" c="dimmed">
           <CurrencyValue cents={Math.max(account.currentBalance, 0)} />
@@ -149,17 +154,17 @@ function AllowanceExtra({ account }: { account: AccountSummary }) {
       {account.nextTransfer && (
         <div className={classes.allowanceItem}>
           <Text fz="xs" c="dimmed">
-            Next top-up:
+            {t('accounts.nextTopUp')}
           </Text>
           <Text fz="xs" ff="var(--mantine-font-family-monospace)" c="dimmed">
-            {formatDate(account.nextTransfer)}
+            {formatDate(account.nextTransfer, t)}
           </Text>
         </div>
       )}
       {account.balanceAfterNextTransfer != null && (
         <div className={classes.allowanceItem}>
           <Text fz="xs" c="dimmed">
-            After top-up:
+            {t('accounts.afterTopUp')}
           </Text>
           <Text fz="xs" ff="var(--mantine-font-family-monospace)" c="dimmed">
             <CurrencyValue cents={account.balanceAfterNextTransfer} />

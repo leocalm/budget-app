@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Drawer,
@@ -25,10 +26,10 @@ type DurationUnit = 'days' | 'weeks' | 'months';
 type WeekendPolicy = 'keep' | 'monday' | 'friday';
 type RecurrenceMethod = 'dayOfMonth' | 'businessDay' | 'dayOfWeek';
 
-const WEEKEND_POLICY_OPTIONS = [
-  { value: 'keep', label: 'Keep as-is' },
-  { value: 'monday', label: 'Move to Monday' },
-  { value: 'friday', label: 'Move to Friday' },
+const WEEKEND_POLICY_KEYS = [
+  { value: 'keep', labelKey: 'periods.schedule.keepAsIs' },
+  { value: 'monday', labelKey: 'periods.schedule.moveToMonday' },
+  { value: 'friday', labelKey: 'periods.schedule.moveToFriday' },
 ];
 
 const PATTERN_VARIABLES = [
@@ -47,6 +48,7 @@ interface ScheduleDrawerProps {
 }
 
 export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
+  const { t } = useTranslation('v2');
   const { data: schedule } = useBudgetPeriodSchedule();
   const createMutation = useCreatePeriodSchedule();
   const updateMutation = useUpdatePeriodSchedule();
@@ -121,7 +123,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
         // Disable auto-generation
         if (isExisting && isAutomatic) {
           await deleteMutation.mutateAsync();
-          toast.success({ message: 'Auto-generation disabled' });
+          toast.success({ message: t('periods.schedule.disabled') });
         }
         onClose();
         return;
@@ -146,14 +148,14 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
           scheduleType: 'UpdatePeriodScheduleRequest',
         };
         await updateMutation.mutateAsync(updateBody);
-        toast.success({ message: 'Schedule updated' });
+        toast.success({ message: t('periods.schedule.scheduleSaved') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Auto-generation enabled' });
+        toast.success({ message: t('periods.schedule.enabled') });
       }
       onClose();
     } catch {
-      toast.error({ message: 'Failed to save schedule configuration' });
+      toast.error({ message: t('periods.schedule.scheduleFailed') });
     }
   };
 
@@ -164,7 +166,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
     <Drawer
       opened={opened}
       onClose={onClose}
-      title="Auto-generate Periods"
+      title={t('periods.schedule.title')}
       position="right"
       size="lg"
       styles={{
@@ -175,8 +177,8 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
       <Stack gap="lg">
         {/* Enable toggle */}
         <Switch
-          label="Auto-generation active"
-          description="Set up rules to automatically create budget periods"
+          label={t('periods.schedule.enableLabel')}
+          description={t('periods.schedule.enableDesc')}
           checked={enabled}
           onChange={(e) => setEnabled(e.currentTarget.checked)}
           size="md"
@@ -187,27 +189,27 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Recurrence method */}
             <div>
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="xs">
-                Recurrence Method
+                {t('periods.schedule.recurrenceMethod')}
               </Text>
               <Stack gap="xs" role="radiogroup" aria-label="Recurrence method">
                 <RecurrenceOption
                   value="dayOfMonth"
-                  label="Day of month"
-                  description="Period starts on a specific calendar day"
+                  label={t('periods.schedule.dayOfMonth')}
+                  description={t('periods.schedule.dayOfMonthDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
                 />
                 <RecurrenceOption
                   value="businessDay"
-                  label="Business day"
-                  description="Period starts on the Nth business day"
+                  label={t('periods.schedule.businessDay')}
+                  description={t('periods.schedule.businessDayDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
                 />
                 <RecurrenceOption
                   value="dayOfWeek"
-                  label="Day of week"
-                  description="Period starts on a specific weekday"
+                  label={t('periods.schedule.dayOfWeek')}
+                  description={t('periods.schedule.dayOfWeekDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
                 />
@@ -217,8 +219,8 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Start day */}
             {recurrenceMethod === 'dayOfMonth' && (
               <NumberInput
-                label="Start Day of Month"
-                description="Day of the month when the period begins (1-31)"
+                label={t('periods.schedule.startDayOfMonth')}
+                description={t('periods.schedule.startDayOfMonthDesc')}
                 value={startDay}
                 onChange={setStartDay}
                 min={1}
@@ -227,8 +229,8 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             )}
             {recurrenceMethod === 'businessDay' && (
               <NumberInput
-                label="Business Day"
-                description="Nth business day of the month (e.g. 1 = first business day)"
+                label={t('periods.schedule.businessDayLabel')}
+                description={t('periods.schedule.businessDayLabelDesc')}
                 value={startDay}
                 onChange={setStartDay}
                 min={1}
@@ -237,15 +239,15 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             )}
             {recurrenceMethod === 'dayOfWeek' && (
               <Select
-                label="Day of Week"
+                label={t('periods.schedule.dayOfWeekLabel')}
                 data={[
-                  { value: '1', label: 'Monday' },
-                  { value: '2', label: 'Tuesday' },
-                  { value: '3', label: 'Wednesday' },
-                  { value: '4', label: 'Thursday' },
-                  { value: '5', label: 'Friday' },
-                  { value: '6', label: 'Saturday' },
-                  { value: '0', label: 'Sunday' },
+                  { value: '1', label: t('periods.schedule.weekdays.monday') },
+                  { value: '2', label: t('periods.schedule.weekdays.tuesday') },
+                  { value: '3', label: t('periods.schedule.weekdays.wednesday') },
+                  { value: '4', label: t('periods.schedule.weekdays.thursday') },
+                  { value: '5', label: t('periods.schedule.weekdays.friday') },
+                  { value: '6', label: t('periods.schedule.weekdays.saturday') },
+                  { value: '0', label: t('periods.schedule.weekdays.sunday') },
                 ]}
                 value={String(startDay)}
                 onChange={(v) => setStartDay(Number(v ?? 1))}
@@ -255,7 +257,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Period duration */}
             <Group grow>
               <NumberInput
-                label="Period Length"
+                label={t('periods.schedule.periodLength')}
                 value={periodDuration}
                 onChange={setPeriodDuration}
                 min={1}
@@ -275,8 +277,8 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
             {/* Generate ahead */}
             <NumberInput
-              label="Periods to Prepare in Advance"
-              description="Number of future periods to pre-generate"
+              label={t('periods.schedule.periodsToPrep')}
+              description={t('periods.schedule.periodsToPrepDesc')}
               value={generateAhead}
               onChange={setGenerateAhead}
               min={1}
@@ -285,18 +287,18 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
             {/* Weekend policies */}
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-              Weekend Handling
+              {t('periods.schedule.weekendHandling')}
             </Text>
             <div className={classes.weekendPolicies}>
               <Select
-                label="If start falls on Saturday"
-                data={WEEKEND_POLICY_OPTIONS}
+                label={t('periods.schedule.saturdayLabel')}
+                data={WEEKEND_POLICY_KEYS.map((o) => ({ value: o.value, label: t(o.labelKey) }))}
                 value={saturdayPolicy}
                 onChange={(v) => setSaturdayPolicy((v as WeekendPolicy) ?? 'keep')}
               />
               <Select
-                label="If start falls on Sunday"
-                data={WEEKEND_POLICY_OPTIONS}
+                label={t('periods.schedule.sundayLabel')}
+                data={WEEKEND_POLICY_KEYS.map((o) => ({ value: o.value, label: t(o.labelKey) }))}
                 value={sundayPolicy}
                 onChange={(v) => setSundayPolicy((v as WeekendPolicy) ?? 'keep')}
               />
@@ -304,8 +306,8 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
             {/* Name pattern */}
             <TextInput
-              label="Name Pattern"
-              description="Template for auto-generated period names"
+              label={t('periods.schedule.namePattern')}
+              description={t('periods.schedule.namePatternDesc')}
               value={namePattern}
               onChange={(e) => setNamePattern(e.currentTarget.value)}
             />
@@ -313,7 +315,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Pattern variables */}
             <div>
               <Text fz="xs" c="dimmed" mb={4}>
-                Available variables:
+                {t('periods.schedule.availableVars')}
               </Text>
               <Group gap={4}>
                 {PATTERN_VARIABLES.map((v) => (
@@ -335,7 +337,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Preview */}
             <div className={classes.patternPreview}>
               <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-                Preview
+                {t('periods.schedule.preview')}
               </Text>
               <Text fz="sm" ff="var(--mantine-font-family-monospace)">
                 {patternPreview}
@@ -358,10 +360,10 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
         {/* Submit */}
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting}>
-            Save Rules
+            {t('periods.schedule.saveRules')}
           </Button>
         </Group>
       </Stack>

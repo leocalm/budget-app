@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, Group, Modal, Stack, Text, TextInput } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -19,6 +20,7 @@ export function CancelSubscriptionModal({
   onClose,
   subscription,
 }: CancelSubscriptionModalProps) {
+  const { t } = useTranslation('v2');
   const cancelMutation = useCancelSubscription();
   const [cancellationDate, setCancellationDate] = useState(
     () => new Date().toISOString().split('T')[0]
@@ -27,10 +29,10 @@ export function CancelSubscriptionModal({
   const handleCancel = async () => {
     try {
       await cancelMutation.mutateAsync(subscription.id);
-      toast.success({ message: `${subscription.name} marked as cancelled` });
+      toast.success({ message: t('subscriptions.cancel.success', { name: subscription.name }) });
       onClose();
     } catch {
-      toast.error({ message: 'Failed to cancel subscription' });
+      toast.error({ message: t('subscriptions.cancel.failed') });
     }
   };
 
@@ -38,7 +40,7 @@ export function CancelSubscriptionModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Cancel Subscription"
+      title={t('subscriptions.cancel.title')}
       styles={{
         body: { backgroundColor: 'var(--v2-bg)' },
         header: { backgroundColor: 'var(--v2-bg)' },
@@ -46,28 +48,26 @@ export function CancelSubscriptionModal({
     >
       <Stack gap="md">
         <Text fz="sm" c="dimmed">
-          Mark &ldquo;{subscription.name}&rdquo; as cancelled in PiggyPulse.
+          {t('subscriptions.cancel.description', { name: subscription.name })}
         </Text>
 
         <Stack gap="xs">
           <Text fz="xs" c="dimmed">
-            Subscription: {subscription.name}
+            {t('subscriptions.cancel.subscription', { name: subscription.name })}
           </Text>
           <Text fz="xs" c="dimmed">
-            Amount: <CurrencyValue cents={subscription.billingAmount} />
+            {t('subscriptions.cancel.amount')} <CurrencyValue cents={subscription.billingAmount} />
             {CYCLE_LABELS[subscription.billingCycle]}
           </Text>
         </Stack>
 
         <Alert variant="light" color="orange">
-          This only marks the subscription as cancelled in PiggyPulse. You still need to cancel it
-          directly with the provider. If a charge arrives after cancellation, PiggyPulse will flag
-          it for your attention.
+          {t('subscriptions.cancel.warning')}
         </Alert>
 
         <TextInput
-          label="Cancellation date"
-          description="When you cancelled (or plan to cancel) with the provider"
+          label={t('subscriptions.cancel.cancellationDate')}
+          description={t('subscriptions.cancel.cancellationDateDesc')}
           type="date"
           value={cancellationDate}
           onChange={(e) => setCancellationDate(e.currentTarget.value)}
@@ -75,10 +75,10 @@ export function CancelSubscriptionModal({
 
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={cancelMutation.isPending}>
-            Keep Active
+            {t('subscriptions.cancel.keepActive')}
           </Button>
           <Button color="orange" onClick={handleCancel} loading={cancelMutation.isPending}>
-            Cancel Subscription
+            {t('subscriptions.cancel.confirmCancel')}
           </Button>
         </Group>
       </Stack>

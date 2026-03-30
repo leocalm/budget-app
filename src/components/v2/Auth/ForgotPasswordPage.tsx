@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Anchor, Button, Stack, Text, TextInput } from '@mantine/core';
 import { useForgotPassword } from '@/hooks/v2/usePasswordReset';
 
 export function V2ForgotPasswordPage() {
+  const { t } = useTranslation('v2');
   const forgotMutation = useForgotPassword();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -22,20 +24,20 @@ export function V2ForgotPasswordPage() {
       <Stack gap="md" ta="center">
         <Text fz={32}>📧</Text>
         <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-          Check your email
+          {t('auth.forgotPassword.sentTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
-          We&apos;ve sent a password reset link to{' '}
+          {t('auth.forgotPassword.sentSubtitle')}{' '}
           <Text span fw={600}>
             {email}
           </Text>
           .
         </Text>
         <Text fz="sm" c="dimmed">
-          Click the link in the email to reset your password.
+          {t('auth.forgotPassword.sentInstruction')}
         </Text>
         <Text fz="xs" c="dimmed" mt="md">
-          Didn&apos;t receive it? Check your spam folder or{' '}
+          {t('auth.forgotPassword.didNotReceive')}{' '}
           <Anchor
             c="var(--v2-primary)"
             onClick={() => {
@@ -43,11 +45,11 @@ export function V2ForgotPasswordPage() {
               forgotMutation.reset();
             }}
           >
-            resend the link
+            {t('auth.forgotPassword.resendLink')}
           </Anchor>
         </Text>
         <Anchor component={Link} to="/v2/auth/login" fz="sm" c="var(--v2-primary)" mt="md">
-          Back to Sign in
+          {t('auth.forgotPassword.backToSignIn')}
         </Anchor>
       </Stack>
     );
@@ -56,15 +58,15 @@ export function V2ForgotPasswordPage() {
   return (
     <Stack gap="md">
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
-        Forgot your password?
+        {t('auth.forgotPassword.title')}
       </Text>
       <Text fz="sm" c="dimmed">
-        Enter your email and we&apos;ll send you a link to reset it.
+        {t('auth.forgotPassword.subtitle')}
       </Text>
 
       <TextInput
-        label="Email"
-        placeholder="you@example.com"
+        label={t('auth.forgotPassword.emailLabel')}
+        placeholder={t('auth.forgotPassword.emailPlaceholder')}
         value={email}
         onChange={(e) => setEmail(e.currentTarget.value)}
         type="email"
@@ -82,13 +84,13 @@ export function V2ForgotPasswordPage() {
         size="md"
         disabled={!email}
       >
-        Send Reset Link
+        {t('auth.forgotPassword.submitButton')}
       </Button>
 
       <Text fz="sm" c="dimmed" ta="center" mt="md">
-        Remember your password?{' '}
+        {t('auth.forgotPassword.rememberPassword')}{' '}
         <Anchor component={Link} to="/v2/auth/login" c="var(--v2-primary)" fw={600}>
-          Sign in
+          {t('auth.forgotPassword.signIn')}
         </Anchor>
       </Text>
     </Stack>

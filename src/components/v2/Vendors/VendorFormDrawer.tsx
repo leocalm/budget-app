@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Drawer, Group, Stack, Textarea, TextInput } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { useCreateVendor, useUpdateVendor } from '@/hooks/v2/useVendors';
@@ -13,6 +14,7 @@ interface VendorFormDrawerProps {
 }
 
 export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDrawerProps) {
+  const { t } = useTranslation('v2');
   const isEdit = !!editVendor;
   const createMutation = useCreateVendor();
   const updateMutation = useUpdateVendor();
@@ -36,14 +38,14 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
     try {
       if (isEdit && editVendor) {
         await updateMutation.mutateAsync({ id: editVendor.id, body });
-        toast.success({ message: 'Vendor updated' });
+        toast.success({ message: t('vendors.updated') });
       } else {
         await createMutation.mutateAsync(body);
-        toast.success({ message: 'Vendor created' });
+        toast.success({ message: t('vendors.created') });
       }
       onClose();
     } catch {
-      toast.error({ message: `Failed to ${isEdit ? 'update' : 'create'} vendor` });
+      toast.error({ message: t('vendors.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }
   };
 
@@ -54,7 +56,7 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
     <Drawer
       opened={opened}
       onClose={onClose}
-      title={isEdit ? 'Edit Vendor' : 'Add Vendor'}
+      title={isEdit ? t('vendors.form.editTitle') : t('vendors.form.createTitle')}
       position="right"
       size="md"
       styles={{
@@ -64,8 +66,8 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
     >
       <Stack gap="md">
         <TextInput
-          label="Vendor Name"
-          placeholder="e.g. Whole Foods Market"
+          label={t('vendors.form.vendorName')}
+          placeholder={t('vendors.form.vendorNamePlaceholder')}
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
@@ -73,8 +75,8 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
         />
 
         <Textarea
-          label="Description"
-          placeholder="Optional description"
+          label={t('vendors.form.description')}
+          placeholder={t('vendors.form.descriptionPlaceholder')}
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
           maxLength={500}
@@ -84,10 +86,10 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
 
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
-            {isEdit ? 'Save Changes' : 'Create Vendor'}
+            {isEdit ? t('common.saveChanges') : t('vendors.form.createButton')}
           </Button>
         </Group>
       </Stack>

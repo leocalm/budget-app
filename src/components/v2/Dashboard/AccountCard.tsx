@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useAccountBalanceHistory, useAccountDetails } from '@/hooks/v2/useAccounts';
@@ -20,6 +21,7 @@ interface AccountCardProps {
 }
 
 export function AccountCard({ accountId, periodId }: AccountCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useAccountDetails(accountId, periodId);
   const { data: history } = useAccountBalanceHistory(accountId, periodId);
   const { accents } = useV2Theme();
@@ -33,13 +35,13 @@ export function AccountCard({ accountId, periodId }: AccountCardProps) {
       <div className={classes.card} data-testid={`account-card-${accountId}-error`}>
         <div className={classes.centeredState}>
           <Text fz="sm" fw={600}>
-            Account
+            {t('dashboard.account.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading this account.
+            {t('dashboard.account.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -59,7 +61,7 @@ export function AccountCard({ accountId, periodId }: AccountCardProps) {
         <div className={classes.centeredState}>
           <CardHeader name={acct.name} type={acct.type} typeColor={typeColor} />
           <Text fz="sm" c="dimmed">
-            This account has been archived.
+            {t('dashboard.account.archived')}
           </Text>
         </div>
       </div>
@@ -75,7 +77,7 @@ export function AccountCard({ accountId, periodId }: AccountCardProps) {
             <CurrencyValue cents={0} />
           </Text>
           <Text fz="sm" c="dimmed">
-            No transactions yet this period.
+            {t('dashboard.account.noTransactions')}
           </Text>
         </div>
       </div>

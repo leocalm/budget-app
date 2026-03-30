@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '@mantine/core';
@@ -24,6 +25,7 @@ interface VendorDetailProps {
 }
 
 export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useVendorDetail(vendorId, periodId);
   const { accents } = useV2Theme();
@@ -41,15 +43,15 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <Anchor component={Link} to="/v2/vendors" fz="sm" c="var(--v2-primary)">
-          ← Vendors
+          {t('vendors.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
           <Text fz="sm" c="dimmed">
-            {isError ? 'Something went wrong loading this vendor.' : 'Vendor not found.'}
+            {isError ? t('vendors.detailLoadError') : t('vendors.notFound')}
           </Text>
           {isError && (
             <Button size="xs" variant="light" onClick={() => refetch()}>
-              Retry
+              {t('common.retry')}
             </Button>
           )}
         </div>
@@ -64,28 +66,28 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
   const handleArchive = async () => {
     try {
       await archiveMutation.mutateAsync(vendorId);
-      toast.success({ message: `${vendor.name} archived` });
+      toast.success({ message: t('vendors.archivedNamed', { name: vendor.name }) });
     } catch {
-      toast.error({ message: 'Failed to archive vendor' });
+      toast.error({ message: t('vendors.archiveFailed') });
     }
   };
 
   const handleUnarchive = async () => {
     try {
       await unarchiveMutation.mutateAsync(vendorId);
-      toast.success({ message: `${vendor.name} unarchived` });
+      toast.success({ message: t('vendors.unarchivedNamed', { name: vendor.name }) });
     } catch {
-      toast.error({ message: 'Failed to unarchive vendor' });
+      toast.error({ message: t('vendors.unarchiveFailed') });
     }
   };
 
   const handleDelete = async () => {
     try {
       await deleteMutation.mutateAsync(vendorId);
-      toast.success({ message: 'Vendor deleted' });
+      toast.success({ message: t('vendors.deleted') });
       navigate('/v2/vendors');
     } catch {
-      toast.error({ message: 'Cannot delete vendor — archive or merge instead' });
+      toast.error({ message: t('vendors.deleteFailed') });
     }
   };
 
@@ -95,7 +97,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
       <div className={classes.detailHeader}>
         <div>
           <Anchor component={Link} to="/v2/vendors" fz="sm" c="var(--v2-primary)">
-            ← Vendors
+            {t('vendors.breadcrumb')}
           </Anchor>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
             <div className={classes.initialBadge}>
@@ -130,15 +132,15 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={openEdit}>Edit</Menu.Item>
-            <Menu.Item onClick={openMerge}>Merge</Menu.Item>
+            <Menu.Item onClick={openEdit}>{t('common.edit')}</Menu.Item>
+            <Menu.Item onClick={openMerge}>{t('common.merge')}</Menu.Item>
             {isArchived ? (
-              <Menu.Item onClick={handleUnarchive}>Unarchive</Menu.Item>
+              <Menu.Item onClick={handleUnarchive}>{t('common.unarchive')}</Menu.Item>
             ) : (
-              <Menu.Item onClick={handleArchive}>Archive</Menu.Item>
+              <Menu.Item onClick={handleArchive}>{t('common.archive')}</Menu.Item>
             )}
             <Menu.Item color="red" onClick={handleDelete}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
@@ -148,7 +150,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
       <div className={classes.metricsGrid}>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Spent
+            {t('vendors.spent')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={vendor.periodSpend} />
@@ -156,7 +158,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Transactions
+            {t('vendors.transactions')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             {vendor.transactionCount}
@@ -164,7 +166,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
         </div>
         <div className={classes.metricBox}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
-            Avg / Txn
+            {t('vendors.avgPerTxn')}
           </Text>
           <Text fz="lg" fw={600} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={vendor.averageTransactionAmount} />
@@ -180,7 +182,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
           aria-label={`Spending trend for ${vendor.name}`}
         >
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Spending at this vendor — Last {vendor.trend.length} Periods
+            {t('vendors.spendingTrend', { count: vendor.trend.length })}
           </Text>
           <AreaChart
             h={200}
@@ -206,7 +208,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
       {vendor.topCategories.length > 0 && (
         <div className={classes.detailCard}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Top Categories at This Vendor
+            {t('vendors.topCategories')}
           </Text>
           <div className={classes.categoryPills}>
             {vendor.topCategories.map((cat) => (
@@ -222,7 +224,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
       {vendor.recentTransactions.length > 0 && (
         <div className={classes.detailCard}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="sm">
-            Recent Transactions — {vendor.recentTransactions.length} shown
+            {t('vendors.recentTransactions', { count: vendor.recentTransactions.length })}
           </Text>
           {vendor.recentTransactions.map((txn) => (
             <div key={txn.id} className={classes.transactionRow}>

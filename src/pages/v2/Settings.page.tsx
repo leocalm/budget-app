@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Modal,
@@ -147,6 +148,7 @@ const THEME_ORDER: ColorTheme[] = [
 // ---------------------------------------------------------------------------
 
 export function SettingsV2Page() {
+  const { t, i18n } = useTranslation('v2');
   const { user, logout } = useAuth();
   const { colorTheme, setColorTheme } = useV2Theme();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -244,6 +246,7 @@ export function SettingsV2Page() {
       const themeVal = prefs.theme ?? 'dark';
       setScheme(themeVal === 'system' ? 'system' : (themeVal as 'dark' | 'light'));
       setLanguage(prefs.language ?? 'en');
+      void i18n.changeLanguage(prefs.language ?? 'en');
       setDateFormat(prefs.dateFormat ?? 'DD/MM/YYYY');
       setNumberFormat(prefs.numberFormat ?? '1,234.56');
       setCompactMode(prefs.compactMode ?? false);
@@ -271,9 +274,9 @@ export function SettingsV2Page() {
         avatar,
       });
       setProfileDirty(false);
-      toast.success({ message: 'Profile saved' });
+      toast.success({ message: t('settings.profile.saved') });
     } catch {
-      toast.error({ message: 'Failed to save profile' });
+      toast.error({ message: t('settings.profile.saveFailed') });
     }
   }, [displayName, currency, avatar, updateProfileMut]);
 
@@ -291,7 +294,7 @@ export function SettingsV2Page() {
           compactMode,
         });
       } catch {
-        toast.error({ message: 'Failed to update color scheme' });
+        toast.error({ message: t('settings.appearance.schemeFailed') });
       }
     },
     [setColorScheme, updatePrefsMut, language, dateFormat, numberFormat, colorTheme, compactMode]
@@ -310,7 +313,7 @@ export function SettingsV2Page() {
           compactMode,
         });
       } catch {
-        toast.error({ message: 'Failed to update theme' });
+        toast.error({ message: t('settings.appearance.themeFailed') });
       }
     },
     [setColorTheme, updatePrefsMut, scheme, language, dateFormat, numberFormat, compactMode]
@@ -322,6 +325,7 @@ export function SettingsV2Page() {
     ) => {
       if (updates.language !== undefined) {
         setLanguage(updates.language);
+        void i18n.changeLanguage(updates.language);
       }
       if (updates.dateFormat !== undefined) {
         setDateFormat(updates.dateFormat);
@@ -339,7 +343,7 @@ export function SettingsV2Page() {
           compactMode: updates.compactMode ?? compactMode,
         });
       } catch {
-        toast.error({ message: 'Failed to update preferences' });
+        toast.error({ message: t('settings.appearance.prefsFailed') });
       }
     },
     [scheme, language, dateFormat, numberFormat, colorTheme, compactMode, updatePrefsMut]
@@ -367,7 +371,7 @@ export function SettingsV2Page() {
           },
         });
       } catch {
-        toast.error({ message: 'Failed to update dashboard layout' });
+        toast.error({ message: t('settings.dashboard.layoutFailed') });
       }
     },
     [
@@ -405,7 +409,7 @@ export function SettingsV2Page() {
           dashboardLayout: { widgetOrder, hiddenWidgets, visibleAccountIds: next },
         });
       } catch {
-        toast.error({ message: 'Failed to update account cards' });
+        toast.error({ message: t('settings.dashboard.accountCardsFailed') });
       }
     },
     [
@@ -438,15 +442,15 @@ export function SettingsV2Page() {
         compactMode,
         dashboardLayout: { widgetOrder: [], hiddenWidgets: defaultHidden },
       });
-      toast.success({ message: 'Dashboard reset to defaults' });
+      toast.success({ message: t('settings.dashboard.resetSuccess') });
     } catch {
-      toast.error({ message: 'Failed to reset dashboard' });
+      toast.error({ message: t('settings.dashboard.resetFailed') });
     }
   }, [updatePrefsMut, scheme, language, dateFormat, numberFormat, colorTheme, compactMode]);
 
   const handleChangePassword = useCallback(async () => {
     if (newPassword !== confirmPassword) {
-      toast.error({ message: 'Passwords do not match' });
+      toast.error({ message: t('settings.security.passwordMismatch') });
       return;
     }
     try {
@@ -454,24 +458,24 @@ export function SettingsV2Page() {
         currentPassword,
         newPassword,
       });
-      toast.success({ message: 'Password changed' });
+      toast.success({ message: t('settings.security.passwordChanged') });
       passwordModal.close();
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch {
-      toast.error({ message: 'Failed to change password' });
+      toast.error({ message: t('settings.security.passwordFailed') });
     }
   }, [currentPassword, newPassword, confirmPassword, changePasswordMut, passwordModal]);
 
   const handleDisable2fa = useCallback(async () => {
     try {
       await disableTwoFactorMut.mutateAsync({ code: disable2faCode });
-      toast.success({ message: 'Two-factor authentication disabled' });
+      toast.success({ message: t('settings.security.twoFactorDisabledSuccess') });
       disable2faModal.close();
       setDisable2faCode('');
     } catch {
-      toast.error({ message: 'Failed to disable 2FA' });
+      toast.error({ message: t('settings.security.disable2faFailed') });
     }
   }, [disable2faCode, disableTwoFactorMut, disable2faModal]);
 
@@ -486,7 +490,7 @@ export function SettingsV2Page() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast.error({ message: 'Failed to export transactions' });
+      toast.error({ message: t('settings.data.exportFailed') });
     }
   }, [exportTransactionsMut]);
 
@@ -501,7 +505,7 @@ export function SettingsV2Page() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast.error({ message: 'Failed to export data' });
+      toast.error({ message: t('settings.data.exportAllFailed') });
     }
   }, [exportFullMut]);
 
@@ -519,15 +523,15 @@ export function SettingsV2Page() {
         const text = await file.text();
         body = JSON.parse(text) as Record<string, unknown>;
       } catch {
-        toast.error({ message: 'Invalid JSON file. Please check the file format.' });
+        toast.error({ message: t('settings.data.importInvalidJson') });
         return;
       }
       try {
         const { apiClient } = await import('@/api/v2client');
         await apiClient.POST('/settings/import/data', { body: body as any });
-        toast.success({ message: 'Data imported successfully' });
+        toast.success({ message: t('settings.data.importSuccess') });
       } catch {
-        toast.error({ message: 'Failed to import data. Please try again.' });
+        toast.error({ message: t('settings.data.importFailed') });
       }
     };
     input.click();
@@ -536,10 +540,10 @@ export function SettingsV2Page() {
   const handleDeleteAccount = useCallback(async () => {
     try {
       await deleteAccountMut.mutateAsync({ password: deleteConfirmPassword });
-      toast.success({ message: 'Account deleted' });
+      toast.success({ message: t('settings.danger.deleteSuccess') });
       logout();
     } catch {
-      toast.error({ message: 'Failed to delete account' });
+      toast.error({ message: t('settings.danger.deleteFailed') });
     }
   }, [deleteConfirmPassword, deleteAccountMut, logout]);
 
@@ -553,8 +557,8 @@ export function SettingsV2Page() {
     <div className={classes.page}>
       {/* Page header */}
       <div className={classes.pageHeader}>
-        <h1 className={classes.pageTitle}>Settings</h1>
-        <p className={classes.pageDescription}>Manage your account and preferences</p>
+        <h1 className={classes.pageTitle}>{t('settings.title')}</h1>
+        <p className={classes.pageDescription}>{t('settings.subtitle')}</p>
       </div>
 
       <div className={classes.layout}>
@@ -583,8 +587,8 @@ export function SettingsV2Page() {
               sectionRefs.current.profile = el;
             }}
           >
-            <h2 className={classes.sectionTitle}>Profile</h2>
-            <p className={classes.sectionDescription}>Your account information</p>
+            <h2 className={classes.sectionTitle}>{t('settings.profile.title')}</h2>
+            <p className={classes.sectionDescription}>{t('settings.profile.description')}</p>
 
             <div className={classes.card}>
               {/* Avatar + name display */}
@@ -701,7 +705,7 @@ export function SettingsV2Page() {
                   loading={updateProfileMut.isPending}
                   onClick={handleSaveProfile}
                 >
-                  Save Changes
+                  {t('common.saveChanges')}
                 </Button>
               </div>
             </div>
@@ -715,8 +719,8 @@ export function SettingsV2Page() {
               sectionRefs.current.appearance = el;
             }}
           >
-            <h2 className={classes.sectionTitle}>Appearance</h2>
-            <p className={classes.sectionDescription}>Customize how PiggyPulse looks and feels</p>
+            <h2 className={classes.sectionTitle}>{t('settings.appearance.title')}</h2>
+            <p className={classes.sectionDescription}>{t('settings.appearance.description')}</p>
 
             <div className={classes.card}>
               {/* Color scheme */}
@@ -834,8 +838,8 @@ export function SettingsV2Page() {
               sectionRefs.current.dashboard = el;
             }}
           >
-            <h2 className={classes.sectionTitle}>Dashboard</h2>
-            <p className={classes.sectionDescription}>Configure your default dashboard widgets</p>
+            <h2 className={classes.sectionTitle}>{t('settings.dashboard.title')}</h2>
+            <p className={classes.sectionDescription}>{t('settings.dashboard.description')}</p>
 
             <div className={classes.card}>
               <div className={classes.label}>Default widgets</div>
@@ -938,7 +942,7 @@ export function SettingsV2Page() {
                     },
                   }}
                 >
-                  Reset
+                  {t('common.reset')}
                 </Button>
               </div>
             </div>
@@ -952,8 +956,8 @@ export function SettingsV2Page() {
               sectionRefs.current.security = el;
             }}
           >
-            <h2 className={classes.sectionTitle}>Security</h2>
-            <p className={classes.sectionDescription}>Password and two-factor authentication</p>
+            <h2 className={classes.sectionTitle}>{t('settings.security.title')}</h2>
+            <p className={classes.sectionDescription}>{t('settings.security.description')}</p>
 
             <div
               className={classes.card}
@@ -962,9 +966,9 @@ export function SettingsV2Page() {
               {/* Password card */}
               <div className={classes.securityCard}>
                 <div className={classes.securityHeader}>
-                  <span className={classes.securityTitle}>Password</span>
+                  <span className={classes.securityTitle}>{t('settings.security.password')}</span>
                 </div>
-                <div className={classes.securityMeta}>Manage your account password</div>
+                <div className={classes.securityMeta}>{t('settings.security.passwordDesc')}</div>
                 <div className={classes.securityActions}>
                   <Button
                     variant="default"
@@ -979,7 +983,7 @@ export function SettingsV2Page() {
                       },
                     }}
                   >
-                    Change Password
+                    {t('settings.security.changePassword')}
                   </Button>
                 </div>
               </div>
@@ -987,13 +991,15 @@ export function SettingsV2Page() {
               {/* 2FA card */}
               <div className={classes.securityCard}>
                 <div className={classes.securityHeader}>
-                  <span className={classes.securityTitle}>Two-Factor Authentication</span>
-                  {twoFactorEnabled && <span className={classes.enabledBadge}>Enabled</span>}
+                  <span className={classes.securityTitle}>{t('settings.security.twoFactor')}</span>
+                  {twoFactorEnabled && (
+                    <span className={classes.enabledBadge}>{t('common.enabled')}</span>
+                  )}
                 </div>
                 <div className={classes.securityMeta}>
                   {twoFactorEnabled
-                    ? 'Authenticator app configured. Adds an extra layer of security.'
-                    : 'Not configured. Enable for extra security.'}
+                    ? t('settings.security.twoFactorEnabled')
+                    : t('settings.security.twoFactorDisabled')}
                 </div>
                 <div className={classes.securityActions}>
                   {twoFactorEnabled ? (
@@ -1002,7 +1008,9 @@ export function SettingsV2Page() {
                         variant="default"
                         size="compact-xs"
                         radius={8}
-                        onClick={() => toast.info({ message: '2FA reconfiguration coming soon' })}
+                        onClick={() =>
+                          toast.info({ message: t('settings.security.reconfigureHint') })
+                        }
                         styles={{
                           root: {
                             border: '1px solid var(--v2-border)',
@@ -1011,7 +1019,7 @@ export function SettingsV2Page() {
                           },
                         }}
                       >
-                        Reconfigure
+                        {t('settings.security.reconfigure')}
                       </Button>
                       <Button
                         variant="default"
@@ -1026,7 +1034,7 @@ export function SettingsV2Page() {
                           },
                         }}
                       >
-                        Disable 2FA
+                        {t('settings.security.disable2fa')}
                       </Button>
                     </>
                   ) : (
@@ -1036,7 +1044,7 @@ export function SettingsV2Page() {
                       radius={8}
                       onClick={setup2faModal.open}
                     >
-                      Enable 2FA
+                      {t('settings.security.enable2fa')}
                     </Button>
                   )}
                 </div>
@@ -1052,17 +1060,19 @@ export function SettingsV2Page() {
               sectionRefs.current.data = el;
             }}
           >
-            <h2 className={classes.sectionTitle}>Data</h2>
-            <p className={classes.sectionDescription}>Export and import your financial data</p>
+            <h2 className={classes.sectionTitle}>{t('settings.data.title')}</h2>
+            <p className={classes.sectionDescription}>{t('settings.data.description')}</p>
 
             <div className={classes.card}>
-              <div className={classes.sectionLabel}>Export</div>
+              <div className={classes.sectionLabel}>{t('settings.data.export')}</div>
 
               <div className={classes.exportRow}>
                 <div className={classes.exportInfo}>
-                  <span className={classes.exportTitle}>Export Transactions</span>
+                  <span className={classes.exportTitle}>
+                    {t('settings.data.exportTransactions')}
+                  </span>
                   <span className={classes.exportDesc}>
-                    All transactions for the selected period or all time
+                    {t('settings.data.exportTransactionsDesc')}
                   </span>
                 </div>
                 <div className={classes.exportActions}>
@@ -1081,17 +1091,15 @@ export function SettingsV2Page() {
                       },
                     }}
                   >
-                    Export
+                    {t('common.export')}
                   </Button>
                 </div>
               </div>
 
               <div className={classes.exportRow} style={{ marginTop: 10 }}>
                 <div className={classes.exportInfo}>
-                  <span className={classes.exportTitle}>Export All Data</span>
-                  <span className={classes.exportDesc}>
-                    Complete backup: accounts, categories, periods, transactions, vendors, overlays
-                  </span>
+                  <span className={classes.exportTitle}>{t('settings.data.exportAll')}</span>
+                  <span className={classes.exportDesc}>{t('settings.data.exportAllDesc')}</span>
                 </div>
                 <div className={classes.exportActions}>
                   <span className={classes.formatBadge}>JSON</span>
@@ -1109,21 +1117,19 @@ export function SettingsV2Page() {
                       },
                     }}
                   >
-                    Export
+                    {t('common.export')}
                   </Button>
                 </div>
               </div>
 
               <hr className={classes.divider} style={{ margin: '20px 0' }} />
 
-              <div className={classes.sectionLabel}>Import</div>
+              <div className={classes.sectionLabel}>{t('settings.data.import')}</div>
 
               <div className={classes.exportRow}>
                 <div className={classes.exportInfo}>
-                  <span className={classes.exportTitle}>Import Data</span>
-                  <span className={classes.exportDesc}>
-                    Restore from a PiggyPulse JSON backup file
-                  </span>
+                  <span className={classes.exportTitle}>{t('settings.data.importData')}</span>
+                  <span className={classes.exportDesc}>{t('settings.data.importDataDesc')}</span>
                 </div>
                 <div className={classes.exportActions}>
                   <span className={classes.formatBadge}>JSON</span>
@@ -1140,7 +1146,7 @@ export function SettingsV2Page() {
                       },
                     }}
                   >
-                    Import
+                    {t('common.import')}
                   </Button>
                 </div>
               </div>
@@ -1155,23 +1161,20 @@ export function SettingsV2Page() {
               sectionRefs.current.danger = el;
             }}
           >
-            <h2 className={`${classes.sectionTitle} ${classes.sectionTitleDanger}`}>Danger Zone</h2>
-            <p className={classes.sectionDescription}>Irreversible actions</p>
+            <h2 className={`${classes.sectionTitle} ${classes.sectionTitleDanger}`}>
+              {t('settings.danger.title')}
+            </h2>
+            <p className={classes.sectionDescription}>{t('settings.danger.description')}</p>
 
             <div className={classes.dangerCard}>
-              <div className={classes.dangerTitle}>Delete Account</div>
-              <p className={classes.dangerDescription}>
-                Permanently delete your PiggyPulse account and all associated data. This action
-                cannot be undone.
-              </p>
+              <div className={classes.dangerTitle}>{t('settings.danger.deleteAccount')}</div>
+              <p className={classes.dangerDescription}>{t('settings.danger.deleteAccountDesc')}</p>
               <div className={classes.dangerWarning}>
-                This will delete: all transactions, accounts, categories, periods, vendors,
-                overlays, budget targets, and your profile. Export your data first if you want to
-                keep a backup.
+                {t('settings.danger.deleteAccountWarning')}
               </div>
               <div style={{ marginTop: 16 }}>
                 <Button color="red" radius={8} size="compact-sm" onClick={deleteModal.open}>
-                  Delete My Account
+                  {t('settings.danger.deleteMyAccount')}
                 </Button>
               </div>
             </div>
@@ -1185,23 +1188,23 @@ export function SettingsV2Page() {
       <Modal
         opened={passwordModalOpen}
         onClose={passwordModal.close}
-        title="Change Password"
+        title={t('settings.security.changePassword')}
         centered
       >
         <PasswordInput
-          label="Current password"
+          label={t('settings.security.currentPassword')}
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.currentTarget.value)}
           mb="sm"
         />
         <PasswordInput
-          label="New password"
+          label={t('settings.security.newPassword')}
           value={newPassword}
           onChange={(e) => setNewPassword(e.currentTarget.value)}
           mb="sm"
         />
         <PasswordInput
-          label="Confirm new password"
+          label={t('settings.security.confirmNewPassword')}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.currentTarget.value)}
           mb="md"
@@ -1212,7 +1215,7 @@ export function SettingsV2Page() {
           loading={changePasswordMut.isPending}
           onClick={handleChangePassword}
         >
-          Change Password
+          {t('settings.security.changePassword')}
         </Button>
       </Modal>
 
@@ -1220,11 +1223,11 @@ export function SettingsV2Page() {
       <Modal
         opened={disable2faModalOpen}
         onClose={disable2faModal.close}
-        title="Disable Two-Factor Authentication"
+        title={t('settings.security.disable2faTitle')}
         centered
       >
         <Text size="sm" c="dimmed" mb="md">
-          Enter your authenticator code to disable 2FA.
+          {t('settings.security.disable2faDesc')}
         </Text>
         <PinInput
           length={6}
@@ -1241,17 +1244,22 @@ export function SettingsV2Page() {
           onClick={handleDisable2fa}
           disabled={disable2faCode.length < 6}
         >
-          Disable 2FA
+          {t('settings.security.disable2fa')}
         </Button>
       </Modal>
 
       {/* Delete Account */}
-      <Modal opened={deleteModalOpen} onClose={deleteModal.close} title="Delete Account" centered>
+      <Modal
+        opened={deleteModalOpen}
+        onClose={deleteModal.close}
+        title={t('settings.danger.deleteConfirmTitle')}
+        centered
+      >
         <Text size="sm" c="dimmed" mb="md">
-          This action is permanent and cannot be undone. Enter your password to confirm.
+          {t('settings.danger.deleteConfirmDesc')}
         </Text>
         <PasswordInput
-          label="Password"
+          label={t('settings.danger.passwordLabel')}
           value={deleteConfirmPassword}
           onChange={(e) => setDeleteConfirmPassword(e.currentTarget.value)}
           mb="md"
@@ -1263,7 +1271,7 @@ export function SettingsV2Page() {
           onClick={handleDeleteAccount}
           disabled={!deleteConfirmPassword}
         >
-          Permanently Delete My Account
+          {t('settings.danger.permanentlyDelete')}
         </Button>
       </Modal>
 

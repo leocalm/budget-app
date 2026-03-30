@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { IconLogout, IconSettings } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Group, Image, Menu, Text } from '@mantine/core';
 import { useAuth } from '@/context/AuthContext';
@@ -21,6 +22,7 @@ interface MobileHeaderProps {
 }
 
 export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { colorTheme } = useV2Theme();
@@ -42,14 +44,14 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
     <div className={classes.mobileHeader} data-testid="mobile-header">
       <Group justify="space-between" wrap="nowrap" mb="xs">
         <Group gap="xs" wrap="nowrap">
-          <Image src={logoSrc} alt="PiggyPulse" w={28} h={28} />
+          <Image src={logoSrc} alt={t('common.piggyPulse')} w={28} h={28} />
           <Text
             fw={700}
             fz="md"
             ff="var(--mantine-font-family-headings)"
             className={classes.brandText}
           >
-            PiggyPulse
+            {t('common.piggyPulse')}
           </Text>
         </Group>
         <Menu position="bottom-end" withinPortal>
@@ -60,7 +62,7 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
               radius="xl"
               style={{ cursor: 'pointer' }}
               data-testid="mobile-user-avatar"
-              aria-label="User menu"
+              aria-label={t('appShell.userMenu')}
             >
               {initials}
             </Avatar>
@@ -70,11 +72,11 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
               leftSection={<IconSettings size={14} />}
               onClick={() => navigate('/v2/settings')}
             >
-              Settings
+              {t('common.settings')}
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item leftSection={<IconLogout size={14} />} color="red" onClick={handleLogout}>
-              Log out
+              {t('common.logOut')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

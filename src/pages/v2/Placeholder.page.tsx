@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Stack, Text, Title } from '@mantine/core';
 
@@ -6,6 +7,7 @@ import { Stack, Text, Title } from '@mantine/core';
  * Shows the current route path so we can verify navigation works.
  */
 export function PlaceholderPage() {
+  const { t } = useTranslation('v2');
   const { pathname } = useLocation();
   const pageName = pathname.split('/').pop() ?? 'Page';
 
@@ -15,7 +17,7 @@ export function PlaceholderPage() {
         {pageName}
       </Title>
       <Text c="dimmed" fz="sm">
-        This page is coming soon
+        {t('placeholder.comingSoon')}
       </Text>
     </Stack>
   );

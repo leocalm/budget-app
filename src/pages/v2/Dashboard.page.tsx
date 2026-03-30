@@ -17,6 +17,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -78,6 +79,7 @@ function renderWidget(widgetId: string, periodId: string) {
 }
 
 export function DashboardV2Page() {
+  const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: accountsData } = useAccounts();
   const { data: prefsData } = usePreferences();
@@ -235,10 +237,10 @@ export function DashboardV2Page() {
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
         <div>
           <Title order={2} fw={700}>
-            Dashboard
+            {t('dashboard.title')}
           </Title>
           <Text c="dimmed" fz="sm">
-            No budget period selected. Please select a period to view your dashboard.
+            {t('dashboard.noPeriodSelected')}
           </Text>
         </div>
       </Stack>
@@ -250,16 +252,16 @@ export function DashboardV2Page() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <Title order={2} fw={700}>
-            Dashboard
+            {t('dashboard.title')}
           </Title>
           <Text c="dimmed" fz="sm">
-            Your finance pulse, at a glance
+            {t('dashboard.subtitle')}
           </Text>
         </div>
         {isEditing ? (
           <div style={{ display: 'flex', gap: 8 }}>
             <Button variant="subtle" size="sm" onClick={() => setIsEditing(false)}>
-              Cancel
+              {t('dashboard.cancel')}
             </Button>
             <Button
               size="sm"
@@ -267,12 +269,12 @@ export function DashboardV2Page() {
               loading={updatePrefs.isPending}
               disabled={!prefsData}
             >
-              Done
+              {t('dashboard.done')}
             </Button>
           </div>
         ) : (
           <Button variant="subtle" size="sm" onClick={startEditing}>
-            Customize
+            {t('dashboard.customize')}
           </Button>
         )}
       </div>
@@ -298,7 +300,7 @@ export function DashboardV2Page() {
             aria-label="Add widget"
           >
             <Text fz="sm" c="dimmed">
-              + Add widget
+              {t('dashboard.addWidget')}
             </Text>
           </UnstyledButton>
         </DndContext>
@@ -346,6 +348,7 @@ function SortableItemPlaceholder({
   accountMap: Map<string, { name: string }>;
   onRemove: (id: string) => void;
 }) {
+  const { t } = useTranslation('v2');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
   });
@@ -362,8 +365,8 @@ function SortableItemPlaceholder({
   if (isAccountItem(id)) {
     const acct = accountMap.get(getAccountId(id));
     emoji = '🏦';
-    name = acct?.name ?? 'Account';
-    desc = 'Individual account card';
+    name = acct?.name ?? t('common.account');
+    desc = t('common.individualAccountCard');
   } else {
     const def = WIDGET_DEFINITIONS.find((w) => w.id === id);
     emoji = def?.emoji ?? '📦';

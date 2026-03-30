@@ -2,7 +2,9 @@ import React, { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { I18nextProvider } from 'react-i18next';
 import { MantineProvider } from '@mantine/core';
+import i18n from '@/i18n';
 import { CategoryResponse, CategoryWithStats } from '@/types/category';
 
 const createWrapper = () => {
@@ -15,9 +17,11 @@ const createWrapper = () => {
   });
 
   return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <MantineProvider>{children}</MantineProvider>
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider>{children}</MantineProvider>
+      </QueryClientProvider>
+    </I18nextProvider>
   );
 };
 

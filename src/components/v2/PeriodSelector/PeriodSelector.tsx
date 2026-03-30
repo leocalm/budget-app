@@ -1,4 +1,5 @@
 import { IconChevronDown } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import {
   Drawer,
   Group,
@@ -23,6 +24,7 @@ interface PeriodSelectorProps {
 }
 
 export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
+  const { t } = useTranslation('v2');
   const mantineTheme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${mantineTheme.breakpoints.sm})`);
   const [opened, { open, close, toggle }] = useDisclosure(false);
@@ -68,11 +70,11 @@ export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
         >
           <Group gap="xs" wrap="nowrap" style={{ flex: 1 }}>
             <Text fz="sm" fw={600}>
-              {displayPeriod?.name ?? 'No active period'}
+              {displayPeriod?.name ?? t('periodSelector.noActivePeriod')}
             </Text>
             {daysLeft != null && (
               <Text fz="xs" c="dimmed">
-                {daysLeft}d left
+                {t('periodSelector.daysLeft', { count: daysLeft })}
               </Text>
             )}
           </Group>
@@ -91,7 +93,7 @@ export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
           onClose={close}
           position="bottom"
           size="auto"
-          title="Select Period"
+          title={t('periodSelector.selectPeriod')}
           data-testid="period-selector-drawer"
         >
           {dropdownContent}
@@ -118,23 +120,26 @@ export function PeriodSelector({ variant = 'sidebar' }: PeriodSelectorProps) {
           aria-haspopup="dialog"
         >
           <Text fz={10} fw={600} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.08em' }}>
-            Period
+            {t('periodSelector.title')}
           </Text>
           <Stack gap={4}>
             <Group justify="space-between" wrap="nowrap">
               <Text fz="sm" fw={600}>
-                {displayPeriod?.name ?? 'No active period'}
+                {displayPeriod?.name ?? t('periodSelector.noActivePeriod')}
               </Text>
               <IconChevronDown size={14} style={{ opacity: 0.5 }} />
             </Group>
             {displayPeriod && (
               <Text fz="xs" c="dimmed">
-                {dateRange} · {daysLeft != null ? `${daysLeft} days left` : 'ended'}
+                {dateRange} ·{' '}
+                {daysLeft != null
+                  ? t('periodSelector.daysLeftLong', { count: daysLeft })
+                  : t('periodSelector.ended')}
               </Text>
             )}
             {!displayPeriod && isInGap && (
               <Text fz="xs" c="dimmed">
-                You're in a gap
+                {t('periodSelector.inGap')}
               </Text>
             )}
             <Progress value={progress} size={4} radius="xl" color={accents.secondary} />

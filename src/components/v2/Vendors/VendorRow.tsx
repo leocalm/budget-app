@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
@@ -23,6 +24,7 @@ export function VendorRow({
   onDelete,
   onMerge,
 }: VendorRowProps) {
+  const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const isArchived = vendor.status === 'inactive';
   const initial = vendor.name.charAt(0).toUpperCase();
@@ -55,8 +57,8 @@ export function VendorRow({
           {vendor.name}
         </Text>
         <Text fz="xs" c="dimmed">
-          {vendor.numberOfTransactions} txns
-          {isArchived && ' · Archived'}
+          {t('common.txns', { count: vendor.numberOfTransactions })}
+          {isArchived && ` · ${t('common.archived')}`}
         </Text>
       </div>
 
@@ -92,15 +94,19 @@ export function VendorRow({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            {!isArchived && <Menu.Item onClick={() => onEdit(vendor.id)}>Edit</Menu.Item>}
-            {!isArchived && <Menu.Item onClick={() => onMerge(vendor.id)}>Merge</Menu.Item>}
+            {!isArchived && (
+              <Menu.Item onClick={() => onEdit(vendor.id)}>{t('common.edit')}</Menu.Item>
+            )}
+            {!isArchived && (
+              <Menu.Item onClick={() => onMerge(vendor.id)}>{t('common.merge')}</Menu.Item>
+            )}
             {isArchived ? (
-              <Menu.Item onClick={() => onUnarchive(vendor.id)}>Unarchive</Menu.Item>
+              <Menu.Item onClick={() => onUnarchive(vendor.id)}>{t('common.unarchive')}</Menu.Item>
             ) : (
-              <Menu.Item onClick={() => onArchive(vendor.id)}>Archive</Menu.Item>
+              <Menu.Item onClick={() => onArchive(vendor.id)}>{t('common.archive')}</Menu.Item>
             )}
             <Menu.Item color="red" onClick={() => onDelete(vendor.id)}>
-              Delete
+              {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

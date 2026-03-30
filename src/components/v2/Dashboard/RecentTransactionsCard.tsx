@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Anchor, Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -9,6 +10,7 @@ interface RecentTransactionsCardProps {
 }
 
 export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useTransactions({
     periodId,
     limit: 7,
@@ -23,13 +25,13 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
       <div className={classes.card} data-testid="recent-transactions-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Recent Transactions
+            {t('dashboard.recentTransactions.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your transactions.
+            {t('dashboard.recentTransactions.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -43,10 +45,10 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
       <div className={classes.card} data-testid="recent-transactions-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Recent Transactions
+            {t('dashboard.recentTransactions.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            No transactions this period yet.
+            {t('dashboard.recentTransactions.empty')}
           </Text>
         </div>
       </div>
@@ -57,10 +59,10 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
     <div className={classes.card} data-testid="recent-transactions-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Recent Transactions
+          {t('dashboard.recentTransactions.title')}
         </Text>
         <Text fz="xs" c="dimmed">
-          This period
+          {t('dashboard.recentTransactions.thisPeriod')}
         </Text>
       </div>
 
@@ -91,7 +93,7 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
 
       <div className={classes.viewAll}>
         <Anchor component={Link} to="/v2/transactions" fz="sm" c="var(--v2-primary)">
-          View all transactions
+          {t('dashboard.recentTransactions.viewAll')}
         </Anchor>
       </div>
     </div>

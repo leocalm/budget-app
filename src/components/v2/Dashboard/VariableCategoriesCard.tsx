@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Progress, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useCategoriesOverview } from '@/hooks/v2/useCategories';
@@ -9,6 +10,7 @@ interface VariableCategoriesCardProps {
 }
 
 export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useCategoriesOverview(periodId);
   const { accents } = useV2Theme();
 
@@ -21,13 +23,13 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
       <div className={classes.card} data-testid="variable-categories-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Variable Categories
+            {t('dashboard.variableCategories.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your categories.
+            {t('dashboard.variableCategories.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -43,11 +45,10 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
       <div className={classes.card} data-testid="variable-categories-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Variable Categories
+            {t('dashboard.variableCategories.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            No variable categories with budgets yet. Set a category as &ldquo;variable&rdquo; and
-            assign a budget to see it here.
+            {t('dashboard.variableCategories.empty')}
           </Text>
         </div>
       </div>
@@ -68,10 +69,13 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
     <div className={classes.card} data-testid="variable-categories-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Variable Categories
+          {t('dashboard.variableCategories.title')}
         </Text>
         <Text fz="xs" fw={600} c="var(--v2-primary)">
-          {variableCategories.length} {variableCategories.length === 1 ? 'category' : 'categories'}
+          {t('dashboard.variableCategories.categoryCount', {
+            count: variableCategories.length,
+            label: variableCategories.length === 1 ? t('common.category') : t('common.categories'),
+          })}
         </Text>
       </div>
 
@@ -90,12 +94,14 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
         radius="xl"
         color={accents.primary}
         className={classes.overallBar}
-        aria-label={`Overall variable budget used: ${Math.min(overallPct, 100)}%`}
+        aria-label={t('dashboard.variableCategories.overallAria', {
+          pct: Math.min(overallPct, 100),
+        })}
       />
 
       <div className={classes.tableHeader}>
         <Text fz={10} fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.06em' }}>
-          Category
+          {t('dashboard.variableCategories.columnCategory')}
         </Text>
         <Text
           fz={10}
@@ -105,7 +111,7 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
           ta="right"
           style={{ letterSpacing: '0.06em' }}
         >
-          Spent / Budget
+          {t('dashboard.variableCategories.columnSpentBudget')}
         </Text>
         <Text
           fz={10}
@@ -115,10 +121,10 @@ export function VariableCategoriesCard({ periodId }: VariableCategoriesCardProps
           ta="right"
           style={{ letterSpacing: '0.06em' }}
         >
-          %
+          {t('dashboard.variableCategories.columnPercent')}
         </Text>
         <Text fz={10} fw={700} tt="uppercase" c="dimmed" style={{ letterSpacing: '0.06em' }}>
-          Progress
+          {t('dashboard.variableCategories.columnProgress')}
         </Text>
       </div>
 

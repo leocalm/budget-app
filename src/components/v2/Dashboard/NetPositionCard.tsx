@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Anchor, Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
@@ -12,15 +13,8 @@ interface NetPositionCardProps {
   periodId: string;
 }
 
-const ACCOUNT_TYPE_LABELS: Record<string, string> = {
-  Checking: 'Checking',
-  Savings: 'Savings',
-  CreditCard: 'Credit Card',
-  Allowance: 'Allowance',
-  Wallet: 'Wallet',
-};
-
 export function NetPositionCard({ periodId }: NetPositionCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardNetPosition(periodId);
   const { data: history } = useDashboardNetPositionHistory(periodId);
   const { data: accountsSummary, isLoading: isAccountsLoading } = useAccountsSummary(periodId);
@@ -36,13 +30,13 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
       <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Net Position
+            {t('dashboard.netPosition.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your position data.
+            {t('dashboard.netPosition.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -54,10 +48,10 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
       <div className={classes.card}>
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Net Position
+            {t('dashboard.netPosition.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            No accounts configured yet. Add an account to see your net position.
+            {t('dashboard.netPosition.empty')}
           </Text>
         </div>
       </div>
@@ -73,10 +67,10 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
       {/* Header */}
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Net Position
+          {t('dashboard.netPosition.title')}
         </Text>
         <Anchor component={Link} to="/v2/accounts" fz="xs" c="var(--v2-tertiary)">
-          {data.numberOfAccounts} accounts
+          {t('dashboard.netPosition.accountsCount', { count: data.numberOfAccounts })}
         </Anchor>
       </div>
 
@@ -91,7 +85,7 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
               {changePrefix}
               <CurrencyValue cents={Math.abs(data.differenceThisPeriod)} />
             </span>{' '}
-            this period
+            {t('common.thisPeriod')}
           </Text>
         </div>
         <div className={classes.sparklineWrapper}>
@@ -113,10 +107,22 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
           />
 
           <div className={classes.breakdownGrid}>
-            <BreakdownItem label="Liquid" cents={data.liquidAmount} color={accents.secondary} />
-            <BreakdownItem label="Protected" cents={data.protectedAmount} color={accents.primary} />
+            <BreakdownItem
+              label={t('dashboard.netPosition.liquid')}
+              cents={data.liquidAmount}
+              color={accents.secondary}
+            />
+            <BreakdownItem
+              label={t('dashboard.netPosition.protected')}
+              cents={data.protectedAmount}
+              color={accents.primary}
+            />
             {data.debtAmount > 0 && (
-              <BreakdownItem label="Debt" cents={data.debtAmount} color="var(--v2-border)" />
+              <BreakdownItem
+                label={t('dashboard.netPosition.debt')}
+                cents={data.debtAmount}
+                color="var(--v2-border)"
+              />
             )}
           </div>
         </>
@@ -144,7 +150,9 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
                   {account.name}
                 </Text>
                 <Text fz="xs" c="dimmed" className={classes.accountType}>
-                  {ACCOUNT_TYPE_LABELS[account.type] ?? account.type}
+                  {t(`dashboard.netPosition.accountTypes.${account.type}`, {
+                    defaultValue: account.type,
+                  })}
                 </Text>
                 <span className={classes.accountLeader} />
                 <Text

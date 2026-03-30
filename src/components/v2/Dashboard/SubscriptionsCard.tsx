@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDashboardSubscriptions } from '@/hooks/v2/useDashboard';
@@ -10,38 +11,48 @@ interface SubscriptionsCardProps {
 type DisplayStatus = 'charged' | 'today' | 'upcoming';
 type BillingCycle = 'monthly' | 'quarterly' | 'yearly';
 
-function cycleLabel(cycle: BillingCycle): string {
-  switch (cycle) {
-    case 'quarterly':
-      return '/qtr';
-    case 'yearly':
-      return '/yr';
-    default:
-      return '/mo';
-  }
+function useCycleLabel() {
+  const { t } = useTranslation('v2');
+  return (cycle: BillingCycle): string => {
+    switch (cycle) {
+      case 'quarterly':
+        return t('dashboard.subscriptions.perQuarter');
+      case 'yearly':
+        return t('dashboard.subscriptions.perYear');
+      default:
+        return t('dashboard.subscriptions.perMonth');
+    }
+  };
 }
 
-function upcomingLabel(nextChargeDate: string): string {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const charge = new Date(`${nextChargeDate}T00:00:00`);
-  const days = Math.round((charge.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+function useUpcomingLabel() {
+  const { t } = useTranslation('v2');
+  return (nextChargeDate: string): string => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const charge = new Date(`${nextChargeDate}T00:00:00`);
+    const days = Math.round((charge.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
-  if (days <= 0) {
-    return 'TODAY';
-  }
-  if (days === 1) {
-    return 'IN 1 DAY';
-  }
-  if (days < 7) {
-    return `IN ${days} DAYS`;
-  }
-  const weeks = Math.round(days / 7);
-  if (days < 28) {
-    return weeks === 1 ? 'IN 1 WEEK' : `IN ${weeks} WEEKS`;
-  }
-  const months = Math.max(1, Math.floor(days / 30));
-  return months === 1 ? 'IN 1 MONTH' : `IN ${months} MONTHS`;
+    if (days <= 0) {
+      return t('dashboard.subscriptions.today');
+    }
+    if (days === 1) {
+      return t('dashboard.subscriptions.inOneDay');
+    }
+    if (days < 7) {
+      return t('dashboard.subscriptions.inDays', { count: days });
+    }
+    const weeks = Math.round(days / 7);
+    if (days < 28) {
+      return weeks === 1
+        ? t('dashboard.subscriptions.inOneWeek')
+        : t('dashboard.subscriptions.inWeeks', { count: weeks });
+    }
+    const months = Math.max(1, Math.floor(days / 30));
+    return months === 1
+      ? t('dashboard.subscriptions.inOneMonth')
+      : t('dashboard.subscriptions.inMonths', { count: months });
+  };
 }
 
 function formatChargeDate(dateStr: string): string {
@@ -50,7 +61,9 @@ function formatChargeDate(dateStr: string): string {
 }
 
 export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardSubscriptions(periodId);
+  const getCycleLabel = useCycleLabel();
 
   if (isLoading) {
     return <SubscriptionsCardSkeleton />;
@@ -61,13 +74,13 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
       <div className={classes.card} data-testid="subscriptions-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Subscriptions
+            {t('dashboard.subscriptions.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your subscriptions.
+            {t('dashboard.subscriptions.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -81,10 +94,10 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
       <div className={classes.card} data-testid="subscriptions-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Subscriptions
+            {t('dashboard.subscriptions.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            No subscriptions due this period.
+            {t('dashboard.subscriptions.empty')}
           </Text>
         </div>
       </div>
@@ -99,10 +112,10 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
     <div className={classes.card} data-testid="subscriptions-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Subscriptions
+          {t('dashboard.subscriptions.title')}
         </Text>
         <Text fz="xs" fw={600} c="var(--v2-primary)">
-          {activeCount} active
+          {t('dashboard.subscriptions.activeCount', { count: activeCount })}
         </Text>
       </div>
 
@@ -116,7 +129,7 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
             c="dimmed"
             ff="var(--mantine-font-family-monospace)"
           >
-            /mo
+            {t('dashboard.subscriptions.perMonth')}
           </Text>
         </Text>
         <Text
@@ -126,7 +139,7 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
           className={classes.summaryYear}
         >
           · <CurrencyValue cents={yearlyTotal} />
-          /yr
+          {t('dashboard.subscriptions.perYear')}
         </Text>
       </div>
 
@@ -149,7 +162,7 @@ export function SubscriptionsCard({ periodId }: SubscriptionsCardProps) {
               className={classes.amount}
             >
               <CurrencyValue cents={sub.billingAmount} />
-              {cycleLabel(sub.billingCycle)}
+              {getCycleLabel(sub.billingCycle)}
             </Text>
             <Text fz="xs" c="dimmed" className={classes.date}>
               {formatChargeDate(sub.nextChargeDate)}
@@ -169,6 +182,9 @@ function StatusBadge({
   status: DisplayStatus;
   nextChargeDate: string;
 }) {
+  const { t } = useTranslation('v2');
+  const getUpcomingLabel = useUpcomingLabel();
+
   const colorMap: Record<DisplayStatus, string> = {
     charged: 'var(--v2-tertiary)',
     today: 'var(--v2-primary)',
@@ -176,7 +192,11 @@ function StatusBadge({
   };
 
   const label =
-    status === 'charged' ? 'CHARGED' : status === 'today' ? 'TODAY' : upcomingLabel(nextChargeDate);
+    status === 'charged'
+      ? t('dashboard.subscriptions.charged')
+      : status === 'today'
+        ? t('dashboard.subscriptions.today')
+        : getUpcomingLabel(nextChargeDate);
 
   return (
     <Text

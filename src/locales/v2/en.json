@@ -1,0 +1,1075 @@
+{
+  "accounts": {
+    "actions": {
+      "archive": "Archive",
+      "unarchive": "Unarchive",
+      "viewDetails": "View details"
+    },
+    "addAccount": "+ Add Account",
+    "addFirst": "+ Add Your First Account",
+    "archivedToggle": "Archived accounts",
+    "detail": {
+      "afterTopUp": "After top-up:",
+      "allowance": {
+        "afterTopUp": "After top-up",
+        "available": "Available",
+        "nextTopUp": "Next top-up",
+        "spentThisCycle": "Spent this cycle",
+        "title": "Allowance Details",
+        "topUpAmount": "Top-up amount"
+      },
+      "available": "Available:",
+      "backLink": "← Accounts",
+      "balanceHistory": "Balance History",
+      "checking": {
+        "avgDailyBalance": "Avg Daily Balance",
+        "title": "Checking Details"
+      },
+      "creditCard": {
+        "creditLimit": "Credit limit",
+        "currentBalance": "Current balance",
+        "paymentDue": "Payment due",
+        "statementCloses": "Statement closes",
+        "title": "Credit Card Details"
+      },
+      "inflows": "Inflows",
+      "nextTopUp": "Next top-up:",
+      "noChart": "Not enough data to show a chart yet.",
+      "outflows": "Outflows",
+      "transactions": "Transactions"
+    },
+    "empty": {
+      "message": "Add your first account to start tracking balances. You can add checking, savings, credit cards, wallets, or allowance accounts.",
+      "title": "No accounts yet"
+    },
+    "form": {
+      "accountType": "Account Type",
+      "color": "Color",
+      "createTitle": "Create Account",
+      "currency": "Currency",
+      "cycles": {
+        "biWeekly": "Bi-weekly",
+        "monthly": "Monthly",
+        "weekly": "Weekly"
+      },
+      "dayOfMonth": "Day of month (1-31)",
+      "editTitle": "Edit Account",
+      "initialBalance": "Initial Balance",
+      "name": "Account Name",
+      "namePlaceholder": "e.g. Main Checking",
+      "paymentDueDay": "Payment Due Day",
+      "spendLimit": "Spend Limit",
+      "spendLimitAllowance": "Maximum spending per cycle",
+      "spendLimitCreditCard": "Credit limit on the card",
+      "statementCloseDay": "Statement Close Day",
+      "toast": {
+        "created": "Account created",
+        "error": "Failed to {{action}} account",
+        "updated": "Account updated"
+      },
+      "topUpAmount": "Top-up Amount",
+      "topUpAmountDesc": "Amount added each cycle",
+      "topUpCycle": "Top-up Cycle",
+      "topUpDay": "Top-up Day",
+      "topUpDayMonth": "Day of month (1-31)",
+      "topUpDayWeek": "Day of week (0=Sun, 6=Sat)"
+    },
+    "netPosition": {
+      "debt": "Debt",
+      "liquid": "Liquid",
+      "protected": "Protected",
+      "title": "Net Position"
+    },
+    "subtitle": "Your financial accounts at a glance",
+    "title": "Accounts",
+    "toast": {
+      "archiveError": "Failed to archive account",
+      "archived": "Account archived",
+      "unarchiveError": "Failed to unarchive account",
+      "unarchived": "Account unarchived"
+    },
+    "txnsThisPeriod": "{{count}} txns this period",
+    "types": {
+      "Allowance": "Allowance",
+      "Checking": "Checking",
+      "CreditCard": "Credit Cards",
+      "Savings": "Savings",
+      "Wallet": "Wallets"
+    }
+  },
+  "appShell": {
+    "brand": "PiggyPulse",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "mainNavigation": "Main navigation",
+    "more": "More",
+    "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode",
+    "userMenu": "User menu"
+  },
+  "auth": {
+    "defaultTagline": "Your financial pulse — calm, clear, and entirely yours.",
+    "forgotPassword": {
+      "backToSignIn": "Back to Sign in",
+      "didNotReceive": "Didn't receive it? Check your spam folder or",
+      "email": "Email",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "hasPassword": "Remember your password?",
+      "rememberPassword": "Remember your password?",
+      "resendLink": "resend the link",
+      "sent": {
+        "backToSignIn": "Back to Sign in",
+        "didntReceive": "Didn't receive it? Check your spam folder or",
+        "instruction": "Click the link in the email to reset your password.",
+        "message": "We've sent a password reset link to {{email}}.",
+        "resend": "resend the link",
+        "title": "Check your email"
+      },
+      "sentInstruction": "Click the link in the email to reset your password.",
+      "sentSubtitle": "We've sent a password reset link to",
+      "sentTitle": "Check your email",
+      "signIn": "Sign in",
+      "submit": "Send Reset Link",
+      "submitButton": "Send Reset Link",
+      "subtitle": "Enter your email and we'll send you a link to reset it.",
+      "title": "Forgot your password?"
+    },
+    "login": {
+      "createOne": "Create one",
+      "email": "Email",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "errorAccountLocked": "Account locked. Check your email for an unlock link.",
+      "errorGeneric": "Unable to sign in. Please try again.",
+      "errorInvalidCredentials": "Invalid email or password",
+      "errorTooManyAttempts": "Too many attempts. Please wait and try again.",
+      "errorUnknown": "Something went wrong",
+      "errors": {
+        "accountLocked": "Account locked. Check your email for an unlock link.",
+        "generic": "Unable to sign in. Please try again.",
+        "invalidCredentials": "Invalid email or password",
+        "somethingWentWrong": "Something went wrong",
+        "tooManyAttempts": "Too many attempts. Please wait and try again."
+      },
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "password": "Password",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "sessionExpired": "Your session has expired. Please sign in again.",
+      "submit": "Sign In",
+      "submitButton": "Sign In",
+      "subtitle": "Access your financial pulse.",
+      "title": "Sign in",
+      "twoFactor": {
+        "codePlaceholder": "000000",
+        "enterCode": "Enter the 6-digit code from your authenticator app.",
+        "enterRecovery": "Enter one of your recovery codes.",
+        "invalidCode": "Invalid code. Please try again.",
+        "recoveryCode": "Recovery code",
+        "recoveryPlaceholder": "XXXX-XXXX",
+        "useAuthenticator": "Use authenticator code instead",
+        "useRecovery": "Or use a recovery code",
+        "verify": "Verify"
+      }
+    },
+    "register": {
+      "agreeToTermsPrefix": "I agree to the",
+      "alreadyHaveAccount": "Already have an account?",
+      "and": "and",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordLabel": "Confirm password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "confirmPlaceholder": "Repeat your password",
+      "email": "Email",
+      "emailLabel": "Email",
+      "emailPlaceholder": "leo@example.com",
+      "error": "Could not create account. Email may already be in use.",
+      "errorGeneric": "Could not create account. Email may already be in use.",
+      "hasAccount": "Already have an account?",
+      "name": "Name",
+      "nameLabel": "Name",
+      "namePlaceholder": "Leonardo",
+      "password": "Password",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "MyStr0ngP@ss!",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordsMismatch": "Passwords do not match",
+      "privacyPolicy": "Privacy Policy",
+      "signIn": "Sign in",
+      "submit": "Create Account",
+      "submitButton": "Create Account",
+      "subtitle": "Start your calm budgeting journey.",
+      "terms": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "title": "Create your account"
+    },
+    "resetPassword": {
+      "confirmPassword": "Confirm password",
+      "confirmPasswordLabel": "Confirm password",
+      "errorExpired": "Reset link has expired. Please request a new one.",
+      "goToSignIn": "Go to Sign In",
+      "invalidLink": {
+        "goToSignIn": "Go to Sign In",
+        "message": "This link has expired or is invalid.",
+        "title": "Invalid reset link"
+      },
+      "invalidLinkMessage": "This link has expired or is invalid.",
+      "invalidLinkTitle": "Invalid reset link",
+      "newPassword": "New password",
+      "newPasswordLabel": "New password",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordsMismatch": "Passwords do not match",
+      "requestNewLink": "Request a new link",
+      "submit": "Reset Password",
+      "submitButton": "Reset Password",
+      "subtitle": "Make it strong and unique.",
+      "success": {
+        "goToSignIn": "Go to Sign In",
+        "instruction": "You can now sign in with your new password.",
+        "message": "Your password has been reset successfully.",
+        "title": "Password updated"
+      },
+      "successMessage": "Your password has been reset successfully.",
+      "successSubtext": "You can now sign in with your new password.",
+      "successTitle": "Password updated",
+      "title": "Set a new password"
+    },
+    "tagline": {
+      "default": "Your financial pulse — calm, clear, and entirely yours.",
+      "forgotPassword": "No worries — we will help you get back in.",
+      "login": "Welcome back. Your data is right where you left it.",
+      "register": "Start your journey toward financial clarity.",
+      "resetPassword": "Almost there. Choose a new password.",
+      "unlock": "Verify your identity to continue."
+    },
+    "taglines": {
+      "forgotPassword": "No worries — we will help you get back in.",
+      "login": "Welcome back. Your data is right where you left it.",
+      "register": "Start your journey toward financial clarity.",
+      "resetPassword": "Almost there. Choose a new password.",
+      "unlock": "Verify your identity to continue."
+    },
+    "twoFactor": {
+      "errorInvalidCode": "Invalid code. Please try again.",
+      "placeholder": "000000",
+      "recoveryPlaceholder": "XXXX-XXXX",
+      "recoverySubtitle": "Enter one of your recovery codes.",
+      "recoveryTitle": "Recovery code",
+      "subtitle": "Enter the 6-digit code from your authenticator app.",
+      "title": "Enter verification code",
+      "useAuthenticator": "Use authenticator code instead",
+      "useRecoveryCode": "Or use a recovery code",
+      "verifyButton": "Verify"
+    },
+    "unlock": {
+      "errorMessage": "This link has expired or is invalid.",
+      "errorTitle": "Invalid unlock link",
+      "goToSignIn": "Go to Sign In",
+      "invalidLink": {
+        "goToSignIn": "Go to Sign In",
+        "message": "This link has expired or is invalid.",
+        "title": "Invalid unlock link"
+      },
+      "loading": "Unlocking your account...",
+      "success": {
+        "goToSignIn": "Go to Sign In",
+        "message": "Your account has been unlocked. You can now sign in.",
+        "title": "Account unlocked"
+      },
+      "successMessage": "Your account has been unlocked. You can now sign in.",
+      "successTitle": "Account unlocked"
+    }
+  },
+  "categories": {
+    "actions": {
+      "archive": "Archive",
+      "delete": "Delete",
+      "unarchive": "Unarchive"
+    },
+    "addCategory": "+ Add Category",
+    "addFirst": "+ Add Your First Category",
+    "archivedToggle": "Archived",
+    "behaviors": {
+      "fixed": "Fixed",
+      "subscription": "Subscription",
+      "variable": "Variable"
+    },
+    "budgeted": "budgeted",
+    "detail": {
+      "backLink": "← Categories",
+      "budget": "Budget",
+      "recentTransactions": "Recent Transactions",
+      "remaining": "Remaining",
+      "spendingTrend": "Spending Trend — Last {{count}} Periods",
+      "spent": "Spent",
+      "transactions": "Transactions"
+    },
+    "empty": {
+      "message": "Create your first category to start categorizing transactions and define your budgeting structure.",
+      "title": "No categories yet"
+    },
+    "form": {
+      "behavior": "Behavior",
+      "budgetTarget": "Budget Target",
+      "budgetTargetDesc": "Monthly spending or income target (optional)",
+      "createTitle": "Add Category",
+      "description": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "editTitle": "Edit Category",
+      "icon": "Icon",
+      "name": "Category Name",
+      "namePlaceholder": "e.g. Groceries",
+      "toast": {
+        "created": "Category created",
+        "error": "Failed to {{action}} category",
+        "updated": "Category updated"
+      },
+      "type": "Type"
+    },
+    "incoming": "Incoming",
+    "outgoing": "Outgoing",
+    "searchPlaceholder": "Search categories...",
+    "stats": {
+      "categories": "Categories",
+      "expenseBudget": "Expense Budget",
+      "incomeTarget": "Income Target",
+      "totalSpent": "Total Spent",
+      "unbudgeted": "Unbudgeted"
+    },
+    "subtitle": "Your budgeting structure",
+    "title": "Categories",
+    "toast": {
+      "archiveError": "Failed to archive category",
+      "archived": "Category archived",
+      "deleteError": "Failed to delete category",
+      "deleted": "Category deleted",
+      "unarchiveError": "Failed to unarchive category",
+      "unarchived": "Category unarchived"
+    },
+    "types": {
+      "expense": "Outgoing",
+      "income": "Incoming",
+      "transfer": "Transfer"
+    }
+  },
+  "common": {
+    "account": "Account",
+    "add": "Add",
+    "archived": "Archived",
+    "back": "Back",
+    "cancel": "Cancel",
+    "categories": "categories",
+    "category": "category",
+    "comingSoon": "This page is coming soon",
+    "create": "Create",
+    "daysLeft": "{{count}}d left",
+    "delete": "Delete",
+    "done": "Done",
+    "edit": "Edit",
+    "ended": "ended",
+    "inDays": "In {{count}} days",
+    "individualAccountCard": "Individual account card",
+    "logOut": "Log out",
+    "more": "More",
+    "noMatch": "No {{entity}} match",
+    "noPeriodSelected": "No budget period selected.",
+    "noPeriodSelectedDetail": "Please select a period to view your {{page}}.",
+    "notFound": "{{entity}} not found.",
+    "piggyPulse": "PiggyPulse",
+    "retry": "Retry",
+    "save": "Save Changes",
+    "search": "Search",
+    "settings": "Settings",
+    "somethingWentWrong": "Something went wrong loading your {{entity}}.",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode",
+    "thisPeriod": "this period",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "txns": "{{count}} txns",
+    "userMenu": "User menu"
+  },
+  "dashboard": {
+    "account": {
+      "archived": "This account has been archived.",
+      "available": "available",
+      "availableToSpend": "Available to spend",
+      "avgDailyBalance": "Avg Daily Balance",
+      "balance": "Balance",
+      "balanceAfterTopUp": "Balance after top-up",
+      "creditUsed": "Credit used: {{pct}}% of limit",
+      "currentBalance": "current balance",
+      "error": "Something went wrong loading this account.",
+      "inDays": "In {{count}} days",
+      "inDaysParens": "(in {{count}} days)",
+      "inflows": "Inflows",
+      "limit": "limit",
+      "nextTopUp": "Next top-up",
+      "noTransactions": "No transactions yet this period.",
+      "outflows": "Outflows",
+      "overspent": "Overspent",
+      "paymentDue": "Payment due",
+      "periodChange": "Period Change",
+      "spentThisCycle": "Spent this cycle",
+      "statementCloses": "Statement closes",
+      "title": "Account",
+      "today": "Today",
+      "todayParens": "(Today)",
+      "tomorrow": "Tomorrow",
+      "transactions": "Transactions"
+    },
+    "accountCard": {
+      "archived": "This account has been archived.",
+      "error": "Something went wrong loading this account.",
+      "noTransactions": "No transactions yet this period."
+    },
+    "addWidget": "+ Add widget",
+    "addWidgetButton": "+ Add widget",
+    "cancel": "Cancel",
+    "cashFlow": {
+      "empty": "No inflows or outflows recorded this period.",
+      "error": "Something went wrong loading your cash flow data.",
+      "in": "In",
+      "inflowsAria": "Inflows: {{pct}}% of period maximum",
+      "inflowsPct": "Inflows: {{pct}}% of period maximum",
+      "net": "Net",
+      "out": "Out",
+      "outflowsAria": "Outflows: {{pct}}% of period maximum",
+      "outflowsPct": "Outflows: {{pct}}% of period maximum",
+      "title": "Cash Flow"
+    },
+    "currentPeriod": {
+      "budget": "Budget",
+      "budgetLabel": "Budget",
+      "budgetUsed": "Budget used: {{pct}}%",
+      "daysLeft": "{{count}} days left",
+      "empty": "No budget period configured yet.",
+      "error": "Something went wrong loading your period data.",
+      "expectedIncome": "<currency /> expected income",
+      "noBudget": "no budget set",
+      "noBudgetSet": "no budget set",
+      "noPeriod": "No budget period configured yet.",
+      "ofBudgeted": "of <currency /> budgeted",
+      "perDayLeft": "Per Day Left",
+      "projected": "Projected",
+      "remaining": "Remaining",
+      "time": "Time",
+      "timeElapsed": "Time elapsed: {{pct}}%",
+      "timeLabel": "Time",
+      "title": "Current Period",
+      "totalSpent": "Total Spent This Period",
+      "totalSpentThisPeriod": "Total Spent This Period"
+    },
+    "customize": "Customize",
+    "done": "Done",
+    "fixedCategories": {
+      "categoryCount": "{{count}} {{label}}",
+      "count_one": "{{count}} category",
+      "count_other": "{{count}} categories",
+      "empty": "No fixed categories configured yet. Set a category as “fixed” and assign a budget to track it here.",
+      "error": "Something went wrong loading your fixed expenses.",
+      "ofPaid": "of <currency /> paid",
+      "overallAria": "Overall fixed expenses paid: {{pct}}%",
+      "overallPaid": "Overall fixed expenses paid: {{pct}}%",
+      "paid": "Paid",
+      "partial": "Partial",
+      "pending": "Pending",
+      "title": "Fixed Categories"
+    },
+    "netPosition": {
+      "accountTypes": {
+        "Allowance": "Allowance",
+        "Checking": "Checking",
+        "CreditCard": "Credit Card",
+        "Savings": "Savings",
+        "Wallet": "Wallet"
+      },
+      "accounts": "{{count}} accounts",
+      "accountsCount": "{{count}} accounts",
+      "debt": "Debt",
+      "empty": "No accounts configured yet. Add an account to see your net position.",
+      "error": "Something went wrong loading your position data.",
+      "liquid": "Liquid",
+      "noAccounts": "No accounts configured yet. Add an account to see your net position.",
+      "protected": "Protected",
+      "title": "Net Position"
+    },
+    "noPeriodSelected": "No budget period selected. Please select a period to view your dashboard.",
+    "recentTransactions": {
+      "empty": "No transactions this period yet.",
+      "error": "Something went wrong loading your transactions.",
+      "thisPeriod": "This period",
+      "title": "Recent Transactions",
+      "viewAll": "View all transactions"
+    },
+    "spendingTrend": {
+      "average": "Period average",
+      "chartAria": "Bar chart showing spending over the last {{count}} budget periods",
+      "chartLabel": "Bar chart showing spending over the last {{count}} budget periods",
+      "empty": "Need at least 2 closed periods to show a spending trend.",
+      "error": "Something went wrong loading your spending trend.",
+      "lastPeriods": "Last {{count}} periods",
+      "periodAverage": "Period average",
+      "title": "Spending Trend"
+    },
+    "subscriptions": {
+      "active": "{{count}} active",
+      "activeCount": "{{count}} active",
+      "charged": "CHARGED",
+      "empty": "No subscriptions due this period.",
+      "error": "Something went wrong loading your subscriptions.",
+      "inDays": "IN {{count}} DAYS",
+      "inMonths": "IN {{count}} MONTHS",
+      "inOneDay": "IN 1 DAY",
+      "inOneMonth": "IN 1 MONTH",
+      "inOneWeek": "IN 1 WEEK",
+      "inWeeks": "IN {{count}} WEEKS",
+      "perMonth": "/mo",
+      "perQuarter": "/qtr",
+      "perYear": "/yr",
+      "title": "Subscriptions",
+      "today": "TODAY"
+    },
+    "subtitle": "Your finance pulse, at a glance",
+    "title": "Dashboard",
+    "topVendors": {
+      "empty": "No vendor transactions this period.",
+      "error": "Something went wrong loading your top vendors.",
+      "rank": "Rank {{rank}}",
+      "rankAria": "Rank {{rank}}",
+      "title": "Top Vendors",
+      "txns": "{{count}} txns"
+    },
+    "variableCategories": {
+      "category": "Category",
+      "categoryCount": "{{count}} {{label}}",
+      "columnCategory": "Category",
+      "columnPercent": "%",
+      "columnProgress": "Progress",
+      "columnSpentBudget": "Spent / Budget",
+      "count_one": "{{count}} category",
+      "count_other": "{{count}} categories",
+      "empty": "No variable categories with budgets yet. Set a category as “variable” and assign a budget to see it here.",
+      "error": "Something went wrong loading your categories.",
+      "ofBudgeted": "of <currency /> budgeted",
+      "overallAria": "Overall variable budget used: {{pct}}%",
+      "overallUsed": "Overall variable budget used: {{pct}}%",
+      "pct": "%",
+      "progress": "Progress",
+      "spentBudget": "Spent / Budget",
+      "title": "Variable Categories"
+    }
+  },
+  "onboarding": {
+    "accounts": {
+      "addAccount": "+ Add account",
+      "balanceHint": "Your real-world balance right now",
+      "balancePlaceholder": "Current balance",
+      "continue": "Continue",
+      "description": "Where does your money live? Accounts represent your real accounts, and are not connected to your bank.",
+      "error": "Failed to create account \"{{name}}\"",
+      "namePlaceholder": "Account name",
+      "optional": "Add as many as you'd like — or skip and add them later.",
+      "skip": "Skip for now",
+      "title": "Add your accounts",
+      "types": {
+        "Checking": "Checking",
+        "Savings": "Savings",
+        "Wallet": "Wallet"
+      }
+    },
+    "categories": {
+      "colorNote": "Colors auto-assigned by direction + behavior. You can customize categories anytime.",
+      "continue": "Continue",
+      "description": "Categories help you organize your transactions, and set-up targets.",
+      "error": "Failed to apply template",
+      "skip": "Skip for now",
+      "templateHint": "Pick a starting template — you can add, remove, or change categories anytime.",
+      "title": "Set up categories"
+    },
+    "currency": {
+      "continue": "Continue",
+      "description": "All your accounts and transactions will use this currency.",
+      "multiCurrencyNote": "Currently, PiggyPulse don't support multiple currencies. This feature is coming soon.",
+      "required": "This is the only required step.",
+      "searchPlaceholder": "Search currencies...",
+      "title": "Choose your currency"
+    },
+    "errors": {
+      "complete": "Failed to complete onboarding",
+      "saveCurrency": "Failed to save currency",
+      "setupPeriods": "Failed to set up periods"
+    },
+    "periods": {
+      "autoAssignment": "Transactions fall into periods based on their date — no manual assignment needed.",
+      "changeLater": "You can change these settings later in Periods → Schedule.",
+      "continue": "Continue",
+      "defaultLabel": "We'll set you up with the default:",
+      "description": "Periods are time windows that organize your transactions. Think of them as chapters in your financial story — each one has a start date, an end date.",
+      "monthlyStart": "Monthly periods, starting on the 1st",
+      "threeAhead": "3 periods prepared in advance",
+      "title": "How PiggyPulse tracks time"
+    },
+    "steps": {
+      "accounts": "Accounts",
+      "categories": "Categories",
+      "currency": "Currency",
+      "periods": "Periods",
+      "welcome": "Welcome"
+    },
+    "summary": {
+      "accounts": "Accounts",
+      "addFirstTransaction": "Add your first transaction",
+      "categories": "Categories",
+      "currency": "Currency",
+      "goToDashboard": "Go to Dashboard",
+      "monthlyStart": "Monthly, starting on the 1st",
+      "periods": "Periods",
+      "subtitle": "Your dashboard is ready. Here's what we configured:",
+      "threeAhead": "3 periods prepared in advance",
+      "title": "You're all set!"
+    },
+    "welcome": {
+      "getStarted": "Let's get started",
+      "justClarity": "Just clarity",
+      "justClarityDesc": "see your data, understand your patterns",
+      "noJudgment": "No judgment",
+      "noJudgmentDesc": "we don't label spending as good or bad",
+      "quote": "PiggyPulse shows you reality through data. We don't celebrate or criticize — you decide what your numbers mean.",
+      "subtitle": "Your financial pulse — calm, clear, and entirely yours.",
+      "title": "Welcome to PiggyPulse",
+      "yourRules": "Your rules",
+      "yourRulesDesc": "you decide what your numbers mean"
+    }
+  },
+  "periodSelector": {
+    "createPeriod": "Create a period",
+    "daysLeft": "{{count}} days left",
+    "gapWarning": "Today doesn't fall within any period",
+    "inGap": "You're in a gap",
+    "noActivePeriod": "No active period",
+    "noPeriods": "No periods found",
+    "period": "Period",
+    "selectPeriod": "Select Period"
+  },
+  "periods": {
+    "addFirst": "+ Create First Period",
+    "addPeriod": "+ New Period",
+    "autoGenActive": "Auto-generation active",
+    "autoGenInactive": "Auto-generation inactive",
+    "card": {
+      "actions": "Period actions",
+      "auto": "Auto",
+      "budget": "Budget",
+      "confirmDelete": "Delete \"{{name}}\"?",
+      "spend": "Spend",
+      "txns": "Txns"
+    },
+    "empty": {
+      "message": "Create your first budget period to start tracking spending, or enable auto-generation to have periods created automatically.",
+      "title": "No periods yet"
+    },
+    "form": {
+      "createTitle": "Create Period",
+      "duration": "Duration",
+      "durationBased": "Duration-based",
+      "editTitle": "Edit Period",
+      "endDate": "End Date",
+      "manualEndDate": "Manual end date",
+      "name": "Period Name",
+      "namePlaceholder": "e.g. April 2026",
+      "pastWarning": "Changing dates on a past period will shift transactions between periods.",
+      "startDate": "Start Date",
+      "toast": {
+        "created": "Period created",
+        "error": "Failed to {{action}} period",
+        "updated": "Period updated"
+      },
+      "unit": "Unit",
+      "units": {
+        "days": "Days",
+        "months": "Months",
+        "weeks": "Weeks"
+      }
+    },
+    "schedule": {
+      "active": "Auto-generation active",
+      "businessDay": "Business day",
+      "businessDayDesc": "Period starts on the Nth business day",
+      "businessDayLabel": "Business Day",
+      "businessDayLabelDesc": "Nth business day of the month (e.g. 1 = first business day)",
+      "dayOfMonth": "Day of month",
+      "dayOfMonthDesc": "Period starts on a specific calendar day",
+      "dayOfWeek": "Day of week",
+      "dayOfWeekDesc": "Period starts on a specific weekday",
+      "dayOfWeekLabel": "Day of Week",
+      "disabled": "Auto-generation disabled",
+      "inactive": "Set up rules to automatically create budget periods",
+      "namePattern": "Name Pattern",
+      "namePatternDesc": "Template for auto-generated period names",
+      "periodLength": "Period Length",
+      "periodsAhead": "Periods to Prepare in Advance",
+      "periodsAheadDesc": "Number of future periods to pre-generate",
+      "policies": {
+        "friday": "Move to Friday",
+        "keep": "Keep as-is",
+        "monday": "Move to Monday"
+      },
+      "preview": "Preview",
+      "recurrenceMethod": "Recurrence Method",
+      "saturdayPolicy": "If start falls on Saturday",
+      "saveRules": "Save Rules",
+      "startDayOfMonth": "Start Day of Month",
+      "startDayOfMonthDesc": "Day of the month when the period begins (1-31)",
+      "sundayPolicy": "If start falls on Sunday",
+      "title": "Auto-generate Periods",
+      "toast": {
+        "enabled": "Auto-generation enabled",
+        "error": "Failed to save schedule configuration",
+        "updated": "Schedule updated"
+      },
+      "variableDescriptions": {
+        "END": "End date",
+        "MON": "3-letter month",
+        "MONTH": "Full month name",
+        "SEQ": "Sequence #",
+        "START": "Start date",
+        "YY": "2-digit year",
+        "YYYY": "4-digit year"
+      },
+      "variables": "Available variables:",
+      "weekdays": {
+        "friday": "Friday",
+        "monday": "Monday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "thursday": "Thursday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday"
+      },
+      "weekendHandling": "Weekend Handling"
+    },
+    "subtitle": "Manage your budget periods",
+    "title": "Periods",
+    "toast": {
+      "deleteError": "Failed to delete period",
+      "deleted": "Period deleted"
+    }
+  },
+  "settings": {
+    "avatars": {
+      "books": "Books",
+      "cool": "Cool",
+      "headphones": "Headphones",
+      "pig": "Pig",
+      "scarf": "Scarf",
+      "sleepy": "Sleepy",
+      "topHat": "Top Hat",
+      "wink": "Wink"
+    },
+    "colorScheme": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System"
+    },
+    "tabs": {
+      "appearance": "Appearance",
+      "dangerZone": "Danger Zone",
+      "dashboard": "Dashboard",
+      "data": "Data",
+      "profile": "Profile",
+      "security": "Security"
+    },
+    "title": "Settings",
+    "toast": {
+      "colorSchemeError": "Failed to update color scheme",
+      "dashboardError": "Failed to update dashboard layout",
+      "preferencesError": "Failed to update preferences",
+      "profileError": "Failed to save profile",
+      "profileSaved": "Profile saved",
+      "themeError": "Failed to update theme"
+    },
+    "twoFactor": {
+      "cantScan": "Can't scan? Enter this code manually:",
+      "codesNotGenerated": "Recovery codes could not be generated. You can regenerate them from settings.",
+      "copied": "Copied",
+      "copy": "Copy",
+      "copyAll": "Copy All",
+      "download": "Download",
+      "enterCode": "Enter the 6-digit code from your authenticator app to confirm setup.",
+      "next": "Next",
+      "preparing": "Preparing 2FA setup...",
+      "recoveryTitle": "Save your recovery codes",
+      "saveRecoveryCodes": "Save these recovery codes in a safe place. They are your backup if you lose access to your authenticator app.",
+      "savedCodes": "I have saved my recovery codes",
+      "scanQR": "Scan this QR code with your authenticator app (Google Authenticator, Authy, Microsoft Authenticator, etc.)",
+      "setupTitle": "Set up two-factor authentication",
+      "verifyEnable": "Verify & Enable 2FA"
+    },
+    "widgets": {
+      "budgetStability": {
+        "description": "Historical consistency",
+        "name": "Budget Stability"
+      },
+      "cashFlow": {
+        "description": "Inflows vs outflows",
+        "name": "Cash Flow"
+      },
+      "currentPeriod": {
+        "description": "Budget progress for the active period",
+        "name": "Current Period"
+      },
+      "fixedCategories": {
+        "description": "Predictable expenses checklist",
+        "name": "Fixed Categories"
+      },
+      "netPosition": {
+        "description": "Total across all accounts",
+        "name": "Net Position"
+      },
+      "recentTransactions": {
+        "description": "Latest activity",
+        "name": "Recent Transactions"
+      },
+      "spendingTrend": {
+        "description": "Spend over time",
+        "name": "Spending Trend"
+      },
+      "subscriptions": {
+        "description": "Recurring charges timeline",
+        "name": "Subscriptions"
+      },
+      "topVendors": {
+        "description": "Where money goes",
+        "name": "Top Vendors"
+      },
+      "variableCategories": {
+        "description": "Discretionary spending tracker",
+        "name": "Variable Categories"
+      }
+    }
+  },
+  "subscriptions": {
+    "activeSubscriptions": "Active Subscriptions",
+    "addFirst": "+ Add Your First Subscription",
+    "addSubscription": "+ Add Subscription",
+    "cancelModal": {
+      "amount": "Amount:",
+      "dateDescription": "When you cancelled (or plan to cancel) with the provider",
+      "dateLabel": "Cancellation date",
+      "description": "Mark \"{{name}}\" as cancelled in PiggyPulse.",
+      "disclaimer": "This only marks the subscription as cancelled in PiggyPulse. You still need to cancel it directly with the provider. If a charge arrives after cancellation, PiggyPulse will flag it for your attention.",
+      "keepActive": "Keep Active",
+      "submit": "Cancel Subscription",
+      "subscription": "Subscription:",
+      "title": "Cancel Subscription"
+    },
+    "cancelledToggle": "Cancelled",
+    "cycleSuffix": {
+      "monthly": "/mo",
+      "quarterly": "/qtr",
+      "yearly": "/yr"
+    },
+    "detail": {
+      "activeSince": "Active Since",
+      "allTime": "All-time",
+      "amount": "Amount",
+      "autoDetected": "Auto-detected",
+      "backLink": "← Subscriptions",
+      "billingDay": "Billing day",
+      "billingHistory": "Billing History",
+      "cancel": "Cancel",
+      "month": "month",
+      "nextCharge": "Next charge",
+      "ofEach": "of each",
+      "postCancellation": {
+        "count_one": "{{count}} charge detected since cancellation.",
+        "count_other": "{{count}} charges detected since cancellation.",
+        "review": "Review the billing history below.",
+        "title": "Unexpected charge after cancellation"
+      },
+      "postCancellationLabel": "Post-cancellation",
+      "quarter": "quarter",
+      "status": "Status",
+      "thisYear": "This Year",
+      "year": "year"
+    },
+    "empty": {
+      "message": "Create a category with 'Subscription' behavior to start tracking recurring charges. You'll see billing dates, costs, and payment history.",
+      "title": "No subscriptions yet"
+    },
+    "paused": "Paused",
+    "row": {
+      "cancelled": "Cancelled",
+      "next": "Next:"
+    },
+    "stats": {
+      "active": "Active",
+      "monthlyCost": "Monthly Cost",
+      "nextCharge": "Next Charge",
+      "yearlyTotal": "Yearly Total"
+    },
+    "subtitle": "Track your recurring charges",
+    "title": "Subscriptions",
+    "upcomingCharges": "Upcoming Charges"
+  },
+  "targets": {
+    "empty": {
+      "message": "Set budget targets when creating or editing categories.",
+      "title": "No targets set"
+    },
+    "excludeFromTargets": "Exclude from targets",
+    "previous": "Previous:",
+    "stats": {
+      "expenseBudget": "Expense Budget",
+      "incomeTarget": "Income Target",
+      "period": "Period",
+      "withTargets": "With Targets"
+    },
+    "subtitle": "Budget targets for this period. Edit targets in Categories.",
+    "tableHeader": {
+      "actual": "Actual",
+      "category": "Category",
+      "progress": "Progress",
+      "target": "Target"
+    },
+    "title": "Targets",
+    "toast": {
+      "excludeError": "Failed to exclude category",
+      "excluded": "{{name}} excluded from targets"
+    }
+  },
+  "transactions": {
+    "addFirst": "+ Add Your First Transaction",
+    "addTransaction": "+ Add Transaction",
+    "confirmDelete": "Delete this transaction?",
+    "empty": {
+      "message": "Add your first transaction to start tracking your spending and income.",
+      "noMatch": "No transactions match your filters. Try adjusting your search or filters.",
+      "title": "No transactions yet"
+    },
+    "filters": {
+      "account": "Account",
+      "all": "All",
+      "category": "Category",
+      "in": "In",
+      "out": "Out",
+      "transfer": "Transfer",
+      "vendor": "Vendor"
+    },
+    "form": {
+      "account": "Account",
+      "addTransaction": "Add Transaction",
+      "addTransfer": "Add Transfer",
+      "amount": "Amount",
+      "category": "Category",
+      "date": "Date",
+      "descPlaceholder": "e.g. Whole Foods groceries",
+      "descPlaceholderTransfer": "e.g. Allowance pay",
+      "description": "Description",
+      "editTitle": "Edit Transaction",
+      "fromAccount": "From Account",
+      "isTransfer": "Transfer between accounts",
+      "toAccount": "To Account",
+      "toast": {
+        "created": "Transaction added",
+        "error": "Failed to {{action}} transaction",
+        "updated": "Transaction updated"
+      },
+      "transferHint": "will be subtracted from source and added to destination",
+      "transferNote": "Category and vendor are not applicable for transfers",
+      "transferToggle": "Toggle on to move money between your accounts",
+      "vendor": "Vendor (optional)"
+    },
+    "quickAdd": {
+      "account": "Account",
+      "add": "Add",
+      "amount": "Amount",
+      "category": "Category",
+      "description": "Description",
+      "hint": "Press Enter to add and continue. Category and account are kept for consecutive entries.",
+      "title": "Quick Add",
+      "vendor": "Vendor"
+    },
+    "searchPlaceholder": "Search by description or amount...",
+    "stats": {
+      "count": "transactions",
+      "inflows": "Inflows",
+      "net": "Net",
+      "outflows": "Outflows"
+    },
+    "title": "Transactions",
+    "toast": {
+      "deleteError": "Failed to delete transaction",
+      "deleted": "Transaction deleted"
+    }
+  },
+  "vendors": {
+    "actions": {
+      "archive": "Archive",
+      "delete": "Delete",
+      "merge": "Merge",
+      "unarchive": "Unarchive"
+    },
+    "addFirst": "+ Add Your First Vendor",
+    "addVendor": "+ Add Vendor",
+    "archivedToggle": "Archived vendors",
+    "detail": {
+      "avgPerTxn": "Avg / Txn",
+      "backLink": "← Vendors",
+      "recentTransactions": "Recent Transactions — {{count}} shown",
+      "spendingTrend": "Spending at this vendor — Last {{count}} Periods",
+      "spent": "Spent",
+      "topCategories": "Top Categories at This Vendor",
+      "transactions": "Transactions"
+    },
+    "empty": {
+      "message": "Vendors help you track where your money goes. Add your first vendor to start categorizing spending.",
+      "title": "No vendors yet"
+    },
+    "form": {
+      "createTitle": "Add Vendor",
+      "description": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "editTitle": "Edit Vendor",
+      "name": "Vendor Name",
+      "namePlaceholder": "e.g. Whole Foods Market",
+      "toast": {
+        "created": "Vendor created",
+        "error": "Failed to {{action}} vendor",
+        "updated": "Vendor updated"
+      }
+    },
+    "merge": {
+      "description": "All transactions from \"{{source}}\" will be transferred to the target vendor. The source vendor will be deleted.",
+      "mergeInto": "Merge into",
+      "selectTarget": "Select target vendor...",
+      "source": "Source:",
+      "submit": "Merge & Delete Source",
+      "title": "Merge Vendor",
+      "toast": {
+        "error": "Failed to merge vendor",
+        "success": "Merged \"{{source}}\" into target vendor"
+      }
+    },
+    "searchPlaceholder": "Search vendors...",
+    "stats": {
+      "active": "Active",
+      "avgPerVendor": "Avg / Vendor",
+      "totalSpent": "Total Spent"
+    },
+    "subtitle": "Where your money goes",
+    "title": "Vendors",
+    "toast": {
+      "archiveError": "Failed to archive vendor",
+      "archived": "Vendor archived",
+      "deleteError": "Cannot delete — archive or merge instead",
+      "deleted": "Vendor deleted",
+      "unarchiveError": "Failed to unarchive vendor",
+      "unarchived": "Vendor unarchived"
+    }
+  }
+}

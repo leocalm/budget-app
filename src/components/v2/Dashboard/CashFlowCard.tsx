@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Progress, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDashboardCashFlow } from '@/hooks/v2/useDashboard';
@@ -9,6 +10,7 @@ interface CashFlowCardProps {
 }
 
 export function CashFlowCard({ periodId }: CashFlowCardProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardCashFlow(periodId);
   const { accents } = useV2Theme();
 
@@ -21,13 +23,13 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
       <div className={classes.card} data-testid="cash-flow-card-error">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Cash Flow
+            {t('dashboard.cashFlow.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            Something went wrong loading your cash flow data.
+            {t('dashboard.cashFlow.error')}
           </Text>
           <Button size="xs" variant="light" onClick={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
         </div>
       </div>
@@ -39,10 +41,10 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
       <div className={classes.card} data-testid="cash-flow-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            Cash Flow
+            {t('dashboard.cashFlow.title')}
           </Text>
           <Text fz="sm" c="dimmed">
-            No inflows or outflows recorded this period.
+            {t('dashboard.cashFlow.empty')}
           </Text>
         </div>
       </div>
@@ -57,14 +59,14 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
     <div className={classes.card} data-testid="cash-flow-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Cash Flow
+          {t('dashboard.cashFlow.title')}
         </Text>
       </div>
 
       <div className={classes.barsSection}>
         <div className={classes.barRow}>
           <Text fz="xs" fw={600} c="dimmed" className={classes.barLabel}>
-            In
+            {t('dashboard.cashFlow.in')}
           </Text>
           <Progress
             value={inflowPct}
@@ -72,7 +74,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
             radius="xl"
             color={accents.primary}
             className={classes.bar}
-            aria-label={`Inflows: ${inflowPct}% of period maximum`}
+            aria-label={t('dashboard.cashFlow.inflowsAria', { pct: inflowPct })}
           />
           <Text
             fz="sm"
@@ -85,7 +87,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
         </div>
         <div className={classes.barRow}>
           <Text fz="xs" fw={600} c="dimmed" className={classes.barLabel}>
-            Out
+            {t('dashboard.cashFlow.out')}
           </Text>
           <Progress
             value={outflowPct}
@@ -93,7 +95,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
             radius="xl"
             color={accents.secondary}
             className={classes.bar}
-            aria-label={`Outflows: ${outflowPct}% of period maximum`}
+            aria-label={t('dashboard.cashFlow.outflowsAria', { pct: outflowPct })}
           />
           <Text
             fz="sm"
@@ -108,7 +110,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
 
       <div className={classes.netRow}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Net
+          {t('dashboard.cashFlow.net')}
         </Text>
         <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)" c="dimmed">
           {data.net >= 0 ? '+' : '-'}

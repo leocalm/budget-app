@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useDashboardNetPosition } from '@/hooks/v2/useDashboard';
@@ -9,6 +10,7 @@ interface AccountsNetPositionProps {
 }
 
 export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
+  const { t } = useTranslation('v2');
   const { data, isLoading, isError, refetch } = useDashboardNetPosition(periodId);
   const { accents } = useV2Theme();
 
@@ -26,13 +28,13 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
     return (
       <div className={classes.centeredState}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          Net Position
+          {t('accounts.netPosition.title')}
         </Text>
         <Text fz="sm" c="dimmed">
-          Something went wrong loading your position data.
+          {t('accounts.netPosition.loadError')}
         </Text>
         <Button size="xs" variant="light" onClick={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </div>
     );
@@ -50,7 +52,7 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
   return (
     <div className={classes.netPositionCard}>
       <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb="xs">
-        Net Position
+        {t('accounts.netPosition.title')}
       </Text>
 
       <div className={classes.netPositionHero}>
@@ -63,15 +65,27 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
               {changePrefix}
               <CurrencyValue cents={Math.abs(data.differenceThisPeriod)} />
             </span>{' '}
-            this period
+            {t('common.thisPeriod')}
           </Text>
         </Stack>
 
         <div className={classes.breakdownLegend}>
-          <LegendItem label="Liquid" cents={data.liquidAmount} color={accents.primary} />
-          <LegendItem label="Protected" cents={data.protectedAmount} color={accents.tertiary} />
+          <LegendItem
+            label={t('accounts.netPosition.liquid')}
+            cents={data.liquidAmount}
+            color={accents.primary}
+          />
+          <LegendItem
+            label={t('accounts.netPosition.protected')}
+            cents={data.protectedAmount}
+            color={accents.tertiary}
+          />
           {data.debtAmount > 0 && (
-            <LegendItem label="Debt" cents={data.debtAmount} color={accents.secondary} />
+            <LegendItem
+              label={t('accounts.netPosition.debt')}
+              cents={data.debtAmount}
+              color={accents.secondary}
+            />
           )}
         </div>
       </div>
