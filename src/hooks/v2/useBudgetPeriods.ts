@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
@@ -15,6 +15,24 @@ export function useBudgetPeriods(params: { cursor?: string; limit?: number } = {
       }
       return data;
     },
+  });
+}
+
+export function useInfiniteBudgetPeriods(pageSize = 50) {
+  return useInfiniteQuery({
+    queryKey: [...v2QueryKeys.budgetPeriods.list({}), 'infinite', pageSize],
+    queryFn: async ({ pageParam }) => {
+      const { data, error } = await apiClient.GET('/periods', {
+        params: { query: { limit: pageSize, cursor: pageParam || undefined } },
+      });
+      if (error) {
+        throw error;
+      }
+      return data!;
+    },
+    initialPageParam: '' as string,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
   });
 }
 

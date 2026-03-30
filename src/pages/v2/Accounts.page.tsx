@@ -6,7 +6,12 @@ import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { AccountFormDrawer, AccountRow, AccountsNetPosition } from '@/components/v2/Accounts';
 import classes from '@/components/v2/Accounts/Accounts.module.css';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
-import { useAccountsSummary, useArchiveAccount, useUnarchiveAccount } from '@/hooks/v2/useAccounts';
+import {
+  useArchiveAccount,
+  useInfiniteAccountsSummary,
+  useUnarchiveAccount,
+} from '@/hooks/v2/useAccounts';
+import { useInfiniteScroll } from '@/hooks/v2/useInfiniteScroll';
 import { toast } from '@/lib/toast';
 
 type AccountSummary = components['schemas']['AccountSummaryResponse'];
@@ -24,14 +29,27 @@ const TYPE_LABELS: Record<AccountType, string> = {
 
 export function AccountsV2Page() {
   const { selectedPeriodId } = useBudgetPeriodSelection();
-  const { data: summaryData, isLoading, isError, refetch } = useAccountsSummary(selectedPeriodId);
+  const {
+    data: infiniteData,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteAccountsSummary(selectedPeriodId);
   const archiveMutation = useArchiveAccount();
   const unarchiveMutation = useUnarchiveAccount();
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+  });
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
   const [editAccountId, setEditAccountId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
 
-  const accounts = summaryData?.data ?? [];
+  const accounts = infiniteData?.pages.flatMap((p) => p.data ?? []) ?? [];
 
   const { grouped, archivedAccounts, groupTotals } = useMemo(() => {
     const active: AccountSummary[] = [];
@@ -250,6 +268,14 @@ export function AccountsV2Page() {
             ))}
         </Stack>
       )}
+
+      {isFetchingNextPage && (
+        <Stack gap="xs">
+          <Skeleton height={54} radius="lg" />
+          <Skeleton height={54} radius="lg" />
+        </Stack>
+      )}
+      {hasNextPage && !isFetchingNextPage && <div ref={loadMoreRef} style={{ height: 1 }} />}
 
       <AccountFormDrawer
         key={editAccountId ?? 'create'}
