@@ -149,6 +149,25 @@
       "weekly": "Semanal",
       "biWeekly": "Quinzenal",
       "monthly": "Mensal"
+    },
+    "emptyTips": {
+      "types": "Você pode adicionar contas correntes, poupança, cartão de crédito, carteira ou mesada.",
+      "balance": "Defina seu saldo atual ao criar a conta — ele é atualizado conforme você adiciona transações.",
+      "archive": "Contas que não usa mais podem ser arquivadas para manter a lista organizada."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Criar uma conta",
+        "description": "Escolha o tipo de conta e informe um nome e saldo inicial."
+      },
+      "balance": {
+        "title": "Definir o saldo inicial",
+        "description": "Informe seu saldo real para que o aplicativo corresponda às suas finanças."
+      },
+      "use": {
+        "title": "Usar em transações",
+        "description": "Ao registrar transações, selecione de qual conta o dinheiro saiu ou entrou."
+      }
     }
   },
   "appShell": {
@@ -510,7 +529,9 @@
     "transfer": "Transferência",
     "txnsThisPeriod": "{{count}} trans. este período",
     "unarchive": "Desarquivar",
-    "viewDetails": "Ver detalhes"
+    "viewDetails": "Ver detalhes",
+    "noPeriodStateDescription": "Selecione ou crie um período para visualizar esta página. Períodos definem a janela de tempo para suas transações e metas.",
+    "goToPeriods": "Ir para Períodos"
   },
   "dashboard": {
     "account": {
@@ -951,7 +972,26 @@
     "groupPast": "Passado",
     "badgeDaysLeft": "{{count}} dias restantes",
     "badgeInDays": "em {{count}} dias",
-    "badgeDaysAgo": "há {{count}} dias"
+    "badgeDaysAgo": "há {{count}} dias",
+    "emptyTips": {
+      "timeframe": "Um período define a janela de tempo do seu orçamento — a maioria dos usuários cria períodos mensais.",
+      "autoGen": "Ative a geração automática para que novos períodos sejam criados quando o atual terminar.",
+      "compare": "Com vários períodos, você pode comparar gastos em diferentes janelas de tempo."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Criar um período",
+        "description": "Defina uma data de início e fim para sua primeira janela de orçamento."
+      },
+      "configure": {
+        "title": "Ativar geração automática (opcional)",
+        "description": "Ative a criação automática de períodos para não precisar criá-los manualmente a cada mês."
+      },
+      "select": {
+        "title": "Selecionar o período",
+        "description": "Use o seletor de período na barra lateral para alternar entre períodos no aplicativo."
+      }
+    }
   },
   "settings": {
     "avatars": {
@@ -1043,6 +1083,10 @@
       "variableCategories": {
         "description": "Acompanhamento de gastos discricionários",
         "name": "Categorias Variáveis"
+      },
+      "gettingStarted": {
+        "name": "Primeiros Passos",
+        "description": "Checklist de configuração para novos usuários"
       }
     },
     "appearance": {
@@ -1295,6 +1339,25 @@
         "quarterly": "Trimestral",
         "yearly": "Anual"
       }
+    },
+    "emptyTips": {
+      "recurring": "Assinaturas são separadas das transações regulares — representam compromissos recorrentes.",
+      "upcoming": "Após adicionadas, cobranças futuras aparecem nesta página para você se planejar.",
+      "cancel": "Você pode pausar ou cancelar assinaturas para acompanhar seu ciclo de vida."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Adicionar uma assinatura",
+        "description": "Informe o nome do serviço, valor da cobrança e a frequência."
+      },
+      "schedule": {
+        "title": "Definir o ciclo de cobrança",
+        "description": "Escolha mensal, trimestral ou anual para calcular cobranças futuras."
+      },
+      "monitor": {
+        "title": "Monitorar custos futuros",
+        "description": "A seção de cobranças futuras mostra o que vence e quando."
+      }
     }
   },
   "targets": {
@@ -1438,7 +1501,26 @@
     "subtitle": "{{count}} transações",
     "transactionsCount": "transações",
     "transferAdded": "Transferência adicionada",
-    "updated": "Transação atualizada"
+    "updated": "Transação atualizada",
+    "emptyTips": {
+      "quickAdd": "Use a barra de Adição Rápida acima para registrar transações sem abrir o formulário.",
+      "categorize": "Cada transação é vinculada a uma categoria, que determina como ela aparece no seu orçamento.",
+      "filters": "Use os filtros de direção e categoria para encontrar transações específicas."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Adicionar uma transação",
+        "description": "Use o botão acima ou a barra de Adição Rápida para registrar sua primeira transação."
+      },
+      "categorize": {
+        "title": "Atribuir uma categoria",
+        "description": "Escolha uma categoria de receita ou despesa para que a transação conte no seu orçamento."
+      },
+      "review": {
+        "title": "Revisar no painel",
+        "description": "Suas transações aparecerão nos widgets do painel como Fluxo de Caixa e Transações Recentes."
+      }
+    }
   },
   "vendors": {
     "actions": {
@@ -1539,7 +1621,26 @@
     "unarchiveFailed": "Falha ao desarquivar fornecedor",
     "unarchived": "Fornecedor desarquivado",
     "unarchivedNamed": "{{name}} desarquivado",
-    "updated": "Fornecedor atualizado"
+    "updated": "Fornecedor atualizado",
+    "emptyTips": {
+      "organize": "Fornecedores ajudam a ver em quais locais você mais gasta ao longo do tempo.",
+      "merge": "Se você tem fornecedores duplicados, pode mesclá-los em um só.",
+      "archive": "Arquive fornecedores que não usa mais para manter a lista organizada."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Criar um fornecedor",
+        "description": "Adicione o nome de uma loja, serviço ou beneficiário com quem transaciona regularmente."
+      },
+      "link": {
+        "title": "Vincular a transações",
+        "description": "Ao adicionar transações, selecione um fornecedor para associar o gasto."
+      },
+      "track": {
+        "title": "Acompanhar padrões de gastos",
+        "description": "Veja quanto você gasta por fornecedor ao longo do tempo na página de detalhes."
+      }
+    }
   },
   "placeholder": {
     "comingSoon": "Esta página estará disponível em breve"
@@ -1557,5 +1658,35 @@
     "subscriptions": "Assinaturas",
     "vendors": "Fornecedores",
     "settings": "Definições"
+  },
+  "hints": {
+    "dashboard": "O painel mostra um resumo das suas finanças para o período selecionado. Use o botão Personalizar para escolher quais widgets exibir e reordená-los.",
+    "transactions": "Transações são o centro do seu orçamento. Cada uma está vinculada a uma categoria e conta, permitindo acompanhar para onde vai o seu dinheiro em cada período.",
+    "vendors": "Fornecedores representam os locais onde você gasta dinheiro. Vincular transações a fornecedores ajuda a ver padrões de gastos ao longo do tempo.",
+    "subscriptions": "Assinaturas rastreiam cobranças recorrentes como streaming, assinaturas e contas. Adicioná-las aqui ajuda a ver custos futuros.",
+    "periods": "Períodos são janelas de tempo para o seu orçamento — geralmente mensais. Todas as transações e metas são vinculadas ao período ativo.",
+    "accounts": "Contas representam onde seu dinheiro está — corrente, poupança, cartões de crédito ou carteiras. Os saldos são atualizados conforme você adiciona transações."
+  },
+  "gettingStarted": {
+    "title": "Primeiros Passos",
+    "subtitle": "Complete estas etapas para configurar seu orçamento",
+    "steps": {
+      "createAccount": {
+        "title": "Criar uma conta",
+        "description": "Adicione uma conta corrente, poupança ou cartão de crédito para acompanhar seus saldos"
+      },
+      "createPeriod": {
+        "title": "Configurar um período",
+        "description": "Crie uma janela de tempo (ex: mensal) para organizar suas transações e metas"
+      },
+      "setCategories": {
+        "title": "Configurar categorias",
+        "description": "Defina categorias de receita e despesa para organizar suas transações"
+      },
+      "addTransaction": {
+        "title": "Adicionar sua primeira transação",
+        "description": "Registre uma transação para começar a acompanhar seus gastos"
+      }
+    }
   }
 }

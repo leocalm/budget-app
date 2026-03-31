@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Stack, Text } from '@mantine/core';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { VendorDetail } from '@/components/v2/Vendors';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 
@@ -20,13 +21,7 @@ export function VendorDetailV2Page() {
   }
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Text c="dimmed" fz="sm">
-          {t('common.noPeriodSelected')}
-        </Text>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('vendors.title')} />;
   }
 
   return <VendorDetail vendorId={id} periodId={selectedPeriodId} />;

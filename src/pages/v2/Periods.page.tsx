@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { PageHint } from '@/components/v2/PageHint';
 import { PeriodCard, PeriodFormDrawer, ScheduleDrawer } from '@/components/v2/Periods';
 import classes from '@/components/v2/Periods/Periods.module.css';
 import { groupPeriods } from '@/components/v2/PeriodSelector/periodUtils';
@@ -149,20 +151,37 @@ export function PeriodsV2Page() {
         </div>
       </div>
 
+      {/* Page hint */}
+      <PageHint hintId="periods" message={t('hints.periods')} />
+
       {/* Empty state */}
       {!hasPeriods && (
-        <div className={classes.centeredState}>
-          <Text fz={32}>📅</Text>
-          <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('periods.emptyTitle')}
-          </Text>
-          <Text fz="sm" c="dimmed" ta="center">
-            {t('periods.emptyDescription')}
-          </Text>
-          <Button size="sm" onClick={handleCreate}>
-            {t('periods.createFirstPeriod')}
-          </Button>
-        </div>
+        <EmptyState
+          icon="📅"
+          title={t('periods.emptyTitle')}
+          message={t('periods.emptyDescription')}
+          primaryAction={{ label: t('periods.createFirstPeriod'), onClick: handleCreate }}
+          tips={[
+            t('periods.emptyTips.timeframe'),
+            t('periods.emptyTips.autoGen'),
+            t('periods.emptyTips.compare'),
+          ]}
+          onboardingSteps={[
+            {
+              title: t('periods.emptySteps.create.title'),
+              description: t('periods.emptySteps.create.description'),
+            },
+            {
+              title: t('periods.emptySteps.configure.title'),
+              description: t('periods.emptySteps.configure.description'),
+            },
+            {
+              title: t('periods.emptySteps.select.title'),
+              description: t('periods.emptySteps.select.description'),
+            },
+          ]}
+          data-testid="periods-empty-state"
+        />
       )}
 
       {/* Grouped periods */}

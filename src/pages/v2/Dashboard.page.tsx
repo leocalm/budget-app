@@ -25,6 +25,7 @@ import {
   CashFlowCard,
   CurrentPeriodCard,
   FixedCategoriesCard,
+  GettingStartedCard,
   NetPositionCard,
   RecentTransactionsCard,
   SpendingTrendCard,
@@ -38,6 +39,8 @@ import {
   DEFAULT_WIDGET_ORDER,
   WIDGET_DEFINITIONS,
 } from '@/components/v2/Dashboard/widgetDefinitions';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
+import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/v2/useAccounts';
 import { usePreferences, useUpdatePreferences } from '@/hooks/v2/useSettings';
@@ -55,6 +58,8 @@ function getAccountId(itemId: string): string {
 
 function renderWidget(widgetId: string, periodId: string) {
   switch (widgetId) {
+    case 'getting_started':
+      return <GettingStartedCard periodId={periodId} />;
     case 'current_period':
       return <CurrentPeriodCard periodId={periodId} />;
     case 'net_position':
@@ -233,18 +238,7 @@ export function DashboardV2Page() {
   }, [visibleItems]);
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <div>
-          <Title order={2} fw={700}>
-            {t('dashboard.title')}
-          </Title>
-          <Text c="dimmed" fz="sm">
-            {t('dashboard.noPeriodSelected')}
-          </Text>
-        </div>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('dashboard.title')} />;
   }
 
   return (
@@ -278,6 +272,8 @@ export function DashboardV2Page() {
           </Button>
         )}
       </div>
+
+      <PageHint hintId="dashboard" message={t('hints.dashboard')} />
 
       {isEditing ? (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

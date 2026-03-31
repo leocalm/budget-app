@@ -149,6 +149,25 @@
       "weekly": "Weekly",
       "biWeekly": "Bi-weekly",
       "monthly": "Monthly"
+    },
+    "emptyTips": {
+      "types": "You can add checking, savings, credit card, wallet, or allowance accounts.",
+      "balance": "Set your current balance when creating an account — it updates as you add transactions.",
+      "archive": "Accounts you no longer use can be archived to keep your list focused."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Create an account",
+        "description": "Choose the account type and enter a name and starting balance."
+      },
+      "balance": {
+        "title": "Set the initial balance",
+        "description": "Enter your real-world balance so the app matches your actual finances."
+      },
+      "use": {
+        "title": "Use in transactions",
+        "description": "When recording transactions, select which account the money came from or went to."
+      }
     }
   },
   "appShell": {
@@ -498,7 +517,9 @@
     "txnsThisPeriod": "{{count}} txns this period",
     "unarchive": "Unarchive",
     "userMenu": "User menu",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "noPeriodStateDescription": "Select or create a budget period to view this page. Periods define the time window for your transactions and targets.",
+    "goToPeriods": "Go to Periods"
   },
   "dashboard": {
     "account": {
@@ -943,7 +964,26 @@
     "groupPast": "Past",
     "badgeDaysLeft": "{{count}} days left",
     "badgeInDays": "in {{count}} days",
-    "badgeDaysAgo": "{{count}} days ago"
+    "badgeDaysAgo": "{{count}} days ago",
+    "emptyTips": {
+      "timeframe": "A period defines the time window for your budget — most users create monthly periods.",
+      "autoGen": "Enable auto-generation to have new periods created automatically when the current one ends.",
+      "compare": "With multiple periods, you can compare spending across different time windows."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Create a period",
+        "description": "Set a start and end date to define your first budget window."
+      },
+      "configure": {
+        "title": "Enable auto-generation (optional)",
+        "description": "Turn on automatic period creation so you do not have to manually create them each month."
+      },
+      "select": {
+        "title": "Select the period",
+        "description": "Use the period selector in the sidebar to switch between periods across the app."
+      }
+    }
   },
   "placeholder": {
     "comingSoon": "This page is coming soon"
@@ -1162,6 +1202,10 @@
       "variableCategories": {
         "description": "Discretionary spending tracker",
         "name": "Variable Categories"
+      },
+      "gettingStarted": {
+        "name": "Getting Started",
+        "description": "Setup checklist for new users"
       }
     }
   },
@@ -1289,6 +1333,25 @@
         "monthly": "Monthly",
         "quarterly": "Quarterly",
         "yearly": "Yearly"
+      }
+    },
+    "emptyTips": {
+      "recurring": "Subscriptions are separate from regular transactions — they represent recurring commitments.",
+      "upcoming": "Once added, upcoming charges appear on this page so you can plan ahead.",
+      "cancel": "You can pause or cancel subscriptions to track their lifecycle."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Add a subscription",
+        "description": "Enter the service name, billing amount, and how often you are charged."
+      },
+      "schedule": {
+        "title": "Set the billing schedule",
+        "description": "Choose monthly, quarterly, or yearly billing so upcoming charges are calculated."
+      },
+      "monitor": {
+        "title": "Monitor upcoming costs",
+        "description": "The upcoming charges section shows what is due next and when."
       }
     }
   },
@@ -1433,7 +1496,26 @@
     },
     "transactionsCount": "transactions",
     "transferAdded": "Transfer added",
-    "updated": "Transaction updated"
+    "updated": "Transaction updated",
+    "emptyTips": {
+      "quickAdd": "Use the Quick Add bar above to enter transactions without opening a form.",
+      "categorize": "Each transaction is linked to a category, which determines how it appears in your budget.",
+      "filters": "Use the direction and category filters to find specific transactions."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Add a transaction",
+        "description": "Use the button above or the Quick Add bar to record your first transaction."
+      },
+      "categorize": {
+        "title": "Assign a category",
+        "description": "Pick an income or expense category so the transaction counts toward your budget."
+      },
+      "review": {
+        "title": "Review in your dashboard",
+        "description": "Your transactions will appear in dashboard widgets like Cash Flow and Recent Transactions."
+      }
+    }
   },
   "vendors": {
     "actions": {
@@ -1534,7 +1616,26 @@
     "unarchiveFailed": "Failed to unarchive vendor",
     "unarchived": "Vendor unarchived",
     "unarchivedNamed": "{{name}} unarchived",
-    "updated": "Vendor updated"
+    "updated": "Vendor updated",
+    "emptyTips": {
+      "organize": "Vendors help you see which places you spend the most at over time.",
+      "merge": "If you have duplicate vendor entries, you can merge them into one.",
+      "archive": "Archive vendors you no longer use to keep your list clean."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Create a vendor",
+        "description": "Add the name of a store, service, or payee you regularly transact with."
+      },
+      "link": {
+        "title": "Link to transactions",
+        "description": "When adding transactions, select a vendor to associate the spend."
+      },
+      "track": {
+        "title": "Track spending patterns",
+        "description": "View how much you spend per vendor over time from the vendor detail page."
+      }
+    }
   },
   "nav": {
     "overview": "Overview",
@@ -1549,5 +1650,35 @@
     "subscriptions": "Subscriptions",
     "vendors": "Vendors",
     "settings": "Settings"
+  },
+  "hints": {
+    "dashboard": "Your dashboard shows a snapshot of your finances for the selected period. Use the Customize button to choose which widgets to display and reorder them.",
+    "transactions": "Transactions are the core of your budget. Each one is linked to a category and account, which lets you track where your money goes during each period.",
+    "vendors": "Vendors represent the places where you spend money. Linking transactions to vendors helps you see spending patterns over time.",
+    "subscriptions": "Subscriptions track recurring charges like streaming services, memberships, and bills. Adding them here helps you see upcoming costs.",
+    "periods": "Periods are time windows for your budget — typically monthly. All transactions and budget targets are scoped to the active period.",
+    "accounts": "Accounts represent where your money is held — checking, savings, credit cards, or wallets. Their balances are updated as you add transactions."
+  },
+  "gettingStarted": {
+    "title": "Getting Started",
+    "subtitle": "Complete these steps to set up your budget",
+    "steps": {
+      "createAccount": {
+        "title": "Create an account",
+        "description": "Add a checking, savings, or credit card account to track your balances"
+      },
+      "createPeriod": {
+        "title": "Set up a budget period",
+        "description": "Create a time window (e.g. monthly) to scope your transactions and targets"
+      },
+      "setCategories": {
+        "title": "Configure categories",
+        "description": "Set up income and expense categories to organize your transactions"
+      },
+      "addTransaction": {
+        "title": "Add your first transaction",
+        "description": "Record a transaction to start tracking your spending"
+      }
+    }
   }
 }

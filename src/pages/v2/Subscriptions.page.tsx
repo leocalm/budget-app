@@ -5,12 +5,16 @@ import { Button, Skeleton, Stack, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
+import { PageHint } from '@/components/v2/PageHint';
 import {
   CancelSubscriptionModal,
   SubscriptionFormDrawer,
   SubscriptionRow,
 } from '@/components/v2/Subscriptions';
 import classes from '@/components/v2/Subscriptions/Subscriptions.module.css';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategoriesOptions } from '@/hooks/v2/useCategories';
 import {
   useDeleteSubscription,
@@ -24,6 +28,7 @@ type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
 export function SubscriptionsV2Page() {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: subsData, isLoading, isError, refetch } = useSubscriptions();
   const { data: upcomingData } = useUpcomingCharges(5);
   const { data: categories } = useCategoriesOptions();
@@ -111,6 +116,10 @@ export function SubscriptionsV2Page() {
     }
   };
 
+  if (!selectedPeriodId) {
+    return <NoPeriodState pageTitle={t('subscriptions.title')} />;
+  }
+
   if (isError) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
@@ -163,20 +172,37 @@ export function SubscriptionsV2Page() {
         </Button>
       </div>
 
+      {/* Page hint */}
+      <PageHint hintId="subscriptions" message={t('hints.subscriptions')} />
+
       {/* Empty state */}
       {!hasSubscriptions && (
-        <div className={classes.centeredState}>
-          <Text fz={32}>🔄</Text>
-          <Text fz={18} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('subscriptions.emptyTitle')}
-          </Text>
-          <Text fz="sm" c="dimmed" ta="center">
-            {t('subscriptions.emptyDescription')}
-          </Text>
-          <Button size="sm" onClick={handleCreate}>
-            {t('subscriptions.addFirstSubscription')}
-          </Button>
-        </div>
+        <EmptyState
+          icon="🔄"
+          title={t('subscriptions.emptyTitle')}
+          message={t('subscriptions.emptyDescription')}
+          primaryAction={{ label: t('subscriptions.addFirstSubscription'), onClick: handleCreate }}
+          tips={[
+            t('subscriptions.emptyTips.recurring'),
+            t('subscriptions.emptyTips.upcoming'),
+            t('subscriptions.emptyTips.cancel'),
+          ]}
+          onboardingSteps={[
+            {
+              title: t('subscriptions.emptySteps.add.title'),
+              description: t('subscriptions.emptySteps.add.description'),
+            },
+            {
+              title: t('subscriptions.emptySteps.schedule.title'),
+              description: t('subscriptions.emptySteps.schedule.description'),
+            },
+            {
+              title: t('subscriptions.emptySteps.monitor.title'),
+              description: t('subscriptions.emptySteps.monitor.description'),
+            },
+          ]}
+          data-testid="subscriptions-empty-state"
+        />
       )}
 
       {hasSubscriptions && (

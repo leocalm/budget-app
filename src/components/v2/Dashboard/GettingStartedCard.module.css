@@ -1,0 +1,62 @@
+.card {
+  background: var(--v2-surface);
+  border: 1px solid var(--v2-border);
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-lg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.progressText {
+  font-family: var(--mantine-font-family-monospace);
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  transition: background 0.15s ease;
+}
+
+.step:hover {
+  background: var(--v2-bg);
+}
+
+.stepIcon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.stepIncomplete {
+  border: 2px solid var(--v2-border);
+  color: var(--mantine-color-dimmed);
+}
+
+.stepComplete {
+  background: var(--v2-primary);
+  color: white;
+}
+
+.stepContent {
+  flex: 1;
+  min-width: 0;
+}
