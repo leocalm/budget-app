@@ -7,6 +7,7 @@ import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
 import { AccountFormDrawer, AccountRow, AccountsNetPosition } from '@/components/v2/Accounts';
 import classes from '@/components/v2/Accounts/Accounts.module.css';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
@@ -111,18 +112,7 @@ export function AccountsV2Page() {
   };
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <div>
-          <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-            {t('accounts.title')}
-          </Text>
-          <Text c="dimmed" fz="sm">
-            {t('accounts.noPeriodDescription')}
-          </Text>
-        </div>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('accounts.title')} />;
   }
 
   if (isError) {

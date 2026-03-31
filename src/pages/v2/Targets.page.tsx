@@ -5,6 +5,7 @@ import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { TargetRow } from '@/components/v2/Categories';
 import classes from '@/components/v2/Categories/Categories.module.css';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategoryTargets } from '@/hooks/v2/useCategoryTargets';
 
@@ -33,16 +34,7 @@ export function TargetsV2Page() {
   }, [targets]);
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          {t('targets.title')}
-        </Text>
-        <Text c="dimmed" fz="sm">
-          {t('common.noPeriodSelectedShort')}
-        </Text>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('targets.title')} />;
   }
 
   if (isError) {

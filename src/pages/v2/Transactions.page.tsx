@@ -15,6 +15,7 @@ import { useDebouncedValue } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { PageHint } from '@/components/v2/PageHint';
 import { QuickAdd, TransactionFormDrawer, TransactionRow } from '@/components/v2/Transactions';
 import classes from '@/components/v2/Transactions/Transactions.module.css';
@@ -171,16 +172,7 @@ export function TransactionsV2Page() {
   const vendorSelectData = (vendorOptions ?? []).map((v) => ({ value: v.id, label: v.name }));
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          {t('transactions.title')}
-        </Text>
-        <Text c="dimmed" fz="sm">
-          {t('common.noPeriodSelectedShort')}
-        </Text>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('transactions.title')} />;
   }
 
   if (isError) {

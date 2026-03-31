@@ -6,6 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { PageHint } from '@/components/v2/PageHint';
 import {
   CancelSubscriptionModal,
@@ -13,6 +14,7 @@ import {
   SubscriptionRow,
 } from '@/components/v2/Subscriptions';
 import classes from '@/components/v2/Subscriptions/Subscriptions.module.css';
+import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategoriesOptions } from '@/hooks/v2/useCategories';
 import {
   useDeleteSubscription,
@@ -26,6 +28,7 @@ type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
 export function SubscriptionsV2Page() {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
+  const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: subsData, isLoading, isError, refetch } = useSubscriptions();
   const { data: upcomingData } = useUpcomingCharges(5);
   const { data: categories } = useCategoriesOptions();
@@ -112,6 +115,10 @@ export function SubscriptionsV2Page() {
       toast.error({ message: t('subscriptions.deleteFailed') });
     }
   };
+
+  if (!selectedPeriodId) {
+    return <NoPeriodState pageTitle={t('subscriptions.title')} />;
+  }
 
   if (isError) {
     return (

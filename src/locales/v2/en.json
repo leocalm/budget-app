@@ -517,7 +517,9 @@
     "txnsThisPeriod": "{{count}} txns this period",
     "unarchive": "Unarchive",
     "userMenu": "User menu",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "noPeriodStateDescription": "Select or create a budget period to view this page. Periods define the time window for your transactions and targets.",
+    "goToPeriods": "Go to Periods"
   },
   "dashboard": {
     "account": {

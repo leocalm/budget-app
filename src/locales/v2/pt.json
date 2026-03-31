@@ -529,7 +529,9 @@
     "transfer": "Transferência",
     "txnsThisPeriod": "{{count}} trans. este período",
     "unarchive": "Desarquivar",
-    "viewDetails": "Ver detalhes"
+    "viewDetails": "Ver detalhes",
+    "noPeriodStateDescription": "Selecione ou crie um período para visualizar esta página. Períodos definem a janela de tempo para suas transações e metas.",
+    "goToPeriods": "Ir para Períodos"
   },
   "dashboard": {
     "account": {

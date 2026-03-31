@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { EmptyState } from '@/components/Utils/EmptyState/EmptyState';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { PageHint } from '@/components/v2/PageHint';
 import { MergeVendorModal, VendorFormDrawer, VendorRow } from '@/components/v2/Vendors';
 import classes from '@/components/v2/Vendors/Vendors.module.css';
@@ -124,6 +125,10 @@ export function VendorsV2Page() {
       openMerge();
     }
   };
+
+  if (!selectedPeriodId) {
+    return <NoPeriodState pageTitle={t('vendors.title')} />;
+  }
 
   if (isError) {
     return (

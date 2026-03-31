@@ -39,6 +39,7 @@ import {
   DEFAULT_WIDGET_ORDER,
   WIDGET_DEFINITIONS,
 } from '@/components/v2/Dashboard/widgetDefinitions';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useAccounts } from '@/hooks/v2/useAccounts';
@@ -237,18 +238,7 @@ export function DashboardV2Page() {
   }, [visibleItems]);
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <div>
-          <Title order={2} fw={700}>
-            {t('dashboard.title')}
-          </Title>
-          <Text c="dimmed" fz="sm">
-            {t('dashboard.noPeriodSelected')}
-          </Text>
-        </div>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('dashboard.title')} />;
   }
 
   return (

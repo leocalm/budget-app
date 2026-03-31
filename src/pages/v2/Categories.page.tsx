@@ -6,6 +6,7 @@ import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { CategoryFormDrawer, CategoryRow } from '@/components/v2/Categories';
 import classes from '@/components/v2/Categories/Categories.module.css';
+import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
   useArchiveCategory,
@@ -101,16 +102,7 @@ export function CategoriesV2Page() {
   };
 
   if (!selectedPeriodId) {
-    return (
-      <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Text fz={28} fw={700} ff="var(--mantine-font-family-headings)">
-          {t('categories.title')}
-        </Text>
-        <Text c="dimmed" fz="sm">
-          {t('common.noPeriodSelectedShort')}
-        </Text>
-      </Stack>
-    );
+    return <NoPeriodState pageTitle={t('categories.title')} />;
   }
 
   if (isError) {
