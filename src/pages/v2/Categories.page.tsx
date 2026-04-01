@@ -50,13 +50,14 @@ export function CategoriesV2Page() {
     if (cat) {
       setEditCategory(cat);
       openForm();
-      // Remove the query param so it does not re-trigger on re-renders
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.delete('edit');
-        return next;
-      });
     }
+    // Issue 4: always clear the param once loading is done, whether the category was found or not,
+    // to prevent an infinite loop when the ID does not match any category.
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete('edit');
+      return next;
+    });
   }, [searchParams, isLoading, overviewData, categories, openForm, setSearchParams]);
 
   const summary = overviewData?.summary;

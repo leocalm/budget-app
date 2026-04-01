@@ -53,12 +53,12 @@ export function useUpcomingCharges(limit?: number) {
   });
 }
 
-export function useSubscriptionsByCategory(categoryId: string) {
+export function useSubscriptionsByCategory(categoryId: string | null) {
   return useQuery({
-    queryKey: v2QueryKeys.subscriptions.byCategory(categoryId),
+    queryKey: v2QueryKeys.subscriptions.byCategory(categoryId ?? ''),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/subscriptions', {
-        params: { query: { categoryId } },
+        params: { query: { categoryId: categoryId! } },
       });
       if (error) {
         throw error;

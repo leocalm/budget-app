@@ -464,7 +464,10 @@
       "title": "Subscriptions",
       "monthlyTotal": "Monthly Total",
       "empty": "No subscriptions yet. Add one below.",
-      "createHint": "After creating this category, you can add subscriptions to it directly from the category settings."
+      "createHint": "After creating this category, you can add subscriptions to it directly from the category settings.",
+      "actionsFor": "Actions for {{name}}",
+      "deleteConfirmTitle": "Delete Subscription",
+      "deleteConfirmDesc": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
     }
   },
   "common": {

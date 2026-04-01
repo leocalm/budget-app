@@ -476,7 +476,10 @@
       "title": "Assinaturas",
       "monthlyTotal": "Total Mensal",
       "empty": "Nenhuma assinatura ainda. Adicione uma abaixo.",
-      "createHint": "Após criar esta categoria, você pode adicionar assinaturas diretamente nas configurações da categoria."
+      "createHint": "Após criar esta categoria, você pode adicionar assinaturas diretamente nas configurações da categoria.",
+      "actionsFor": "Ações para {{name}}",
+      "deleteConfirmTitle": "Eliminar Assinatura",
+      "deleteConfirmDesc": "Tem a certeza que deseja eliminar \"{{name}}\"? Esta ação não pode ser desfeita."
     }
   },
   "common": {

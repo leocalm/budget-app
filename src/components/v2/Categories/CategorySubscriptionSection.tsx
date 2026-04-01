@@ -7,6 +7,7 @@ import {
   Button,
   Group,
   Menu,
+  Modal,
   Skeleton,
   Stack,
   Text,
@@ -34,8 +35,14 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
   const [cancelOpened, { open: openCancel, close: closeCancel }] = useDisclosure(false);
   const [cancelSub, setCancelSub] = useState<SubscriptionResponse | null>(null);
 
+  const [deleteConfirmOpened, { open: openDeleteConfirm, close: closeDeleteConfirm }] =
+    useDisclosure(false);
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null);
+  const [deletePendingName, setDeletePendingName] = useState<string>('');
+
+  // Issue 1: Only count truly active subs (not paused) in the monthly total
   const activeSubs = useMemo(
-    () => (subscriptions ?? []).filter((s) => s.status !== 'cancelled'),
+    () => (subscriptions ?? []).filter((s) => s.status === 'active'),
     [subscriptions]
   );
 
@@ -62,14 +69,46 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
     openCancel();
   };
 
-  const handleDelete = async (id: string) => {
+  // Issue 2: Show confirm dialog before deleting
+  const handleDeleteRequest = (sub: SubscriptionResponse) => {
+    setDeletePendingId(sub.id);
+    setDeletePendingName(sub.name);
+    openDeleteConfirm();
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deletePendingId) {
+      return;
+    }
+    closeDeleteConfirm();
     try {
-      await deleteMutation.mutateAsync(id);
+      await deleteMutation.mutateAsync(deletePendingId);
       toast.success({ message: t('subscriptions.deleted') });
     } catch {
       toast.error({ message: t('subscriptions.deleteFailed') });
+    } finally {
+      setDeletePendingId(null);
+      setDeletePendingName('');
     }
   };
+
+  // Issue 5: Map status to translated label
+  const statusLabel = (status: SubscriptionResponse['status']): string => {
+    switch (status) {
+      case 'active':
+        return t('subscriptions.stats.active');
+      case 'paused':
+        return t('subscriptions.paused');
+      case 'cancelled':
+        return t('common.cancelled');
+      default:
+        return status;
+    }
+  };
+
+  // Issue 5: Map billingCycle to translated suffix
+  const cycleLabel = (cycle: SubscriptionResponse['billingCycle']): string =>
+    t(`subscriptions.cycleSuffix.${cycle}`, { defaultValue: CYCLE_LABELS[cycle] });
 
   if (isLoading) {
     return (
@@ -103,7 +142,7 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
           <Text fz="sm" fw={700} ff="var(--mantine-font-family-monospace)">
             <CurrencyValue cents={monthlyTotal} />
             <Text span fz="xs" c="dimmed">
-              {CYCLE_LABELS.monthly}
+              {cycleLabel('monthly')}
             </Text>
           </Text>
         </Group>
@@ -136,8 +175,9 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
                 <Text fz="sm" fw={600} truncate>
                   {sub.name}
                 </Text>
+                {/* Issue 5: translated billing cycle */}
                 <Text fz="xs" c="dimmed">
-                  {sub.billingCycle}
+                  {cycleLabel(sub.billingCycle)}
                 </Text>
               </div>
 
@@ -145,11 +185,11 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
               <Text fz="sm" fw={600} ff="var(--mantine-font-family-monospace)" mr="xs">
                 <CurrencyValue cents={sub.billingAmount} />
                 <Text span fz="xs" c="dimmed">
-                  {CYCLE_LABELS[sub.billingCycle]}
+                  {cycleLabel(sub.billingCycle)}
                 </Text>
               </Text>
 
-              {/* Status badge */}
+              {/* Status badge — Issue 5: translated status */}
               <Badge
                 size="xs"
                 variant="light"
@@ -158,7 +198,7 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
                 }
                 mr="xs"
               >
-                {sub.status}
+                {statusLabel(sub.status)}
               </Badge>
 
               {/* Kebab menu */}
@@ -166,11 +206,14 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
               <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
                 <Menu position="bottom-end" withinPortal>
                   <Menu.Target>
+                    {/* Issue 6: translated aria-label */}
                     <ActionIcon
                       variant="subtle"
                       color="gray"
                       size="sm"
-                      aria-label={`Actions for ${sub.name}`}
+                      aria-label={t('categories.subscriptionSection.actionsFor', {
+                        name: sub.name,
+                      })}
                     >
                       <Text fz="lg" lh={1}>
                         ⋮
@@ -183,7 +226,12 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
                         {t('common.cancel')}
                       </Menu.Item>
                     )}
-                    <Menu.Item color="red" onClick={() => handleDelete(sub.id)}>
+                    {/* Issue 2 & 3: open confirm dialog, disable while pending */}
+                    <Menu.Item
+                      color="red"
+                      disabled={deleteMutation.isPending}
+                      onClick={() => handleDeleteRequest(sub)}
+                    >
                       {t('common.delete')}
                     </Menu.Item>
                   </Menu.Dropdown>
@@ -213,6 +261,29 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
           subscription={cancelSub}
         />
       )}
+
+      {/* Issue 2: Delete confirmation modal */}
+      <Modal
+        opened={deleteConfirmOpened}
+        onClose={closeDeleteConfirm}
+        title={t('categories.subscriptionSection.deleteConfirmTitle')}
+        size="sm"
+        centered
+      >
+        <Stack gap="md">
+          <Text fz="sm">
+            {t('categories.subscriptionSection.deleteConfirmDesc', { name: deletePendingName })}
+          </Text>
+          <Group justify="flex-end">
+            <Button variant="subtle" onClick={closeDeleteConfirm}>
+              {t('common.cancel')}
+            </Button>
+            <Button color="red" loading={deleteMutation.isPending} onClick={handleDeleteConfirm}>
+              {t('common.delete')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Stack>
   );
 }

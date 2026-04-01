@@ -23,7 +23,12 @@ import classes from './Categories.module.css';
 type CategoryType = 'income' | 'expense' | 'transfer';
 type Behavior = 'fixed' | 'variable' | 'subscription';
 type CategoryBase = components['schemas']['CategoryBase'];
-type EditableCategory = CategoryBase & { description?: string | null; target?: number | null };
+type EditableCategory = CategoryBase & {
+  description?: string | null;
+  target?: number | null;
+  /** When true the target is auto-computed from active subscriptions (from CategoryResponse). */
+  autoComputedTarget?: boolean;
+};
 
 const CATEGORY_ICONS = [
   '🏠',
@@ -64,8 +69,10 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
 
-  // Fetch active subscriptions when editing a subscription-behavior category
-  const { data: categorySubs } = useSubscriptionsByCategory(editCategory?.id ?? '');
+  // Issue 7: Only fetch subscriptions when editing a subscription-behavior category
+  const { data: categorySubs } = useSubscriptionsByCategory(
+    isEdit && editCategory?.behavior === 'subscription' ? (editCategory?.id ?? null) : null
+  );
   const hasActiveSubs =
     isEdit &&
     editCategory?.behavior === 'subscription' &&
@@ -235,8 +242,9 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
           minRows={2}
         />
 
-        {/* Budget Target — hidden for subscription categories */}
-        {behavior !== 'subscription' && (
+        {/* Issue 8: Budget Target — hidden for subscription categories.
+            Also hides when autoComputedTarget is true (target is derived from active subs). */}
+        {behavior !== 'subscription' && !editCategory?.autoComputedTarget && (
           <NumberInput
             label={t('categories.form.budgetTarget')}
             description={t('categories.form.budgetTargetDesc')}
