@@ -1365,7 +1365,7 @@
         "description": "The upcoming charges section shows what is due next and when."
       }
     },
-    "manage": "Manage"
+    "manage": "Manage Category"
   },
   "targets": {
     "actual": "Actual",
