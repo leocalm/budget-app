@@ -88,14 +88,7 @@ const COLOR_SCHEMES = [
   { value: 'system' as const, emoji: '\u{1F4BB}', key: 'system' },
 ];
 
-const THEME_ORDER: ColorTheme[] = [
-  'nebula',
-  'sunrise',
-  'sage_stone',
-  'deep_ocean',
-  'warm_rose',
-  'moonlit',
-];
+const THEME_ORDER: ColorTheme[] = ['nebula', 'sunrise', 'neon', 'tropical', 'candy_pop', 'moonlit'];
 
 // ---------------------------------------------------------------------------
 // Page component
@@ -697,7 +690,7 @@ export function SettingsV2Page() {
               <div className={classes.label}>{t('settings.appearance.themeLabel')}</div>
               <div className={classes.themeGrid}>
                 {THEME_ORDER.map((key) => {
-                  const t = themes[key];
+                  const themeAccents = themes[key];
                   return (
                     <button
                       key={key}
@@ -705,12 +698,21 @@ export function SettingsV2Page() {
                       onClick={() => handleThemeChange(key)}
                     >
                       <div className={classes.themeSwatches}>
-                        <div className={classes.themeSwatch} style={{ background: t.primary }} />
-                        <div className={classes.themeSwatch} style={{ background: t.secondary }} />
-                        <div className={classes.themeSwatch} style={{ background: t.tertiary }} />
+                        <div
+                          className={classes.themeSwatch}
+                          style={{ background: themeAccents.primary }}
+                        />
+                        <div
+                          className={classes.themeSwatch}
+                          style={{ background: themeAccents.secondary }}
+                        />
+                        <div
+                          className={classes.themeSwatch}
+                          style={{ background: themeAccents.tertiary }}
+                        />
                       </div>
-                      <div className={classes.themeName}>{t.label}</div>
-                      <div className={classes.themeDesc}>{t.description}</div>
+                      <div className={classes.themeName}>{themeAccents.label}</div>
+                      <div className={classes.themeDesc}>{themeAccents.description}</div>
                     </button>
                   );
                 })}

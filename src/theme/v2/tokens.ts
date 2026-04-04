@@ -1,7 +1,7 @@
 /**
  * V2 Design Tokens
  *
- * 4 color themes × 2 modes (dark/light).
+ * 6 color themes × 2 modes (dark/light).
  * Surface colors are shared across all themes; only accent/data colors change per theme.
  */
 
@@ -39,13 +39,7 @@ export const shared = {
 // Per-theme accent + data colors
 // ---------------------------------------------------------------------------
 
-export type ColorTheme =
-  | 'nebula'
-  | 'sunrise'
-  | 'sage_stone'
-  | 'deep_ocean'
-  | 'warm_rose'
-  | 'moonlit';
+export type ColorTheme = 'nebula' | 'sunrise' | 'neon' | 'tropical' | 'candy_pop' | 'moonlit';
 
 export const DEFAULT_COLOR_THEME: ColorTheme = 'nebula';
 
@@ -54,7 +48,7 @@ interface ThemeAccents {
   label: string;
   /** Short description */
   description: string;
-  /** Primary accent — always lavender */
+  /** Primary accent */
   primary: string;
   /** Secondary accent — varies per theme */
   secondary: string;
@@ -149,35 +143,35 @@ export const themes: Record<ColorTheme, ThemeAccents> = {
     gradient: ['#4A7CFF', '#F0A25C'],
     data: buildDataPalette(['#4A7CFF', '#F0A25C', '#9B8AE0']),
   },
-  sage_stone: {
-    label: 'Sage & Stone',
-    description: 'Green + Sandstone',
-    primary: '#6B8F71',
-    secondary: '#B89F7E',
-    tertiary: '#7A9EBA',
+  neon: {
+    label: 'Electric Neon',
+    description: 'Cyan + Magenta',
+    primary: '#00F0FF',
+    secondary: '#FF00E5',
+    tertiary: '#B8FF00',
     destructive: shared.destructive,
-    gradient: ['#6B8F71', '#B89F7E'],
-    data: buildDataPalette(['#6B8F71', '#B89F7E', '#7A9EBA']),
+    gradient: ['#00F0FF', '#FF00E5'],
+    data: buildDataPalette(['#00F0FF', '#FF00E5', '#B8FF00']),
   },
-  deep_ocean: {
-    label: 'Deep Ocean',
-    description: 'Teal + Sand',
-    primary: '#3D8B9E',
-    secondary: '#D4A574',
-    tertiary: '#8E7EBD',
+  tropical: {
+    label: 'Tropical',
+    description: 'Coral + Teal',
+    primary: '#FF6B6B',
+    secondary: '#00CCB3',
+    tertiary: '#FFC800',
     destructive: shared.destructive,
-    gradient: ['#3D8B9E', '#D4A574'],
-    data: buildDataPalette(['#3D8B9E', '#D4A574', '#8E7EBD']),
+    gradient: ['#FF6B6B', '#00CCB3'],
+    data: buildDataPalette(['#FF6B6B', '#00CCB3', '#FFC800']),
   },
-  warm_rose: {
-    label: 'Warm Rose',
-    description: 'Rose + Linen',
-    primary: '#B07592',
-    secondary: '#C4A882',
-    tertiary: '#7C9EB8',
+  candy_pop: {
+    label: 'Candy Pop',
+    description: 'Pink + Blue',
+    primary: '#FF479C',
+    secondary: '#00C2FF',
+    tertiary: '#FFE100',
     destructive: shared.destructive,
-    gradient: ['#B07592', '#C4A882'],
-    data: buildDataPalette(['#B07592', '#C4A882', '#7C9EB8']),
+    gradient: ['#FF479C', '#00C2FF'],
+    data: buildDataPalette(['#FF479C', '#00C2FF', '#FFE100']),
   },
   moonlit: {
     label: 'Moonlit',

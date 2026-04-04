@@ -43,9 +43,9 @@ function readStoredTheme(): ColorTheme {
       stored &&
       (stored === 'nebula' ||
         stored === 'sunrise' ||
-        stored === 'sage_stone' ||
-        stored === 'deep_ocean' ||
-        stored === 'warm_rose' ||
+        stored === 'neon' ||
+        stored === 'tropical' ||
+        stored === 'candy_pop' ||
         stored === 'moonlit')
     ) {
       return stored;

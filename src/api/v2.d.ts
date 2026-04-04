@@ -3527,7 +3527,7 @@ export interface components {
      * @example nebula
      * @enum {string}
      */
-    ColorTheme: 'nebula' | 'sunrise' | 'sage_stone' | 'deep_ocean' | 'warm_rose' | 'moonlit';
+    ColorTheme: 'nebula' | 'sunrise' | 'neon' | 'tropical' | 'candy_pop' | 'moonlit';
     /**
      * @description Current status of the subscription
      * @example active

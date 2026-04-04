@@ -21,10 +21,12 @@ interface SidebarProps {
 }
 
 const LOGO_PATHS: Record<string, string> = {
-  moonlit: '/logo/piggy-pulse-moonlit.svg',
   nebula: '/logo/piggy-pulse-nebula.svg',
-  frost: '/logo/piggy-pulse-frost.svg',
-  twilight: '/logo/piggy-pulse-twilight.svg',
+  sunrise: '/logo/piggy-pulse-sunrise.svg',
+  neon: '/logo/piggy-pulse-neon.svg',
+  tropical: '/logo/piggy-pulse-tropical.svg',
+  candy_pop: '/logo/piggy-pulse-candy_pop.svg',
+  moonlit: '/logo/piggy-pulse-moonlit.svg',
 };
 
 export function Sidebar({ collapsed, onToggleCollapse, periodSelector, user }: SidebarProps) {

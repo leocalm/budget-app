@@ -5686,9 +5686,9 @@ components:
       enum:
         - nebula
         - sunrise
-        - sage_stone
-        - deep_ocean
-        - warm_rose
+        - neon
+        - tropical
+        - candy_pop
         - moonlit
       example: nebula
     SubscriptionStatus:
