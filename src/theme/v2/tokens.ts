@@ -1,7 +1,7 @@
 /**
  * V2 Design Tokens
  *
- * 4 color themes × 2 modes (dark/light).
+ * 6 color themes × 2 modes (dark/light).
  * Surface colors are shared across all themes; only accent/data colors change per theme.
  */
 
