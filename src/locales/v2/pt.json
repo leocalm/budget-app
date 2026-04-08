@@ -320,7 +320,8 @@
       "login": "Bem-vindo(a) de volta. Os seus dados estão onde os deixou.",
       "register": "Comece a sua jornada rumo à clareza financeira.",
       "resetPassword": "Quase lá. Escolha uma nova palavra-passe.",
-      "unlock": "Verifique a sua identidade para continuar."
+      "unlock": "Verifique a sua identidade para continuar.",
+      "emergency2faDisable": "Vamos ajudá-lo(a) a recuperar o acesso à sua conta."
     },
     "taglines": {
       "forgotPassword": "Sem problemas — vamos ajudá-lo(a) a voltar.",
@@ -366,6 +367,27 @@
       "successMessage": "A sua conta foi desbloqueada. Pode agora iniciar sessão.",
       "successSubtitle": "A sua conta foi desbloqueada. Pode agora iniciar sessão.",
       "successTitle": "Conta desbloqueada"
+    },
+    "emergency2fa": {
+      "title": "Desativar 2FA de Emergência",
+      "subtitle": "Introduza o seu endereço de email e enviaremos um link seguro para desativar a autenticação de dois fatores.",
+      "infoMessage": "Use esta opção apenas se perdeu o acesso à sua aplicação de autenticação e não consegue iniciar sessão.",
+      "emailLabel": "Endereço de email",
+      "emailPlaceholder": "voce@exemplo.com",
+      "submitButton": "Enviar Link de Desativação",
+      "rememberPassword": "Recuperou o acesso?",
+      "signIn": "Iniciar sessão",
+      "sentTitle": "Verifique o seu email",
+      "sentMessage": "Se a sua conta tiver o 2FA ativado, receberá um link para o desativar em breve. Verifique a pasta de spam se não encontrar o email.",
+      "backToSignIn": "Voltar ao início de sessão",
+      "confirmTitle": "Desativar Autenticação de Dois Fatores",
+      "confirmWarning": "Está prestes a desativar a autenticação de dois fatores. Isto tornará a sua conta menos segura.",
+      "confirmDescription": "Clique no botão abaixo para confirmar. Pode reativar o 2FA a qualquer momento nas definições da sua conta.",
+      "confirmButton": "Confirmar — Desativar 2FA",
+      "confirmError": "Este link expirou ou é inválido. Por favor, solicite um novo.",
+      "disabledTitle": "2FA Desativado",
+      "disabledMessage": "A autenticação de dois fatores foi desativada. Pode agora iniciar sessão apenas com a sua palavra-passe.",
+      "goToSignIn": "Ir para o início de sessão"
     }
   },
   "categories": {

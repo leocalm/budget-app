@@ -10,6 +10,7 @@ const PAGE_TAGLINE_KEYS: Record<string, string> = {
   'forgot-password': 'auth.tagline.forgotPassword',
   'reset-password': 'auth.tagline.resetPassword',
   unlock: 'auth.tagline.unlock',
+  'emergency-2fa-disable': 'auth.tagline.emergency2faDisable',
 };
 
 export function V2AuthLayout() {

@@ -122,6 +122,9 @@ const V2ResetPasswordPageComponent = lazy(() =>
 const V2UnlockAccountPageComponent = lazy(() =>
   import('./components/v2/Auth').then((m) => ({ default: m.V2UnlockAccountPage }))
 );
+const V2Emergency2FADisablePageComponent = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.V2Emergency2FADisablePage }))
+);
 
 const V2Layout = () => {
   const location = useLocation();
@@ -192,6 +195,10 @@ export function Router() {
         { path: 'forgot-password', element: withPageLoader(<V2ForgotPasswordPageComponent />) },
         { path: 'reset-password', element: withPageLoader(<V2ResetPasswordPageComponent />) },
         { path: 'unlock', element: withPageLoader(<V2UnlockAccountPageComponent />) },
+        {
+          path: 'emergency-2fa-disable',
+          element: withPageLoader(<V2Emergency2FADisablePageComponent />),
+        },
       ],
     },
     // Error pages (accessible without authentication)
