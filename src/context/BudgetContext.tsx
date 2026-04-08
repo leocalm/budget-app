@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
-import { completeOnboarding } from '@/api/onboarding';
-import { useBudgetPeriods, useCurrentBudgetPeriod } from '@/hooks/useBudget';
+import { apiClient } from '@/api/v2client';
+import { useBudgetPeriods } from '@/hooks/v2/useBudgetPeriods';
 import { useAuth } from './AuthContext';
 
 interface BudgetPeriodContextType {
@@ -20,12 +20,14 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     defaultValue: null,
   });
 
-  const { data: currentPeriod } = useCurrentBudgetPeriod();
   const {
-    data: periods = [],
+    data: periodsData,
     isFetched: hasFetchedPeriods,
     refetch: refetchPeriods,
-  } = useBudgetPeriods();
+  } = useBudgetPeriods({ limit: 100 });
+
+  const periods = periodsData?.data ?? [];
+  const currentPeriod = periods.find((p) => p.status === 'active') ?? null;
   const generatingRef = useRef(false);
 
   useEffect(() => {
@@ -42,7 +44,8 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       // their account predates the cron-on-complete change), generate them now.
       if (user?.onboardingStatus === 'completed' && !generatingRef.current) {
         generatingRef.current = true;
-        completeOnboarding()
+        apiClient
+          .POST('/onboarding/complete')
           .then(() => refetchPeriods())
           .catch(() => {})
           .finally(() => {
