@@ -12,7 +12,7 @@ export function PeriodGapWarning() {
       </Alert>
       <Anchor
         component={Link}
-        to="/v2/periods?create=true"
+        to="/periods?create=true"
         fz="sm"
         ta="center"
         data-testid="period-create-link"

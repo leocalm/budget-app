@@ -22,7 +22,7 @@ export function V2ResetPasswordPage() {
   // Remove token from URL for security
   useEffect(() => {
     if (token) {
-      window.history.replaceState({}, '', '/v2/auth/reset-password');
+      window.history.replaceState({}, '', '/auth/reset-password');
     }
   }, [token]);
 
@@ -54,7 +54,7 @@ export function V2ResetPasswordPage() {
         <Text fz="sm" c="dimmed">
           {t('auth.resetPassword.successSubtext')}
         </Text>
-        <Button component={Link} to="/v2/auth/login" size="md" mt="md">
+        <Button component={Link} to="/auth/login" size="md" mt="md">
           {t('auth.resetPassword.goToSignIn')}
         </Button>
       </div>
@@ -70,7 +70,7 @@ export function V2ResetPasswordPage() {
         <Text fz="sm" c="dimmed">
           {t('auth.resetPassword.invalidLinkMessage')}
         </Text>
-        <Button component={Link} to="/v2/auth/forgot-password" size="md" mt="md">
+        <Button component={Link} to="/auth/forgot-password" size="md" mt="md">
           {t('auth.resetPassword.requestNewLink')}
         </Button>
       </div>

@@ -21,7 +21,7 @@ export function V2UnlockAccountPage() {
     }
 
     // Remove params from URL for security
-    window.history.replaceState({}, '', '/v2/auth/unlock');
+    window.history.replaceState({}, '', '/auth/unlock');
 
     apiClient
       .GET('/unlock', { params: { query: { token, user: userId } } })
@@ -52,7 +52,7 @@ export function V2UnlockAccountPage() {
         <Text fz="sm" c="dimmed">
           {t('auth.unlock.successMessage')}
         </Text>
-        <Button component={Link} to="/v2/auth/login" size="md" mt="md">
+        <Button component={Link} to="/auth/login" size="md" mt="md">
           {t('auth.unlock.goToSignIn')}
         </Button>
       </div>
@@ -67,7 +67,7 @@ export function V2UnlockAccountPage() {
       <Text fz="sm" c="dimmed">
         {t('auth.unlock.errorMessage')}
       </Text>
-      <Button component={Link} to="/v2/auth/login" size="md" mt="md">
+      <Button component={Link} to="/auth/login" size="md" mt="md">
         {t('auth.unlock.goToSignIn')}
       </Button>
     </div>

@@ -36,13 +36,13 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
       className={classes.accountRow}
       data-testid={`account-row-${account.id}`}
       data-archived={isArchived || undefined}
-      onClick={() => navigate(`/v2/accounts/${account.id}`)}
+      onClick={() => navigate(`/accounts/${account.id}`)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          navigate(`/v2/accounts/${account.id}`);
+          navigate(`/accounts/${account.id}`);
         }
       }}
     >
@@ -122,7 +122,7 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
             {!isArchived && (
               <Menu.Item onClick={() => onEdit(account.id)}>{t('common.edit')}</Menu.Item>
             )}
-            <Menu.Item onClick={() => navigate(`/v2/accounts/${account.id}`)}>
+            <Menu.Item onClick={() => navigate(`/accounts/${account.id}`)}>
               {t('common.viewDetails')}
             </Menu.Item>
             {isArchived ? (

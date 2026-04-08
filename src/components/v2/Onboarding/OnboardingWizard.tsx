@@ -140,7 +140,7 @@ export function OnboardingWizard() {
     try {
       await completeOnboarding.mutateAsync();
       await refreshUser();
-      navigate('/v2/dashboard');
+      navigate('/dashboard');
     } catch {
       completionLock.current = false;
       toast.error({ message: t('onboarding.complete.completeFailed') });
@@ -158,7 +158,7 @@ export function OnboardingWizard() {
     try {
       await completeOnboarding.mutateAsync();
       await refreshUser();
-      navigate('/v2/transactions', { state: { openCreateDrawer: true } });
+      navigate('/transactions', { state: { openCreateDrawer: true } });
     } catch {
       completionLock.current = false;
       toast.error({ message: t('onboarding.complete.completeFailed') });

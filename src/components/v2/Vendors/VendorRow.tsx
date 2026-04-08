@@ -34,13 +34,13 @@ export function VendorRow({
       className={classes.vendorRow}
       data-testid={`vendor-row-${vendor.id}`}
       data-archived={isArchived || undefined}
-      onClick={() => navigate(`/v2/vendors/${vendor.id}`)}
+      onClick={() => navigate(`/vendors/${vendor.id}`)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          navigate(`/v2/vendors/${vendor.id}`);
+          navigate(`/vendors/${vendor.id}`);
         }
       }}
     >

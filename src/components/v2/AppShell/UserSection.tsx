@@ -31,7 +31,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
 
   const handleLogout = () => {
     logout();
-    navigate('/v2/auth/login');
+    navigate('/auth/login');
   };
 
   if (collapsed) {
@@ -53,7 +53,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
           <Menu.Dropdown>
             <Menu.Item
               leftSection={<IconSettings size={14} />}
-              onClick={() => navigate('/v2/settings')}
+              onClick={() => navigate('/settings')}
             >
               {t('common.settings')}
             </Menu.Item>
@@ -91,10 +91,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
           </Group>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item
-            leftSection={<IconSettings size={14} />}
-            onClick={() => navigate('/v2/settings')}
-          >
+          <Menu.Item leftSection={<IconSettings size={14} />} onClick={() => navigate('/settings')}>
             Settings
           </Menu.Item>
           <Menu.Divider />

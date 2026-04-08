@@ -41,13 +41,13 @@ export function CategoryRow({
       className={classes.categoryRow}
       data-testid={`category-row-${category.id}`}
       data-archived={isArchived || undefined}
-      onClick={() => navigate(`/v2/categories/${category.id}`)}
+      onClick={() => navigate(`/categories/${category.id}`)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          navigate(`/v2/categories/${category.id}`);
+          navigate(`/categories/${category.id}`);
         }
       }}
     >

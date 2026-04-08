@@ -42,7 +42,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
   if (isError || !data) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor component={Link} to="/v2/vendors" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/vendors" fz="sm" c="var(--v2-primary)">
           {t('vendors.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
@@ -85,7 +85,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
     try {
       await deleteMutation.mutateAsync(vendorId);
       toast.success({ message: t('vendors.deleted') });
-      navigate('/v2/vendors');
+      navigate('/vendors');
     } catch {
       toast.error({ message: t('vendors.deleteFailed') });
     }
@@ -96,7 +96,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
       {/* Breadcrumb + actions */}
       <div className={classes.detailHeader}>
         <div>
-          <Anchor component={Link} to="/v2/vendors" fz="sm" c="var(--v2-primary)">
+          <Anchor component={Link} to="/vendors" fz="sm" c="var(--v2-primary)">
             {t('vendors.breadcrumb')}
           </Anchor>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>

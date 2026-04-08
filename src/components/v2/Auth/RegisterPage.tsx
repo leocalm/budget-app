@@ -47,7 +47,7 @@ export function V2RegisterPage() {
         currencyId: defaultCurrencyId,
       });
       await refreshUser(true);
-      navigate('/v2/onboarding', { replace: true });
+      navigate('/onboarding', { replace: true });
     } catch {
       toast.error({ message: t('auth.register.errorGeneric') });
     }
@@ -129,7 +129,7 @@ export function V2RegisterPage() {
       <div style={{ textAlign: 'center', marginTop: 'var(--mantine-spacing-md)' }}>
         <Text fz="sm" c="dimmed">
           {t('auth.register.alreadyHaveAccount')}{' '}
-          <Anchor component={Link} to="/v2/auth/login" c="var(--v2-primary)" fw={600}>
+          <Anchor component={Link} to="/auth/login" c="var(--v2-primary)" fw={600}>
             {t('auth.register.signIn')}
           </Anchor>
         </Text>

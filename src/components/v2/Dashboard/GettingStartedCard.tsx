@@ -33,10 +33,10 @@ export function GettingStartedCard({ periodId }: { periodId: string }) {
   const hasTransactions = (transactionsData?.data?.length ?? 0) > 0;
 
   const steps: Step[] = [
-    { key: 'createAccount', complete: hasAccounts, route: '/v2/accounts' },
-    { key: 'createPeriod', complete: hasPeriods, route: '/v2/periods' },
-    { key: 'setCategories', complete: hasCategories, route: '/v2/categories' },
-    { key: 'addTransaction', complete: hasTransactions, route: '/v2/transactions' },
+    { key: 'createAccount', complete: hasAccounts, route: '/accounts' },
+    { key: 'createPeriod', complete: hasPeriods, route: '/periods' },
+    { key: 'setCategories', complete: hasCategories, route: '/categories' },
+    { key: 'addTransaction', complete: hasTransactions, route: '/transactions' },
   ];
 
   const completedCount = steps.filter((s) => s.complete).length;

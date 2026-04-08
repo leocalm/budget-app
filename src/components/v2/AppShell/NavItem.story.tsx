@@ -27,7 +27,7 @@ export const Default: Story = {
   args: {
     icon: IconChartBar,
     label: 'Dashboard',
-    to: '/v2/dashboard',
+    to: '/dashboard',
   },
 };
 
@@ -35,7 +35,7 @@ export const WithDot: Story = {
   args: {
     icon: IconLink,
     label: 'Overlays',
-    to: '/v2/overlays',
+    to: '/overlays',
     dot: true,
   },
 };
@@ -44,7 +44,7 @@ export const Collapsed: Story = {
   args: {
     icon: IconChartBar,
     label: 'Dashboard',
-    to: '/v2/dashboard',
+    to: '/dashboard',
     collapsed: true,
   },
 };

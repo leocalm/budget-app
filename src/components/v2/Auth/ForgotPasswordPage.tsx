@@ -48,7 +48,7 @@ export function V2ForgotPasswordPage() {
             {t('auth.forgotPassword.resendLink')}
           </Anchor>
         </Text>
-        <Anchor component={Link} to="/v2/auth/login" fz="sm" c="var(--v2-primary)" mt="md">
+        <Anchor component={Link} to="/auth/login" fz="sm" c="var(--v2-primary)" mt="md">
           {t('auth.forgotPassword.backToSignIn')}
         </Anchor>
       </Stack>
@@ -89,7 +89,7 @@ export function V2ForgotPasswordPage() {
 
       <Text fz="sm" c="dimmed" ta="center" mt="md">
         {t('auth.forgotPassword.rememberPassword')}{' '}
-        <Anchor component={Link} to="/v2/auth/login" c="var(--v2-primary)" fw={600}>
+        <Anchor component={Link} to="/auth/login" c="var(--v2-primary)" fw={600}>
           {t('auth.forgotPassword.signIn')}
         </Anchor>
       </Text>

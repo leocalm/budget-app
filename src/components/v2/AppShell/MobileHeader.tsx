@@ -39,7 +39,7 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
 
   const handleLogout = () => {
     logout();
-    navigate('/v2/auth/login');
+    navigate('/auth/login');
   };
 
   return (
@@ -72,7 +72,7 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
           <Menu.Dropdown>
             <Menu.Item
               leftSection={<IconSettings size={14} />}
-              onClick={() => navigate('/v2/settings')}
+              onClick={() => navigate('/settings')}
             >
               {t('common.settings')}
             </Menu.Item>

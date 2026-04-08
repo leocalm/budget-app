@@ -41,7 +41,7 @@ export function NoPeriodState({ pageTitle }: NoPeriodStateProps) {
         <Button
           variant="light"
           leftSection={<IconCalendarEvent size={16} />}
-          onClick={() => navigate('/v2/periods')}
+          onClick={() => navigate('/periods')}
         >
           {t('common.goToPeriods')}
         </Button>

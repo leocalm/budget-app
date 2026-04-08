@@ -316,7 +316,8 @@
       "login": "Welcome back. Your data is right where you left it.",
       "register": "Start your journey toward financial clarity.",
       "resetPassword": "Almost there. Choose a new password.",
-      "unlock": "Verify your identity to continue."
+      "unlock": "Verify your identity to continue.",
+      "emergency2faDisable": "We will help you regain access to your account."
     },
     "taglines": {
       "forgotPassword": "No worries — we will help you get back in.",
@@ -354,6 +355,27 @@
       },
       "successMessage": "Your account has been unlocked. You can now sign in.",
       "successTitle": "Account unlocked"
+    },
+    "emergency2fa": {
+      "title": "Emergency 2FA Disable",
+      "subtitle": "Enter your email address and we'll send you a secure link to disable two-factor authentication.",
+      "infoMessage": "Use this only if you've lost access to your authenticator app and cannot log in.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "submitButton": "Send Disable Link",
+      "rememberPassword": "Remembered your access?",
+      "signIn": "Sign in",
+      "sentTitle": "Check your email",
+      "sentMessage": "If your account has 2FA enabled, you will receive a link to disable it shortly. Check your spam folder if you don't see it.",
+      "backToSignIn": "Back to Sign in",
+      "confirmTitle": "Disable Two-Factor Authentication",
+      "confirmWarning": "You are about to disable two-factor authentication. This will make your account less secure.",
+      "confirmDescription": "Click the button below to confirm. You can re-enable 2FA at any time from your account settings.",
+      "confirmButton": "Confirm — Disable 2FA",
+      "confirmError": "This link has expired or is invalid. Please request a new one.",
+      "disabledTitle": "2FA Disabled",
+      "disabledMessage": "Two-factor authentication has been disabled. You can now sign in with just your password.",
+      "goToSignIn": "Go to Sign In"
     }
   },
   "categories": {

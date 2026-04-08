@@ -7,7 +7,7 @@ export function OnboardingV2Page() {
   const { user } = useAuth();
 
   if (user?.onboardingStatus === 'completed') {
-    return <Navigate to="/v2/dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

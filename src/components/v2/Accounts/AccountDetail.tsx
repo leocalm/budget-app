@@ -42,7 +42,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   if (isError) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/accounts" fz="sm" c="var(--v2-primary)">
           {t('accounts.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
@@ -63,7 +63,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
   if (!data) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor component={Link} to="/v2/accounts" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/accounts" fz="sm" c="var(--v2-primary)">
           {t('accounts.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
@@ -103,7 +103,7 @@ export function AccountDetail({ accountId, periodId }: AccountDetailProps) {
       {/* Breadcrumb + actions */}
       <div className={classes.pageHeader}>
         <div>
-          <Anchor fz="sm" c="var(--v2-primary)" onClick={() => navigate('/v2/accounts')}>
+          <Anchor fz="sm" c="var(--v2-primary)" onClick={() => navigate('/accounts')}>
             {t('accounts.breadcrumb')}
           </Anchor>
           <Text fz={24} fw={700} ff="var(--mantine-font-family-headings)" mt={4}>

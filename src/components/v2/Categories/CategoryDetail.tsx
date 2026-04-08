@@ -57,7 +57,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
   if (isError || !data) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor component={Link} to="/v2/categories" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/categories" fz="sm" c="var(--v2-primary)">
           {t('categories.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
@@ -102,7 +102,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
     try {
       await deleteMutation.mutateAsync(categoryId);
       toast.success({ message: t('categories.deleted') });
-      navigate('/v2/categories');
+      navigate('/categories');
     } catch {
       toast.error({ message: t('categories.deleteFailed') });
     }
@@ -113,7 +113,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
       {/* Header */}
       <div className={classes.detailHeader}>
         <div>
-          <Anchor component={Link} to="/v2/categories" fz="sm" c="var(--v2-primary)">
+          <Anchor component={Link} to="/categories" fz="sm" c="var(--v2-primary)">
             {t('categories.breadcrumb')}
           </Anchor>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>

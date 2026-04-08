@@ -92,7 +92,7 @@ export function RecentTransactionsCard({ periodId }: RecentTransactionsCardProps
       </div>
 
       <div className={classes.viewAll}>
-        <Anchor component={Link} to="/v2/transactions" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/transactions" fz="sm" c="var(--v2-primary)">
           {t('dashboard.recentTransactions.viewAll')}
         </Anchor>
       </div>

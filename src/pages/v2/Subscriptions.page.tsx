@@ -87,7 +87,7 @@ export function SubscriptionsV2Page() {
   const nextCharge = upcomingData?.[0];
 
   const handleManage = (categoryId: string) => {
-    navigate(`/v2/categories?edit=${categoryId}`);
+    navigate(`/categories?edit=${categoryId}`);
   };
 
   const handleCancel = (sub: SubscriptionResponse) => {
@@ -314,7 +314,7 @@ export function SubscriptionsV2Page() {
                   subscription={sub}
                   categoryIcon={cat?.icon}
                   categoryColor={cat?.color}
-                  onView={(id) => navigate(`/v2/subscriptions/${id}`)}
+                  onView={(id) => navigate(`/subscriptions/${id}`)}
                   onManage={handleManage}
                   onCancel={handleCancel}
                   onDelete={handleDelete}
@@ -337,7 +337,7 @@ export function SubscriptionsV2Page() {
                     subscription={sub}
                     categoryIcon={cat?.icon}
                     categoryColor={cat?.color}
-                    onView={(id) => navigate(`/v2/subscriptions/${id}`)}
+                    onView={(id) => navigate(`/subscriptions/${id}`)}
                     onManage={handleManage}
                     onCancel={handleCancel}
                     onDelete={handleDelete}
@@ -365,7 +365,7 @@ export function SubscriptionsV2Page() {
                       subscription={sub}
                       categoryIcon={cat?.icon}
                       categoryColor={cat?.color}
-                      onView={(id) => navigate(`/v2/subscriptions/${id}`)}
+                      onView={(id) => navigate(`/subscriptions/${id}`)}
                       onManage={handleManage}
                       onCancel={handleCancel}
                       onDelete={handleDelete}

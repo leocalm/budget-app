@@ -69,7 +69,7 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
           {t('dashboard.netPosition.title')}
         </Text>
-        <Anchor component={Link} to="/v2/accounts" fz="xs" c="var(--v2-tertiary)">
+        <Anchor component={Link} to="/accounts" fz="xs" c="var(--v2-tertiary)">
           {t('dashboard.netPosition.accountsCount', { count: data.numberOfAccounts })}
         </Anchor>
       </div>

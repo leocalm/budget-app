@@ -29,7 +29,7 @@ export function V2LoginPage() {
   const [code, setCode] = useState('');
   const [useRecoveryCode, setUseRecoveryCode] = useState(false);
 
-  const redirectPath = (location.state?.from as string) ?? '/v2/dashboard';
+  const redirectPath = (location.state?.from as string) ?? '/dashboard';
 
   const handleLogin = async () => {
     try {
@@ -166,13 +166,7 @@ export function V2LoginPage() {
           onChange={(e) => setRememberMe(e.currentTarget.checked)}
           size="sm"
         />
-        <Anchor
-          component={Link}
-          to="/v2/auth/forgot-password"
-          fz="sm"
-          fw={600}
-          c="var(--v2-primary)"
-        >
+        <Anchor component={Link} to="/auth/forgot-password" fz="sm" fw={600} c="var(--v2-primary)">
           {t('auth.login.forgotPassword')}
         </Anchor>
       </div>
@@ -184,7 +178,7 @@ export function V2LoginPage() {
       <div className={classes.footerLink}>
         <Text fz="sm" c="dimmed">
           {t('auth.login.noAccount')}{' '}
-          <Anchor component={Link} to="/v2/auth/register" c="var(--v2-primary)" fw={600}>
+          <Anchor component={Link} to="/auth/register" c="var(--v2-primary)" fw={600}>
             {t('auth.login.createOne')}
           </Anchor>
         </Text>

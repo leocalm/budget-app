@@ -53,7 +53,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
   if (isError || !data) {
     return (
       <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
-        <Anchor component={Link} to="/v2/subscriptions" fz="sm" c="var(--v2-primary)">
+        <Anchor component={Link} to="/subscriptions" fz="sm" c="var(--v2-primary)">
           {t('subscriptions.breadcrumb')}
         </Anchor>
         <div className={classes.centeredState}>
@@ -83,7 +83,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
     try {
       await deleteMutation.mutateAsync(subscriptionId);
       toast.success({ message: t('subscriptions.deleted') });
-      navigate('/v2/subscriptions');
+      navigate('/subscriptions');
     } catch {
       toast.error({ message: t('subscriptions.deleteFailed') });
     }
@@ -93,7 +93,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
     <Stack gap="lg" p="md" style={{ background: 'var(--v2-bg)', minHeight: '100%' }}>
       <div className={classes.detailHeader}>
         <div>
-          <Anchor component={Link} to="/v2/subscriptions" fz="sm" c="var(--v2-primary)">
+          <Anchor component={Link} to="/subscriptions" fz="sm" c="var(--v2-primary)">
             {t('subscriptions.breadcrumb')}
           </Anchor>
           <Text fz={24} fw={700} ff="var(--mantine-font-family-headings)" mt={4}>
