@@ -35,17 +35,17 @@ export default defineConfig({
     {
       name: 'desktop-chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: /tests\/e2e\/mobile\//,
+      testIgnore: [/tests\/e2e\/mobile\//, /tests\/e2e\/real\//],
     },
     {
       name: 'desktop-firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: /tests\/e2e\/mobile\//,
+      testIgnore: [/tests\/e2e\/mobile\//, /tests\/e2e\/real\//],
     },
     {
       name: 'desktop-webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: /tests\/e2e\/mobile\//,
+      testIgnore: [/tests\/e2e\/mobile\//, /tests\/e2e\/real\//],
     },
     {
       name: 'mobile-chromium',
@@ -64,6 +64,16 @@ export default defineConfig({
         /screenshots\.spec\.ts/,
         /screenshots-features\.spec\.ts/,
       ],
+    },
+    {
+      name: 'real-desktop',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /tests\/e2e\/real\/.*\.spec\.ts/,
+    },
+    {
+      name: 'real-mobile',
+      use: { ...devices['Pixel 7'] },
+      testMatch: /tests\/e2e\/real\/.*\.spec\.ts/,
     },
   ],
 });

@@ -58,7 +58,12 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
               {t('common.settings')}
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item leftSection={<IconLogout size={14} />} color="red" onClick={handleLogout}>
+            <Menu.Item
+              data-testid="user-logout-button"
+              leftSection={<IconLogout size={14} />}
+              color="red"
+              onClick={handleLogout}
+            >
               {t('common.logOut')}
             </Menu.Item>
           </Menu.Dropdown>
@@ -95,7 +100,12 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
             Settings
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item leftSection={<IconLogout size={14} />} color="red" onClick={handleLogout}>
+          <Menu.Item
+            data-testid="user-logout-button"
+            leftSection={<IconLogout size={14} />}
+            color="red"
+            onClick={handleLogout}
+          >
             Log out
           </Menu.Item>
         </Menu.Dropdown>

@@ -205,7 +205,7 @@ export function TransactionsV2Page() {
             {t('transactions.subtitle', { count: apiTotalCount })}
           </Text>
         </div>
-        <Button size="sm" onClick={handleCreate}>
+        <Button data-testid="transactions-add-button" size="sm" onClick={handleCreate}>
           {t('transactions.addTransaction')}
         </Button>
       </div>

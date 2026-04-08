@@ -130,6 +130,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
   return (
     <Drawer
+      data-testid="account-form-drawer"
       opened={opened}
       onClose={onClose}
       title={isEdit ? t('accounts.form.editTitle') : t('accounts.form.createTitle')}
@@ -168,6 +169,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Name */}
         <TextInput
+          data-testid="account-name-input"
           label={t('accounts.form.accountName')}
           placeholder={t('accounts.form.accountNamePlaceholder')}
           value={name}
@@ -196,6 +198,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Initial balance */}
         <NumberInput
+          data-testid="account-balance-input"
           label={t('accounts.form.initialBalance')}
           value={initialBalance}
           onChange={setInitialBalance}
@@ -293,7 +296,12 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
+          <Button
+            data-testid="account-form-submit"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid}
+          >
             {isEdit ? t('common.saveChanges') : t('accounts.form.createTitle')}
           </Button>
         </Group>

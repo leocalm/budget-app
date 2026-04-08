@@ -134,6 +134,7 @@ export function TransactionFormDrawer({
 
   return (
     <Drawer
+      data-testid="transaction-form-drawer"
       opened={opened}
       onClose={onClose}
       title={
@@ -166,6 +167,7 @@ export function TransactionFormDrawer({
 
         {/* Description */}
         <TextInput
+          data-testid="transaction-description-input"
           label={t('transactions.form.description')}
           placeholder={
             isTransfer
@@ -180,6 +182,7 @@ export function TransactionFormDrawer({
         {/* Amount + Date */}
         <Group grow>
           <NumberInput
+            data-testid="transaction-amount-input"
             label={t('transactions.form.amount')}
             value={amount}
             onChange={setAmount}
@@ -189,6 +192,7 @@ export function TransactionFormDrawer({
             required
           />
           <TextInput
+            data-testid="transaction-date-input"
             label={t('transactions.form.date')}
             type="date"
             value={date}
@@ -199,6 +203,7 @@ export function TransactionFormDrawer({
 
         {/* Category — hidden for transfers in a simplified way */}
         <Select
+          data-testid="transaction-category-select"
           label={t('transactions.form.category')}
           data={categoryOptions}
           value={categoryId}
@@ -209,6 +214,7 @@ export function TransactionFormDrawer({
 
         {/* From Account */}
         <Select
+          data-testid="transaction-account-select"
           label={isTransfer ? t('transactions.form.fromAccount') : t('transactions.form.account')}
           data={accountOptions}
           value={fromAccountId}
@@ -254,7 +260,12 @@ export function TransactionFormDrawer({
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
+          <Button
+            data-testid="transaction-form-submit"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid}
+          >
             {isEdit
               ? t('common.saveChanges')
               : isTransfer

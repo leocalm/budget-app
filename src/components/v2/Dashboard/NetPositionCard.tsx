@@ -77,7 +77,13 @@ export function NetPositionCard({ periodId }: NetPositionCardProps) {
       {/* Hero + Sparkline */}
       <div className={classes.heroRow}>
         <div className={classes.heroLeft}>
-          <Text fz={32} fw={700} lh={1.1} ff="var(--mantine-font-family-monospace)">
+          <Text
+            fz={32}
+            fw={700}
+            lh={1.1}
+            ff="var(--mantine-font-family-monospace)"
+            data-testid="net-position-total-value"
+          >
             <CurrencyValue cents={data.total} />
           </Text>
           <Text fz="sm" c="dimmed" mt={2}>

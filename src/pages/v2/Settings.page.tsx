@@ -1038,6 +1038,7 @@ export function SettingsV2Page() {
                 <div className={classes.exportActions}>
                   <span className={classes.formatBadge}>CSV</span>
                   <Button
+                    data-testid="settings-export-csv-button"
                     variant="default"
                     size="compact-xs"
                     radius={8}
@@ -1064,6 +1065,7 @@ export function SettingsV2Page() {
                 <div className={classes.exportActions}>
                   <span className={classes.formatBadge}>JSON</span>
                   <Button
+                    data-testid="settings-export-json-button"
                     variant="default"
                     size="compact-xs"
                     radius={8}

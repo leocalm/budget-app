@@ -102,6 +102,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
   return (
     <Drawer
+      data-testid="period-form-drawer"
       opened={opened}
       onClose={onClose}
       title={isEdit ? t('periods.form.editTitle') : t('periods.form.createTitle')}
@@ -121,6 +122,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
         {/* Period name */}
         <TextInput
+          data-testid="period-name-input"
           label={t('periods.form.periodName')}
           placeholder={t('periods.form.periodNamePlaceholder')}
           value={name}
@@ -130,6 +132,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
         {/* Start date */}
         <TextInput
+          data-testid="period-start-date"
           label={t('periods.form.startDate')}
           type="date"
           value={startDate}
@@ -176,6 +179,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {/* Manual end date */}
         {periodType === 'manualEndDate' && (
           <TextInput
+            data-testid="period-end-date"
             label={t('periods.form.endDate')}
             type="date"
             value={manualEndDate}
@@ -189,7 +193,12 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
+          <Button
+            data-testid="period-form-submit"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid}
+          >
             {isEdit ? t('common.saveChanges') : t('periods.form.createButton')}
           </Button>
         </Group>

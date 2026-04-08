@@ -128,6 +128,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
 
   return (
     <Drawer
+      data-testid="category-form-drawer"
       opened={opened}
       onClose={onClose}
       title={isEdit ? t('categories.form.editTitle') : t('categories.form.createTitle')}
@@ -145,7 +146,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
               {t('categories.form.type')}
             </Text>
-            <div className={classes.typeSelector}>
+            <div className={classes.typeSelector} data-testid="category-type-select">
               {(['income', 'expense'] as const).map((catType) => (
                 <UnstyledButton
                   key={catType}
@@ -206,6 +207,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
 
         {/* Name */}
         <TextInput
+          data-testid="category-name-input"
           label={t('categories.form.categoryName')}
           placeholder={t('categories.form.categoryNamePlaceholder')}
           value={name}
@@ -246,6 +248,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
             Also hides when autoComputedTarget is true (target is derived from active subs). */}
         {behavior !== 'subscription' && !editCategory?.autoComputedTarget && (
           <NumberInput
+            data-testid="category-budget-input"
             label={t('categories.form.budgetTarget')}
             description={t('categories.form.budgetTargetDesc')}
             placeholder="0.00"
@@ -279,7 +282,12 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
+          <Button
+            data-testid="category-form-submit"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid}
+          >
             {isEdit ? t('common.saveChanges') : t('categories.form.createButton')}
           </Button>
         </Group>

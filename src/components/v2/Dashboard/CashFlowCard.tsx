@@ -81,6 +81,7 @@ export function CashFlowCard({ periodId }: CashFlowCardProps) {
             fw={500}
             ff="var(--mantine-font-family-monospace)"
             className={classes.barAmount}
+            data-testid="cash-flow-income-value"
           >
             <CurrencyValue cents={data.inflows} />
           </Text>

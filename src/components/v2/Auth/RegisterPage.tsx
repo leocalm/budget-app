@@ -63,12 +63,14 @@ export function V2RegisterPage() {
       </Text>
 
       <TextInput
+        data-testid="register-name"
         label={t('auth.register.nameLabel')}
         placeholder={t('auth.register.namePlaceholder')}
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
       />
       <TextInput
+        data-testid="register-email"
         label={t('auth.register.emailLabel')}
         placeholder={t('auth.register.emailPlaceholder')}
         value={email}
@@ -77,6 +79,7 @@ export function V2RegisterPage() {
       />
       <div>
         <TextInput
+          data-testid="register-password"
           label={t('auth.register.passwordLabel')}
           placeholder={t('auth.register.passwordPlaceholder')}
           value={password}
@@ -86,6 +89,7 @@ export function V2RegisterPage() {
         {password && <PasswordStrengthBar score={strength.score} />}
       </div>
       <TextInput
+        data-testid="register-confirm-password"
         label={t('auth.register.confirmPasswordLabel')}
         placeholder={t('auth.register.confirmPasswordPlaceholder')}
         value={confirmPassword}
@@ -117,6 +121,7 @@ export function V2RegisterPage() {
       />
 
       <Button
+        data-testid="register-submit"
         onClick={handleSubmit}
         loading={registerMutation.isPending || !currencies}
         fullWidth

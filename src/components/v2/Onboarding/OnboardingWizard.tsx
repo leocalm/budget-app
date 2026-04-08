@@ -179,7 +179,7 @@ export function OnboardingWizard() {
   const selectedTemplateData = (templates ?? []).find((t) => t.id === selectedTemplate);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} data-testid="onboarding-wizard">
       {/* Stepper — shown on steps 1-4 */}
       {step >= 1 && step <= 4 && (
         <div className={classes.stepper}>
@@ -244,7 +244,13 @@ export function OnboardingWizard() {
           <Text fz="xs" c="dimmed" mt="lg" fs="italic" ta="center">
             {t('onboarding.welcome.quote')}
           </Text>
-          <Button fullWidth mt="xl" size="md" onClick={() => setStep(1)}>
+          <Button
+            data-testid="onboarding-next"
+            fullWidth
+            mt="xl"
+            size="md"
+            onClick={() => setStep(1)}
+          >
             {t('onboarding.welcome.getStarted')}
           </Button>
         </div>
@@ -304,10 +310,10 @@ export function OnboardingWizard() {
             ))}
           </div>
           <div className={classes.navButtons}>
-            <Button variant="subtle" onClick={handleBack}>
+            <Button data-testid="onboarding-back" variant="subtle" onClick={handleBack}>
               {t('common.back')}
             </Button>
-            <Button onClick={handleNext} disabled={!selectedCurrency}>
+            <Button data-testid="onboarding-next" onClick={handleNext} disabled={!selectedCurrency}>
               {t('common.continue')}
             </Button>
           </div>
@@ -351,10 +357,12 @@ export function OnboardingWizard() {
             {t('onboarding.periods.changeHint')}
           </Text>
           <div className={classes.navButtons}>
-            <Button variant="subtle" onClick={handleBack}>
+            <Button data-testid="onboarding-back" variant="subtle" onClick={handleBack}>
               {t('common.back')}
             </Button>
-            <Button onClick={handleNext}>{t('common.continue')}</Button>
+            <Button data-testid="onboarding-next" onClick={handleNext}>
+              {t('common.continue')}
+            </Button>
           </div>
         </div>
       )}
@@ -431,14 +439,21 @@ export function OnboardingWizard() {
             </Button>
           </Stack>
           <div className={classes.navButtons}>
-            <Button variant="subtle" onClick={handleBack}>
+            <Button data-testid="onboarding-back" variant="subtle" onClick={handleBack}>
               {t('common.back')}
             </Button>
             <div className={classes.navRight}>
-              <Button variant="subtle" c="dimmed" onClick={() => setStep(4)}>
+              <Button
+                data-testid="onboarding-skip"
+                variant="subtle"
+                c="dimmed"
+                onClick={() => setStep(4)}
+              >
                 {t('common.skipForNow')}
               </Button>
-              <Button onClick={handleNext}>{t('common.continue')}</Button>
+              <Button data-testid="onboarding-next" onClick={handleNext}>
+                {t('common.continue')}
+              </Button>
             </div>
           </div>
         </div>
@@ -502,14 +517,23 @@ export function OnboardingWizard() {
             {t('onboarding.categories.colorHint')}
           </Text>
           <div className={classes.navButtons}>
-            <Button variant="subtle" onClick={handleBack}>
+            <Button data-testid="onboarding-back" variant="subtle" onClick={handleBack}>
               {t('common.back')}
             </Button>
             <div className={classes.navRight}>
-              <Button variant="subtle" c="dimmed" onClick={() => setStep(5)}>
+              <Button
+                data-testid="onboarding-skip"
+                variant="subtle"
+                c="dimmed"
+                onClick={() => setStep(5)}
+              >
                 {t('common.skipForNow')}
               </Button>
-              <Button onClick={handleNext} disabled={!selectedTemplate}>
+              <Button
+                data-testid="onboarding-next"
+                onClick={handleNext}
+                disabled={!selectedTemplate}
+              >
                 Continue
               </Button>
             </div>
@@ -589,7 +613,14 @@ export function OnboardingWizard() {
             )}
           </Stack>
 
-          <Button fullWidth mt="xl" size="md" onClick={handleComplete} loading={isSubmitting}>
+          <Button
+            data-testid="onboarding-go-to-dashboard"
+            fullWidth
+            mt="xl"
+            size="md"
+            onClick={handleComplete}
+            loading={isSubmitting}
+          >
             {t('onboarding.complete.goToDashboard')}
           </Button>
           <Button

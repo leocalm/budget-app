@@ -140,6 +140,7 @@ export function V2LoginPage() {
       </Text>
 
       <TextInput
+        data-testid="login-email"
         label={t('auth.login.emailLabel')}
         placeholder={t('auth.login.emailPlaceholder')}
         value={email}
@@ -147,6 +148,7 @@ export function V2LoginPage() {
         type="email"
       />
       <TextInput
+        data-testid="login-password"
         label={t('auth.login.passwordLabel')}
         placeholder={t('auth.login.passwordPlaceholder')}
         value={password}
@@ -171,7 +173,13 @@ export function V2LoginPage() {
         </Anchor>
       </div>
 
-      <Button onClick={handleLogin} loading={loginMutation.isPending} fullWidth size="md">
+      <Button
+        data-testid="login-submit"
+        onClick={handleLogin}
+        loading={loginMutation.isPending}
+        fullWidth
+        size="md"
+      >
         {t('auth.login.submitButton')}
       </Button>
 

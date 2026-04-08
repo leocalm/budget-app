@@ -182,7 +182,7 @@ export function AccountsV2Page() {
             {t('accounts.subtitle')}
           </Text>
         </div>
-        <Button size="sm" onClick={handleCreate}>
+        <Button data-testid="accounts-add-button" size="sm" onClick={handleCreate}>
           {t('accounts.addAccount')}
         </Button>
       </div>

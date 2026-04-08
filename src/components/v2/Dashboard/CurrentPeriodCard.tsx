@@ -89,7 +89,13 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
       {/* Hero + Sparkline */}
       <div className={classes.heroRow}>
         <div className={classes.heroLeft}>
-          <Text fz={32} fw={700} lh={1.1} ff="var(--mantine-font-family-monospace)">
+          <Text
+            fz={32}
+            fw={700}
+            lh={1.1}
+            ff="var(--mantine-font-family-monospace)"
+            data-testid="current-period-spent-value"
+          >
             <CurrencyValue cents={data.spent} />
           </Text>
           <Text fz="sm" c="dimmed" mt={2}>

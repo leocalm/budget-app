@@ -17,6 +17,7 @@ export function CookieBanner() {
 
   return (
     <Paper
+      data-testid="cookie-banner"
       aria-label="Cookie consent"
       role="region"
       shadow="md"
@@ -39,7 +40,7 @@ export function CookieBanner() {
           <Button variant="outline" size="sm" onClick={reject}>
             {t('cookieBanner.reject')}
           </Button>
-          <Button variant="filled" size="sm" onClick={accept}>
+          <Button data-testid="cookie-accept" variant="filled" size="sm" onClick={accept}>
             {t('cookieBanner.accept')}
           </Button>
         </Group>

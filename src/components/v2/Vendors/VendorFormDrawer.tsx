@@ -54,6 +54,7 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
 
   return (
     <Drawer
+      data-testid="vendor-form-drawer"
       opened={opened}
       onClose={onClose}
       title={isEdit ? t('vendors.form.editTitle') : t('vendors.form.createTitle')}
@@ -66,6 +67,7 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
     >
       <Stack gap="md">
         <TextInput
+          data-testid="vendor-name-input"
           label={t('vendors.form.vendorName')}
           placeholder={t('vendors.form.vendorNamePlaceholder')}
           value={name}
@@ -88,7 +90,12 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting} disabled={!isValid}>
+          <Button
+            data-testid="vendor-form-submit"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid}
+          >
             {isEdit ? t('common.saveChanges') : t('vendors.form.createButton')}
           </Button>
         </Group>
