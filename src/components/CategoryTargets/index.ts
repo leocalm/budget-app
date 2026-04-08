@@ -1,1 +1,0 @@
-export { CategoryTargets } from './CategoryTargets';

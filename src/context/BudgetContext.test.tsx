@@ -3,17 +3,18 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BudgetProvider, useBudgetPeriodSelection } from './BudgetContext';
 
-const mockUseCurrentBudgetPeriod = vi.hoisted(() => vi.fn());
 const mockUseBudgetPeriods = vi.hoisted(() => vi.fn());
 const mockUseAuth = vi.hoisted(() => vi.fn());
+const mockApiClientPost = vi.hoisted(() => vi.fn().mockResolvedValue({}));
 
-vi.mock('@/hooks/useBudget', () => ({
-  useCurrentBudgetPeriod: mockUseCurrentBudgetPeriod,
+vi.mock('@/hooks/v2/useBudgetPeriods', () => ({
   useBudgetPeriods: mockUseBudgetPeriods,
 }));
 
 vi.mock('./AuthContext', () => ({ useAuth: mockUseAuth }));
-vi.mock('@/api/onboarding', () => ({ completeOnboarding: vi.fn().mockResolvedValue(undefined) }));
+vi.mock('@/api/v2client', () => ({
+  apiClient: { POST: mockApiClientPost },
+}));
 
 const periods = [
   {
@@ -21,12 +22,14 @@ const periods = [
     name: 'Current',
     startDate: '2026-02-01',
     endDate: '2026-02-28',
+    status: 'active',
   },
   {
     id: 'period-next',
     name: 'Next',
     startDate: '2026-03-01',
     endDate: '2026-03-31',
+    status: 'upcoming',
   },
 ];
 
@@ -37,17 +40,13 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('BudgetContext', () => {
   beforeEach(() => {
     localStorage.clear();
-    mockUseCurrentBudgetPeriod.mockReset();
     mockUseBudgetPeriods.mockReset();
     mockUseAuth.mockReturnValue({ user: { onboardingStatus: 'completed' } });
 
     mockUseBudgetPeriods.mockReturnValue({
-      data: periods,
+      data: { data: periods },
       isFetched: true,
       refetch: vi.fn(),
-    });
-    mockUseCurrentBudgetPeriod.mockReturnValue({
-      data: periods[0],
     });
   });
 
@@ -71,8 +70,11 @@ describe('BudgetContext', () => {
 
   it('clears selected period when there are no periods', async () => {
     localStorage.setItem('budget-period-id', JSON.stringify('stale-period'));
-    mockUseBudgetPeriods.mockReturnValue({ data: [], isFetched: true });
-    mockUseCurrentBudgetPeriod.mockReturnValue({ data: undefined });
+    mockUseBudgetPeriods.mockReturnValue({
+      data: { data: [] },
+      isFetched: true,
+      refetch: vi.fn(),
+    });
 
     const { result } = renderHook(() => useBudgetPeriodSelection(), { wrapper });
 
