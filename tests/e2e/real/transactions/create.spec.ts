@@ -35,9 +35,7 @@ test.describe('Create transactions', () => {
       date: '2026-04-10',
     });
 
-    await expect(loggedInPage.getByText('Lunch')).toBeVisible();
-    const count = await transactionsPage.getVisibleCount();
-    expect(count).toBeGreaterThanOrEqual(1);
+    await expect(loggedInPage.getByText('Lunch').first()).toBeVisible();
   });
 
   test('create incoming (income) transaction appears in the list', async ({ loggedInPage }) => {
@@ -54,9 +52,7 @@ test.describe('Create transactions', () => {
       date: '2026-04-01',
     });
 
-    await expect(loggedInPage.getByText('Monthly salary')).toBeVisible();
-    const count = await transactionsPage.getVisibleCount();
-    expect(count).toBeGreaterThanOrEqual(1);
+    await expect(loggedInPage.getByText('Monthly salary').first()).toBeVisible();
   });
 
   test('create transfer transaction appears in the list', async ({ loggedInPage }) => {
@@ -79,8 +75,6 @@ test.describe('Create transactions', () => {
       toAccount: 'Savings',
     });
 
-    await expect(loggedInPage.getByText('Move to savings')).toBeVisible();
-    const count = await transactionsPage.getVisibleCount();
-    expect(count).toBeGreaterThanOrEqual(1);
+    await expect(loggedInPage.getByText('Move to savings').first()).toBeVisible();
   });
 });

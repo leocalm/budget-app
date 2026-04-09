@@ -90,7 +90,7 @@ export function TransactionFormDrawer({
           categoryId,
           fromAccountId,
           toAccountId,
-          transactionType: 'transfer',
+          transactionType: 'Transfer' as 'transfer',
         };
         if (isEdit && editTransaction) {
           await updateMutation.mutateAsync({ id: editTransaction.id, body });
@@ -107,7 +107,7 @@ export function TransactionFormDrawer({
           categoryId,
           fromAccountId,
           vendorId: vendorId || undefined,
-          transactionType: 'regular',
+          transactionType: 'Regular' as 'regular',
         };
         if (isEdit && editTransaction) {
           await updateMutation.mutateAsync({ id: editTransaction.id, body });
@@ -226,6 +226,7 @@ export function TransactionFormDrawer({
         {/* To Account (transfers only) */}
         {isTransfer && (
           <Select
+            data-testid="transaction-to-account-select"
             label={t('transactions.form.toAccount')}
             data={accountOptions.filter((a) => a.value !== fromAccountId)}
             value={toAccountId}
@@ -238,6 +239,7 @@ export function TransactionFormDrawer({
         {/* Vendor (regular only) */}
         {!isTransfer && (
           <Select
+            data-testid="transaction-vendor-select"
             label={t('transactions.form.vendorOptional')}
             data={vendorOptions}
             value={vendorId}
