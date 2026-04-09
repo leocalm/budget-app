@@ -74,6 +74,8 @@ export default defineConfig({
       name: 'real-mobile',
       use: { ...devices['Pixel 7'] },
       testMatch: /tests\/e2e\/real\/.*\.spec\.ts/,
+      testIgnore: /tests\/e2e\/real\/journey\//,
+      dependencies: ['real-desktop'],
     },
   ],
 });
