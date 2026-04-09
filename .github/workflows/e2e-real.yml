@@ -1,0 +1,121 @@
+name: E2E Real Mode
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: e2e-real-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-real:
+    name: E2E tests (real API)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      db-e2e:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: piggy_pulse_e2e_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres # pragma: allowlist secret
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+      backend-e2e:
+        image: ghcr.io/leocalm/piggy-pulse-api:latest
+        env:
+          DATABASE_URL: postgres://postgres:postgres@db-e2e:5432/piggy_pulse_e2e_db # pragma: allowlist secret
+          PIGGY_PULSE_DATABASE__URL: postgres://postgres:postgres@db-e2e:5432/piggy_pulse_e2e_db # pragma: allowlist secret
+          PIGGY_PULSE_DATABASE__MAX_CONNECTIONS: 10
+          PIGGY_PULSE_DATABASE__MIN_CONNECTIONS: 1
+          PIGGY_PULSE_SERVER__ADDRESS: 0.0.0.0
+          PIGGY_PULSE_SERVER__PORT: 8000
+          PIGGY_PULSE_API__BASE_PATH: /v1
+          PIGGY_PULSE_CORS__ALLOWED_ORIGINS: '["http://localhost:5173", "http://127.0.0.1:5173"]'
+          PIGGY_PULSE_CORS__ALLOW_CREDENTIALS: "true"
+          PIGGY_PULSE_SESSION__COOKIE_SECURE: "false"
+          PIGGY_PULSE_EMAIL__ENABLED: "false"
+          PIGGY_PULSE_TWO_FACTOR__ENCRYPTION_KEY: "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef" # pragma: allowlist secret
+          ROCKET_SECRET_KEY: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY= # pragma: allowlist secret
+          ROCKET_ADDRESS: 0.0.0.0
+          ROCKET_PORT: 8000
+        options: >-
+          --health-cmd "curl -sf http://localhost:8000/v2/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 30
+          --health-start-period 30s
+        ports:
+          - 18080:8000
+
+    env:
+      E2E_TARGET: local
+      E2E_API_MODE: real
+      E2E_API_URL: http://127.0.0.1:18080
+      VITE_API_PROXY_TARGET: http://127.0.0.1:18080
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Wait for API health
+        run: |
+          echo "Waiting for API..."
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:18080/v2/health > /dev/null 2>&1; then
+              echo "API ready after ${i}s"
+              break
+            fi
+            sleep 1
+            if [ "$i" -eq 60 ]; then
+              echo "API failed to start" && exit 1
+            fi
+          done
+
+      - name: Run E2E real-mode tests
+        run: npx playwright test --project=real-desktop --workers=1
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-real-report
+          path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-real-results
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
