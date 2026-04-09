@@ -38,6 +38,42 @@ export const test = base.extend<RealFixtures>({
     await page.getByTestId('login-password').fill(realUser.password);
     await page.getByTestId('login-submit').click();
     await expect(page).toHaveURL(/\/(dashboard|onboarding)/);
+
+    // Skip onboarding if redirected there
+    if (page.url().includes('/onboarding')) {
+      // Dismiss cookie banner first — it overlays the onboarding buttons
+      await page
+        .getByRole('region', { name: 'Cookie consent' })
+        .getByRole('button', { name: 'Accept' })
+        .click({ timeout: 3000 })
+        .catch(() => {});
+      await page.waitForTimeout(300);
+
+      // Click through onboarding steps until we reach the dashboard.
+      for (let i = 0; i < 10; i++) {
+        if (!page.url().includes('/onboarding')) {
+          break;
+        }
+
+        // Currency step: select Euro if the currency list is visible
+        const euroOption = page.getByText('Euro', { exact: true });
+        if (await euroOption.isVisible({ timeout: 500 }).catch(() => false)) {
+          await euroOption.click();
+        }
+
+        // Try each button in priority order
+        for (const testId of ['onboarding-go-to-dashboard', 'onboarding-skip', 'onboarding-next']) {
+          const btn = page.getByTestId(testId);
+          if (await btn.isVisible({ timeout: 500 }).catch(() => false)) {
+            await btn.click();
+            break;
+          }
+        }
+        await page.waitForTimeout(500);
+      }
+      await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
+    }
+
     await use(page);
   },
 });

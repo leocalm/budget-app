@@ -145,7 +145,7 @@ export function PeriodsV2Page() {
               {isAutoGenActive ? t('periods.autoGenActive') : t('periods.autoGenInactive')}
             </Text>
           </UnstyledButton>
-          <Button size="sm" onClick={handleCreate}>
+          <Button data-testid="periods-add-button" size="sm" onClick={handleCreate}>
             {t('periods.newPeriod')}
           </Button>
         </div>

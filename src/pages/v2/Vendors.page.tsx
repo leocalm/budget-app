@@ -193,7 +193,7 @@ export function VendorsV2Page() {
             {t('vendors.subtitle')}
           </Text>
         </div>
-        <Button size="sm" onClick={handleCreate}>
+        <Button data-testid="vendors-add-button" size="sm" onClick={handleCreate}>
           {t('vendors.addVendor')}
         </Button>
       </div>

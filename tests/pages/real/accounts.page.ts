@@ -10,7 +10,9 @@ export class RealAccountsPage {
 
   async createAccount(name: string, type: string, balance: string): Promise<void> {
     await this.page.getByTestId('accounts-add-button').click();
-    await expect(this.page.getByTestId('account-form-drawer')).toBeVisible();
+
+    // Wait for drawer content to appear (the name input means the form is ready)
+    await expect(this.page.getByTestId('account-name-input')).toBeVisible();
 
     // Select account type by clicking the matching button/option
     await this.page.getByRole('button', { name: type }).click();
@@ -19,8 +21,8 @@ export class RealAccountsPage {
     await this.page.getByTestId('account-balance-input').fill(balance);
     await this.page.getByTestId('account-form-submit').click();
 
-    // Wait for drawer to close
-    await expect(this.page.getByTestId('account-form-drawer')).not.toBeVisible();
+    // Wait for drawer to close — check that the name input is gone
+    await expect(this.page.getByTestId('account-name-input')).not.toBeVisible();
   }
 
   async getNetPosition(): Promise<string> {

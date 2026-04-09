@@ -179,7 +179,7 @@ export function CategoriesV2Page() {
             {t('categories.subtitle')}
           </Text>
         </div>
-        <Button size="sm" onClick={handleCreate}>
+        <Button data-testid="categories-add-button" size="sm" onClick={handleCreate}>
           {t('categories.addCategory')}
         </Button>
       </div>

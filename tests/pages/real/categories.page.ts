@@ -1,5 +1,11 @@
 import { expect, type Page } from 'playwright/test';
 
+const TYPE_LABELS: Record<string, string> = {
+  income: 'Incoming',
+  expense: 'Outgoing',
+  transfer: 'Transfer',
+};
+
 export class RealCategoriesPage {
   constructor(private readonly page: Page) {}
 
@@ -9,16 +15,20 @@ export class RealCategoriesPage {
   }
 
   async createCategory(name: string, type: 'income' | 'expense' | 'transfer'): Promise<void> {
-    await this.page.getByRole('button', { name: /add|create|new/i }).click();
-    await expect(this.page.getByTestId('category-form-drawer')).toBeVisible();
+    await this.page.getByTestId('categories-add-button').click();
+
+    // Wait for drawer content to appear
+    await expect(this.page.getByTestId('category-name-input')).toBeVisible();
 
     await this.page.getByTestId('category-name-input').fill(name);
 
-    // Select the type via the segmented control / radio
-    const typeControl = this.page.getByTestId('category-type-select');
-    await typeControl.getByText(type, { exact: false }).click();
+    // Select type via the custom button selector (Incoming/Outgoing labels)
+    const label = TYPE_LABELS[type] ?? type;
+    await this.page.getByTestId('category-type-select').getByText(label).click();
 
     await this.page.getByTestId('category-form-submit').click();
-    await expect(this.page.getByTestId('category-form-drawer')).not.toBeVisible();
+
+    // Wait for drawer to close
+    await expect(this.page.getByTestId('category-name-input')).not.toBeVisible();
   }
 }

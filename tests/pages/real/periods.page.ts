@@ -9,14 +9,22 @@ export class RealPeriodsPage {
   }
 
   async createPeriod(name: string, startDate: string, endDate: string): Promise<void> {
-    await this.page.getByRole('button', { name: /add|create|new/i }).click();
-    await expect(this.page.getByTestId('period-form-drawer')).toBeVisible();
+    await this.page.getByTestId('periods-add-button').click();
+
+    // Wait for drawer content
+    await expect(this.page.getByTestId('period-name-input')).toBeVisible();
 
     await this.page.getByTestId('period-name-input').fill(name);
     await this.page.getByTestId('period-start-date').fill(startDate);
+
+    // Switch to manual end date: click the period type Select, then pick the option
+    await this.page.getByLabel('Period type', { exact: false }).first().click();
+    await this.page.getByRole('option', { name: /manual/i }).click();
+
     await this.page.getByTestId('period-end-date').fill(endDate);
     await this.page.getByTestId('period-form-submit').click();
 
-    await expect(this.page.getByTestId('period-form-drawer')).not.toBeVisible();
+    // Wait for drawer to close
+    await expect(this.page.getByTestId('period-name-input')).not.toBeVisible();
   }
 }

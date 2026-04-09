@@ -19,7 +19,9 @@ export class RealTransactionsPage {
     toAccount?: string;
   }): Promise<void> {
     await this.page.getByTestId('transactions-add-button').click();
-    await expect(this.page.getByTestId('transaction-form-drawer')).toBeVisible();
+
+    // Wait for drawer content to appear (the amount input means the form is ready)
+    await expect(this.page.getByTestId('transaction-amount-input')).toBeVisible();
 
     if (opts.isTransfer) {
       // Toggle transfer mode
@@ -30,11 +32,11 @@ export class RealTransactionsPage {
     await this.page.getByTestId('transaction-description-input').fill(opts.description);
     await this.page.getByTestId('transaction-date-input').fill(opts.date);
 
-    // Select category
+    // Select category via Mantine Select
     await this.page.getByTestId('transaction-category-select').click();
     await this.page.getByRole('option', { name: opts.category }).click();
 
-    // Select from account
+    // Select from account via Mantine Select
     await this.page.getByTestId('transaction-account-select').click();
     await this.page.getByRole('option', { name: opts.account }).click();
 
@@ -49,7 +51,9 @@ export class RealTransactionsPage {
     }
 
     await this.page.getByTestId('transaction-form-submit').click();
-    await expect(this.page.getByTestId('transaction-form-drawer')).not.toBeVisible();
+
+    // Wait for drawer to close — check that the amount input is gone
+    await expect(this.page.getByTestId('transaction-amount-input')).not.toBeVisible();
   }
 
   async filterByType(type: 'all' | 'incoming' | 'outgoing' | 'transfer'): Promise<void> {
