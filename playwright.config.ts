@@ -69,6 +69,7 @@ export default defineConfig({
       name: 'real-desktop',
       use: { ...devices['Desktop Chrome'] },
       testMatch: /tests\/e2e\/real\/.*\.spec\.ts/,
+      fullyParallel: false,
     },
     {
       name: 'real-mobile',
@@ -76,6 +77,7 @@ export default defineConfig({
       testMatch: /tests\/e2e\/real\/.*\.spec\.ts/,
       testIgnore: /tests\/e2e\/real\/journey\//,
       timeout: 90_000,
+      fullyParallel: false,
     },
   ],
 });
