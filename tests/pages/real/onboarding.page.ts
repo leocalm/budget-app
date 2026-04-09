@@ -15,26 +15,27 @@ export class RealOnboardingPage {
     await this.page.waitForTimeout(300);
 
     // Click through onboarding steps until we reach the dashboard.
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 15; i++) {
       if (!this.page.url().includes('/onboarding')) {
         break;
       }
 
       // Currency step: select Euro if the currency list is visible
       const euroOption = this.page.getByText('Euro', { exact: true });
-      if (await euroOption.isVisible({ timeout: 500 }).catch(() => false)) {
+      if (await euroOption.isVisible({ timeout: 1000 }).catch(() => false)) {
         await euroOption.click();
+        await this.page.waitForTimeout(300);
       }
 
-      // Try each button in priority order
+      // Try each button in priority order (longer timeout for page transitions)
       for (const testId of ['onboarding-go-to-dashboard', 'onboarding-skip', 'onboarding-next']) {
         const btn = this.page.getByTestId(testId);
-        if (await btn.isVisible({ timeout: 500 }).catch(() => false)) {
+        if (await btn.isVisible({ timeout: 2000 }).catch(() => false)) {
           await btn.click();
+          await this.page.waitForTimeout(500);
           break;
         }
       }
-      await this.page.waitForTimeout(500);
     }
   }
 
