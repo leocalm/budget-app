@@ -16,10 +16,10 @@ export class RealAuthPage {
     await this.page.goto('/auth/register');
     await expect(this.page.getByText('Create your account')).toBeVisible();
     await this.dismissCookieBanner();
-    await this.page.getByLabel('Name').fill(name);
-    await this.page.getByLabel('Email').fill(email);
-    await this.page.getByLabel('Password', { exact: true }).fill(password);
-    await this.page.getByLabel('Confirm password').fill(password);
+    await this.page.getByTestId('register-name').fill(name);
+    await this.page.getByTestId('register-email').fill(email);
+    await this.page.getByTestId('register-password').fill(password);
+    await this.page.getByTestId('register-confirm-password').fill(password);
     await this.page.getByRole('checkbox').check();
     await this.page.getByTestId('register-submit').click();
   }

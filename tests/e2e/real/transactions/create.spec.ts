@@ -3,6 +3,11 @@ import { RealAccountsPage } from '../../../pages/real/accounts.page';
 import { RealCategoriesPage } from '../../../pages/real/categories.page';
 import { RealTransactionsPage } from '../../../pages/real/transactions.page';
 
+/** Get today's date as YYYY-MM-DD */
+function today(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
 /**
  * Helper: seed the minimum structure needed to create transactions.
  * Creates one checking account and expense + income categories.
@@ -33,7 +38,7 @@ test.describe('Create transactions', () => {
       description: 'Lunch',
       category: 'Food',
       account: 'Checking',
-      date: '2026-04-10',
+      date: today(),
     });
 
     // Scroll to the transaction to make it visible (may be off-screen on mobile)
@@ -51,7 +56,7 @@ test.describe('Create transactions', () => {
       description: 'Monthly salary',
       category: 'Salary',
       account: 'Checking',
-      date: '2026-04-01',
+      date: today(),
     });
 
     await expect(loggedInPage.getByText('Monthly salary').first()).toBeAttached();
@@ -72,7 +77,7 @@ test.describe('Create transactions', () => {
       description: 'Move to savings',
       category: 'Transfer',
       account: 'Checking',
-      date: '2026-04-05',
+      date: today(),
       isTransfer: true,
       toAccount: 'Savings',
     });

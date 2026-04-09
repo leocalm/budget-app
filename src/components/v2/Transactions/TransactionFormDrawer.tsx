@@ -90,6 +90,7 @@ export function TransactionFormDrawer({
           categoryId,
           fromAccountId,
           toAccountId,
+          // API requires PascalCase despite OpenAPI spec declaring lowercase
           transactionType: 'Transfer' as 'transfer',
         };
         if (isEdit && editTransaction) {
@@ -107,6 +108,7 @@ export function TransactionFormDrawer({
           categoryId,
           fromAccountId,
           vendorId: vendorId || undefined,
+          // API requires PascalCase despite OpenAPI spec declaring lowercase
           transactionType: 'Regular' as 'regular',
         };
         if (isEdit && editTransaction) {

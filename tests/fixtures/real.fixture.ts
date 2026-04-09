@@ -1,5 +1,6 @@
 import { test as base, expect, type Page } from 'playwright/test';
 import { createTestUserCredentials, type TestUserCredentials } from '../helpers/test-data';
+import { RealOnboardingPage } from '../pages/real/onboarding.page';
 import { e2eEnv } from '../setup/env';
 
 interface RealFixtures {
@@ -64,38 +65,9 @@ export const test = base.extend<RealFixtures>({
 
     // Skip onboarding if redirected there
     if (page.url().includes('/onboarding')) {
-      // Dismiss cookie banner first — it overlays the onboarding buttons
-      await page
-        .getByRole('region', { name: 'Cookie consent' })
-        .getByRole('button', { name: 'Accept' })
-        .click({ timeout: 3000 })
-        .catch(() => {});
-      await page.waitForTimeout(300);
-
-      // Click through onboarding steps until we reach the dashboard.
-      for (let i = 0; i < 15; i++) {
-        if (!page.url().includes('/onboarding')) {
-          break;
-        }
-
-        // Currency step: select Euro if the currency list is visible
-        const euroOption = page.getByText('Euro', { exact: true });
-        if (await euroOption.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await euroOption.click();
-          await page.waitForTimeout(300);
-        }
-
-        // Try each button in priority order (longer timeout for page transitions)
-        for (const testId of ['onboarding-go-to-dashboard', 'onboarding-skip', 'onboarding-next']) {
-          const btn = page.getByTestId(testId);
-          if (await btn.isVisible({ timeout: 2000 }).catch(() => false)) {
-            await btn.click();
-            await page.waitForTimeout(500);
-            break;
-          }
-        }
-      }
-      await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
+      const onboarding = new RealOnboardingPage(page);
+      await onboarding.skipToEnd();
+      await onboarding.expectOnDashboard();
     }
 
     await use(page);

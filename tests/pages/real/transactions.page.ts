@@ -64,10 +64,17 @@ export class RealTransactionsPage {
     await this.page.getByTestId('transaction-description-input').fill(opts.description);
     await this.page.getByTestId('transaction-form-submit').click();
 
+    // Wait for API call to complete (button re-enables after loading)
     await expect(this.page.getByTestId('transaction-form-submit')).toBeEnabled({
       timeout: 10000,
     });
-    await this.page.waitForTimeout(500);
+    // Verify no error toast appeared
+    const errorToast = this.page.getByRole('alert').filter({ hasText: /failed|error/i });
+    if (await errorToast.isVisible({ timeout: 500 }).catch(() => false)) {
+      const msg = await errorToast.textContent();
+      throw new Error(`Transaction creation failed: ${msg}`);
+    }
+    // Close the drawer (stays open for consecutive entries)
     await this.page.keyboard.press('Escape');
     await this.page.waitForTimeout(300);
   }

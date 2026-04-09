@@ -8,6 +8,11 @@ import { RealOnboardingPage } from '../../../pages/real/onboarding.page';
 import { RealTransactionsPage } from '../../../pages/real/transactions.page';
 import { RealVendorsPage } from '../../../pages/real/vendors.page';
 
+/** Get today's date as YYYY-MM-DD */
+function today(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
 test('first-time user journey: register → setup → transact → verify → export → re-login', async ({
   page,
 }) => {
@@ -86,7 +91,7 @@ test('first-time user journey: register → setup → transact → verify → ex
       description: 'April Salary',
       category: 'Salary',
       account: 'Checking',
-      date: '2026-04-01',
+      date: today(),
     });
   });
 
@@ -97,7 +102,7 @@ test('first-time user journey: register → setup → transact → verify → ex
       description: 'April Rent',
       category: 'Rent',
       account: 'Checking',
-      date: '2026-04-02',
+      date: today(),
     });
   });
 
@@ -108,7 +113,7 @@ test('first-time user journey: register → setup → transact → verify → ex
       description: 'Weekly groceries',
       category: 'Groceries',
       account: 'Checking',
-      date: '2026-04-03',
+      date: today(),
       vendor: 'Albert Heijn',
     });
   });
@@ -120,7 +125,7 @@ test('first-time user journey: register → setup → transact → verify → ex
       description: 'Public transport',
       category: 'Transport',
       account: 'Checking',
-      date: '2026-04-04',
+      date: today(),
     });
   });
 
@@ -131,7 +136,7 @@ test('first-time user journey: register → setup → transact → verify → ex
       description: 'Transfer to Savings',
       category: 'Transfer',
       account: 'Checking',
-      date: '2026-04-05',
+      date: today(),
       isTransfer: true,
       toAccount: 'Savings',
     });

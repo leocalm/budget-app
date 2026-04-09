@@ -1,10 +1,11 @@
-import { type Page } from 'playwright/test';
+import { expect, type Page } from 'playwright/test';
 
 export class RealDashboardPage {
   constructor(private readonly page: Page) {}
 
   async goto(): Promise<void> {
     await this.page.goto('/dashboard');
+    await expect(this.page).toHaveURL(/\/dashboard/);
   }
 
   async getSpent(): Promise<string> {
