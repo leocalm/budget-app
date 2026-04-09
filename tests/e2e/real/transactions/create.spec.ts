@@ -1,20 +1,16 @@
 import { expect, test } from '../../../fixtures/real.fixture';
 import { RealAccountsPage } from '../../../pages/real/accounts.page';
 import { RealCategoriesPage } from '../../../pages/real/categories.page';
-import { RealPeriodsPage } from '../../../pages/real/periods.page';
 import { RealTransactionsPage } from '../../../pages/real/transactions.page';
 
 /**
  * Helper: seed the minimum structure needed to create transactions.
- * Creates one period, one checking account, and expense + income categories.
+ * Creates one checking account and expense + income categories.
+ * Skips period creation since onboarding auto-generates periods.
  */
 async function seedStructure(page: import('playwright/test').Page): Promise<void> {
   const accountsPage = new RealAccountsPage(page);
-  const periodsPage = new RealPeriodsPage(page);
   const categoriesPage = new RealCategoriesPage(page);
-
-  await periodsPage.goto();
-  await periodsPage.createPeriod('April 2026', '2026-04-01', '2026-04-30');
 
   await accountsPage.goto();
   await accountsPage.createAccount('Checking', 'Checking', '1000');
@@ -65,10 +61,6 @@ test.describe('Create transactions', () => {
 
   test('create transfer transaction appears in the list', async ({ loggedInPage }) => {
     const accountsPage = new RealAccountsPage(loggedInPage);
-    const periodsPage = new RealPeriodsPage(loggedInPage);
-
-    await periodsPage.goto();
-    await periodsPage.createPeriod('April 2026', '2026-04-01', '2026-04-30');
 
     await accountsPage.goto();
     await accountsPage.createAccount('Checking', 'Checking', '3000');
