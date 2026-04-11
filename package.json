@@ -92,7 +92,7 @@
     "msw": "^2.12.10",
     "msw-storybook-addon": "^2.0.6",
     "openapi-typescript": "^7.13.0",
-    "playwright": "^1.57.0",
+    "playwright": "^1.59.1",
     "postcss": "^8.5.8",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
