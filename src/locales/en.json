@@ -1834,10 +1834,5 @@
       "excludeFailed": "Failed to exclude category.",
       "includeFailed": "Failed to include category."
     }
-  },
-  "cookieBanner": {
-    "message": "We use cookies to keep you logged in and, with your consent, to understand how the app is used. Strictly necessary cookies are always active.",
-    "accept": "Accept",
-    "reject": "Reject"
   }
 }

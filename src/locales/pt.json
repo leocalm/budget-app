@@ -1750,10 +1750,5 @@
       "excludeFailed": "Falha ao excluir a categoria.",
       "includeFailed": "Falha ao incluir a categoria."
     }
-  },
-  "cookieBanner": {
-    "message": "Utilizamos cookies para manter a sua sessão ativa e, com o seu consentimento, para perceber como a aplicação é utilizada. Os cookies estritamente necessários estão sempre ativos.",
-    "accept": "Aceitar",
-    "reject": "Rejeitar"
   }
 }

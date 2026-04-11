@@ -42,7 +42,7 @@ export function QuickAdd() {
         categoryId,
         fromAccountId: accountId,
         vendorId: vendorId || undefined,
-        transactionType: 'regular',
+        transactionType: 'Regular' as 'regular',
       });
       toast.success({ message: t('transactions.quickAdd.success') });
       setDescription('');
