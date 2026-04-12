@@ -103,12 +103,6 @@ export function SettingsV2Page() {
   );
   const [compactMode, setCompactMode] = useState(false);
 
-  // ── Local state (dashboard widgets) ──
-  const [_hiddenWidgets, setHiddenWidgets] = useState<string[]>([]);
-  const [_widgetOrder, setWidgetOrder] = useState<string[]>([]);
-  // null = show all active accounts (default); string[] = show only these account IDs
-  const [_visibleAccountIds, setVisibleAccountIds] = useState<string[] | null>(null);
-
   // ── Local state (security modals) ──
   const [passwordModalOpen, passwordModal] = useDisclosure(false);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -170,11 +164,6 @@ export function SettingsV2Page() {
       if (prefs.colorTheme) {
         setColorTheme(prefs.colorTheme as ColorTheme);
       }
-      if (prefs.dashboardLayout) {
-        setHiddenWidgets(prefs.dashboardLayout.hiddenWidgets ?? []);
-        setWidgetOrder(prefs.dashboardLayout.widgetOrder ?? []);
-        setVisibleAccountIds(prefs.dashboardLayout.visibleAccountIds ?? null);
-      }
     }
   }, [preferencesQuery.data, setColorTheme]);
 
@@ -216,6 +205,13 @@ export function SettingsV2Page() {
     },
     [setColorScheme, updatePrefsMut, language, dateFormat, numberFormat, colorTheme, compactMode]
   );
+
+  // ── Migrate users off removed "system" scheme ──
+  useEffect(() => {
+    if (scheme === 'system' || (colorScheme as string) === 'auto') {
+      void handleSchemeChange('dark');
+    }
+  }, [scheme, colorScheme, handleSchemeChange]);
 
   const handleThemeChange = useCallback(
     async (theme: ColorTheme) => {

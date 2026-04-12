@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut } from './client';
+import { apiGet, apiPost } from './client';
 import { AccountLockedError, ApiError, RateLimitError } from './errors';
 
 function errorWithCause(message: string, cause: unknown): Error {
@@ -14,12 +14,6 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-}
-
-export interface UpdateUserRequest {
-  name: string;
-  email: string;
-  password?: string;
 }
 
 export interface User {
@@ -115,35 +109,6 @@ export async function fetchCurrentUser(): Promise<User> {
   }
 
   return user;
-}
-
-/**
- * Updates a user's profile information.
- * @throws Error with user-friendly message on failure
- */
-export async function updateUser(id: string, data: UpdateUserRequest): Promise<User> {
-  try {
-    return await apiPut<User, UpdateUserRequest>(`/api/auth/users/${id}`, data);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      if (error.status === 400) {
-        throw errorWithCause(error.message || 'Invalid data. Please check your inputs.', error);
-      }
-      if (error.status >= 500) {
-        throw errorWithCause('Server error. Please try again later.', error);
-      }
-      if (error.message) {
-        throw errorWithCause(error.message, error);
-      }
-    }
-    if (error instanceof Error && error.message.includes('Failed to fetch')) {
-      throw errorWithCause(
-        'Unable to connect to the server. Please check your internet connection.',
-        error
-      );
-    }
-    throw errorWithCause('Update failed. Please try again.', error);
-  }
 }
 
 /**

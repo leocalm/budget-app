@@ -248,7 +248,10 @@
         "useAuthenticator": "Usar código do autenticador",
         "useRecovery": "Ou usar um código de recuperação",
         "verify": "Verificar"
-      }
+      },
+      "waitSeconds": "Aguarde {{seconds}}s",
+      "accountLockedAlert": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para instruções de desbloqueio.",
+      "tooManyAttemptsAlert": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar novamente."
     },
     "register": {
       "agreeToTermsPrefix": "Concordo com os",
@@ -346,7 +349,10 @@
       "title": "Introduza o código de verificação",
       "useAuthenticator": "Usar código do autenticador",
       "useRecoveryCode": "Ou usar um código de recuperação",
-      "verifyButton": "Verificar"
+      "verifyButton": "Verificar",
+      "waitSeconds": "Aguarde {{seconds}}s",
+      "accountLocked": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para instruções de desbloqueio.",
+      "tooManyAttempts": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar novamente."
     },
     "unlock": {
       "errorMessage": "Este link expirou ou é inválido.",
@@ -638,6 +644,8 @@
     },
     "customize": "Personalizar",
     "done": "Concluir",
+    "emptyTitle": "Sem widgets para mostrar",
+    "emptyDescription": "Use o botão Personalizar para adicionar widgets ao seu painel.",
     "fixedCategories": {
       "categoryCount": "{{count}} {{label}}",
       "count_one": "{{count}} categoria",

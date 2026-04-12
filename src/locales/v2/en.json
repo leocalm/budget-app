@@ -248,7 +248,10 @@
         "useAuthenticator": "Use authenticator code instead",
         "useRecovery": "Or use a recovery code",
         "verify": "Verify"
-      }
+      },
+      "waitSeconds": "Wait {{seconds}}s",
+      "accountLockedAlert": "Your account has been temporarily locked due to too many failed attempts. Check your email for unlock instructions.",
+      "tooManyAttemptsAlert": "Too many failed attempts. Please wait {{seconds}} seconds before trying again."
     },
     "register": {
       "agreeToTermsPrefix": "I agree to the",
@@ -338,7 +341,10 @@
       "title": "Enter verification code",
       "useAuthenticator": "Use authenticator code instead",
       "useRecoveryCode": "Or use a recovery code",
-      "verifyButton": "Verify"
+      "verifyButton": "Verify",
+      "waitSeconds": "Wait {{seconds}}s",
+      "accountLocked": "Your account has been temporarily locked due to too many failed attempts. Check your email for unlock instructions.",
+      "tooManyAttempts": "Too many failed attempts. Please wait {{seconds}} seconds before trying again."
     },
     "unlock": {
       "errorMessage": "This link has expired or is invalid.",
@@ -630,6 +636,8 @@
     },
     "customize": "Customize",
     "done": "Done",
+    "emptyTitle": "No widgets to show",
+    "emptyDescription": "Use the Customize button to add widgets to your dashboard.",
     "fixedCategories": {
       "categoryCount": "{{count}} {{label}}",
       "count_one": "{{count}} category",
