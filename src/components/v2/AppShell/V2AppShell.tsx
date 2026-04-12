@@ -46,8 +46,8 @@ export function V2AppShell() {
               breakpoint: 'sm',
             }
       }
-      header={isMobile ? { height: 'auto' } : undefined}
-      footer={isMobile ? { height: 'auto' } : undefined}
+      header={isMobile ? { height: 100 } : undefined}
+      footer={isMobile ? { height: 60 } : undefined}
       padding="md"
       styles={{
         root: {

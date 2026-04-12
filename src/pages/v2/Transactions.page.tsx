@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -53,6 +54,17 @@ export function TransactionsV2Page() {
   const [vendorId, setVendorId] = useState<string | null>(null);
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [editTxn, setEditTxn] = useState<TransactionResponse | null>(null);
+
+  const location = useLocation();
+
+  // Auto-open create drawer when navigating from onboarding
+  useEffect(() => {
+    if (location.state?.openCreateDrawer) {
+      setDrawerOpened(true);
+      // Clear the state so it doesn't re-open on subsequent renders
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   const filters = useMemo(
     () => ({

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { CurrencyResponse } from '@/types/account';
-import { useCurrencies } from './useCurrencies';
-import { useSettings } from './useSettings';
+import { useCurrencies } from './v2/useCurrencies';
+import { useProfile } from './v2/useSettings';
 
 const DEFAULT_CURRENCY: CurrencyResponse = {
   id: 'default',
@@ -12,15 +12,27 @@ const DEFAULT_CURRENCY: CurrencyResponse = {
 };
 
 export const useDisplayCurrency = (): CurrencyResponse => {
-  const { data: settings } = useSettings();
+  const { data: profile } = useProfile();
   const { data: currencies } = useCurrencies();
 
+  const currencyCode = profile?.currency;
+
   return useMemo(() => {
-    if (!settings?.defaultCurrencyId || !currencies) {
+    if (!currencyCode || !currencies) {
       return DEFAULT_CURRENCY;
     }
 
-    const selectedCurrency = currencies.find((c) => c.id === settings.defaultCurrencyId);
-    return selectedCurrency || DEFAULT_CURRENCY;
-  }, [settings?.defaultCurrencyId, currencies]);
+    const selectedCurrency = currencies.find((c) => c.code === currencyCode);
+    if (!selectedCurrency) {
+      return DEFAULT_CURRENCY;
+    }
+
+    return {
+      id: selectedCurrency.id,
+      name: selectedCurrency.name,
+      symbol: selectedCurrency.symbol,
+      currency: selectedCurrency.code,
+      decimalPlaces: selectedCurrency.decimalPlaces,
+    };
+  }, [currencyCode, currencies]);
 };

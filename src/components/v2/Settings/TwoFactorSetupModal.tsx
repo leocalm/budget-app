@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -165,7 +164,7 @@ export function TwoFactorSetupModal({ opened, onClose }: TwoFactorSetupModalProp
               padding: 'var(--mantine-spacing-md)',
             }}
           >
-            <QRCodeSVG value={qrCodeUri} size={200} />
+            <img src={qrCodeUri} alt="2FA QR Code" width={200} height={200} />
           </div>
 
           <Text fz="xs" c="dimmed">

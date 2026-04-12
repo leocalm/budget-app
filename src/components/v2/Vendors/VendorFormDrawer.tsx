@@ -44,6 +44,10 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
         toast.success({ message: t('vendors.created') });
       }
       onClose();
+      if (!isEdit) {
+        setName('');
+        setDescription('');
+      }
     } catch {
       toast.error({ message: t('vendors.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }

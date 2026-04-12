@@ -36,7 +36,8 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
     );
   }
 
-  const categories = data?.categories ?? [];
+  // v2 API returns a flat array of categories
+  const categories = Array.isArray(data) ? data : (data?.categories ?? []);
 
   if (categories.length === 0) {
     return (
@@ -53,8 +54,12 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
     );
   }
 
-  const totalBudgeted = data?.totalBudgeted ?? 0;
-  const totalPaid = data?.totalPaid ?? 0;
+  const totalBudgeted = Array.isArray(data)
+    ? categories.reduce((sum: number, c: { budgeted: number }) => sum + c.budgeted, 0)
+    : (data?.totalBudgeted ?? 0);
+  const totalPaid = Array.isArray(data)
+    ? categories.reduce((sum: number, c: { spent: number }) => sum + c.spent, 0)
+    : (data?.totalPaid ?? 0);
   const overallPct = totalBudgeted > 0 ? Math.min((totalPaid / totalBudgeted) * 100, 100) : 0;
 
   return (
@@ -90,23 +95,30 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
       />
 
       <ScrollArea className={classes.scrollArea} type="auto" offsetScrollbars={false}>
-        {categories.map((cat) => (
-          <div key={cat.id} className={classes.row}>
-            <div className={classes.checkbox} data-status={cat.status} />
-            <Text fz="sm" fw={500} truncate c={cat.status === 'pending' ? 'dimmed' : undefined}>
-              {cat.name}
-            </Text>
-            <Text
-              fz="xs"
-              c="dimmed"
-              ff="var(--mantine-font-family-monospace)"
-              className={classes.amount}
-            >
-              <CurrencyValue cents={cat.paid} /> / <CurrencyValue cents={cat.budgeted} />
-            </Text>
-            <StatusBadge status={cat.status} />
-          </div>
-        ))}
+        {categories.map((cat: any) => {
+          const id = cat.categoryId ?? cat.id;
+          const name = cat.categoryName ?? cat.name;
+          const paid = cat.spent ?? cat.paid ?? 0;
+          const budgeted = cat.budgeted ?? 0;
+          const status = cat.status;
+          return (
+            <div key={id} className={classes.row}>
+              <div className={classes.checkbox} data-status={status} />
+              <Text fz="sm" fw={500} truncate c={status === 'pending' ? 'dimmed' : undefined}>
+                {name}
+              </Text>
+              <Text
+                fz="xs"
+                c="dimmed"
+                ff="var(--mantine-font-family-monospace)"
+                className={classes.amount}
+              >
+                <CurrencyValue cents={paid} /> / <CurrencyValue cents={budgeted} />
+              </Text>
+              <StatusBadge status={status} />
+            </div>
+          );
+        })}
       </ScrollArea>
     </div>
   );

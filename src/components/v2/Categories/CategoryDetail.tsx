@@ -4,6 +4,7 @@ import { AreaChart } from '@mantine/charts';
 import { ActionIcon, Anchor, Button, Menu, Progress, Skeleton, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import {
   useArchiveCategory,
   useCategoryDetail,
@@ -29,6 +30,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
   const unarchiveMutation = useUnarchiveCategory();
   const deleteMutation = useDeleteCategory();
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
+  const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
 
   if (isLoading) {
     return (
@@ -102,6 +104,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
     try {
       await deleteMutation.mutateAsync(categoryId);
       toast.success({ message: t('categories.deleted') });
+      closeDelete();
       navigate('/categories');
     } catch {
       toast.error({ message: t('categories.deleteFailed') });
@@ -153,7 +156,7 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
             ) : (
               <Menu.Item onClick={handleArchive}>{t('common.archive')}</Menu.Item>
             )}
-            <Menu.Item color="red" onClick={handleDelete}>
+            <Menu.Item color="red" onClick={openDelete}>
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
@@ -273,6 +276,13 @@ export function CategoryDetail({ categoryId, periodId }: CategoryDetailProps) {
         opened={editOpened}
         onClose={closeEdit}
         editCategory={cat}
+      />
+      <ConfirmDeleteModal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        onConfirm={handleDelete}
+        entityName={cat.name}
+        loading={deleteMutation.isPending}
       />
     </Stack>
   );

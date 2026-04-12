@@ -1,16 +1,41 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components, operations } from '@/api/v2';
-import { apiClient } from '@/api/v2client';
+import { apiClient, v2BaseUrl } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
 
 type TransactionListParams = operations['listTransactions']['parameters']['query'];
+type TransactionListParamsOptionalPeriod = Omit<TransactionListParams, 'periodId'> & {
+  periodId?: string;
+};
 
-export function useTransactions(filters: TransactionListParams) {
+/**
+ * Check if the authenticated user has any transactions across all periods.
+ * Uses the lightweight `/transactions/has-any` endpoint.
+ */
+export function useHasAnyTransactions() {
+  return useQuery({
+    queryKey: [...v2QueryKeys.transactions.all(), 'has-any'],
+    queryFn: async () => {
+      const baseUrl = v2BaseUrl;
+      const response = await fetch(`${baseUrl}/transactions/has-any`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to check transactions: ${response.status}`);
+      }
+      const data: { hasTransactions: boolean } = await response.json();
+      return data.hasTransactions;
+    },
+    staleTime: 60_000, // Cache for 1 minute
+  });
+}
+
+export function useTransactions(filters: TransactionListParamsOptionalPeriod) {
   return useQuery({
     queryKey: v2QueryKeys.transactions.list(filters),
     queryFn: async () => {
       const { data, error } = await apiClient.GET('/transactions', {
-        params: { query: filters },
+        params: { query: filters as TransactionListParams },
       });
       if (error) {
         throw error;

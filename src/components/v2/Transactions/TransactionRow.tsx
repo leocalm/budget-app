@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Badge, Button, Group, Menu, Popover, Text } from '@mantine/core';
+import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import classes from './Transactions.module.css';
 
 type TransactionResponse = components['schemas']['TransactionResponse'];
@@ -23,7 +24,7 @@ interface TransactionRowProps {
 
 export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRowProps) {
   const { t } = useTranslation('v2');
-  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const isIncome = transaction.category.type === 'income';
   const isTransfer = transaction.transactionType === 'transfer';
   const amountPrefix = isIncome ? '+' : isTransfer ? '' : '-';
@@ -106,33 +107,9 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item onClick={() => onEdit(transaction)}>{t('common.edit')}</Menu.Item>
-              <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
-                <Popover.Target>
-                  <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
-                    {t('common.delete')}
-                  </Menu.Item>
-                </Popover.Target>
-                <Popover.Dropdown>
-                  <Text fz="sm" mb="xs">
-                    {t('transactions.deleteConfirm')}
-                  </Text>
-                  <Group gap="xs">
-                    <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
-                      {t('common.cancel')}
-                    </Button>
-                    <Button
-                      size="xs"
-                      color="red"
-                      onClick={() => {
-                        setConfirmOpen(false);
-                        onDelete(transaction.id);
-                      }}
-                    >
-                      {t('common.delete')}
-                    </Button>
-                  </Group>
-                </Popover.Dropdown>
-              </Popover>
+              <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
+                {t('common.delete')}
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </div>
@@ -189,37 +166,23 @@ export function TransactionRow({ transaction, onEdit, onDelete }: TransactionRow
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item onClick={() => onEdit(transaction)}>{t('common.edit')}</Menu.Item>
-              <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
-                <Popover.Target>
-                  <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
-                    {t('common.delete')}
-                  </Menu.Item>
-                </Popover.Target>
-                <Popover.Dropdown>
-                  <Text fz="sm" mb="xs">
-                    {t('transactions.deleteConfirm')}
-                  </Text>
-                  <Group gap="xs">
-                    <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
-                      {t('common.cancel')}
-                    </Button>
-                    <Button
-                      size="xs"
-                      color="red"
-                      onClick={() => {
-                        setConfirmOpen(false);
-                        onDelete(transaction.id);
-                      }}
-                    >
-                      {t('common.delete')}
-                    </Button>
-                  </Group>
-                </Popover.Dropdown>
-              </Popover>
+              <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
+                {t('common.delete')}
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </div>
       </div>
+
+      <ConfirmDeleteModal
+        opened={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        onConfirm={() => {
+          setDeleteConfirmOpen(false);
+          onDelete(transaction.id);
+        }}
+        entityName={transaction.description}
+      />
     </>
   );
 }

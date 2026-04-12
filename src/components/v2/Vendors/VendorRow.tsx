@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import classes from './Vendors.module.css';
 
 type VendorSummary = components['schemas']['VendorSummaryResponse'];
@@ -26,6 +28,7 @@ export function VendorRow({
 }: VendorRowProps) {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const isArchived = vendor.status === 'inactive';
   const initial = vendor.name.charAt(0).toUpperCase();
 
@@ -105,11 +108,20 @@ export function VendorRow({
             ) : (
               <Menu.Item onClick={() => onArchive(vendor.id)}>{t('common.archive')}</Menu.Item>
             )}
-            <Menu.Item color="red" onClick={() => onDelete(vendor.id)}>
+            <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
+        <ConfirmDeleteModal
+          opened={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          onConfirm={() => {
+            setDeleteConfirmOpen(false);
+            onDelete(vendor.id);
+          }}
+          entityName={vendor.name}
+        />
       </div>
     </div>
   );

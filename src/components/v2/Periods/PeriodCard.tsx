@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Badge, Button, Group, Menu, Popover, Progress, Text } from '@mantine/core';
+import { ActionIcon, Badge, Menu, Progress, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import { periodBadgeText, periodDateRange, periodProgress } from '../PeriodSelector/periodUtils';
 import classes from './Periods.module.css';
 
@@ -24,7 +25,7 @@ export function PeriodCard({
   onSelect,
 }: PeriodCardProps) {
   const { t } = useTranslation('v2');
-  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const isCurrent = period.status === 'active';
   const badgeText = periodBadgeText(period, t);
   const dateRange = periodDateRange(period);
@@ -129,35 +130,20 @@ export function PeriodCard({
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={() => onEdit(period.id)}>{t('common.edit')}</Menu.Item>
-            <Popover opened={confirmOpen} onChange={setConfirmOpen} position="bottom-end">
-              <Popover.Target>
-                <Menu.Item color="red" onClick={() => setConfirmOpen(true)}>
-                  {t('common.delete')}
-                </Menu.Item>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <Text fz="sm" mb="xs">
-                  {t('periods.deleteConfirm', { name: period.name })}
-                </Text>
-                <Group gap="xs">
-                  <Button size="xs" variant="subtle" onClick={() => setConfirmOpen(false)}>
-                    {t('common.cancel')}
-                  </Button>
-                  <Button
-                    size="xs"
-                    color="red"
-                    onClick={() => {
-                      setConfirmOpen(false);
-                      onDelete(period.id);
-                    }}
-                  >
-                    {t('common.delete')}
-                  </Button>
-                </Group>
-              </Popover.Dropdown>
-            </Popover>
+            <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
+              {t('common.delete')}
+            </Menu.Item>
           </Menu.Dropdown>
         </Menu>
+        <ConfirmDeleteModal
+          opened={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          onConfirm={() => {
+            setDeleteConfirmOpen(false);
+            onDelete(period.id);
+          }}
+          entityName={period.name}
+        />
       </div>
     </div>
   );

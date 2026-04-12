@@ -5,6 +5,7 @@ import { ActionIcon, Anchor, Badge, Button, Menu, Skeleton, Stack, Text } from '
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import {
   useArchiveVendor,
   useDeleteVendor,
@@ -34,6 +35,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
   const deleteMutation = useDeleteVendor();
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [mergeOpened, { open: openMerge, close: closeMerge }] = useDisclosure(false);
+  const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
 
   if (isLoading) {
     return <VendorDetailSkeleton />;
@@ -85,6 +87,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
     try {
       await deleteMutation.mutateAsync(vendorId);
       toast.success({ message: t('vendors.deleted') });
+      closeDelete();
       navigate('/vendors');
     } catch {
       toast.error({ message: t('vendors.deleteFailed') });
@@ -139,7 +142,7 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
             ) : (
               <Menu.Item onClick={handleArchive}>{t('common.archive')}</Menu.Item>
             )}
-            <Menu.Item color="red" onClick={handleDelete}>
+            <Menu.Item color="red" onClick={openDelete}>
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
@@ -258,6 +261,13 @@ export function VendorDetail({ vendorId, periodId }: VendorDetailProps) {
         onClose={closeMerge}
         sourceVendorId={vendorId}
         sourceVendorName={vendor.name}
+      />
+      <ConfirmDeleteModal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        onConfirm={handleDelete}
+        entityName={vendor.name}
+        loading={deleteMutation.isPending}
       />
     </Stack>
   );

@@ -7,7 +7,6 @@ import {
   Button,
   Group,
   Menu,
-  Modal,
   Skeleton,
   Stack,
   Text,
@@ -15,6 +14,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import { CancelSubscriptionModal, SubscriptionFormDrawer } from '@/components/v2/Subscriptions';
 import { useDeleteSubscription, useSubscriptionsByCategory } from '@/hooks/v2/useSubscriptions';
 import { toast } from '@/lib/toast';
@@ -275,28 +275,14 @@ export function CategorySubscriptionSection({ categoryId }: CategorySubscription
         />
       )}
 
-      {/* Issue 2: Delete confirmation modal */}
-      <Modal
+      {/* Delete confirmation modal */}
+      <ConfirmDeleteModal
         opened={deleteConfirmOpened}
         onClose={closeDeleteConfirm}
-        title={t('categories.subscriptionSection.deleteConfirmTitle')}
-        size="sm"
-        centered
-      >
-        <Stack gap="md">
-          <Text fz="sm">
-            {t('categories.subscriptionSection.deleteConfirmDesc', { name: deletePendingName })}
-          </Text>
-          <Group justify="flex-end">
-            <Button variant="subtle" onClick={closeDeleteConfirm}>
-              {t('common.cancel')}
-            </Button>
-            <Button color="red" loading={deleteMutation.isPending} onClick={handleDeleteConfirm}>
-              {t('common.delete')}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        onConfirm={handleDeleteConfirm}
+        entityName={deletePendingName}
+        loading={deleteMutation.isPending}
+      />
     </Stack>
   );
 }

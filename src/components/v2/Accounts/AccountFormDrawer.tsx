@@ -6,7 +6,6 @@ import {
   Drawer,
   Group,
   NumberInput,
-  Select,
   Stack,
   Text,
   TextInput,
@@ -21,18 +20,12 @@ import classes from './Accounts.module.css';
 type AccountType = 'Checking' | 'Savings' | 'CreditCard' | 'Allowance' | 'Wallet';
 type CreateReq = components['schemas']['CreateAccountRequest'];
 
-const ACCOUNT_TYPES: { value: AccountType; labelKey: string; icon: string }[] = [
-  { value: 'Checking', labelKey: 'accounts.types.checking', icon: '🏦' },
-  { value: 'Savings', labelKey: 'accounts.types.savings', icon: '🐷' },
-  { value: 'CreditCard', labelKey: 'accounts.types.creditCard', icon: '💳' },
-  { value: 'Wallet', labelKey: 'accounts.types.wallet', icon: '👛' },
-  { value: 'Allowance', labelKey: 'accounts.types.allowance', icon: '🎒' },
-];
-
-const TOP_UP_CYCLES: { value: string; labelKey: string }[] = [
-  { value: 'weekly', labelKey: 'accounts.topUpCycles.weekly' },
-  { value: 'bi-weekly', labelKey: 'accounts.topUpCycles.biWeekly' },
-  { value: 'monthly', labelKey: 'accounts.topUpCycles.monthly' },
+const ACCOUNT_TYPES: { value: AccountType; labelKey: string }[] = [
+  { value: 'Checking', labelKey: 'accounts.types.checking' },
+  { value: 'Savings', labelKey: 'accounts.types.savings' },
+  { value: 'CreditCard', labelKey: 'accounts.types.creditCard' },
+  { value: 'Wallet', labelKey: 'accounts.types.wallet' },
+  { value: 'Allowance', labelKey: 'accounts.types.allowance' },
 ];
 
 interface AccountFormDrawerProps {
@@ -55,16 +48,6 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
   const [initialBalance, setInitialBalance] = useState<number | string>(0);
   const [currencyId, setCurrencyId] = useState('');
   const [spendLimit, setSpendLimit] = useState<number | string>('');
-  const [topUpAmount, setTopUpAmount] = useState<number | string>('');
-  const [topUpCycle, setTopUpCycle] = useState<string | null>('weekly');
-  const [topUpDay, setTopUpDay] = useState<number | string>(1);
-  const [statementCloseDay, setStatementCloseDay] = useState<number | string>('');
-  const [paymentDueDay, setPaymentDueDay] = useState<number | string>('');
-
-  const currencyOptions = useMemo(
-    () => (currencies ?? []).map((c) => ({ value: c.id, label: `${c.symbol} ${c.name}` })),
-    [currencies]
-  );
 
   const selectedCurrencySymbol = useMemo(() => {
     const found = (currencies ?? []).find((c) => c.id === currencyId);
@@ -120,6 +103,13 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         toast.success({ message: t('accounts.created') });
       }
       onClose();
+      if (!isEdit) {
+        setType('Checking');
+        setName('');
+        setColor('#6B8FD4');
+        setInitialBalance(0);
+        setSpendLimit('');
+      }
     } catch {
       toast.error({ message: t('accounts.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }
@@ -157,7 +147,6 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
                   }
                   onClick={() => setType(acctType.value)}
                 >
-                  <Text fz="lg">{acctType.icon}</Text>
                   <Text fz="xs" fw={500}>
                     {t(acctType.labelKey)}
                   </Text>
@@ -208,14 +197,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
           allowNegative
         />
 
-        {/* Currency */}
-        <Select
-          label={t('accounts.form.currency')}
-          data={currencyOptions}
-          value={currencyId}
-          onChange={(v) => setCurrencyId(v ?? '')}
-          searchable
-        />
+        {/* Currency is auto-set from user default */}
 
         {/* Credit Card / Allowance: Spend Limit */}
         {(type === 'CreditCard' || type === 'Allowance') && (
@@ -233,62 +215,6 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
             prefix={selectedCurrencySymbol ? `${selectedCurrencySymbol} ` : ''}
             min={0}
           />
-        )}
-
-        {/* Credit Card specific */}
-        {type === 'CreditCard' && (
-          <>
-            <NumberInput
-              label={t('accounts.form.statementCloseDay')}
-              description={t('accounts.form.dayOfMonth')}
-              value={statementCloseDay}
-              onChange={setStatementCloseDay}
-              min={1}
-              max={31}
-            />
-            <NumberInput
-              label={t('accounts.form.paymentDueDay')}
-              description={t('accounts.form.dayOfMonth')}
-              value={paymentDueDay}
-              onChange={setPaymentDueDay}
-              min={1}
-              max={31}
-            />
-          </>
-        )}
-
-        {/* Allowance specific */}
-        {type === 'Allowance' && (
-          <>
-            <NumberInput
-              label={t('accounts.form.topUpAmount')}
-              description={t('accounts.form.topUpAmountDesc')}
-              value={topUpAmount}
-              onChange={setTopUpAmount}
-              decimalScale={2}
-              fixedDecimalScale
-              prefix={selectedCurrencySymbol ? `${selectedCurrencySymbol} ` : ''}
-              min={0}
-            />
-            <Select
-              label={t('accounts.form.topUpCycle')}
-              data={TOP_UP_CYCLES.map((c) => ({ value: c.value, label: t(c.labelKey) }))}
-              value={topUpCycle}
-              onChange={setTopUpCycle}
-            />
-            <NumberInput
-              label={t('accounts.form.topUpDay')}
-              description={
-                topUpCycle === 'weekly' || topUpCycle === 'bi-weekly'
-                  ? t('accounts.form.topUpDayWeek')
-                  : t('accounts.form.topUpDayMonth')
-              }
-              value={topUpDay}
-              onChange={setTopUpDay}
-              min={topUpCycle === 'monthly' ? 1 : 0}
-              max={topUpCycle === 'monthly' ? 31 : 6}
-            />
-          </>
         )}
 
         {/* Submit */}

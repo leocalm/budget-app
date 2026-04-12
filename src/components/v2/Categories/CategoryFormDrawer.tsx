@@ -116,6 +116,14 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         toast.success({ message: t('categories.created') });
       }
       onClose();
+      if (!isEdit) {
+        setName('');
+        setType('expense');
+        setBehavior('variable');
+        setIcon('🛒');
+        setDescription('');
+        setTarget('');
+      }
     } catch {
       toast.error({
         message: t('categories.saveFailed', { action: isEdit ? 'update' : 'create' }),

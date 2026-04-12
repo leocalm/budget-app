@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, Loader, Text } from '@mantine/core';
@@ -10,26 +10,32 @@ type Status = 'loading' | 'success' | 'error';
 export function V2UnlockAccountPage() {
   const { t } = useTranslation('v2');
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
-  const userId = searchParams.get('user');
   const [status, setStatus] = useState<Status>('loading');
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!token || !userId) {
+    if (started.current) {
+      return;
+    }
+
+    const token = searchParams.get('token');
+    if (!token) {
       setStatus('error');
       return;
     }
+
+    started.current = true;
 
     // Remove params from URL for security
     window.history.replaceState({}, '', '/auth/unlock');
 
     apiClient
-      .GET('/unlock', { params: { query: { token, user: userId } } })
+      .GET('/unlock', { params: { query: { token } } })
       .then(({ error }) => {
         setStatus(error ? 'error' : 'success');
       })
       .catch(() => setStatus('error'));
-  }, [token, userId]);
+  }, []);
 
   if (status === 'loading') {
     return (

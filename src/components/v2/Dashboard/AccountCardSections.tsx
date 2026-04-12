@@ -59,19 +59,10 @@ export function StandardSection({ acct }: { acct: AccountExt }) {
 export function AllowanceSection({ acct }: { acct: AccountExt }) {
   const { t } = useTranslation('v2');
   const available = Math.max(acct.currentBalance, 0);
-  const balanceAfterTopUp = acct.balanceAfterNextTransfer ?? acct.currentBalance;
   const isOverspent = acct.currentBalance < 0;
 
   const rows = [
     { label: t('dashboard.account.availableToSpend'), value: <CurrencyValue cents={available} /> },
-    {
-      label: t('dashboard.account.nextTopUp'),
-      value: acct.nextTransfer ? formatDate(acct.nextTransfer, t) : '\u2014',
-    },
-    {
-      label: t('dashboard.account.balanceAfterTopUp'),
-      value: <CurrencyValue cents={balanceAfterTopUp} />,
-    },
     {
       label: isOverspent ? t('dashboard.account.overspent') : t('dashboard.account.spentThisCycle'),
       value: (

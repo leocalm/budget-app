@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import { useDeleteSubscription, useSubscription } from '@/hooks/v2/useSubscriptions';
 import { toast } from '@/lib/toast';
 import { CancelSubscriptionModal } from './CancelSubscriptionModal';
@@ -31,6 +32,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
   const deleteMutation = useDeleteSubscription();
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [cancelOpened, { open: openCancel, close: closeCancel }] = useDisclosure(false);
+  const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
 
   if (isLoading) {
     return (
@@ -83,6 +85,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
     try {
       await deleteMutation.mutateAsync(subscriptionId);
       toast.success({ message: t('subscriptions.deleted') });
+      closeDelete();
       navigate('/subscriptions');
     } catch {
       toast.error({ message: t('subscriptions.deleteFailed') });
@@ -129,7 +132,7 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
                 {t('common.cancel')}
               </Menu.Item>
             )}
-            <Menu.Item color="red" onClick={handleDelete}>
+            <Menu.Item color="red" onClick={openDelete}>
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
@@ -264,6 +267,13 @@ export function SubscriptionDetail({ subscriptionId }: SubscriptionDetailProps) 
       {sub && (
         <CancelSubscriptionModal opened={cancelOpened} onClose={closeCancel} subscription={sub} />
       )}
+      <ConfirmDeleteModal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        onConfirm={handleDelete}
+        entityName={sub?.name ?? ''}
+        loading={deleteMutation.isPending}
+      />
     </Stack>
   );
 }

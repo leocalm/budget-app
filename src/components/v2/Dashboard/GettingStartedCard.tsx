@@ -6,7 +6,7 @@ import { useAccounts } from '@/hooks/v2/useAccounts';
 import { useBudgetPeriods } from '@/hooks/v2/useBudgetPeriods';
 import { useCategories } from '@/hooks/v2/useCategories';
 import { usePageHint } from '@/hooks/v2/usePageHints';
-import { useTransactions } from '@/hooks/v2/useTransactions';
+import { useHasAnyTransactions } from '@/hooks/v2/useTransactions';
 import classes from './GettingStartedCard.module.css';
 
 const HINT_ID = 'getting-started';
@@ -17,20 +17,20 @@ interface Step {
   route: string;
 }
 
-export function GettingStartedCard({ periodId }: { periodId: string }) {
+export function GettingStartedCard(_props: { periodId: string }) {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { isVisible, dismissHint } = usePageHint(HINT_ID);
 
-  const { data: accountsData } = useAccounts({ limit: 1 });
+  const { data: accountsData } = useAccounts();
   const { data: periodsData } = useBudgetPeriods({ limit: 1 });
   const { data: categoriesData } = useCategories({ limit: 1 });
-  const { data: transactionsData } = useTransactions({ periodId, limit: 1 });
+  const { data: hasAnyTransactions } = useHasAnyTransactions();
 
   const hasAccounts = (accountsData?.data?.length ?? 0) > 0;
   const hasPeriods = (periodsData?.data?.length ?? 0) > 0;
   const hasCategories = (categoriesData?.data?.length ?? 0) > 0;
-  const hasTransactions = (transactionsData?.data?.length ?? 0) > 0;
+  const hasTransactions = hasAnyTransactions ?? false;
 
   const steps: Step[] = [
     { key: 'createAccount', complete: hasAccounts, route: '/accounts' },

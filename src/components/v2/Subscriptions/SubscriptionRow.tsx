@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import { CYCLE_LABELS } from './subscriptionUtils';
 import classes from './Subscriptions.module.css';
 
@@ -27,6 +29,7 @@ export function SubscriptionRow({
   onDelete,
 }: SubscriptionRowProps) {
   const { t } = useTranslation('v2');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const isCancelled = subscription.status === 'cancelled';
   const cycleLabel = CYCLE_LABELS[subscription.billingCycle] ?? '';
 
@@ -121,11 +124,20 @@ export function SubscriptionRow({
                 {t('common.cancel')}
               </Menu.Item>
             )}
-            <Menu.Item color="red" onClick={() => onDelete(subscription.id)}>
+            <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
+        <ConfirmDeleteModal
+          opened={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          onConfirm={() => {
+            setDeleteConfirmOpen(false);
+            onDelete(subscription.id);
+          }}
+          entityName={subscription.name}
+        />
       </div>
     </div>
   );

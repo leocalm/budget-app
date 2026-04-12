@@ -100,7 +100,7 @@ describe('api client URL resolution', () => {
     await apiGet('/api?check=true');
 
     expect(fetchMock).toHaveBeenCalledWith(
-      '/v1?check=true',
+      '/v2?check=true',
       expect.objectContaining({ credentials: 'include' })
     );
   });

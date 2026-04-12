@@ -58,8 +58,6 @@ function getAccountId(itemId: string): string {
 
 function renderWidget(widgetId: string, periodId: string) {
   switch (widgetId) {
-    case 'getting_started':
-      return <GettingStartedCard periodId={periodId} />;
     case 'current_period':
       return <CurrentPeriodCard periodId={periodId} />;
     case 'net_position':
@@ -275,6 +273,9 @@ export function DashboardV2Page() {
 
       <PageHint hintId="dashboard" message={t('hints.dashboard')} />
 
+      {/* Getting Started is independent of the widget system */}
+      {!isEditing && <GettingStartedCard periodId={selectedPeriodId} />}
+
       {isEditing ? (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={editOrder} strategy={verticalListSortingStrategy}>
@@ -300,6 +301,18 @@ export function DashboardV2Page() {
             </Text>
           </UnstyledButton>
         </DndContext>
+      ) : visibleItems.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '80px 20px' }}>
+          <Text fz="xl" fw={600} c="dimmed" mb="sm">
+            {t('dashboard.emptyTitle', 'No widgets to show')}
+          </Text>
+          <Text fz="sm" c="dimmed" mb="lg">
+            {t(
+              'dashboard.emptyDescription',
+              'Use the Customize button to add widgets to your dashboard.'
+            )}
+          </Text>
+        </div>
       ) : (
         <div className={customizeClasses.dashboardGrid}>
           {visibleItems.map((id) => (

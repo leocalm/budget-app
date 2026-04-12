@@ -11,14 +11,6 @@ export interface WidgetDefinition {
 
 export const WIDGET_DEFINITIONS: WidgetDefinition[] = [
   {
-    id: 'getting_started',
-    emoji: '\u{1F680}',
-    nameKey: 'settings.widgets.gettingStarted.name',
-    descKey: 'settings.widgets.gettingStarted.description',
-    defaultVisible: true,
-    isHero: true,
-  },
-  {
     id: 'current_period',
     emoji: '\u{1F4CA}',
     nameKey: 'settings.widgets.currentPeriod.name',

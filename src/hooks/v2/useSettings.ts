@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components } from '@/api/v2';
-import { apiClient } from '@/api/v2client';
+import { apiClient, v2BaseUrl } from '@/api/v2client';
 import { v2QueryKeys } from './queryKeys';
 
 export function useProfile() {
@@ -134,27 +134,41 @@ export function useDeleteUserAccount() {
   });
 }
 
-// Exports — response is a file download; in the component, convert to Blob and trigger browser download
+// Exports — bypass apiClient since responses are CSV/JSON files, not JSON API responses
+const exportBaseUrl = v2BaseUrl;
+
+async function downloadExport(path: string, filename: string): Promise<void> {
+  const response = await fetch(`${exportBaseUrl}${path}`, { credentials: 'include' });
+  if (!response.ok) {
+    throw new Error(`Export failed: ${response.status}`);
+  }
+  const blob = await response.blob();
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = href;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(href);
+}
+
 export function useExportTransactions() {
   return useMutation({
-    mutationFn: async () => {
-      const { data, error } = await apiClient.GET('/settings/export/transactions');
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
+    mutationFn: () =>
+      downloadExport(
+        '/settings/export/transactions',
+        `piggy-pulse-transactions-${new Date().toISOString().slice(0, 10)}.csv`
+      ),
   });
 }
 
 export function useExportFull() {
   return useMutation({
-    mutationFn: async () => {
-      const { data, error } = await apiClient.GET('/settings/export/data');
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
+    mutationFn: () =>
+      downloadExport(
+        '/settings/export/data',
+        `piggy-pulse-export-${new Date().toISOString().slice(0, 10)}.json`
+      ),
   });
 }

@@ -6,7 +6,6 @@ import {
   PasswordInput,
   PinInput,
   Select,
-  Switch,
   Text,
   TextInput,
   useMantineColorScheme,
@@ -14,7 +13,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { TwoFactorSetupModal } from '@/components/v2/Settings/TwoFactorSetupModal';
 import { useAuth } from '@/context/AuthContext';
-import { useAccounts } from '@/hooks/v2/useAccounts';
+import { useCurrencies } from '@/hooks/v2/useCurrencies';
 import {
   useChangePassword,
   useDeleteUserAccount,
@@ -46,37 +45,9 @@ const AVATAR_OPTIONS = [
   { emoji: '\u{1F3A9}', key: 'topHat' },
 ];
 
-// Widget ID → translation key mapping
-const WIDGET_KEY_MAP: Record<string, string> = {
-  current_period: 'currentPeriod',
-  net_position: 'netPosition',
-  variable_categories: 'variableCategories',
-  recent_transactions: 'recentTransactions',
-  cash_flow: 'cashFlow',
-  spending_trend: 'spendingTrend',
-  fixed_categories: 'fixedCategories',
-  subscriptions: 'subscriptions',
-  budget_stability: 'budgetStability',
-  top_vendors: 'topVendors',
-};
-
-const WIDGET_DEFINITIONS = [
-  { id: 'current_period', emoji: '\u{1F4CA}', defaultVisible: true },
-  { id: 'net_position', emoji: '\u{1F4B0}', defaultVisible: true },
-  { id: 'variable_categories', emoji: '\u{1F4CB}', defaultVisible: true },
-  { id: 'recent_transactions', emoji: '\u{1F9FE}', defaultVisible: true },
-  { id: 'cash_flow', emoji: '\u{1F4B8}', defaultVisible: true },
-  { id: 'spending_trend', emoji: '\u{1F4C8}', defaultVisible: false },
-  { id: 'fixed_categories', emoji: '\u2705', defaultVisible: false },
-  { id: 'subscriptions', emoji: '\u{1F504}', defaultVisible: false },
-  { id: 'budget_stability', emoji: '\u{1F4CA}', defaultVisible: false },
-  { id: 'top_vendors', emoji: '\u{1F3EA}', defaultVisible: false },
-];
-
 const SECTIONS: readonly { id: string; tabKey: string; danger?: boolean }[] = [
   { id: 'profile', tabKey: 'settings.tabs.profile' },
   { id: 'appearance', tabKey: 'settings.tabs.appearance' },
-  { id: 'dashboard', tabKey: 'settings.tabs.dashboard' },
   { id: 'security', tabKey: 'settings.tabs.security' },
   { id: 'data', tabKey: 'settings.tabs.data' },
   { id: 'danger', tabKey: 'settings.tabs.dangerZone', danger: true },
@@ -85,7 +56,6 @@ const SECTIONS: readonly { id: string; tabKey: string; danger?: boolean }[] = [
 const COLOR_SCHEMES = [
   { value: 'dark' as const, emoji: '\u{1F319}', key: 'dark' },
   { value: 'light' as const, emoji: '\u2600\uFE0F', key: 'light' },
-  { value: 'system' as const, emoji: '\u{1F4BB}', key: 'system' },
 ];
 
 const THEME_ORDER: ColorTheme[] = ['nebula', 'sunrise', 'neon', 'tropical', 'candy_pop', 'moonlit'];
@@ -104,7 +74,7 @@ export function SettingsV2Page() {
   // ── API hooks ──
   const profileQuery = useProfile();
   const preferencesQuery = usePreferences();
-  const accountsQuery = useAccounts();
+  const { data: currencies } = useCurrencies();
   const twoFactorQuery = useTwoFactorStatus();
   const updateProfileMut = useUpdateProfile();
   const updatePrefsMut = useUpdatePreferences();
@@ -134,10 +104,10 @@ export function SettingsV2Page() {
   const [compactMode, setCompactMode] = useState(false);
 
   // ── Local state (dashboard widgets) ──
-  const [hiddenWidgets, setHiddenWidgets] = useState<string[]>([]);
-  const [widgetOrder, setWidgetOrder] = useState<string[]>([]);
+  const [_hiddenWidgets, setHiddenWidgets] = useState<string[]>([]);
+  const [_widgetOrder, setWidgetOrder] = useState<string[]>([]);
   // null = show all active accounts (default); string[] = show only these account IDs
-  const [visibleAccountIds, setVisibleAccountIds] = useState<string[] | null>(null);
+  const [_visibleAccountIds, setVisibleAccountIds] = useState<string[] | null>(null);
 
   // ── Local state (security modals) ──
   const [passwordModalOpen, passwordModal] = useDisclosure(false);
@@ -296,105 +266,6 @@ export function SettingsV2Page() {
     [scheme, language, dateFormat, numberFormat, colorTheme, compactMode, updatePrefsMut]
   );
 
-  const handleWidgetToggle = useCallback(
-    async (widgetId: string) => {
-      const isHidden = hiddenWidgets.includes(widgetId);
-      const next = isHidden
-        ? hiddenWidgets.filter((w) => w !== widgetId)
-        : [...hiddenWidgets, widgetId];
-      setHiddenWidgets(next);
-      try {
-        await updatePrefsMut.mutateAsync({
-          theme: scheme,
-          language,
-          dateFormat,
-          numberFormat,
-          colorTheme,
-          compactMode,
-          dashboardLayout: {
-            widgetOrder,
-            hiddenWidgets: next,
-            visibleAccountIds: visibleAccountIds ?? undefined,
-          },
-        });
-      } catch {
-        toast.error({ message: t('settings.dashboard.layoutFailed') });
-      }
-    },
-    [
-      hiddenWidgets,
-      widgetOrder,
-      visibleAccountIds,
-      updatePrefsMut,
-      scheme,
-      language,
-      dateFormat,
-      numberFormat,
-      colorTheme,
-      compactMode,
-    ]
-  );
-
-  const handleAccountToggle = useCallback(
-    async (accountId: string) => {
-      const allAccountIds = (accountsQuery.data?.data ?? [])
-        .filter((a) => a.status === 'active')
-        .map((a) => a.id);
-      // If null (show all), start from all active accounts
-      const current = visibleAccountIds ?? allAccountIds;
-      const isVisible = current.includes(accountId);
-      const next = isVisible ? current.filter((id) => id !== accountId) : [...current, accountId];
-      setVisibleAccountIds(next);
-      try {
-        await updatePrefsMut.mutateAsync({
-          theme: scheme,
-          language,
-          dateFormat,
-          numberFormat,
-          colorTheme,
-          compactMode,
-          dashboardLayout: { widgetOrder, hiddenWidgets, visibleAccountIds: next },
-        });
-      } catch {
-        toast.error({ message: t('settings.dashboard.accountCardsFailed') });
-      }
-    },
-    [
-      visibleAccountIds,
-      accountsQuery.data,
-      widgetOrder,
-      hiddenWidgets,
-      updatePrefsMut,
-      scheme,
-      language,
-      dateFormat,
-      numberFormat,
-      colorTheme,
-      compactMode,
-    ]
-  );
-
-  const handleResetDashboard = useCallback(async () => {
-    const defaultHidden = WIDGET_DEFINITIONS.filter((w) => !w.defaultVisible).map((w) => w.id);
-    setHiddenWidgets(defaultHidden);
-    setWidgetOrder([]);
-    setVisibleAccountIds(null);
-    try {
-      await updatePrefsMut.mutateAsync({
-        theme: scheme,
-        language,
-        dateFormat,
-        numberFormat,
-        colorTheme,
-        compactMode,
-        dashboardLayout: { widgetOrder: [], hiddenWidgets: defaultHidden },
-      });
-      toast.success({ message: t('settings.dashboard.resetSuccess') });
-    } catch {
-      toast.error({ message: t('settings.dashboard.resetFailed') });
-    }
-  }, [updatePrefsMut, scheme, language, dateFormat, numberFormat, colorTheme, compactMode]);
-
   const handleChangePassword = useCallback(async () => {
     if (newPassword !== confirmPassword) {
       toast.error({ message: t('settings.security.passwordMismatch') });
@@ -428,14 +299,7 @@ export function SettingsV2Page() {
 
   const handleExportTransactions = useCallback(async () => {
     try {
-      const data = await exportTransactionsMut.mutateAsync();
-      const blob = new Blob([data as BlobPart], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `piggy-pulse-transactions-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
+      await exportTransactionsMut.mutateAsync();
     } catch {
       toast.error({ message: t('settings.data.exportFailed') });
     }
@@ -443,46 +307,11 @@ export function SettingsV2Page() {
 
   const handleExportFull = useCallback(async () => {
     try {
-      const data = await exportFullMut.mutateAsync();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `piggy-pulse-backup-${new Date().toISOString().slice(0, 10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      await exportFullMut.mutateAsync();
     } catch {
       toast.error({ message: t('settings.data.exportAllFailed') });
     }
   }, [exportFullMut]);
-
-  const handleImportData = useCallback(() => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) {
-        return;
-      }
-      let body: Record<string, unknown>;
-      try {
-        const text = await file.text();
-        body = JSON.parse(text) as Record<string, unknown>;
-      } catch {
-        toast.error({ message: t('settings.data.importInvalidJson') });
-        return;
-      }
-      try {
-        const { apiClient } = await import('@/api/v2client');
-        await apiClient.POST('/settings/import/data', { body: body as any });
-        toast.success({ message: t('settings.data.importSuccess') });
-      } catch {
-        toast.error({ message: t('settings.data.importFailed') });
-      }
-    };
-    input.click();
-  }, []);
 
   const handleDeleteAccount = useCallback(async () => {
     try {
@@ -587,7 +416,7 @@ export function SettingsV2Page() {
                         background: 'var(--v2-elevated)',
                         border: '1px solid var(--v2-border)',
                         borderRadius: 10,
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   />
@@ -602,7 +431,7 @@ export function SettingsV2Page() {
                         background: 'var(--v2-elevated)',
                         border: '1px solid var(--v2-border)',
                         borderRadius: 10,
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   />
@@ -621,18 +450,15 @@ export function SettingsV2Page() {
                       setProfileDirty(true);
                     }
                   }}
-                  data={[
-                    { value: 'EUR', label: t('settings.profile.currencyEur') },
-                    { value: 'USD', label: t('settings.profile.currencyUsd') },
-                    { value: 'GBP', label: t('settings.profile.currencyGbp') },
-                    { value: 'BRL', label: t('settings.profile.currencyBrl') },
-                  ]}
+                  data={(currencies ?? [])
+                    .filter((c) => c.code)
+                    .map((c) => ({ value: c.code, label: `${c.symbol} ${c.name} (${c.code})` }))}
                   styles={{
                     input: {
                       background: 'var(--v2-elevated)',
                       border: '1px solid var(--v2-border)',
                       borderRadius: 10,
-                      color: '#e3e0ea',
+                      color: 'var(--v2-text)',
                     },
                   }}
                 />
@@ -736,174 +562,11 @@ export function SettingsV2Page() {
                         background: 'var(--v2-elevated)',
                         border: '1px solid var(--v2-border)',
                         borderRadius: 10,
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   />
                 </div>
-                <div>
-                  <div className={classes.label}>{t('settings.appearance.dateFormatLabel')}</div>
-                  <Select
-                    value={dateFormat}
-                    onChange={(val) =>
-                      val && handlePreferenceChange({ dateFormat: val as typeof dateFormat })
-                    }
-                    data={[
-                      { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY' },
-                      { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY' },
-                      { value: 'YYYY-MM-DD', label: 'YYYY-MM-DD' },
-                    ]}
-                    styles={{
-                      input: {
-                        background: 'var(--v2-elevated)',
-                        border: '1px solid var(--v2-border)',
-                        borderRadius: 10,
-                        color: '#e3e0ea',
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-
-              <hr className={classes.divider} style={{ margin: '20px 0' }} />
-
-              {/* Compact mode */}
-              <div className={classes.toggleRow}>
-                <div className={classes.toggleInfo}>
-                  <span className={classes.toggleLabel}>
-                    {t('settings.appearance.compactMode')}
-                  </span>
-                  <span className={classes.toggleDescription}>
-                    {t('settings.appearance.compactModeDesc')}
-                  </span>
-                </div>
-                <Switch
-                  checked={compactMode}
-                  onChange={(e) => handlePreferenceChange({ compactMode: e.currentTarget.checked })}
-                  color="var(--v2-primary)"
-                  size="md"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* ════════════════════ DASHBOARD ════════════════════ */}
-          <div
-            id="dashboard"
-            className={classes.section}
-            ref={(el) => {
-              sectionRefs.current.dashboard = el;
-            }}
-          >
-            <h2 className={classes.sectionTitle}>{t('settings.dashboard.title')}</h2>
-            <p className={classes.sectionDescription}>{t('settings.dashboard.description')}</p>
-
-            <div className={classes.card}>
-              <div className={classes.label}>{t('settings.dashboard.defaultWidgets')}</div>
-              <p className={classes.hint} style={{ marginTop: 0, marginBottom: 16 }}>
-                {t('settings.dashboard.defaultWidgetsHint')}
-              </p>
-
-              {WIDGET_DEFINITIONS.map((widget) => (
-                <div key={widget.id} className={classes.widgetRow}>
-                  <div className={classes.widgetInfo}>
-                    <div className={classes.widgetIcon}>{widget.emoji}</div>
-                    <div className={classes.widgetMeta}>
-                      <span className={classes.widgetName}>
-                        {t(`settings.widgets.${WIDGET_KEY_MAP[widget.id]}.name`)}
-                      </span>
-                      <span className={classes.widgetDesc}>
-                        {t(`settings.widgets.${WIDGET_KEY_MAP[widget.id]}.description`)}
-                      </span>
-                    </div>
-                  </div>
-                  <Switch
-                    checked={!hiddenWidgets.includes(widget.id)}
-                    onChange={() => handleWidgetToggle(widget.id)}
-                    color="var(--v2-primary)"
-                    size="md"
-                  />
-                </div>
-              ))}
-
-              <hr className={classes.divider} style={{ margin: '16px 0' }} />
-
-              {/* Account cards */}
-              <div className={classes.label} style={{ marginTop: 8 }}>
-                {t('settings.dashboard.accountCards')}
-              </div>
-              <p className={classes.hint} style={{ marginTop: 0, marginBottom: 12 }}>
-                {t('settings.dashboard.accountCardsHint')}
-                {visibleAccountIds === null ? ` ${t('settings.dashboard.allAccountsShown')}` : ''}
-              </p>
-
-              {(accountsQuery.data?.data ?? [])
-                .filter((a) => a.status === 'active')
-                .map((account) => {
-                  const isShown =
-                    visibleAccountIds === null || visibleAccountIds.includes(account.id);
-                  return (
-                    <div key={account.id} className={classes.widgetRow}>
-                      <div className={classes.widgetInfo}>
-                        <div className={classes.widgetIcon}>
-                          {account.type === 'Checking'
-                            ? '\u{1F3E6}'
-                            : account.type === 'Savings'
-                              ? '\u{1F4B0}'
-                              : account.type === 'CreditCard'
-                                ? '\u{1F4B3}'
-                                : '\u{1F3E6}'}
-                        </div>
-                        <div className={classes.widgetMeta}>
-                          <span className={classes.widgetName}>{account.name}</span>
-                          <span className={classes.widgetDesc}>
-                            {account.type === 'Checking'
-                              ? t('settings.dashboard.accountTypeChecking')
-                              : account.type === 'Savings'
-                                ? t('settings.dashboard.accountTypeSavings')
-                                : account.type === 'CreditCard'
-                                  ? t('settings.dashboard.accountTypeCreditCard')
-                                  : account.type}
-                          </span>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={isShown}
-                        onChange={() => handleAccountToggle(account.id)}
-                        color="var(--v2-primary)"
-                        size="md"
-                      />
-                    </div>
-                  );
-                })}
-
-              <hr className={classes.divider} style={{ margin: '16px 0' }} />
-
-              <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-              >
-                <div>
-                  <span className={classes.widgetName}>{t('settings.dashboard.resetLayout')}</span>
-                  <br />
-                  <span className={classes.toggleDescription}>
-                    {t('settings.dashboard.resetLayoutDesc')}
-                  </span>
-                </div>
-                <Button
-                  variant="default"
-                  size="compact-xs"
-                  radius={8}
-                  onClick={handleResetDashboard}
-                  styles={{
-                    root: {
-                      border: '1px solid var(--v2-border)',
-                      background: 'transparent',
-                      color: '#e3e0ea',
-                    },
-                  }}
-                >
-                  {t('common.reset')}
-                </Button>
               </div>
             </div>
           </div>
@@ -939,7 +602,7 @@ export function SettingsV2Page() {
                       root: {
                         border: '1px solid var(--v2-border)',
                         background: 'transparent',
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   >
@@ -975,7 +638,7 @@ export function SettingsV2Page() {
                           root: {
                             border: '1px solid var(--v2-border)',
                             background: 'transparent',
-                            color: '#e3e0ea',
+                            color: 'var(--v2-text)',
                           },
                         }}
                       >
@@ -1048,7 +711,7 @@ export function SettingsV2Page() {
                       root: {
                         border: '1px solid var(--v2-border)',
                         background: 'transparent',
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   >
@@ -1075,40 +738,11 @@ export function SettingsV2Page() {
                       root: {
                         border: '1px solid var(--v2-border)',
                         background: 'transparent',
-                        color: '#e3e0ea',
+                        color: 'var(--v2-text)',
                       },
                     }}
                   >
                     {t('common.export')}
-                  </Button>
-                </div>
-              </div>
-
-              <hr className={classes.divider} style={{ margin: '20px 0' }} />
-
-              <div className={classes.sectionLabel}>{t('settings.data.import')}</div>
-
-              <div className={classes.exportRow}>
-                <div className={classes.exportInfo}>
-                  <span className={classes.exportTitle}>{t('settings.data.importData')}</span>
-                  <span className={classes.exportDesc}>{t('settings.data.importDataDesc')}</span>
-                </div>
-                <div className={classes.exportActions}>
-                  <span className={classes.formatBadge}>JSON</span>
-                  <Button
-                    variant="default"
-                    size="compact-xs"
-                    radius={8}
-                    onClick={handleImportData}
-                    styles={{
-                      root: {
-                        border: '1px solid var(--v2-border)',
-                        background: 'transparent',
-                        color: '#e3e0ea',
-                      },
-                    }}
-                  >
-                    {t('common.import')}
                   </Button>
                 </div>
               </div>

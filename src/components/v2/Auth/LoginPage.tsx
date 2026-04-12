@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core';
-import { ApiError } from '@/api/errors';
-import { apiClient } from '@/api/v2client';
+import { Alert, Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core';
 import { useAuth } from '@/context/AuthContext';
 import { useLogin } from '@/hooks/v2/useAuth';
-import { toast } from '@/lib/toast';
 import classes from './Auth.module.css';
 
 export function V2LoginPage() {
@@ -16,6 +13,31 @@ export function V2LoginPage() {
   const { refreshUser } = useAuth();
   const loginMutation = useLogin();
   const [verifying2FA, setVerifying2FA] = useState(false);
+  const [rateLimitSeconds, setRateLimitSeconds] = useState(0);
+  const [loginError, setLoginError] = useState('');
+  const rateLimitTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Countdown timer for rate limiting
+  useEffect(() => {
+    if (rateLimitSeconds > 0) {
+      rateLimitTimer.current = setInterval(() => {
+        setRateLimitSeconds((s) => {
+          if (s <= 1) {
+            if (rateLimitTimer.current) {
+              clearInterval(rateLimitTimer.current);
+            }
+            return 0;
+          }
+          return s - 1;
+        });
+      }, 1000);
+      return () => {
+        if (rateLimitTimer.current) {
+          clearInterval(rateLimitTimer.current);
+        }
+      };
+    }
+  }, [rateLimitSeconds]);
 
   const isSessionExpired = location.state?.sessionExpired === true;
 
@@ -32,47 +54,65 @@ export function V2LoginPage() {
   const redirectPath = (location.state?.from as string) ?? '/dashboard';
 
   const handleLogin = async () => {
+    setLoginError('');
     try {
       const result = await loginMutation.mutateAsync({ email, password });
-      if (result.requiresTwoFactor === 'true') {
+      if ('twoFactorToken' in result && result.twoFactorToken) {
         setTwoFactorToken(result.twoFactorToken);
         setRequires2FA(true);
         return;
       }
       await refreshUser(rememberMe);
       navigate(redirectPath, { replace: true });
-    } catch (err) {
-      if (err instanceof ApiError) {
-        if (err.status === 401) {
-          toast.error({ message: t('auth.login.errorInvalidCredentials') });
-        } else if (err.status === 429) {
-          toast.error({ message: t('auth.login.errorTooManyAttempts') });
-        } else if (err.status === 423) {
-          toast.error({ message: t('auth.login.errorAccountLocked') });
-        } else {
-          toast.error({ message: t('auth.login.errorGeneric') });
-        }
+    } catch (err: unknown) {
+      const errorObj = err as Record<string, unknown> | undefined;
+      const errorCode = errorObj?.error as string | undefined;
+
+      if (errorCode === 'too_many_attempts') {
+        const retryAfter = Number(errorObj?.retry_after_seconds) || 60;
+        setRateLimitSeconds(retryAfter);
+      } else if (errorCode === 'account_locked') {
+        setRateLimitSeconds(-1);
       } else {
-        toast.error({ message: t('auth.login.errorUnknown') });
+        setLoginError(t('auth.login.errorInvalidCredentials'));
       }
     }
   };
 
   const handle2FAVerify = async () => {
     setVerifying2FA(true);
+    setLoginError('');
     try {
-      const { data, error } = await apiClient.POST('/auth/2fa/verify', {
-        body: { twoFactorToken, code: code.trim() },
+      // Omit credentials to avoid hitting the authenticated setup-verify
+      // route (rank 1). The login 2FA verify is unauthenticated (rank 2).
+      const { v2BaseUrl: baseUrl } = await import('@/api/v2client');
+      const response = await fetch(`${baseUrl}/auth/2fa/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'omit',
+        body: JSON.stringify({ twoFactorToken, code: code.trim() }),
       });
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        let errorData: Record<string, unknown> = {};
+        try {
+          errorData = await response.json();
+        } catch {
+          // ignore parse errors
+        }
+        if (errorData.error === 'too_many_attempts') {
+          const retryAfter = Number(errorData.retry_after_seconds) || 60;
+          setRateLimitSeconds(retryAfter);
+        } else if (errorData.error === 'account_locked') {
+          setRateLimitSeconds(-1);
+        } else {
+          setLoginError(t('auth.twoFactor.errorInvalidCode'));
+        }
+        return;
       }
-      if (data) {
-        await refreshUser(rememberMe);
-        navigate(redirectPath, { replace: true });
-      }
+      await refreshUser(rememberMe);
+      navigate(redirectPath, { replace: true });
     } catch {
-      toast.error({ message: t('auth.twoFactor.errorInvalidCode') });
+      setLoginError(t('auth.twoFactor.errorInvalidCode'));
     } finally {
       setVerifying2FA(false);
     }
@@ -88,6 +128,30 @@ export function V2LoginPage() {
         <Text fz="sm" c="dimmed">
           {useRecoveryCode ? t('auth.twoFactor.recoverySubtitle') : t('auth.twoFactor.subtitle')}
         </Text>
+
+        {rateLimitSeconds === -1 && (
+          <Alert color="red" variant="light">
+            {t(
+              'auth.twoFactor.accountLocked',
+              'Your account has been temporarily locked due to too many failed attempts. Check your email for unlock instructions.'
+            )}
+          </Alert>
+        )}
+
+        {rateLimitSeconds > 0 && (
+          <Alert color="orange" variant="light">
+            {t(
+              'auth.twoFactor.tooManyAttempts',
+              'Too many failed attempts. Please wait {{seconds}} seconds before trying again.'
+            ).replace('{{seconds}}', String(rateLimitSeconds))}
+          </Alert>
+        )}
+
+        {loginError && rateLimitSeconds === 0 && (
+          <Alert color="red" variant="light">
+            {loginError}
+          </Alert>
+        )}
 
         <TextInput
           placeholder={
@@ -107,8 +171,18 @@ export function V2LoginPage() {
           }}
         />
 
-        <Button onClick={handle2FAVerify} loading={verifying2FA} fullWidth>
-          {t('auth.twoFactor.verifyButton')}
+        <Button
+          onClick={handle2FAVerify}
+          loading={verifying2FA}
+          fullWidth
+          disabled={rateLimitSeconds !== 0}
+        >
+          {rateLimitSeconds > 0
+            ? t('auth.twoFactor.waitSeconds', 'Wait {{seconds}}s').replace(
+                '{{seconds}}',
+                String(rateLimitSeconds)
+              )
+            : t('auth.twoFactor.verifyButton')}
         </Button>
 
         <Text fz="sm" ta="center">
@@ -132,12 +206,36 @@ export function V2LoginPage() {
         </div>
       )}
 
+      {rateLimitSeconds === -1 && (
+        <Alert color="red" variant="light">
+          {t(
+            'auth.login.accountLockedAlert',
+            'Your account has been temporarily locked due to too many failed attempts. Check your email for unlock instructions.'
+          )}
+        </Alert>
+      )}
+
+      {rateLimitSeconds > 0 && (
+        <Alert color="orange" variant="light">
+          {t(
+            'auth.login.tooManyAttemptsAlert',
+            'Too many failed attempts. Please wait {{seconds}} seconds before trying again.'
+          ).replace('{{seconds}}', String(rateLimitSeconds))}
+        </Alert>
+      )}
+
       <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
         {t('auth.login.title')}
       </Text>
       <Text fz="sm" c="dimmed">
         {t('auth.login.subtitle')}
       </Text>
+
+      {loginError && rateLimitSeconds === 0 && (
+        <Alert color="red" variant="light">
+          {loginError}
+        </Alert>
+      )}
 
       <TextInput
         data-testid="login-email"
@@ -179,8 +277,14 @@ export function V2LoginPage() {
         loading={loginMutation.isPending}
         fullWidth
         size="md"
+        disabled={rateLimitSeconds !== 0}
       >
-        {t('auth.login.submitButton')}
+        {rateLimitSeconds > 0
+          ? t('auth.login.waitSeconds', 'Wait {{seconds}}s').replace(
+              '{{seconds}}',
+              String(rateLimitSeconds)
+            )
+          : t('auth.login.submitButton')}
       </Button>
 
       <div className={classes.footerLink}>

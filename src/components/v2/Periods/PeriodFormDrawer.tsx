@@ -9,7 +9,7 @@ import {
 } from '@/hooks/v2/useBudgetPeriods';
 import { toast } from '@/lib/toast';
 
-type PeriodType = 'duration' | 'manualEndDate';
+type PeriodType = 'Duration' | 'ManualEndDate';
 type DurationUnit = 'days' | 'weeks' | 'months';
 
 interface PeriodFormDrawerProps {
@@ -27,7 +27,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState(() => new Date().toISOString().split('T')[0]);
-  const [periodType, setPeriodType] = useState<PeriodType>('duration');
+  const [periodType, setPeriodType] = useState<PeriodType>('Duration');
   const [durationUnits, setDurationUnits] = useState<number | string>(30);
   const [durationUnit, setDurationUnit] = useState<DurationUnit>('days');
   const [manualEndDate, setManualEndDate] = useState('');
@@ -37,13 +37,16 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
     if (isEdit && editData) {
       setName(editData.name);
       setStartDate(editData.startDate);
-      setPeriodType(editData.periodType);
-      if (editData.periodType === 'duration' && 'duration' in editData) {
+      setPeriodType(editData.periodType as unknown as PeriodType);
+      if ((editData.periodType as unknown as PeriodType) === 'Duration' && 'duration' in editData) {
         const dur = (editData as components['schemas']['DurationBased']).duration;
         setDurationUnits(dur.durationUnits);
         setDurationUnit(dur.durationUnit as DurationUnit);
       }
-      if (editData.periodType === 'manualEndDate' && 'manualEndDate' in editData) {
+      if (
+        (editData.periodType as unknown as PeriodType) === 'ManualEndDate' &&
+        'manualEndDate' in editData
+      ) {
         setManualEndDate((editData as components['schemas']['ManualEndDate']).manualEndDate);
       }
     }
@@ -60,19 +63,19 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
 
     let body: components['schemas']['CreatePeriodRequest'];
 
-    if (periodType === 'duration') {
+    if (periodType === 'Duration') {
       body = {
         ...base,
         duration: {
           durationUnits: Number(durationUnits),
           durationUnit,
         },
-      } as components['schemas']['CreatePeriodRequest'];
+      } as unknown as components['schemas']['CreatePeriodRequest'];
     } else {
       body = {
         ...base,
         manualEndDate,
-      } as components['schemas']['CreatePeriodRequest'];
+      } as unknown as components['schemas']['CreatePeriodRequest'];
     }
 
     try {
@@ -92,6 +95,14 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         toast.success({ message: t('periods.created') });
       }
       onClose();
+      if (!isEdit) {
+        setName('');
+        setStartDate(new Date().toISOString().split('T')[0]);
+        setPeriodType('Duration');
+        setDurationUnits(30);
+        setDurationUnit('days');
+        setManualEndDate('');
+      }
     } catch {
       toast.error({ message: t('periods.saveFailed', { action: isEdit ? 'update' : 'create' }) });
     }
@@ -145,16 +156,16 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
           <Select
             label={t('periods.form.periodType')}
             data={[
-              { value: 'duration', label: t('periods.form.durationBased') },
-              { value: 'manualEndDate', label: t('periods.form.manualEndDate') },
+              { value: 'Duration', label: t('periods.form.durationBased') },
+              { value: 'ManualEndDate', label: t('periods.form.manualEndDate') },
             ]}
             value={periodType}
-            onChange={(v) => setPeriodType((v as PeriodType) ?? 'duration')}
+            onChange={(v) => setPeriodType((v as PeriodType) ?? 'Duration')}
           />
         )}
 
         {/* Duration fields */}
-        {periodType === 'duration' && (
+        {periodType === 'Duration' && (
           <Group grow>
             <NumberInput
               label={t('periods.form.duration')}
@@ -177,7 +188,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         )}
 
         {/* Manual end date */}
-        {periodType === 'manualEndDate' && (
+        {periodType === 'ManualEndDate' && (
           <TextInput
             data-testid="period-end-date"
             label={t('periods.form.endDate')}

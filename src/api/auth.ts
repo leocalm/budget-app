@@ -36,7 +36,7 @@ export interface User {
  */
 export async function login(credentials: LoginRequest): Promise<void> {
   try {
-    await apiPost<void, LoginRequest>('/api/users/login', credentials);
+    await apiPost<void, LoginRequest>('/api/auth/login', credentials);
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.isUnauthorized || error.status === 403) {
@@ -97,11 +97,24 @@ export async function login(credentials: LoginRequest): Promise<void> {
  * - { ...user fields... }
  */
 export async function fetchCurrentUser(): Promise<User> {
-  const response = await apiGet<User | { user: User }>('/api/users/me');
-  if (response && typeof response === 'object' && 'user' in response) {
-    return response.user;
+  const response = await apiGet<User | { user: User }>('/api/auth/me');
+  const user =
+    response && typeof response === 'object' && 'user' in response
+      ? response.user
+      : (response as User);
+
+  // v2 /auth/me doesn't include onboardingStatus — fetch it separately
+  if (!user.onboardingStatus) {
+    try {
+      const status = await apiGet<{ status: string }>('/api/onboarding/status');
+      user.onboardingStatus = status.status;
+    } catch {
+      // Default to completed to avoid redirect loops
+      user.onboardingStatus = 'completed';
+    }
   }
-  return response as User;
+
+  return user;
 }
 
 /**
@@ -110,7 +123,7 @@ export async function fetchCurrentUser(): Promise<User> {
  */
 export async function updateUser(id: string, data: UpdateUserRequest): Promise<User> {
   try {
-    return await apiPut<User, UpdateUserRequest>(`/api/users/${id}`, data);
+    return await apiPut<User, UpdateUserRequest>(`/api/auth/users/${id}`, data);
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 400) {
@@ -140,7 +153,7 @@ export async function updateUser(id: string, data: UpdateUserRequest): Promise<U
  */
 export async function register(credentials: RegisterRequest): Promise<void> {
   try {
-    await apiPost<void, RegisterRequest>('/api/users/', credentials);
+    await apiPost<void, RegisterRequest>('/api/auth/register', credentials);
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 409) {
@@ -220,7 +233,7 @@ export async function unlockAccount(token: string, userId: string): Promise<void
  */
 export async function logout(): Promise<void> {
   try {
-    await apiPost('/api/users/logout');
+    await apiPost('/api/auth/logout');
   } catch (error) {
     // Logout should be silent - even if it fails on the server,
     // we still want to clear client-side auth state

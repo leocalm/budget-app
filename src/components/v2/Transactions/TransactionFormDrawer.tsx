@@ -64,15 +64,18 @@ export function TransactionFormDrawer({
     }
   }, [isEdit, editTransaction]);
 
-  const categoryOptions = (categories ?? []).map((c) => ({
-    value: c.id,
-    label: `${c.icon} ${c.name}`,
-  }));
+  const transferCategoryId = (categories ?? []).find((c) => c.name === 'Transfer')?.id ?? null;
+  const categoryOptions = (categories ?? [])
+    .filter((c) => c.name !== 'Transfer')
+    .map((c) => ({
+      value: c.id,
+      label: `${c.icon} ${c.name}`,
+    }));
   const accountOptions = (accounts ?? []).map((a) => ({ value: a.id, label: a.name }));
   const vendorOptions = (vendors ?? []).map((v) => ({ value: v.id, label: v.name }));
 
   const handleSubmit = async () => {
-    if (!description.trim() || !amount || !categoryId || !fromAccountId) {
+    if (!description.trim() || !amount || !fromAccountId || (!isTransfer && !categoryId)) {
       return;
     }
 
@@ -80,14 +83,14 @@ export function TransactionFormDrawer({
 
     try {
       if (isTransfer) {
-        if (!toAccountId) {
+        if (!toAccountId || !transferCategoryId) {
           return;
         }
         const body: components['schemas']['CreateTransactionRequest'] = {
           description: description.trim(),
           amount: cents,
           date,
-          categoryId,
+          categoryId: transferCategoryId,
           fromAccountId,
           toAccountId,
           // API requires PascalCase despite OpenAPI spec declaring lowercase
@@ -105,7 +108,7 @@ export function TransactionFormDrawer({
           description: description.trim(),
           amount: cents,
           date,
-          categoryId,
+          categoryId: categoryId as string,
           fromAccountId,
           vendorId: vendorId || undefined,
           // API requires PascalCase despite OpenAPI spec declaring lowercase
@@ -120,6 +123,16 @@ export function TransactionFormDrawer({
         }
       }
       onClose();
+      if (!isEdit) {
+        setIsTransfer(false);
+        setDescription('');
+        setAmount('');
+        setDate(new Date().toISOString().split('T')[0]);
+        setCategoryId(null);
+        setFromAccountId(null);
+        setToAccountId(null);
+        setVendorId(null);
+      }
     } catch {
       toast.error({
         message: t('transactions.saveFailed', { action: isEdit ? 'update' : 'create' }),
@@ -129,7 +142,7 @@ export function TransactionFormDrawer({
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   const isValid =
-    description.trim() && amount && categoryId && fromAccountId && (!isTransfer || toAccountId);
+    description.trim() && amount && fromAccountId && (isTransfer ? toAccountId : categoryId);
 
   const fromName = accountOptions.find((a) => a.value === fromAccountId)?.label;
   const toName = accountOptions.find((a) => a.value === toAccountId)?.label;
@@ -203,16 +216,18 @@ export function TransactionFormDrawer({
           />
         </Group>
 
-        {/* Category — hidden for transfers in a simplified way */}
-        <Select
-          data-testid="transaction-category-select"
-          label={t('transactions.form.category')}
-          data={categoryOptions}
-          value={categoryId}
-          onChange={setCategoryId}
-          searchable
-          required
-        />
+        {/* Category — hidden for transfers */}
+        {!isTransfer && (
+          <Select
+            data-testid="transaction-category-select"
+            label={t('transactions.form.category')}
+            data={categoryOptions}
+            value={categoryId}
+            onChange={setCategoryId}
+            searchable
+            required
+          />
+        )}
 
         {/* From Account */}
         <Select

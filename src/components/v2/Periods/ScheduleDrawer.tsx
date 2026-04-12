@@ -145,7 +145,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
         const { scheduleType: _, ...rest } = body;
         const updateBody: components['schemas']['UpdatePeriodScheduleRequest'] = {
           ...rest,
-          scheduleType: 'UpdatePeriodScheduleRequest',
+          scheduleType: 'automatic' as unknown as 'UpdatePeriodScheduleRequest',
         };
         await updateMutation.mutateAsync(updateBody);
         toast.success({ message: t('periods.schedule.scheduleSaved') });

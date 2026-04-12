@@ -10,7 +10,7 @@ type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
-const DEFAULT_API_VERSION = 'v1';
+const DEFAULT_API_VERSION = 'v2';
 const VERSIONED_API_PREFIX = /^\/v\d+(?:[/?#]|$)/;
 
 function normalizeApiVersion(version: string): string {

@@ -263,21 +263,21 @@
 
 .typeSelector {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--mantine-spacing-xs);
 }
 
 .typeButton {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  justify-content: center;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border: 1px solid var(--v2-border);
-  border-radius: var(--mantine-radius-md);
+  border-radius: var(--mantine-radius-xl);
   background-color: var(--v2-card);
   cursor: pointer;
   transition: border-color 120ms ease;
+  white-space: nowrap;
 }
 
 .typeButton:hover {
@@ -286,15 +286,15 @@
 
 .typeButtonActive {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs);
+  justify-content: center;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border: 1px solid var(--v2-primary);
-  border-radius: var(--mantine-radius-md);
+  border-radius: var(--mantine-radius-xl);
   background-color: var(--v2-elevated);
   cursor: pointer;
   transition: border-color 120ms ease;
+  white-space: nowrap;
 }
 
 /* ------------------------------------------------------------------ */
@@ -329,9 +329,6 @@
     grid-template-columns: 1fr;
   }
 
-  .typeSelector {
-    grid-template-columns: repeat(3, 1fr);
-  }
 
   .creditCardExtra {
     flex-direction: column;

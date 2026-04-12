@@ -14,7 +14,7 @@ describe('auth api', () => {
   });
 
   describe('register', () => {
-    it('registers a user via /api/users/', async () => {
+    it('registers a user via /api/auth/register', async () => {
       const credentials: RegisterRequest = {
         name: 'John Doe',
         email: 'john@example.com',
@@ -25,7 +25,7 @@ describe('auth api', () => {
       apiPostMock.mockResolvedValueOnce(undefined);
 
       await expect(register(credentials)).resolves.toBeUndefined();
-      expect(apiPostMock).toHaveBeenCalledWith('/api/users/', credentials);
+      expect(apiPostMock).toHaveBeenCalledWith('/api/auth/register', credentials);
     });
 
     it('throws error when email is already registered (409)', async () => {
@@ -36,7 +36,7 @@ describe('auth api', () => {
       };
 
       const apiPostMock = vi.mocked(apiPost);
-      apiPostMock.mockRejectedValueOnce(new ApiError('Conflict', 409, '/api/users/'));
+      apiPostMock.mockRejectedValueOnce(new ApiError('Conflict', 409, '/api/auth/register'));
 
       await expect(register(credentials)).rejects.toThrow(
         'This email is already registered. Please use a different email.'
@@ -51,7 +51,7 @@ describe('auth api', () => {
       };
 
       const apiPostMock = vi.mocked(apiPost);
-      apiPostMock.mockRejectedValueOnce(new ApiError('Bad Request', 400, '/api/users/'));
+      apiPostMock.mockRejectedValueOnce(new ApiError('Bad Request', 400, '/api/auth/register'));
 
       await expect(register(credentials)).rejects.toThrow('Bad Request');
     });
@@ -64,7 +64,9 @@ describe('auth api', () => {
       };
 
       const apiPostMock = vi.mocked(apiPost);
-      apiPostMock.mockRejectedValueOnce(new ApiError('Internal Server Error', 500, '/api/users/'));
+      apiPostMock.mockRejectedValueOnce(
+        new ApiError('Internal Server Error', 500, '/api/auth/register')
+      );
 
       await expect(register(credentials)).rejects.toThrow('Server error. Please try again later.');
     });
@@ -99,7 +101,7 @@ describe('auth api', () => {
   });
 
   describe('login', () => {
-    it('logs in a user via /api/users/login', async () => {
+    it('logs in a user via /api/auth/login', async () => {
       const credentials: LoginRequest = {
         email: 'john@example.com',
         password: 'password123',
@@ -109,7 +111,7 @@ describe('auth api', () => {
       apiPostMock.mockResolvedValueOnce(undefined);
 
       await expect(login(credentials)).resolves.toBeUndefined();
-      expect(apiPostMock).toHaveBeenCalledWith('/api/users/login', credentials);
+      expect(apiPostMock).toHaveBeenCalledWith('/api/auth/login', credentials);
     });
 
     it('throws error on invalid credentials (401)', async () => {
@@ -119,7 +121,7 @@ describe('auth api', () => {
       };
 
       const apiPostMock = vi.mocked(apiPost);
-      apiPostMock.mockRejectedValueOnce(new ApiError('Unauthorized', 401, '/api/users/login'));
+      apiPostMock.mockRejectedValueOnce(new ApiError('Unauthorized', 401, '/api/auth/login'));
 
       await expect(login(credentials)).rejects.toThrow(
         'Invalid email or password. Please try again.'
@@ -134,7 +136,7 @@ describe('auth api', () => {
 
       const apiPostMock = vi.mocked(apiPost);
       apiPostMock.mockRejectedValueOnce(
-        new ApiError('Too many attempts', 429, '/api/users/login', {
+        new ApiError('Too many attempts', 429, '/api/auth/login', {
           error: 'too_many_attempts',
           retry_after_seconds: 30,
         })
@@ -154,7 +156,7 @@ describe('auth api', () => {
       const lockedUntil = '2026-02-26T10:00:00Z';
       const apiPostMock = vi.mocked(apiPost);
       apiPostMock.mockRejectedValueOnce(
-        new ApiError('Account locked', 423, '/api/users/login', {
+        new ApiError('Account locked', 423, '/api/auth/login', {
           error: 'account_locked',
           locked_until: lockedUntil,
         })
@@ -167,7 +169,7 @@ describe('auth api', () => {
   });
 
   describe('fetchCurrentUser', () => {
-    it('fetches current user via /api/users/me', async () => {
+    it('fetches current user via /api/auth/me', async () => {
       const user: User = {
         id: 'user-1',
         email: 'john@example.com',
@@ -179,7 +181,7 @@ describe('auth api', () => {
       apiGetMock.mockResolvedValueOnce(user);
 
       await expect(fetchCurrentUser()).resolves.toEqual(user);
-      expect(apiGetMock).toHaveBeenCalledWith('/api/users/me');
+      expect(apiGetMock).toHaveBeenCalledWith('/api/auth/me');
     });
 
     it('extracts user from wrapped response', async () => {
