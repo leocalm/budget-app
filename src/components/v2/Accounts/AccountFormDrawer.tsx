@@ -132,7 +132,14 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
       }}
     >
       <Stack gap="md">
-        {/* Account type selector */}
+        {/*
+          Account type is immutable after creation. The backend enforces this
+          via a BEFORE UPDATE trigger on the `account` table (migration
+          20260327000004), because account_type is snapshotted by the
+          transaction aggregate trigger at insert time to classify spending
+          (Transfer-to-Allowance). Editing it would silently drift the
+          materialized aggregates. Do not add an edit-mode branch here.
+        */}
         {!isEdit && (
           <div>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>

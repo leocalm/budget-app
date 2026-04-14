@@ -148,7 +148,14 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
       }}
     >
       <Stack gap="md">
-        {/* Type selector */}
+        {/*
+          Category type is immutable after creation. The backend enforces this
+          via a BEFORE UPDATE trigger on the `category` table (migration
+          20260327000004), because category_type is snapshotted by the
+          transaction aggregate trigger at insert time to classify
+          inflow/outflow/spending. Editing it would silently drift the
+          materialized aggregates. Do not add an edit-mode branch here.
+        */}
         {!isEdit && (
           <div>
             <Text fz="xs" fw={600} tt="uppercase" c="dimmed" mb={4}>
