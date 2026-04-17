@@ -5,6 +5,7 @@ import { ProtectedRoute } from './components/Auth';
 import { PageLoader } from './components/Utils';
 import { AuthProvider } from './context/AuthContext';
 import { BudgetProvider } from './context/BudgetContext';
+import { EncryptionProvider } from './context/EncryptionContext';
 import { V2ThemeProvider } from './theme/v2';
 
 const V2AppShell = lazy(() =>
@@ -126,6 +127,10 @@ const V2Emergency2FADisablePageComponent = lazy(() =>
   import('./components/v2/Auth').then((m) => ({ default: m.V2Emergency2FADisablePage }))
 );
 
+const SessionUnlockGateLazy = lazy(() =>
+  import('./components/v2/Auth').then((m) => ({ default: m.SessionUnlockGate }))
+);
+
 const V2Layout = () => {
   const location = useLocation();
   const { colorScheme } = useMantineColorScheme();
@@ -142,11 +147,13 @@ const V2Layout = () => {
 
   return (
     <ProtectedRoute>
-      <BudgetProvider>
-        <V2ThemeProvider colorMode={colorScheme === 'dark' ? 'dark' : 'light'}>
-          <V2AppShell />
-        </V2ThemeProvider>
-      </BudgetProvider>
+      <SessionUnlockGateLazy>
+        <BudgetProvider>
+          <V2ThemeProvider colorMode={colorScheme === 'dark' ? 'dark' : 'light'}>
+            <V2AppShell />
+          </V2ThemeProvider>
+        </BudgetProvider>
+      </SessionUnlockGateLazy>
     </ProtectedRoute>
   );
 };
@@ -209,7 +216,9 @@ export function Router() {
   ]);
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <EncryptionProvider>
+        <RouterProvider router={router} />
+      </EncryptionProvider>
     </AuthProvider>
   );
 }

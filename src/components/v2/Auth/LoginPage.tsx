@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core';
 import { useAuth } from '@/context/AuthContext';
 import { useLogin } from '@/hooks/v2/useAuth';
+import { unlockWithPassword } from '@/lib/encryption';
 import classes from './Auth.module.css';
 
 export function V2LoginPage() {
@@ -63,6 +64,18 @@ export function V2LoginPage() {
         return;
       }
       await refreshUser(rememberMe);
+      try {
+        await unlockWithPassword(password);
+      } catch (unlockError) {
+        console.error('Failed to unlock encryption after login', unlockError);
+        setLoginError(
+          t(
+            'auth.unlock.errorOnLogin',
+            "Signed in, but we couldn't decrypt your data. Please try again."
+          )
+        );
+        return;
+      }
       navigate(redirectPath, { replace: true });
     } catch (err: unknown) {
       const errorObj = err as Record<string, unknown> | undefined;
@@ -110,6 +123,18 @@ export function V2LoginPage() {
         return;
       }
       await refreshUser(rememberMe);
+      try {
+        await unlockWithPassword(password);
+      } catch (unlockError) {
+        console.error('Failed to unlock encryption after 2FA', unlockError);
+        setLoginError(
+          t(
+            'auth.unlock.errorOnLogin',
+            "Signed in, but we couldn't decrypt your data. Please try again."
+          )
+        );
+        return;
+      }
       navigate(redirectPath, { replace: true });
     } catch {
       setLoginError(t('auth.twoFactor.errorInvalidCode'));

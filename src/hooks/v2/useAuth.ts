@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
+import { createWrappedDek, postUnlock, setDekInSession } from '@/lib/encryption';
 import { v2QueryKeys } from './queryKeys';
 
 export function useMe() {
@@ -33,6 +33,17 @@ export function useLogin() {
   });
 }
 
+// Wraps the `unlockWithPassword` helper as a mutation so screens can surface
+// loading + error state from React Query.
+export function useUnlockEncryption() {
+  return useMutation({
+    mutationFn: async (password: string) => {
+      const { unlockWithPassword } = await import('@/lib/encryption');
+      await unlockWithPassword(password);
+    },
+  });
+}
+
 export function useLogout() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -42,19 +53,45 @@ export function useLogout() {
         throw error;
       }
     },
-    onSuccess: () => {
-      queryClient.clear(); // Wipe all cached data on logout
+    onSuccess: async () => {
+      queryClient.clear();
+      const { lockSession } = await import('@/lib/encryption');
+      lockSession();
     },
   });
 }
 
+export interface RegisterInput {
+  email: string;
+  password: string;
+  name: string;
+}
+
+// Registers a new user under the encrypted API. The client derives a fresh
+// 32-byte DEK + Argon2id wrap and uploads the `wrappedDek` + `dekWrapParams`
+// alongside the account fields, then posts `/auth/unlock` to establish the
+// per-session DEK on the server and caches it in sessionStorage.
 export function useRegister() {
   return useMutation({
-    mutationFn: async (body: components['schemas']['RegisterRequest']) => {
-      const { data, error } = await apiClient.POST('/auth/register', { body });
+    mutationFn: async ({ email, password, name }: RegisterInput) => {
+      const { dek, wrapped } = await createWrappedDek(password);
+      const body = {
+        email,
+        password,
+        name,
+        wrappedDek: wrapped.wrappedDekBase64,
+        dekWrapParams: wrapped.params,
+      } as const;
+      // The v2 OpenAPI schema is behind the encryption work — force the
+      // generated paths type to accept the wrapped DEK fields.
+      const { data, error } = await apiClient.POST('/auth/register', {
+        body: body as unknown as Record<string, unknown> as never,
+      });
       if (error) {
         throw error;
       }
+      await postUnlock(dek);
+      setDekInSession(dek);
       return data;
     },
   });
