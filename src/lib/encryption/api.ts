@@ -57,16 +57,38 @@ export async function putWrappedDek(wrappedDek: string, params: DekWrapParams): 
 // back. Then we derive KEK, unwrap DEK, POST /auth/unlock, and cache the DEK
 // for the current tab session.
 export async function unlockWithPassword(password: string): Promise<Uint8Array> {
-  const { wrappedDek, dekWrapParams } = await fetchWrappedDek();
-  let dek: Uint8Array;
-  if (!wrappedDek || !dekWrapParams) {
-    const created = await createWrappedDek(password);
-    await putWrappedDek(created.wrapped.wrappedDekBase64, created.wrapped.params);
-    dek = created.dek;
-  } else {
-    dek = await unwrapDek(password, wrappedDek, dekWrapParams);
+  let wrapped: WrappedDekFetchResult;
+  try {
+    wrapped = await fetchWrappedDek();
+  } catch (err) {
+    throw new Error(`unlock.fetchWrappedDek: ${(err as Error).message ?? err}`, { cause: err });
   }
-  await postUnlock(dek);
+
+  let dek: Uint8Array;
+  if (!wrapped.wrappedDek || !wrapped.dekWrapParams) {
+    try {
+      const created = await createWrappedDek(password);
+      await putWrappedDek(created.wrapped.wrappedDekBase64, created.wrapped.params);
+      dek = created.dek;
+    } catch (err) {
+      throw new Error(`unlock.createWrappedDek: ${(err as Error).message ?? err}`, { cause: err });
+    }
+  } else {
+    try {
+      dek = await unwrapDek(password, wrapped.wrappedDek, wrapped.dekWrapParams);
+    } catch (err) {
+      throw new Error(
+        `unlock.unwrapDek: ${(err as Error).message ?? err} (wrappedDekBytes=${wrapped.wrappedDek.length}, params=${JSON.stringify(wrapped.dekWrapParams)})`,
+        { cause: err }
+      );
+    }
+  }
+
+  try {
+    await postUnlock(dek);
+  } catch (err) {
+    throw new Error(`unlock.postUnlock: ${(err as Error).message ?? err}`, { cause: err });
+  }
   setDekInSession(dek);
   return dek;
 }
