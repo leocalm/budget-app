@@ -1,7 +1,40 @@
+import { useMemo } from 'react';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
+import { buildCategorySummaries } from './categoriesAdapter';
 import { v2QueryKeys } from './queryKeys';
+import { useEncryptedStore, type DecryptedStore } from './useEncryptedStore';
+
+type PeriodResponse = components['schemas']['PeriodResponse'];
+
+// iOS Phase 4a memo: `/periods` returns 0/NULL for numberOfTransactions,
+// totalSpent, totalBudgeted under the encrypted API. Enrich whichever
+// period matches the decrypted store's currently-loaded periodId — past
+// and upcoming periods show zeroes (parity with iOS; cross-period fetch
+// is a follow-up).
+function enrichPeriod(period: PeriodResponse, store: DecryptedStore): PeriodResponse {
+  const categories = buildCategorySummaries(store);
+  let totalSpent = 0;
+  let totalBudgeted = 0;
+  for (const cat of categories) {
+    if (cat.status !== 'active') {
+      continue;
+    }
+    if (cat.type === 'expense') {
+      totalSpent += cat.actual;
+      if (cat.budgeted != null) {
+        totalBudgeted += cat.budgeted;
+      }
+    }
+  }
+  return {
+    ...period,
+    numberOfTransactions: store.transactions.length,
+    totalSpent,
+    totalBudgeted,
+  };
+}
 
 export function useBudgetPeriods(params: { cursor?: string; limit?: number } = {}) {
   return useQuery({
@@ -18,8 +51,9 @@ export function useBudgetPeriods(params: { cursor?: string; limit?: number } = {
   });
 }
 
-export function useInfiniteBudgetPeriods(pageSize = 50) {
-  return useInfiniteQuery({
+export function useInfiniteBudgetPeriods(pageSize = 50, enrichPeriodId: string | null = null) {
+  const store = useEncryptedStore(enrichPeriodId);
+  const raw = useInfiniteQuery({
     queryKey: [...v2QueryKeys.budgetPeriods.list({}), 'infinite', pageSize],
     queryFn: async ({ pageParam }) => {
       const { data, error } = await apiClient.GET('/periods', {
@@ -34,6 +68,21 @@ export function useInfiniteBudgetPeriods(pageSize = 50) {
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
   });
+
+  const enrichedData = useMemo(() => {
+    if (!raw.data || !store.data || !enrichPeriodId) {
+      return raw.data;
+    }
+    return {
+      ...raw.data,
+      pages: raw.data.pages.map((page) => ({
+        ...page,
+        data: page.data?.map((p) => (p.id === enrichPeriodId ? enrichPeriod(p, store.data!) : p)),
+      })),
+    };
+  }, [raw.data, store.data, enrichPeriodId]);
+
+  return { ...raw, data: enrichedData };
 }
 
 export function useBudgetPeriod(id: string) {
