@@ -11,11 +11,13 @@ type TransactionListParamsOptionalPeriod = Omit<TransactionListParams, 'periodId
   periodId?: string;
 };
 
-// iOS Phase 4a: `/transactions/has-any` was retired. Fall back to "the user
-// has at least one transaction in the currently-selected period" — good
-// enough for the Getting Started card. Returns `null` while loading.
-export function useHasAnyTransactions() {
-  const store = useEncryptedStore(null);
+// iOS Phase 4a: `/transactions/has-any` was retired. Fall back to checking
+// the currently-loaded period. Callers thread their selected periodId
+// through so the store fetches the right slice of transactions; without
+// one the store skips the transactions request and the answer is "no
+// transactions here" which is fine for the Getting Started gate.
+export function useHasAnyTransactions(periodId: string | null = null) {
+  const store = useEncryptedStore(periodId);
   const data = useMemo(() => {
     if (!store.data) {
       return undefined;
