@@ -32,6 +32,7 @@ export function useCreateCategoryTarget() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -58,6 +59,7 @@ export function useUpdateCategoryTarget() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -75,6 +77,7 @@ export function useExcludeCategoryTarget() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }

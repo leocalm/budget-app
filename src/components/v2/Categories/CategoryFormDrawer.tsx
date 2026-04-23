@@ -15,6 +15,11 @@ import {
 } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { useCreateCategory, useUpdateCategory } from '@/hooks/v2/useCategories';
+import {
+  useCategoryTargets,
+  useCreateCategoryTarget,
+  useUpdateCategoryTarget,
+} from '@/hooks/v2/useCategoryTargets';
 import { useSubscriptionsByCategory } from '@/hooks/v2/useSubscriptions';
 import { toast } from '@/lib/toast';
 import { CategorySubscriptionSection } from './CategorySubscriptionSection';
@@ -68,6 +73,9 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
   const isEdit = !!editCategory;
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
+  const createTarget = useCreateCategoryTarget();
+  const updateTarget = useUpdateCategoryTarget();
+  const { data: targets } = useCategoryTargets(null);
 
   // Issue 7: Only fetch subscriptions when editing a subscription-behavior category
   const { data: categorySubs } = useSubscriptionsByCategory(
@@ -97,24 +105,66 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
   }, [isEdit, editCategory]);
 
   const handleSubmit = async () => {
-    const body: components['schemas']['CreateCategoryRequest'] = {
+    // Encrypted API contract (Phase 4a fix): category create/update doesn't
+    // accept a `target` field — manage budget targets via /targets separately.
+    const body = {
       name: name.trim(),
       type,
       icon,
       color: '#000000',
       description: description.trim() || undefined,
       behavior: type === 'expense' ? behavior : undefined,
-      target: target !== '' && Number(target) > 0 ? Math.round(Number(target) * 100) : undefined,
-    };
+    } as components['schemas']['CreateCategoryRequest'];
+
+    const desiredTargetCents =
+      target !== '' && Number(target) > 0 ? Math.round(Number(target) * 100) : null;
 
     try {
+      let categoryId: string;
       if (isEdit && editCategory) {
         await updateMutation.mutateAsync({ id: editCategory.id, body });
+        categoryId = editCategory.id;
         toast.success({ message: t('categories.updated') });
       } else {
-        await createMutation.mutateAsync(body);
+        const created = (await createMutation.mutateAsync(body)) as unknown as { id: string };
+        categoryId = created?.id ?? '';
         toast.success({ message: t('categories.created') });
       }
+
+      // Only manage targets for expense/income categories with an explicit
+      // value; subscription-behavior categories get their budget auto-
+      // computed from billing amounts so a manual target is a no-op.
+      if (categoryId && desiredTargetCents != null && behavior !== 'subscription') {
+        // The encrypted API returns the targets as a flat array. The openapi
+        // typings aren't synced yet, so cast before scanning.
+        const targetsList = (targets ?? []) as unknown as {
+          id: string;
+          categoryId: string;
+        }[];
+        const existing = targetsList.find((tg) => tg.categoryId === categoryId);
+        try {
+          if (existing) {
+            // The Rust API's UpdateTargetRequest only has `value`; the
+            // stale OpenAPI typing still lists `categoryId`. Cast to
+            // satisfy the generated client without sending dead fields.
+            await updateTarget.mutateAsync({
+              id: existing.id,
+              body: { value: desiredTargetCents } as unknown as {
+                categoryId: string;
+                value: number;
+              },
+            });
+          } else {
+            await createTarget.mutateAsync({
+              categoryId,
+              value: desiredTargetCents,
+            });
+          }
+        } catch (err) {
+          console.error('Failed to save category target', err);
+        }
+      }
+
       onClose();
       if (!isEdit) {
         setName('');

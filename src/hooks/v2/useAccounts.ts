@@ -1,8 +1,15 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { components } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
+import { buildAccountDetail, buildAccountSummaries, buildBalanceHistory } from './accountsAdapter';
 import { v2QueryKeys } from './queryKeys';
+import { useEncryptedStore } from './useEncryptedStore';
 
+// The raw `GET /v2/accounts` list endpoint. Still returns encrypted rows —
+// `useEncryptedStore` is what most callers should reach for. This hook is
+// kept so mutation `onSuccess` invalidations keep working and so the
+// existing openapi-typed code continues to compile.
 export function useAccounts(params: { cursor?: string; limit?: number } = {}) {
   return useQuery({
     queryKey: v2QueryKeys.accounts.list(params),
@@ -18,106 +25,130 @@ export function useAccounts(params: { cursor?: string; limit?: number } = {}) {
   });
 }
 
-export function useAccountsSummary(
-  periodId: string | null,
-  params: { cursor?: string; limit?: number } = {}
-) {
-  return useQuery({
-    queryKey: v2QueryKeys.accounts.summary(periodId ?? '', params),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/accounts/summary', {
-        params: { query: { periodId: periodId!, ...params } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+// ─────────────────────────────────────────────────────────────────────
+// Legacy-shape adapters
+// ─────────────────────────────────────────────────────────────────────
+// The UI still consumes the old `AccountSummary`-shaped rows with
+// PascalCase `type`, `currentBalance`, `netChangeThisPeriod`, etc. We
+// compute them locally from the decrypted store so the page code does not
+// need a full rewrite.
+
+export function useAccountsSummary(periodId: string | null) {
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    const rows = buildAccountSummaries(store.data);
+    return {
+      data: rows,
+      totalCount: rows.length,
+      hasMore: false,
+      nextCursor: null,
+    };
+  }, [store.data]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
 
-export function useInfiniteAccountsSummary(periodId: string | null, pageSize = 50) {
-  return useInfiniteQuery({
-    queryKey: [...v2QueryKeys.accounts.summary(periodId ?? ''), 'infinite', pageSize],
-    queryFn: async ({ pageParam }) => {
-      const { data, error } = await apiClient.GET('/accounts/summary', {
-        params: {
-          query: { periodId: periodId!, limit: pageSize, cursor: pageParam || undefined },
-        },
-      });
-      if (error) {
-        throw error;
-      }
-      return data!;
-    },
-    initialPageParam: '' as string,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasMore ? (lastPage.nextCursor ?? undefined) : undefined,
-    enabled: !!periodId,
-  });
+export function useInfiniteAccountsSummary(periodId: string | null, _pageSize = 50) {
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    const rows = buildAccountSummaries(store.data);
+    return {
+      pages: [{ data: rows, totalCount: rows.length, hasMore: false, nextCursor: null }],
+      pageParams: [''],
+    };
+  }, [store.data]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isFetching: store.isFetching,
+    isError: store.isError,
+    error: store.error,
+    hasNextPage: false as const,
+    isFetchingNextPage: false as const,
+    fetchNextPage: async () => undefined,
+    refetch: store.refetch,
+  };
 }
 
 export function useAccountsOptions() {
-  return useQuery({
-    queryKey: v2QueryKeys.accounts.options(),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/accounts/options');
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-  });
+  // Derive the option list from the decrypted store — avoids an extra
+  // request + decrypt round trip on top of the entities we already fetch.
+  const store = useEncryptedStore(null);
+  return {
+    data: store.data?.accounts.map((a) => ({
+      id: a.id,
+      accountType: a.accountType,
+      name: a.name,
+      color: a.color,
+    })),
+    isLoading: store.isLoading,
+    isError: store.isError,
+  };
 }
 
 export function useAccount(id: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.accounts.detail(id),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/accounts/{id}', {
-        params: { path: { id } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!id,
-  });
+  const store = useEncryptedStore(null);
+  const account = store.data?.accounts.find((a) => a.id === id) ?? null;
+  return {
+    data: account,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
 
 export function useAccountDetails(id: string, periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.accounts.details(id, periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/accounts/{id}/details', {
-        params: { path: { id }, query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!id && !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return null;
+    }
+    return buildAccountDetail(id, store.data);
+  }, [id, store.data]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
 
 export function useAccountBalanceHistory(id: string, periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.accounts.balanceHistory(id, periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/accounts/{id}/balance-history', {
-        params: { path: { id }, query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!id && !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    return buildBalanceHistory(id, store.data);
+  }, [id, store.data]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    refetch: store.refetch,
+  };
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// Mutations: still hit the server; the server handles encryption on write.
+// ─────────────────────────────────────────────────────────────────────
 
 export function useCreateAccount() {
   const queryClient = useQueryClient();
@@ -131,6 +162,7 @@ export function useCreateAccount() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -157,6 +189,7 @@ export function useUpdateAccount() {
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.detail(id) });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -175,6 +208,7 @@ export function useDeleteAccount() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -192,6 +226,7 @@ export function useArchiveAccount() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -209,6 +244,7 @@ export function useUnarchiveAccount() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -236,6 +272,7 @@ export function useAdjustAccountBalance() {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.accounts.detail(id) });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.dashboard.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }

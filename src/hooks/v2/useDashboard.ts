@@ -1,163 +1,113 @@
-import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/api/v2client';
-import { v2QueryKeys } from './queryKeys';
+import { useMemo } from 'react';
+import { buildNetPosition } from './accountsAdapter';
+import {
+  buildBudgetStability,
+  buildCashFlow,
+  buildCurrentPeriod,
+  buildCurrentPeriodHistory,
+  buildFixedCategories,
+  buildNetPositionHistory,
+  buildSpendingTrend,
+  buildSubscriptionsDashboard,
+  buildTopVendors,
+} from './dashboardAdapter';
+import { useBudgetPeriods } from './useBudgetPeriods';
+import { useEncryptedStore } from './useEncryptedStore';
+
+// All 12 dashboard endpoints were retired by the encrypted v2 API (Phase
+// 2c). Each hook here resolves its payload from the decrypted entity
+// store — cross-period widgets (spending trend, budget stability, net-
+// position history) degrade to a neutral shape per iOS Phase 4a parity
+// because the current store only holds the selected period's transactions.
+
+function pickSelectedPeriod(store: ReturnType<typeof useBudgetPeriods>, periodId: string) {
+  const list = store.data?.data as { id: string }[] | undefined;
+  return list?.find((p) => p.id === periodId) ?? null;
+}
 
 export function useDashboardCurrentPeriod(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.currentPeriod(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/current-period', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const periods = useBudgetPeriods();
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    const period = pickSelectedPeriod(periods, periodId) as Parameters<
+      typeof buildCurrentPeriod
+    >[1];
+    return buildCurrentPeriod(store.data, period);
+  }, [store.data, periods.data, periodId]);
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardNetPosition(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.netPosition(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/net-position', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => (store.data ? buildNetPosition(store.data) : undefined), [store.data]);
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardNetPositionHistory(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.netPositionHistory(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/net-position-history', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildNetPositionHistory(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardCurrentPeriodHistory(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.currentPeriodHistory(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/current-period-history', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildCurrentPeriodHistory(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardCashFlow(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.cashFlow(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/cash-flow', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => (store.data ? buildCashFlow(store.data) : undefined), [store.data]);
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardSpendingTrend(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.spendingTrend(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/spending-trend', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildSpendingTrend(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardTopVendors(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.topVendors(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/top-vendors', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(() => (store.data ? buildTopVendors(store.data) : undefined), [store.data]);
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardBudgetStability(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.budgetStability(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/budget-stability', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildBudgetStability(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardFixedCategories(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.fixedCategories(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/fixed-categories', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildFixedCategories(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }
 
 export function useDashboardSubscriptions(periodId: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.dashboard.subscriptions(periodId),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/dashboard/subscriptions', {
-        params: { query: { periodId } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: !!periodId,
-  });
+  const store = useEncryptedStore(periodId);
+  const data = useMemo(
+    () => (store.data ? buildSubscriptionsDashboard(store.data) : undefined),
+    [store.data]
+  );
+  return { data, isLoading: store.isLoading, isError: store.isError, refetch: store.refetch };
 }

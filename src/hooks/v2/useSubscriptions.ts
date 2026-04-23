@@ -1,73 +1,120 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { components, operations } from '@/api/v2';
 import { apiClient } from '@/api/v2client';
+import type { DecryptedSubscription } from '@/lib/encryption';
 import { v2QueryKeys } from './queryKeys';
+import { monthlyBillingAmount, useEncryptedStore } from './useEncryptedStore';
 
 type SubscriptionStatus = NonNullable<
   operations['listSubscriptions']['parameters']['query']
 >['status'];
 
+// Encrypted API returns ciphertext for subscription name + billingAmount.
+// Serve consumers from the decrypted store instead of hitting the endpoint
+// directly. Also applies the iOS Phase 4a fix: the server ignores the
+// `status` filter on list, so filter client-side after decryption.
 export function useSubscriptions(status?: SubscriptionStatus) {
-  return useQuery({
-    queryKey: v2QueryKeys.subscriptions.list(status),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/subscriptions', {
-        params: { query: status ? { status } : undefined },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-  });
+  const store = useEncryptedStore(null);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    const rows = store.data.subscriptions;
+    return status ? rows.filter((s) => s.status === status) : rows;
+  }, [store.data, status]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
+}
+
+// Detail view historically included a `billingHistory` array (retired with
+// the endpoint). Keep the shape so consumers compile, but leave the field
+// empty — populating it requires cross-period transaction data.
+export interface SubscriptionBillingEvent {
+  id: string;
+  subscriptionId: string;
+  date: string;
+  amount: number;
+  paid?: boolean;
+  detected?: boolean;
+  postCancellation?: boolean;
+}
+
+export interface SubscriptionDetailView extends DecryptedSubscription {
+  billingHistory: SubscriptionBillingEvent[];
 }
 
 export function useSubscription(id: string) {
-  return useQuery({
-    queryKey: v2QueryKeys.subscriptions.detail(id),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/subscriptions/{id}', {
-        params: { path: { id } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-    enabled: Boolean(id),
-  });
+  const store = useEncryptedStore(null);
+  const data = useMemo<SubscriptionDetailView | undefined>(() => {
+    const sub = store.data?.subscriptions.find((s) => s.id === id);
+    if (!sub) {
+      return undefined;
+    }
+    return { ...sub, billingHistory: [] };
+  }, [store.data, id]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
 
 export function useUpcomingCharges(limit?: number) {
-  return useQuery({
-    queryKey: v2QueryKeys.subscriptions.upcoming(limit),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/subscriptions/upcoming', {
-        params: { query: limit !== undefined ? { limit } : undefined },
-      });
-      if (error) {
-        throw error;
-      }
-      return data;
-    },
-  });
+  // Retired endpoint — compute from the decrypted store by sorting active
+  // subscriptions by `nextChargeDate` ascending.
+  const store = useEncryptedStore(null);
+  const data = useMemo(() => {
+    if (!store.data) {
+      return undefined;
+    }
+    const sorted = store.data.subscriptions
+      .filter((s) => s.status === 'active')
+      .slice()
+      .sort((a, b) => (a.nextChargeDate < b.nextChargeDate ? -1 : 1));
+    return limit ? sorted.slice(0, limit) : sorted;
+  }, [store.data, limit]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
 
+// iOS Phase 4a fix: `/subscriptions?categoryId=X` filter is ignored by the
+// server. Filter client-side after decryption.
 export function useSubscriptionsByCategory(categoryId: string | null) {
-  return useQuery({
-    queryKey: v2QueryKeys.subscriptions.byCategory(categoryId ?? ''),
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/subscriptions', {
-        params: { query: { categoryId: categoryId! } },
-      });
-      if (error) {
-        throw error;
-      }
-      return data ?? [];
-    },
-    enabled: Boolean(categoryId),
-  });
+  const store = useEncryptedStore(null);
+  const data = useMemo(() => {
+    if (!categoryId || !store.data) {
+      return undefined;
+    }
+    return store.data.subscriptions.filter((s) => s.categoryId === categoryId);
+  }, [store.data, categoryId]);
+
+  return {
+    data,
+    isLoading: store.isLoading,
+    isError: store.isError,
+    error: store.error,
+    refetch: store.refetch,
+  };
 }
+
+// Helper re-exported for subscription-section UI.
+export { monthlyBillingAmount };
 
 export function useCreateSubscription() {
   const queryClient = useQueryClient();
@@ -83,6 +130,7 @@ export function useCreateSubscription() {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.subscriptions.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -110,6 +158,7 @@ export function useUpdateSubscription() {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.subscriptions.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -129,6 +178,7 @@ export function useDeleteSubscription() {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.subscriptions.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }
@@ -149,6 +199,7 @@ export function useCancelSubscription() {
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.subscriptions.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categories.all() });
       queryClient.invalidateQueries({ queryKey: v2QueryKeys.categoryTargets.all() });
+      queryClient.invalidateQueries({ queryKey: ['encryptedStore'] });
     },
   });
 }

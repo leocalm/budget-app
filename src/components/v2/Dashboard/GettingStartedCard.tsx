@@ -17,7 +17,7 @@ interface Step {
   route: string;
 }
 
-export function GettingStartedCard(_props: { periodId: string }) {
+export function GettingStartedCard({ periodId }: { periodId: string }) {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { isVisible, dismissHint } = usePageHint(HINT_ID);
@@ -25,7 +25,7 @@ export function GettingStartedCard(_props: { periodId: string }) {
   const { data: accountsData } = useAccounts();
   const { data: periodsData } = useBudgetPeriods({ limit: 1 });
   const { data: categoriesData } = useCategories({ limit: 1 });
-  const { data: hasAnyTransactions } = useHasAnyTransactions();
+  const { data: hasAnyTransactions } = useHasAnyTransactions(periodId);
 
   const hasAccounts = (accountsData?.data?.length ?? 0) > 0;
   const hasPeriods = (periodsData?.data?.length ?? 0) > 0;

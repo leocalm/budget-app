@@ -267,7 +267,7 @@ export function SubscriptionsV2Page() {
                         : t('common.inMonths', { count: Math.round(days / 30) });
 
                 return (
-                  <div key={item.subscriptionId + i} className={classes.upcomingRow}>
+                  <div key={item.id + i} className={classes.upcomingRow}>
                     <Text
                       fz="xs"
                       c="dimmed"

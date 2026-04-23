@@ -18,7 +18,7 @@ import { toast } from '@/lib/toast';
 
 export function PeriodsV2Page() {
   const { t } = useTranslation('v2');
-  const { setSelectedPeriodId } = useBudgetPeriodSelection();
+  const { selectedPeriodId, setSelectedPeriodId } = useBudgetPeriodSelection();
   const {
     data: infiniteData,
     isLoading,
@@ -27,7 +27,7 @@ export function PeriodsV2Page() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteBudgetPeriods();
+  } = useInfiniteBudgetPeriods(50, selectedPeriodId);
   const { data: schedule } = useBudgetPeriodSchedule();
   const deleteMutation = useDeleteBudgetPeriod();
   const [periodDrawerOpened, { open: openPeriodDrawer, close: closePeriodDrawer }] =

@@ -5,7 +5,6 @@ import { Anchor, Button, Checkbox, Stack, Text, TextInput } from '@mantine/core'
 import { useAuth } from '@/context/AuthContext';
 import { usePasswordStrength } from '@/hooks/usePasswordStrength';
 import { useRegister } from '@/hooks/v2/useAuth';
-import { useCurrencies } from '@/hooks/v2/useCurrencies';
 import { toast } from '@/lib/toast';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
 
@@ -14,7 +13,6 @@ export function V2RegisterPage() {
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
   const registerMutation = useRegister();
-  const { data: currencies } = useCurrencies();
   const { evaluate } = usePasswordStrength();
 
   const [name, setName] = useState('');
@@ -24,15 +22,13 @@ export function V2RegisterPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const strength = evaluate(password);
-  const defaultCurrencyId = currencies?.[0]?.id ?? '';
 
   const isValid =
     name.trim().length >= 1 &&
     email.includes('@') &&
     strength.isStrong &&
     password === confirmPassword &&
-    agreedToTerms &&
-    defaultCurrencyId;
+    agreedToTerms;
 
   const handleSubmit = async () => {
     if (!isValid) {
@@ -44,7 +40,6 @@ export function V2RegisterPage() {
         email,
         password,
         name: name.trim(),
-        currencyId: defaultCurrencyId,
       });
       await refreshUser(true);
       navigate('/onboarding', { replace: true });
@@ -123,7 +118,7 @@ export function V2RegisterPage() {
       <Button
         data-testid="register-submit"
         onClick={handleSubmit}
-        loading={registerMutation.isPending || !currencies}
+        loading={registerMutation.isPending}
         fullWidth
         size="md"
         disabled={!isValid}

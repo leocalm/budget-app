@@ -18,7 +18,32 @@ import { toast } from '@/lib/toast';
 import classes from './Accounts.module.css';
 
 type AccountType = 'Checking' | 'Savings' | 'CreditCard' | 'Allowance' | 'Wallet';
-type CreateReq = components['schemas']['CreateAccountRequest'];
+type LowerAccountType = 'checking' | 'savings' | 'creditcard' | 'wallet' | 'allowance';
+
+const TO_LOWER: Record<AccountType, LowerAccountType> = {
+  Checking: 'checking',
+  Savings: 'savings',
+  CreditCard: 'creditcard',
+  Wallet: 'wallet',
+  Allowance: 'allowance',
+};
+const TO_PASCAL: Record<LowerAccountType, AccountType> = {
+  checking: 'Checking',
+  savings: 'Savings',
+  creditcard: 'CreditCard',
+  wallet: 'Wallet',
+  allowance: 'Allowance',
+};
+
+// The encrypted v2 API expects `accountType` in lowercase (per iOS Phase 4a
+// memory: "Lowercase account types" + "accountType field name"). The
+// generated OpenAPI types still describe the PascalCase `type` field, so
+// we override at the boundary.
+type LegacyCreateAccountRequest = components['schemas']['CreateAccountRequest'];
+type EncryptedCreateAccountRequest = Omit<LegacyCreateAccountRequest, 'type'> & {
+  accountType: LowerAccountType;
+};
+type CreateReq = EncryptedCreateAccountRequest;
 
 const ACCOUNT_TYPES: { value: AccountType; labelKey: string }[] = [
   { value: 'Checking', labelKey: 'accounts.types.checking' },
@@ -61,14 +86,18 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     }
   }, [currencies, currencyId]);
 
-  // Populate form when editing
+  // Populate form when editing. The encrypted store returns lowercase
+  // `accountType`, `currentBalance`, and `currencyId` (no nested currency
+  // object or dedicated `initialBalance`), so we adapt per the Phase 4a
+  // iOS memory: preserve the existing balance when editing and treat
+  // `currentBalance` as the form's initial value.
   useEffect(() => {
     if (isEdit && editData) {
-      setType(editData.type);
+      setType(TO_PASCAL[editData.accountType]);
       setName(editData.name);
       setColor(editData.color);
-      setInitialBalance(editData.initialBalance / 100);
-      setCurrencyId(editData.currency.id);
+      setInitialBalance(editData.currentBalance / 100);
+      setCurrencyId(editData.currencyId);
       setSpendLimit(editData.spendLimit != null ? editData.spendLimit / 100 : '');
     }
   }, [isEdit, editData]);
@@ -80,7 +109,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
     const balanceCents = Math.round(Number(initialBalance) * 100);
 
     const body: CreateReq = {
-      type,
+      accountType: TO_LOWER[type],
       name: name.trim(),
       color,
       initialBalance: balanceCents,
@@ -96,10 +125,15 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
     try {
       if (isEdit && editAccountId) {
-        await updateMutation.mutateAsync({ id: editAccountId, body });
+        // Cast to the generated openapi-fetch body type — the actual shape
+        // matches the encrypted API even though the typings are stale.
+        await updateMutation.mutateAsync({
+          id: editAccountId,
+          body: body as unknown as LegacyCreateAccountRequest,
+        });
         toast.success({ message: t('accounts.updated') });
       } else {
-        await createMutation.mutateAsync(body);
+        await createMutation.mutateAsync(body as unknown as LegacyCreateAccountRequest);
         toast.success({ message: t('accounts.created') });
       }
       onClose();

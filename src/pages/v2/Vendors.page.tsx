@@ -33,7 +33,7 @@ export function VendorsV2Page() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteVendors();
+  } = useInfiniteVendors(selectedPeriodId);
   const { data: stats } = useVendorStats(selectedPeriodId);
   const archiveMutation = useArchiveVendor();
   const unarchiveMutation = useUnarchiveVendor();

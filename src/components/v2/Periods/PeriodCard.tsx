@@ -71,33 +71,38 @@ export function PeriodCard({
         )}
       </div>
 
-      {/* Stats */}
-      <div className={classes.periodStats}>
-        <div className={classes.periodStat}>
-          <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            {t('periods.spend')}
-          </Text>
-          <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
-            {period.totalSpent > 0 ? <CurrencyValue cents={period.totalSpent} /> : '—'}
-          </Text>
+      {/* Stats — only the active period is enriched under the encrypted
+          API (iOS Phase 4a parity). Past/upcoming cards would show bare
+          zeroes here, so hide the whole block instead of displaying
+          misleading totals. */}
+      {isCurrent && (
+        <div className={classes.periodStats}>
+          <div className={classes.periodStat}>
+            <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+              {t('periods.spend')}
+            </Text>
+            <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
+              {period.totalSpent > 0 ? <CurrencyValue cents={period.totalSpent} /> : '—'}
+            </Text>
+          </div>
+          <div className={classes.periodStat}>
+            <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+              {t('periods.budget')}
+            </Text>
+            <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
+              {period.totalBudgeted > 0 ? <CurrencyValue cents={period.totalBudgeted} /> : '—'}
+            </Text>
+          </div>
+          <div className={classes.periodStat}>
+            <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+              {t('periods.txns')}
+            </Text>
+            <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
+              {period.numberOfTransactions}
+            </Text>
+          </div>
         </div>
-        <div className={classes.periodStat}>
-          <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            {t('periods.budget')}
-          </Text>
-          <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
-            {period.totalBudgeted > 0 ? <CurrencyValue cents={period.totalBudgeted} /> : '—'}
-          </Text>
-        </div>
-        <div className={classes.periodStat}>
-          <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
-            {t('periods.txns')}
-          </Text>
-          <Text fz="sm" fw={500} ff="var(--mantine-font-family-monospace)">
-            {period.numberOfTransactions}
-          </Text>
-        </div>
-      </div>
+      )}
 
       {/* Badge */}
       <div className={classes.periodBadge}>
