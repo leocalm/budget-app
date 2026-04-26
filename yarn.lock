@@ -6244,7 +6244,7 @@ __metadata:
     openapi-fetch: "npm:^0.17.0"
     openapi-typescript: "npm:^7.13.0"
     playwright: "npm:^1.59.1"
-    postcss: "npm:^8.5.8"
+    postcss: "npm:^8.5.10"
     postcss-preset-mantine: "npm:^1.18.0"
     postcss-simple-vars: "npm:^7.0.1"
     prettier: "npm:^3.8.3"
