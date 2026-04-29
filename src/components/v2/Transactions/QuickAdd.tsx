@@ -22,10 +22,13 @@ export function QuickAdd() {
   const [accountId, setAccountId] = useState<string | null>(null);
   const [vendorId, setVendorId] = useState<string | null>(null);
 
-  const categoryOptions = (categories ?? []).map((c) => ({
-    value: c.id,
-    label: `${c.icon} ${c.name}`,
-  }));
+  // QuickAdd only creates regular transactions — hide the transfer category.
+  const categoryOptions = (categories ?? [])
+    .filter((c) => c.type !== 'transfer')
+    .map((c) => ({
+      value: c.id,
+      label: `${c.icon} ${c.name}`,
+    }));
   const accountOptions = (accounts ?? []).map((a) => ({ value: a.id, label: a.name }));
   const vendorOptions = (vendors ?? []).map((v) => ({ value: v.id, label: v.name }));
 

@@ -13,9 +13,7 @@ import {
   IconLayoutDashboard,
   IconList,
   IconReceipt2,
-  IconRepeat,
   IconSettings,
-  IconTarget,
 } from '@tabler/icons-react';
 
 export interface NavItemConfig {
@@ -46,14 +44,12 @@ export const navGroups: NavGroupConfig[] = [
     items: [
       { icon: IconCalendar, labelKey: 'nav.periods', to: '/periods' },
       { icon: IconCategory, labelKey: 'nav.categories', to: '/categories' },
-      { icon: IconTarget, labelKey: 'nav.targets', to: '/targets' },
     ],
   },
   {
     labelKey: 'nav.tracking',
     items: [
       { icon: IconBuildingBank, labelKey: 'nav.accounts', to: '/accounts' },
-      { icon: IconRepeat, labelKey: 'nav.subscriptions', to: '/subscriptions' },
       { icon: IconList, labelKey: 'nav.vendors', to: '/vendors' },
     ],
   },
@@ -70,8 +66,6 @@ export const bottomNavItems: NavItemConfig[] = [
 /** Items shown in the "More" drawer on mobile (everything not in bottomNavItems) */
 export const moreDrawerItems: NavItemConfig[] = [
   { icon: IconCategory, labelKey: 'nav.categories', to: '/categories' },
-  { icon: IconTarget, labelKey: 'nav.targets', to: '/targets' },
-  { icon: IconRepeat, labelKey: 'nav.subscriptions', to: '/subscriptions' },
   { icon: IconList, labelKey: 'nav.vendors', to: '/vendors' },
   { icon: IconSettings, labelKey: 'nav.settings', to: '/settings' },
 ];

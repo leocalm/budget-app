@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -14,7 +14,7 @@ import {
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
 import { useAccountsOptions } from '@/hooks/v2/useAccounts';
-import { useCategoriesOptions } from '@/hooks/v2/useCategories';
+import { useCategoriesOptions, useCreateCategory } from '@/hooks/v2/useCategories';
 import { useCreateTransaction, useUpdateTransaction } from '@/hooks/v2/useTransactions';
 import { useVendorsOptions } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
@@ -36,7 +36,8 @@ export function TransactionFormDrawer({
   const isEdit = !!editTransaction;
   const createMutation = useCreateTransaction();
   const updateMutation = useUpdateTransaction();
-  const { data: categories } = useCategoriesOptions();
+  const createCategoryMutation = useCreateCategory();
+  const { data: categories, refetch: refetchCategories } = useCategoriesOptions();
   const { data: accounts } = useAccountsOptions();
   const { data: vendors } = useVendorsOptions();
 
@@ -64,9 +65,48 @@ export function TransactionFormDrawer({
     }
   }, [isEdit, editTransaction]);
 
-  const transferCategoryId = (categories ?? []).find((c) => c.name === 'Transfer')?.id ?? null;
+  // Find the transfer category by type — ensures it works regardless of
+  // the category's display name (e.g. "Transfer", "Transferência", etc.).
+  const [transferCategoryId, setTransferCategoryId] = useState<string | null>(null);
+
+  // Keep transferCategoryId in sync with the categories data
+  useEffect(() => {
+    const id = (categories ?? []).find((c) => c.type === 'transfer')?.id ?? null;
+    setTransferCategoryId(id);
+  }, [categories]);
+
+  // Create the transfer category on-demand when the user enables the transfer
+  // toggle and no transfer category exists yet (matches iOS behavior).
+  const createdRef = useRef(false);
+  useEffect(() => {
+    if (isTransfer && !transferCategoryId && !createdRef.current) {
+      createdRef.current = true;
+      createCategoryMutation.mutate(
+        {
+          name: t('common.transfer'),
+          color: '#868E96',
+          icon: '🔄',
+          type: 'transfer' as const,
+          behavior: null,
+        } as unknown as components['schemas']['CreateCategoryRequest'],
+        {
+          onSuccess: () => {
+            refetchCategories();
+          },
+          onError: () => {
+            toast.error({ message: t('transactions.form.createTransferFailed') });
+          },
+        }
+      );
+    }
+    // Reset the flag when transfer toggle is turned off
+    if (!isTransfer) {
+      createdRef.current = false;
+    }
+  }, [isTransfer]);
+
   const categoryOptions = (categories ?? [])
-    .filter((c) => c.name !== 'Transfer')
+    .filter((c) => c.type !== 'transfer')
     .map((c) => ({
       value: c.id,
       label: `${c.icon} ${c.name}`,
@@ -76,6 +116,7 @@ export function TransactionFormDrawer({
 
   const handleSubmit = async () => {
     if (!description.trim() || !amount || !fromAccountId || (!isTransfer && !categoryId)) {
+      toast.error({ message: t('transactions.form.missingFields') });
       return;
     }
 
@@ -83,7 +124,12 @@ export function TransactionFormDrawer({
 
     try {
       if (isTransfer) {
-        if (!toAccountId || !transferCategoryId) {
+        if (!toAccountId) {
+          toast.error({ message: t('transactions.form.missingToAccount') });
+          return;
+        }
+        if (!transferCategoryId) {
+          toast.error({ message: t('transactions.form.missingTransferCategory') });
           return;
         }
         const body: components['schemas']['CreateTransactionRequest'] = {
@@ -93,7 +139,7 @@ export function TransactionFormDrawer({
           categoryId: transferCategoryId,
           fromAccountId,
           toAccountId,
-          // API requires PascalCase despite OpenAPI spec declaring lowercase
+          // Server expects PascalCase despite OpenAPI spec declaring lowercase
           transactionType: 'Transfer' as 'transfer',
         };
         if (isEdit && editTransaction) {
@@ -111,7 +157,7 @@ export function TransactionFormDrawer({
           categoryId: categoryId as string,
           fromAccountId,
           vendorId: vendorId || undefined,
-          // API requires PascalCase despite OpenAPI spec declaring lowercase
+          // Server expects PascalCase despite OpenAPI spec declaring lowercase
           transactionType: 'Regular' as 'regular',
         };
         if (isEdit && editTransaction) {

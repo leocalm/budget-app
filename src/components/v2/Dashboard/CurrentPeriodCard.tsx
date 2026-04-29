@@ -98,9 +98,9 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
           >
             <CurrencyValue cents={data.spent} />
           </Text>
-          <Text fz="sm" c="dimmed" mt={2}>
-            {hasBudget ? (
-              <>
+          {hasBudget ? (
+            <div>
+              <Text fz="sm" c="dimmed" mt={2}>
                 of <CurrencyValue cents={data.target} /> budgeted
                 {data.incomeTarget > 0 && (
                   <>
@@ -108,11 +108,23 @@ export function CurrentPeriodCard({ periodId }: CurrentPeriodCardProps) {
                     <CurrencyValue cents={data.incomeTarget} /> expected income
                   </>
                 )}
-              </>
-            ) : (
-              t('dashboard.currentPeriod.noBudgetSet')
-            )}
-          </Text>
+              </Text>
+              {/* Target breakdown: categories + allowances */}
+              {data.allowanceBudget != null && data.allowanceBudget > 0 && (
+                <div style={{ marginTop: 4 }}>
+                  <Text fz="xs" c="dimmed">
+                    Categories: <CurrencyValue cents={data.categoryBudget ?? 0} />
+                    {' · '}
+                    Envelopes: <CurrencyValue cents={data.allowanceBudget} />
+                  </Text>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Text fz="sm" c="dimmed" mt={2}>
+              {t('dashboard.currentPeriod.noBudgetSet')}
+            </Text>
+          )}
         </div>
         <div className={classes.sparklineWrapper}>
           <CurrentPeriodSparkline history={history} spent={data.spent} daysElapsed={daysElapsed} />
