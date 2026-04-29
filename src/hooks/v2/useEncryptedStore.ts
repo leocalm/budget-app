@@ -22,10 +22,11 @@ import {
   type EncryptedVendor,
 } from '@/lib/encryption';
 
-// Client-side mirror of the iOS `EncryptedDataStore`. Fetches the six core
-// entity lists + period transactions, decrypts everything locally, and caches
-// the result under React Query. Consumers call `.data` and get a fully
-// decrypted snapshot — no server aggregates involved.
+// Client-side mirror of the iOS `EncryptedDataStore` (Phase 4a parity).
+// Fetches the six core entity lists + period transactions, decrypts
+// everything locally, and caches the result under React Query. Consumers
+// call `.data` and get a fully decrypted snapshot — no server aggregates
+// involved.
 
 interface RawPaginated<T> {
   data?: T[] | null;
@@ -141,9 +142,7 @@ export function useEncryptedStore(periodId: string | null) {
 
 // Convenience selectors that mirror the iOS computed views on `EncryptedDataStore`.
 export function totalNetWorth(store: DecryptedStore): number {
-  return store.accounts
-    .filter((a) => a.status === 'active')
-    .reduce((sum, a) => sum + a.currentBalance, 0);
+  return totalAssets(store) - totalLiabilities(store);
 }
 
 export function totalAssets(store: DecryptedStore): number {
@@ -155,7 +154,7 @@ export function totalAssets(store: DecryptedStore): number {
 export function totalLiabilities(store: DecryptedStore): number {
   return store.accounts
     .filter((a) => a.status === 'active' && a.accountType === 'creditcard')
-    .reduce((sum, a) => sum + Math.abs(Math.min(0, a.currentBalance)), 0);
+    .reduce((sum, a) => sum + Math.max(0, a.currentBalance), 0);
 }
 
 export function totalSpent(store: DecryptedStore): number {
@@ -175,7 +174,23 @@ export function totalIncome(store: DecryptedStore): number {
 }
 
 export function totalBudgeted(store: DecryptedStore): number {
-  return store.targets.filter((t) => !t.isExcluded).reduce((sum, t) => sum + t.budgetedValue, 0);
+  const categoriesById = new Map(store.categories.map((c) => [c.id, c]));
+  return store.targets
+    .filter((t) => {
+      if (t.isExcluded) {
+        return false;
+      }
+      const cat = categoriesById.get(t.categoryId);
+      return cat?.type === 'expense';
+    })
+    .reduce((sum, t) => sum + t.budgetedValue, 0);
+}
+
+/** Sum of spend limits on active allowance accounts (envelope budgeting). */
+export function totalAllowanceBudget(store: DecryptedStore): number {
+  return store.accounts
+    .filter((a) => a.status === 'active' && a.accountType === 'allowance')
+    .reduce((sum, a) => sum + (a.spendLimit ?? 0), 0);
 }
 
 export function monthlySubscriptionTotal(store: DecryptedStore): number {

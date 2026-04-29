@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert,
   Button,
+  Divider,
   Drawer,
   Group,
   NumberInput,
+  Select,
   Stack,
   Text,
   Textarea,
@@ -20,13 +21,15 @@ import {
   useCreateCategoryTarget,
   useUpdateCategoryTarget,
 } from '@/hooks/v2/useCategoryTargets';
-import { useSubscriptionsByCategory } from '@/hooks/v2/useSubscriptions';
+import { useCreateSubscription, useSubscriptionsByCategory } from '@/hooks/v2/useSubscriptions';
+import { useVendorsOptions } from '@/hooks/v2/useVendors';
 import { toast } from '@/lib/toast';
 import { CategorySubscriptionSection } from './CategorySubscriptionSection';
 import classes from './Categories.module.css';
 
 type CategoryType = 'income' | 'expense' | 'transfer';
 type Behavior = 'fixed' | 'variable' | 'subscription';
+type BillingCycle = components['schemas']['BillingCycle'];
 type CategoryBase = components['schemas']['CategoryBase'];
 type EditableCategory = CategoryBase & {
   description?: string | null;
@@ -77,6 +80,15 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
   const updateTarget = useUpdateCategoryTarget();
   const { data: targets } = useCategoryTargets(null);
 
+  const resetSubscriptionState = () => {
+    setSubName('');
+    setSubVendorId(null);
+    setSubBillingAmount('');
+    setSubBillingCycle('monthly');
+    setSubBillingDay(1);
+    setSubNextChargeDate(new Date().toISOString().split('T')[0]);
+  };
+
   // Issue 7: Only fetch subscriptions when editing a subscription-behavior category
   const { data: categorySubs } = useSubscriptionsByCategory(
     isEdit && editCategory?.behavior === 'subscription' ? (editCategory?.id ?? null) : null
@@ -86,12 +98,24 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
     editCategory?.behavior === 'subscription' &&
     (categorySubs ?? []).some((s) => s.status !== 'cancelled');
 
+  const createSubscription = useCreateSubscription();
+  const { data: vendors } = useVendorsOptions();
+
   const [name, setName] = useState('');
   const [type, setType] = useState<CategoryType>('expense');
   const [behavior, setBehavior] = useState<Behavior | null>('variable');
   const [icon, setIcon] = useState('🛒');
   const [description, setDescription] = useState('');
   const [target, setTarget] = useState<number | string>('');
+
+  const [subName, setSubName] = useState('');
+  const [subVendorId, setSubVendorId] = useState<string | null>(null);
+  const [subBillingAmount, setSubBillingAmount] = useState<number | string>('');
+  const [subBillingCycle, setSubBillingCycle] = useState<BillingCycle>('monthly');
+  const [subBillingDay, setSubBillingDay] = useState<number | string>(1);
+  const [subNextChargeDate, setSubNextChargeDate] = useState(
+    () => new Date().toISOString().split('T')[0]
+  );
 
   useEffect(() => {
     if (isEdit && editCategory) {
@@ -103,6 +127,12 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
       setTarget(editCategory.target != null ? editCategory.target / 100 : '');
     }
   }, [isEdit, editCategory]);
+
+  useEffect(() => {
+    if (!opened) {
+      resetSubscriptionState();
+    }
+  }, [opened]);
 
   const handleSubmit = async () => {
     // Encrypted API contract (Phase 4a fix): category create/update doesn't
@@ -129,6 +159,27 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         const created = (await createMutation.mutateAsync(body)) as unknown as { id: string };
         categoryId = created?.id ?? '';
         toast.success({ message: t('categories.created') });
+
+        if (
+          behavior === 'subscription' &&
+          categoryId &&
+          subName.trim() &&
+          Number(subBillingAmount) > 0
+        ) {
+          try {
+            await createSubscription.mutateAsync({
+              name: subName.trim(),
+              categoryId,
+              vendorId: subVendorId || undefined,
+              billingAmount: Math.round(Number(subBillingAmount) * 100),
+              billingCycle: subBillingCycle,
+              billingDay: Number(subBillingDay),
+              nextChargeDate: subNextChargeDate,
+            });
+          } catch (err) {
+            console.error('Failed to create subscription for new category', err);
+          }
+        }
       }
 
       // Only manage targets for expense/income categories with an explicit
@@ -173,6 +224,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         setIcon('🛒');
         setDescription('');
         setTarget('');
+        resetSubscriptionState();
       }
     } catch {
       toast.error({
@@ -181,8 +233,13 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
     }
   };
 
-  const isSubmitting = createMutation.isPending || updateMutation.isPending;
+  const isSubmitting =
+    createMutation.isPending || updateMutation.isPending || createSubscription.isPending;
   const isValid = name.trim().length >= 1 && icon;
+
+  const showInlineSubscription = behavior === 'subscription' && !isEdit;
+  const isSubscriptionValid =
+    !showInlineSubscription || (subName.trim().length >= 1 && Number(subBillingAmount) > 0);
 
   return (
     <Drawer
@@ -336,10 +393,66 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
         )}
 
         {/* Info text — shown when creating a subscription category */}
-        {behavior === 'subscription' && !isEdit && (
-          <Alert variant="light" color="blue">
-            {t('categories.subscriptionSection.createHint')}
-          </Alert>
+        {showInlineSubscription && (
+          <>
+            <Divider label={t('categories.subscriptionSection.inlineTitle')} />
+            <TextInput
+              label={t('subscriptions.form.name')}
+              placeholder={t('subscriptions.form.namePlaceholder')}
+              value={subName}
+              onChange={(e) => setSubName(e.currentTarget.value)}
+              required
+            />
+            <Select
+              label={t('subscriptions.form.vendor')}
+              data={(vendors ?? []).map((v) => ({ value: v.id, label: v.name }))}
+              value={subVendorId}
+              onChange={setSubVendorId}
+              searchable
+              clearable
+            />
+            <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
+              {t('subscriptions.form.billing')}
+            </Text>
+            <Group grow>
+              <NumberInput
+                label={t('subscriptions.form.amount')}
+                value={subBillingAmount}
+                onChange={setSubBillingAmount}
+                decimalScale={2}
+                fixedDecimalScale
+                min={0.01}
+                required
+              />
+              <Select
+                label={t('subscriptions.form.cycle')}
+                data={[
+                  { value: 'monthly', label: t('subscriptions.form.cycles.monthly') },
+                  { value: 'quarterly', label: t('subscriptions.form.cycles.quarterly') },
+                  { value: 'yearly', label: t('subscriptions.form.cycles.yearly') },
+                ]}
+                value={subBillingCycle}
+                onChange={(v) => setSubBillingCycle((v as BillingCycle) ?? 'monthly')}
+                required
+              />
+            </Group>
+            <NumberInput
+              label={t('subscriptions.form.billingDay')}
+              description={t('subscriptions.form.billingDayDesc')}
+              value={subBillingDay}
+              onChange={setSubBillingDay}
+              min={1}
+              max={31}
+              required
+            />
+            <TextInput
+              label={t('subscriptions.form.nextCharge')}
+              type="date"
+              value={subNextChargeDate}
+              onChange={(e) => setSubNextChargeDate(e.currentTarget.value)}
+              required
+            />
+          </>
         )}
 
         {/* Submit */}
@@ -351,7 +464,7 @@ export function CategoryFormDrawer({ opened, onClose, editCategory }: CategoryFo
             data-testid="category-form-submit"
             onClick={handleSubmit}
             loading={isSubmitting}
-            disabled={!isValid}
+            disabled={!isValid || !isSubscriptionValid}
           >
             {isEdit ? t('common.saveChanges') : t('categories.form.createButton')}
           </Button>

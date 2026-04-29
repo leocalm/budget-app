@@ -8,6 +8,7 @@ import classes from '@/components/v2/Categories/Categories.module.css';
 import { NoPeriodState } from '@/components/v2/NoPeriodState';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import { useCategoryTargets } from '@/hooks/v2/useCategoryTargets';
+import { totalAllowanceBudget, useEncryptedStore } from '@/hooks/v2/useEncryptedStore';
 
 type TargetItem = components['schemas']['TargetItem'];
 
@@ -15,8 +16,14 @@ export function TargetsV2Page() {
   const { t } = useTranslation('v2');
   const { selectedPeriodId } = useBudgetPeriodSelection();
   const { data: targetsData, isLoading, isError, refetch } = useCategoryTargets(selectedPeriodId);
+  const store = useEncryptedStore(selectedPeriodId);
   const targets = targetsData?.targets ?? [];
   const summary = targetsData?.summary;
+
+  const allowanceBudget = useMemo(
+    () => (store.data ? totalAllowanceBudget(store.data) : 0),
+    [store.data]
+  );
 
   const { incomeTargets, expenseTargets } = useMemo(() => {
     const income: TargetItem[] = [];
@@ -100,6 +107,16 @@ export function TargetsV2Page() {
               <CurrencyValue cents={summary.currentPosition} />
             </Text>
           </div>
+          {allowanceBudget > 0 && (
+            <div className={classes.statItem}>
+              <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t('targets.allowanceBudget')}
+              </Text>
+              <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+                <CurrencyValue cents={allowanceBudget} />
+              </Text>
+            </div>
+          )}
           <div className={classes.statItem}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
               {t('targets.incomeTarget')}
