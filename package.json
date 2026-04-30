@@ -32,6 +32,7 @@
     "e2e:api:down": "docker-compose -f docker-compose.api.yml down",
     "e2e:api:reset": "docker-compose -f docker-compose.api.yml down -v && bash scripts/e2e-api-up.sh",
     "e2e:real": "E2E_TARGET=local E2E_API_MODE=real E2E_API_URL=http://127.0.0.1:18080 VITE_API_PROXY_TARGET=http://127.0.0.1:18080 playwright test --project=real-desktop --project=real-mobile --workers=1",
+    "e2e:manual": "E2E_API_MODE=real E2E_TARGET=local E2E_BASE_URL=http://localhost:5173 E2E_API_HEALTH_PATH=/v2/health E2E_REGISTER_ENDPOINTS=/v2/auth/register playwright test --project=manual-desktop --workers=1",
     "e2e:screenshots": "E2E_TARGET=local E2E_API_MODE=mock playwright test tests/screenshots/screenshots.spec.ts",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
