@@ -1101,12 +1101,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "@mantine/hooks@npm:9.0.1"
+"@mantine/hooks@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "@mantine/hooks@npm:9.1.1"
   peerDependencies:
     react: ^19.2.0
-  checksum: 10c0/1d2f97f51d25466f0e0f13ac30a2557a1e9295b5475daa6fee52eedc95ad4c4c2e888ff07ecb12c06c82a2fcd78c5bcf0f804c2ba9c0da0206d2aebe11f36cde
+  checksum: 10c0/63189c4e2c67f296822dc6e844152cf2521878ba7aed1b6a99b4c34662b2f97f4f43d46a84772a38e5fbbf478c42ac76066bcde2089b71d9051eee734f44b4c1
   languageName: node
   linkType: hard
 
@@ -6187,7 +6187,7 @@ __metadata:
     "@mantine/core": "npm:^9.0.2"
     "@mantine/dates": "npm:^9.1.0"
     "@mantine/form": "npm:^9.1.1"
-    "@mantine/hooks": "npm:^9.0.0"
+    "@mantine/hooks": "npm:^9.1.1"
     "@mantine/notifications": "npm:^9.1.1"
     "@storybook/addon-themes": "npm:10.3.5"
     "@storybook/addon-vitest": "npm:10.3.6"
