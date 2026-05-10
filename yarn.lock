@@ -5788,14 +5788,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw-storybook-addon@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "msw-storybook-addon@npm:2.0.6"
+"msw-storybook-addon@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "msw-storybook-addon@npm:2.0.7"
   dependencies:
     is-node-process: "npm:^1.0.1"
   peerDependencies:
     msw: ^2.0.0
-  checksum: 10c0/e108e8bf247326f5475c1914fdcfaaa6603f1e46f0920ed40d1f1725e2c2f62698658ff8b7d75aee0a0ea1fc0a9714fd6caaf5278426b6dcefd5da381f462c8e
+  checksum: 10c0/0df84f0212de1d224daa422e10174c7f079fab959b4e2bb449a5bd875dc65ec78f2f211d64588af08c947142b37e478f049906eaf60d1898667e3158cc0bcec1
   languageName: node
   linkType: hard
 
@@ -6241,7 +6241,7 @@ __metadata:
     identity-obj-proxy: "npm:^3.0.0"
     jsdom: "npm:^29.1.1"
     msw: "npm:^2.14.5"
-    msw-storybook-addon: "npm:^2.0.6"
+    msw-storybook-addon: "npm:^2.0.7"
     openapi-fetch: "npm:^0.17.0"
     openapi-typescript: "npm:^7.13.0"
     playwright: "npm:^1.59.1"
