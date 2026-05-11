@@ -87,7 +87,8 @@ export const test = base.extend<ManualFixtures>({
     await use(page);
   },
 
-  mailpit: async (_unused, use) => {
+  // eslint-disable-next-line no-empty-pattern
+  mailpit: async ({}, use) => {
     const client = new MailpitClient();
     await use(client);
   },

@@ -206,10 +206,6 @@ test.describe('Rate limiting and account locking', () => {
 
   test('failed attempts trigger escalating cooldowns then locks', async ({ page }) => {
     test.setTimeout(300_000);
-    test.skip(
-      !process.env.E2E_RATE_LIMIT_TEST,
-      'Skipped by default; set E2E_RATE_LIMIT_TEST=1 to enable'
-    );
     const loginPage = new LoginPage(page);
 
     for (let attempt = 0; attempt < 50; attempt++) {
@@ -254,10 +250,6 @@ test.describe('Rate limiting and account locking', () => {
     mailpit,
   }) => {
     test.setTimeout(300_000);
-    test.skip(
-      !process.env.E2E_RATE_LIMIT_TEST,
-      'Skipped by default; set E2E_RATE_LIMIT_TEST=1 to enable'
-    );
     const loginPage = new LoginPage(page);
 
     await mailpit.purge();
@@ -315,10 +307,6 @@ test.describe('Login session management', () => {
     context,
     registeredUser,
   }) => {
-    test.skip(
-      !process.env.E2E_PERSISTENT_SESSION_TEST,
-      'Skipped by default; set E2E_PERSISTENT_SESSION_TEST=1 to enable'
-    );
     const loginPage = new LoginPage(page);
 
     await loginPage.login(registeredUser.email, registeredUser.password);
