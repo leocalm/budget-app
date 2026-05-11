@@ -27,6 +27,39 @@ test.describe('Registration', () => {
     await registrationPage.expectSubmitButtonDisabled();
   });
 
+  test('rejects registration with an invalid name (only whitespace)', async ({ page }) => {
+    const credentials = createTestUserCredentials('manual-reg-whitespace-name');
+    const registrationPage = new RegistrationPage(page);
+
+    await registrationPage.goto();
+    await registrationPage.dismissCookieBanner();
+    await registrationPage.fillName('   ');
+    await registrationPage.fillEmail(credentials.email);
+    await registrationPage.fillPassword(credentials.password);
+    await registrationPage.fillConfirmPassword(credentials.password);
+    await registrationPage.acceptTerms();
+
+    await registrationPage.expectSubmitButtonDisabled();
+  });
+
+  test('rejects registration with an invalid name (special characters)', async ({ page }) => {
+    const credentials = createTestUserCredentials('manual-reg-special-name');
+    const registrationPage = new RegistrationPage(page);
+
+    // The frontend only requires name.trim().length >= 1, so the button is enabled.
+    // Submit with a name containing special characters and verify the API rejects it.
+    await registrationPage.goto();
+    await registrationPage.dismissCookieBanner();
+    await registrationPage.fillName('@#$%^&*()');
+    await registrationPage.fillEmail(credentials.email);
+    await registrationPage.fillPassword(credentials.password);
+    await registrationPage.fillConfirmPassword(credentials.password);
+    await registrationPage.acceptTerms();
+    await registrationPage.submit();
+
+    await registrationPage.expectStillOnRegistration();
+  });
+
   test('rejects registration with an invalid email', async ({ page }) => {
     const credentials = createTestUserCredentials('manual-reg-invalid-email');
     const registrationPage = new RegistrationPage(page);
@@ -75,16 +108,22 @@ test.describe('Registration', () => {
     await registrationPage.expectStillOnRegistration();
   });
 
-  test('registration sends a welcome email (requires email sink)', async ({ page }) => {
+  test('registration sends a welcome email', async ({ page, mailpit }) => {
     const credentials = createTestUserCredentials('manual-reg-email-check');
-    const registrationPage = new RegistrationPage(page);
 
+    await mailpit.purge();
+
+    const registrationPage = new RegistrationPage(page);
     await registrationPage.register(credentials.name, credentials.email, credentials.password);
     await registrationPage.expectRedirectToOnboardingOrDashboard();
 
-    // TODO: Add email sink assertion when email sink service is available.
-    // Expected: welcome email received at credentials.email.
-    // The E2E stack should include a mail sink service (e.g. Mailpit)
-    // and tests should query its API to verify delivery.
+    const email = await mailpit.waitForMessage(
+      (msg) => msg.To.some((addr) => addr.Address === credentials.email),
+      { timeout: 15_000 }
+    );
+
+    expect(email.To.some((addr) => addr.Address === credentials.email)).toBeTruthy();
+    expect(email.Subject.toLowerCase()).toContain('welcome');
+    expect(email.From.Address).toMatch(/piggy.pulse|piggypulse/i);
   });
 });

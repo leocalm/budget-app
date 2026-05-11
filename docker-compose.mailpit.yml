@@ -1,0 +1,29 @@
+# Mailpit email sink for E2E testing.
+#
+# Usage:
+#   docker compose -f docker-compose.mailpit.yml up -d
+#
+# SMTP is available on localhost:1025 (no auth, no TLS).
+# Web UI and API are available on localhost:8025.
+#
+# To purge all messages:
+#   curl -s -X DELETE http://localhost:8025/api/v1/messages
+#
+# To query messages:
+#   curl -s http://localhost:8025/api/v1/messages | jq .
+
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8025/api/v1/messages || exit 1"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+      start_period: 5s

@@ -1,4 +1,5 @@
 import { test as base, expect, type Page } from 'playwright/test';
+import { MailpitClient } from '../../helpers/mailpit';
 import { createTestUserCredentials, type TestUserCredentials } from '../../helpers/test-data';
 import { e2eEnv } from '../../setup/env';
 
@@ -8,12 +9,14 @@ import { e2eEnv } from '../../setup/env';
  * Provides:
  * - `registeredUser`: creates a user via direct API call with retry for rate limiting
  * - `loggedInPage`: navigates to login, authenticates, skips onboarding, returns authenticated Page
+ * - `mailpit`: MailpitClient for querying the email sink
  *
- * No mock mode. Tests using this fixture require a running backend.
+ * No mock mode. Tests using this fixture require a running backend and Mailpit.
  */
 interface ManualFixtures {
   registeredUser: TestUserCredentials;
   loggedInPage: Page;
+  mailpit: MailpitClient;
 }
 
 export const test = base.extend<ManualFixtures>({
@@ -82,6 +85,11 @@ export const test = base.extend<ManualFixtures>({
 
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 10000 });
     await use(page);
+  },
+
+  mailpit: async (_unused, use) => {
+    const client = new MailpitClient();
+    await use(client);
   },
 });
 

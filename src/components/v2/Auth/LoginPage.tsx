@@ -97,13 +97,15 @@ export function V2LoginPage() {
     setVerifying2FA(true);
     setLoginError('');
     try {
-      // Omit credentials to avoid hitting the authenticated setup-verify
-      // route (rank 1). The login 2FA verify is unauthenticated (rank 2).
+      // Send credentials so the session cookie from `set_session_cookie`
+      // in the backend response is persisted. The merged verify handler
+      // branches on the presence of `twoFactorToken` regardless of whether
+      // the user is authenticated.
       const { v2BaseUrl: baseUrl } = await import('@/api/v2client');
       const response = await fetch(`${baseUrl}/auth/2fa/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'omit',
+        credentials: 'same-origin',
         body: JSON.stringify({ twoFactorToken, code: code.trim() }),
       });
       if (!response.ok) {
