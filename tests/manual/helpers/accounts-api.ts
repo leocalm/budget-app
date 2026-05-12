@@ -61,7 +61,9 @@ export async function registerAndLogin(
   // Skip onboarding if needed
   if (page.url().includes('/onboarding')) {
     for (let i = 0; i < 15; i++) {
-      if (!page.url().includes('/onboarding')) break;
+      if (!page.url().includes('/onboarding')) {
+        break;
+      }
 
       for (const testId of ['onboarding-go-to-dashboard', 'onboarding-skip', 'onboarding-next']) {
         const btn = page.getByTestId(testId);

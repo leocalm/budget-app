@@ -25,14 +25,20 @@ export function ConfirmDeleteModal({
       title={t('common.deleteConfirmTitle')}
       size="sm"
       centered
+      data-testid="confirm-delete-modal"
     >
       <Stack gap="md">
         <Text fz="sm">{t('common.deleteConfirmMessage', { name: entityName })}</Text>
         <Group justify="flex-end">
-          <Button variant="subtle" onClick={onClose}>
+          <Button variant="subtle" onClick={onClose} data-testid="confirm-delete-cancel">
             {t('common.cancel')}
           </Button>
-          <Button color="red" loading={loading} onClick={onConfirm}>
+          <Button
+            color="red"
+            loading={loading}
+            onClick={onConfirm}
+            data-testid="confirm-delete-confirm"
+          >
             {t('common.delete')}
           </Button>
         </Group>

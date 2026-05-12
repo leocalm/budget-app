@@ -12,6 +12,7 @@ import { PageHint } from '@/components/v2/PageHint';
 import { useBudgetPeriodSelection } from '@/context/BudgetContext';
 import {
   useArchiveAccount,
+  useDeleteAccount,
   useInfiniteAccountsSummary,
   useUnarchiveAccount,
 } from '@/hooks/v2/useAccounts';
@@ -45,6 +46,7 @@ export function AccountsV2Page() {
   } = useInfiniteAccountsSummary(selectedPeriodId);
   const archiveMutation = useArchiveAccount();
   const unarchiveMutation = useUnarchiveAccount();
+  const deleteMutation = useDeleteAccount();
   const loadMoreRef = useInfiniteScroll({
     fetchNextPage,
     hasNextPage: !!hasNextPage,
@@ -108,6 +110,15 @@ export function AccountsV2Page() {
       toast.success({ message: t('accounts.unarchived') });
     } catch {
       toast.error({ message: t('accounts.unarchiveFailed') });
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteMutation.mutateAsync(id);
+      toast.success({ message: t('accounts.deleted') });
+    } catch {
+      toast.error({ message: t('accounts.deleteFailed') });
     }
   };
 
@@ -248,6 +259,7 @@ export function AccountsV2Page() {
                 onEdit={handleEdit}
                 onArchive={handleArchive}
                 onUnarchive={handleUnarchive}
+                onDelete={handleDelete}
               />
             ))}
           </Stack>
@@ -275,6 +287,7 @@ export function AccountsV2Page() {
                 onEdit={handleEdit}
                 onArchive={handleArchive}
                 onUnarchive={handleUnarchive}
+                onDelete={handleDelete}
               />
             ))}
         </Stack>

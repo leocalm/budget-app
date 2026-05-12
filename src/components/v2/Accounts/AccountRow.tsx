@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import type { components } from '@/api/v2';
 import { CurrencyValue } from '@/components/Utils/CurrencyValue';
+import { ConfirmDeleteModal } from '@/components/v2/ConfirmDeleteModal';
 import { useAccountBalanceHistory } from '@/hooks/v2/useAccounts';
 import { useV2Theme } from '@/theme/v2';
 import { formatDate } from '../Dashboard/AccountCardSections';
@@ -18,15 +20,24 @@ interface AccountRowProps {
   onEdit: (id: string) => void;
   onArchive: (id: string) => void;
   onUnarchive: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }: AccountRowProps) {
+export function AccountRow({
+  account,
+  periodId,
+  onEdit,
+  onArchive,
+  onUnarchive,
+  onDelete,
+}: AccountRowProps) {
   const { t } = useTranslation('v2');
   const navigate = useNavigate();
   const { data: history } = useAccountBalanceHistory(account.id, periodId);
   const { accents } = useV2Theme();
   const typeColor = getAccountTypeColor(account.type, accents);
   const isArchived = account.status === 'inactive';
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const changePrefix =
     account.netChangeThisPeriod > 0 ? '+' : account.netChangeThisPeriod < 0 ? '-' : '';
@@ -142,6 +153,14 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
               >
                 {t('common.unarchive')}
               </Menu.Item>
+            ) : account.numberOfTransactions === 0 ? (
+              <Menu.Item
+                data-testid="account-menu-delete"
+                color="red"
+                onClick={() => setDeleteConfirmOpen(true)}
+              >
+                {t('common.delete')}
+              </Menu.Item>
             ) : (
               <Menu.Item
                 data-testid="account-menu-archive"
@@ -153,6 +172,15 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
             )}
           </Menu.Dropdown>
         </Menu>
+        <ConfirmDeleteModal
+          opened={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          onConfirm={() => {
+            setDeleteConfirmOpen(false);
+            onDelete(account.id);
+          }}
+          entityName={account.name}
+        />
       </div>
     </div>
   );

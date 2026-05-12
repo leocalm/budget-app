@@ -1,6 +1,6 @@
 import { e2eEnv } from '../setup/env';
 import { expect, test } from './fixtures/manual.fixture';
-import { getCurrentPeriodId, getDefaultCategoryId, seedTransaction } from './helpers/accounts-api';
+import { getDefaultCategoryId, seedTransaction } from './helpers/accounts-api';
 import { AccountsPage } from './pages/accounts.page';
 
 // ---------------------------------------------------------------------------
@@ -326,17 +326,16 @@ test.describe('Accounts — Group D: Delete / Archive', () => {
     const accountId = (await row.getAttribute('data-testid'))?.replace('account-row-', '') ?? '';
     expect(accountId).toBeTruthy();
 
-    const deleteRes = await page.request.delete(`${e2eEnv.baseUrl}/v2/accounts/${accountId}`);
-    expect(
-      deleteRes.ok(),
-      `DELETE failed: ${deleteRes.status()} ${await deleteRes.text()}`
-    ).toBeTruthy();
+    await accounts.openRowMenu(accountId);
+    expect(await accounts.isDeleteMenuItemVisible()).toBe(true);
+    await accounts.clickDeleteFromMenu();
+    await accounts.confirmDelete();
 
     await accounts.goto();
     await expect(accounts.accountRow(accountId)).toBeHidden({ timeout: 10000 });
   });
 
-  test('delete an account with transactions returns 4xx', async ({
+  test('with transactions the row menu shows Archive but not Delete', async ({
     loggedInPage: page,
   }, testInfo) => {
     const label = `Delete With Txn ${ts(testInfo.workerIndex)}`;
@@ -358,10 +357,10 @@ test.describe('Accounts — Group D: Delete / Archive', () => {
       description: 'block-delete-seed',
     });
 
-    const deleteRes = await page.request.delete(`${e2eEnv.baseUrl}/v2/accounts/${accountId}`);
-    expect(deleteRes.ok(), 'DELETE with transactions should have failed').toBeFalsy();
-    expect(deleteRes.status()).toBeGreaterThanOrEqual(400);
-    expect(deleteRes.status()).toBeLessThan(500);
+    await accounts.goto();
+    await accounts.openRowMenu(accountId);
+    expect(await accounts.isArchiveMenuItemVisible()).toBe(true);
+    expect(await accounts.isDeleteMenuItemVisible()).toBe(false);
   });
 
   test('archive an account with transactions hides it from the active list', async ({

@@ -127,6 +127,34 @@ export class AccountsPage {
     await this.page.getByTestId('account-menu-view-details').click();
   }
 
+  async clickDeleteFromMenu(): Promise<void> {
+    await this.page.getByTestId('account-menu-delete').click();
+  }
+
+  async confirmDelete(): Promise<void> {
+    await expect(this.page.getByTestId('confirm-delete-modal')).toBeVisible({ timeout: 5000 });
+    await this.page.getByTestId('confirm-delete-confirm').click();
+    await expect(this.page.getByTestId('confirm-delete-modal')).toBeHidden({ timeout: 10000 });
+  }
+
+  async cancelDelete(): Promise<void> {
+    await this.page.getByTestId('confirm-delete-cancel').click();
+  }
+
+  async isDeleteMenuItemVisible(): Promise<boolean> {
+    return this.page
+      .getByTestId('account-menu-delete')
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
+  }
+
+  async isArchiveMenuItemVisible(): Promise<boolean> {
+    return this.page
+      .getByTestId('account-menu-archive')
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
+  }
+
   async readNetPosition(): Promise<NetPosition> {
     const total = (await this.page.getByTestId('account-net-position-value').textContent()) ?? '';
     const difference = (await this.page.getByTestId('net-position-difference').textContent()) ?? '';
