@@ -2952,12 +2952,12 @@ export interface components {
     };
     TwoFactorCompleteRequest: {
       /**
-       * @description The short-lived token returned from the login challenge
+       * @description The short-lived token returned from the login challenge. Omit or send an empty string when confirming authenticated 2FA setup.
        * @example eyJhbGciOiJIUzI1NiJ9...
        */
-      twoFactorToken: string;
+      twoFactorToken?: string;
       /**
-       * @description 6-digit TOTP code from the authenticator app
+       * @description 6-digit TOTP code from the authenticator app, or a backup code during login challenge verification.
        * @example 123456
        */
       code: string;
@@ -2999,13 +2999,6 @@ export interface components {
        * @example otpauth://totp/PiggyPulse:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=PiggyPulse
        */
       qrCodeUri: string;
-    };
-    TwoFactorVerifyRequest: {
-      /**
-       * @description 6-digit TOTP code to confirm setup
-       * @example 123456
-       */
-      code: string;
     };
     TwoFactorDisableRequest: {
       /**

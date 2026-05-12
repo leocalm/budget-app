@@ -32,6 +32,7 @@ export default defineConfig({
     exclude: [
       ...configDefaults.exclude,
       'tests/e2e/**',
+      'tests/manual/**',
       'tests/screenshots/**',
       '.claude/**',
       '.worktrees/**',

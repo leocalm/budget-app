@@ -4,26 +4,101 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-example}
+      POSTGRES_PASSWORD: example
       POSTGRES_DB: piggy_pulse_test_db
+    ports:
+      - '5434:5432'
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - piggy-pulse-test-network
 
+  cert-init:
+    image: alpine:3.20
+    command:
+      - sh
+      - -ec
+      - |
+        if [ ! -f /certs/mailpit.crt ] || [ ! -f /certs/mailpit.key ] || [ ! -f /certs/mailpit-ca.crt ]; then
+          apk add --no-cache openssl >/dev/null
+          cd /certs
+
+          openssl req -x509 -newkey rsa:2048 -nodes \
+            -keyout mailpit-ca.key \
+            -out mailpit-ca.crt \
+            -days 825 \
+            -subj "/CN=PiggyPulse Test CA" \
+            -addext "basicConstraints=critical,CA:TRUE" \
+            -addext "keyUsage=critical,keyCertSign,cRLSign"
+
+          openssl req -newkey rsa:2048 -nodes \
+            -keyout mailpit.key \
+            -out mailpit.csr \
+            -subj "/CN=mailpit"
+
+          cat > mailpit.ext <<EOF
+        basicConstraints=CA:FALSE
+        keyUsage=critical,digitalSignature,keyEncipherment
+        extendedKeyUsage=serverAuth
+        subjectAltName=DNS:mailpit,DNS:localhost
+        EOF
+
+          openssl x509 -req \
+            -in mailpit.csr \
+            -CA mailpit-ca.crt -CAkey mailpit-ca.key -CAcreateserial \
+            -out mailpit.crt \
+            -days 825 \
+            -extfile mailpit.ext
+
+          rm -f mailpit.csr mailpit.ext mailpit-ca.srl
+          chmod 644 mailpit.crt mailpit.key mailpit-ca.crt
+          echo "Generated CA and server cert for mailpit"
+        else
+          echo "Certs already present, skipping generation"
+        fi
+    volumes:
+      - mailpit_certs:/certs
+    networks:
+      - piggy-pulse-test-network
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - '587:587'
+      - '8025:8025'
+    environment:
+      MP_SMTP_BIND_ADDR: '0.0.0.0:587'
+      MP_SMTP_TLS_CERT: /certs/mailpit.crt
+      MP_SMTP_TLS_KEY: /certs/mailpit.key
+      MP_SMTP_REQUIRE_STARTTLS: '1'
+      MP_SMTP_AUTH_ACCEPT_ANY: '1'
+    volumes:
+      - mailpit_certs:/certs:ro
+    depends_on:
+      cert-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8025/api/v1/messages || exit 1']
+      interval: 2s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    networks:
+      - piggy-pulse-test-network
+
   backend-test:
     build:
       context: ../piggy-pulse-api
-      dockerfile: ../piggy-pulse-app/Dockerfile.backend
+      dockerfile: ../piggy-pulse-api/Dockerfile
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/piggy_pulse_test_db
-      PIGGY_PULSE_DATABASE__URL: postgres://postgres:${DB_PASSWORD:-example}@db-test:5432/piggy_pulse_test_db
+      DATABASE_URL: postgres://postgres:example@db-test:5432/piggy_pulse_test_db
+      PIGGY_PULSE_DATABASE__URL: postgres://postgres:example@db-test:5432/piggy_pulse_test_db
       PIGGY_PULSE_DATABASE__MAX_CONNECTIONS: 10
       PIGGY_PULSE_DATABASE__MIN_CONNECTIONS: 1
       PIGGY_PULSE_DATABASE__CONNECTION_TIMEOUT: 120
@@ -31,68 +106,49 @@ services:
       PIGGY_PULSE_SERVER__ADDRESS: 0.0.0.0
       PIGGY_PULSE_SERVER__PORT: 8000
       PIGGY_PULSE_API__EXPOSE_DOCS: true
-      PIGGY_PULSE_CORS__ALLOWED_ORIGINS: '["http://localhost:18080", "https://localhost:18443"]'
-      PIGGY_PULSE_CORS__ALLOW_CREDENTIALS: "true"
-      PIGGY_PULSE_RATE_LIMIT__USE_FORWARDED_IP: "true"
+      PIGGY_PULSE_CORS__ALLOWED_ORIGINS: '["http://localhost:18080", "https://localhost:18443", "http://localhost:5173"]'
+      PIGGY_PULSE_CORS__ALLOW_CREDENTIALS: 'true'
+      PIGGY_PULSE_RATE_LIMIT__USE_FORWARDED_IP: 'true'
       PIGGY_PULSE_RATE_LIMIT__FORWARDED_IP_HEADER: x-forwarded-for
-      PIGGY_PULSE_SESSION__COOKIE_SECURE: "false"
-      ROCKET_SECRET_KEY: ${ROCKET_SECRET_KEY}
+      PIGGY_PULSE_SESSION__COOKIE_SECURE: 'false'
+      ROCKET_SECRET_KEY: '+IG3aklhxOphhk0oG+imamR3wAMNxAnoEZAyjziTkW0='
+      PIGGY_PULSE_TWO_FACTOR__ENCRYPTION_KEY: '4957ffbc3c5e6f8d0f1c479a6f7eb94140c7f9aae8a8803d1e266eb882e9fde0'
       ROCKET_ADDRESS: 0.0.0.0
       ROCKET_PORT: 8000
-      RUST_LOG: ${RUST_LOG:-info}
+      RUST_LOG: info
+      PIGGY_PULSE_EMAIL__SMTP_HOST: 'mailpit'
+      PIGGY_PULSE_EMAIL__SMTP_PORT: 587
+      PIGGY_PULSE_EMAIL__SMTP_USERNAME: ''
+      PIGGY_PULSE_EMAIL__SMTP_PASSWORD: ''
+      PIGGY_PULSE_EMAIL__FROM_ADDRESS: 'noreply@piggy-pulse.com'
+      PIGGY_PULSE_EMAIL__FROM_NAME: 'PiggyPulse'
+      PIGGY_PULSE_EMAIL__ENABLED: 'true'
+      PIGGY_PULSE_API__BASE_PATH: 'v2'
+      PIGGY_PULSE_EMAIL__ADDITIONAL_CA_CERT_PATH: /certs/mailpit-ca.crt
+    volumes:
+      - mailpit_certs:/certs:ro
     depends_on:
       db-test:
         condition: service_healthy
+      cert-init:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/v2/health']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     networks:
       - piggy-pulse-test-network
-
-  frontend-test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - piggy-pulse-test-network
-
-  caddy-test:
-    build:
-      context: .
-      dockerfile: Dockerfile.caddy
-    restart: unless-stopped
     ports:
-      - "18080:80"
-      - "18443:443"
-    volumes:
-      - caddy_test_data:/data
-      - caddy_test_config:/config
-    depends_on:
-      - frontend-test
-      - backend-test
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - piggy-pulse-test-network
+      - 8000:8000
 
 volumes:
   postgres_test_data:
     driver: local
-  caddy_test_data:
-    driver: local
-  caddy_test_config:
+  mailpit_certs:
     driver: local
 
 networks:

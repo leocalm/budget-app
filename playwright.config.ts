@@ -84,5 +84,14 @@ export default defineConfig({
       fullyParallel: false,
       dependencies: ['real-desktop'],
     },
+    {
+      name: 'manual-desktop',
+      // Manual E2E tests against a real backend only.
+      // Run with: yarn e2e:manual
+      // Must not run in CI or alongside mock-mode tests.
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /tests\/manual\/.*\.spec\.ts/,
+      fullyParallel: false,
+    },
   ],
 });

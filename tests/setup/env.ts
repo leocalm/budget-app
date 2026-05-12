@@ -13,6 +13,7 @@ interface E2EEnv {
   webServerHost: string;
   webServerPort: number;
   registerEndpoints: string[];
+  mailpitApiUrl: string;
 }
 
 function readDotEnvFile(path: string): Record<string, string> {
@@ -71,10 +72,11 @@ export const e2eEnv: E2EEnv = {
   baseUrl: getEnvValue('E2E_BASE_URL', defaultBaseUrl, envFile),
   apiUrl: getEnvValue('E2E_API_URL', 'http://127.0.0.1:8000', envFile),
   apiHealthPath: getEnvValue('E2E_API_HEALTH_PATH', '/v2/health', envFile),
-  webServerHost: getEnvValue('E2E_WEB_HOST', '127.0.0.1', envFile),
+  webServerHost: getEnvValue('E2E_WEB_HOST', 'localhost', envFile),
   webServerPort: Number.parseInt(getEnvValue('E2E_WEB_PORT', '5173', envFile), 10),
   registerEndpoints: getEnvValue('E2E_REGISTER_ENDPOINTS', '/v2/auth/register,/v1/users/', envFile)
     .split(',')
     .map((entry) => entry.trim())
     .filter(Boolean),
+  mailpitApiUrl: getEnvValue('E2E_MAILPIT_API_URL', 'http://127.0.0.1:8025', envFile),
 };
