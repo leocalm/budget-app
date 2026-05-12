@@ -45,7 +45,12 @@ export function V2ResetPasswordPage() {
     return (
       <div className={classes.successContent}>
         <Text fz={32}>✓</Text>
-        <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
+        <Text
+          fz={22}
+          fw={700}
+          ff="var(--mantine-font-family-headings)"
+          data-testid="reset-password-success-title"
+        >
           {t('auth.resetPassword.successTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
@@ -54,7 +59,13 @@ export function V2ResetPasswordPage() {
         <Text fz="sm" c="dimmed">
           {t('auth.resetPassword.successSubtext')}
         </Text>
-        <Button component={Link} to="/auth/login" size="md" mt="md">
+        <Button
+          component={Link}
+          to="/auth/login"
+          size="md"
+          mt="md"
+          data-testid="reset-password-go-to-signin"
+        >
           {t('auth.resetPassword.goToSignIn')}
         </Button>
       </div>
@@ -64,13 +75,24 @@ export function V2ResetPasswordPage() {
   if (!token) {
     return (
       <div className={classes.successContent}>
-        <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
+        <Text
+          fz={22}
+          fw={700}
+          ff="var(--mantine-font-family-headings)"
+          data-testid="reset-password-invalid-title"
+        >
           {t('auth.resetPassword.invalidLinkTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
           {t('auth.resetPassword.invalidLinkMessage')}
         </Text>
-        <Button component={Link} to="/auth/forgot-password" size="md" mt="md">
+        <Button
+          component={Link}
+          to="/auth/forgot-password"
+          size="md"
+          mt="md"
+          data-testid="reset-password-request-new-link"
+        >
           {t('auth.resetPassword.requestNewLink')}
         </Button>
       </div>
@@ -92,6 +114,7 @@ export function V2ResetPasswordPage() {
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           type="password"
+          data-testid="reset-password-new-password"
         />
         {password && <PasswordStrengthBar score={strength.score} />}
       </div>
@@ -110,6 +133,7 @@ export function V2ResetPasswordPage() {
             handleSubmit();
           }
         }}
+        data-testid="reset-password-confirm-password"
       />
 
       <Button
@@ -118,6 +142,7 @@ export function V2ResetPasswordPage() {
         fullWidth
         size="md"
         disabled={!isValid}
+        data-testid="reset-password-submit"
       >
         {t('auth.resetPassword.submitButton')}
       </Button>

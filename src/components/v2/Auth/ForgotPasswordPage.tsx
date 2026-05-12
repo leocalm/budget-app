@@ -23,7 +23,12 @@ export function V2ForgotPasswordPage() {
     return (
       <Stack gap="md" ta="center">
         <Text fz={32}>📧</Text>
-        <Text fz={22} fw={700} ff="var(--mantine-font-family-headings)">
+        <Text
+          fz={22}
+          fw={700}
+          ff="var(--mantine-font-family-headings)"
+          data-testid="forgot-password-sent-title"
+        >
           {t('auth.forgotPassword.sentTitle')}
         </Text>
         <Text fz="sm" c="dimmed">
@@ -44,11 +49,19 @@ export function V2ForgotPasswordPage() {
               setSent(false);
               forgotMutation.reset();
             }}
+            data-testid="forgot-password-resend"
           >
             {t('auth.forgotPassword.resendLink')}
           </Anchor>
         </Text>
-        <Anchor component={Link} to="/auth/login" fz="sm" c="var(--v2-primary)" mt="md">
+        <Anchor
+          component={Link}
+          to="/auth/login"
+          fz="sm"
+          c="var(--v2-primary)"
+          mt="md"
+          data-testid="forgot-password-back-to-signin"
+        >
           {t('auth.forgotPassword.backToSignIn')}
         </Anchor>
       </Stack>
@@ -75,6 +88,7 @@ export function V2ForgotPasswordPage() {
             handleSubmit();
           }
         }}
+        data-testid="forgot-password-email"
       />
 
       <Button
@@ -83,6 +97,7 @@ export function V2ForgotPasswordPage() {
         fullWidth
         size="md"
         disabled={!email}
+        data-testid="forgot-password-submit"
       >
         {t('auth.forgotPassword.submitButton')}
       </Button>
