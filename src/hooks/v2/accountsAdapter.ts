@@ -24,8 +24,13 @@ interface PeriodTxStats {
   netChange: number;
 }
 
-function aggregateTransactions(transactions: DecryptedTransaction[]): Map<string, PeriodTxStats> {
+function aggregateTransactions(
+  transactions: DecryptedTransaction[],
+  accountTypeById?: Map<string, string>
+): Map<string, PeriodTxStats> {
   const stats = new Map<string, PeriodTxStats>();
+  // Cache mapping computed on first use so existing callers that build their
+  // own account-type lookup still work (e.g. DashboardV2ViewModel call site).
   const bump = (id: string, delta: number) => {
     const prev = stats.get(id) ?? { count: 0, netChange: 0 };
     prev.count += 1;
@@ -33,10 +38,18 @@ function aggregateTransactions(transactions: DecryptedTransaction[]): Map<string
     stats.set(id, prev);
   };
   for (const tx of transactions) {
-    // Outflow on the `from` side, inflow on the `to` side of a transfer.
-    bump(tx.fromAccountId, -Math.abs(tx.amount));
+    // Credit cards require inverted signs: expenses increase the balance
+    // (more owed) and income decreases it (payment/refund). Transfers
+    // to/from credit cards are also inverted so that paying off a card
+    // reduces the balance.
+    const fromIsCredit = accountTypeById?.get(tx.fromAccountId) === 'creditcard';
+    const fromAmount = fromIsCredit ? Math.abs(tx.amount) : -Math.abs(tx.amount);
+    bump(tx.fromAccountId, fromAmount);
+
     if (tx.toAccountId) {
-      bump(tx.toAccountId, Math.abs(tx.amount));
+      const toIsCredit = accountTypeById?.get(tx.toAccountId) === 'creditcard';
+      const toAmount = toIsCredit ? -Math.abs(tx.amount) : Math.abs(tx.amount);
+      bump(tx.toAccountId, toAmount);
     }
   }
   return stats;
@@ -67,7 +80,8 @@ export function buildAccountSummary(
 }
 
 export function buildAccountSummaries(store: DecryptedStore): LegacyAccountSummary[] {
-  const stats = aggregateTransactions(store.transactions);
+  const accountTypeById = new Map(store.accounts.map((a) => [a.id, a.accountType]));
+  const stats = aggregateTransactions(store.transactions, accountTypeById);
   return store.accounts.map((a) => buildAccountSummary(a, stats));
 }
 
@@ -148,10 +162,23 @@ export function buildAccountDetail(
   if (!account) {
     return null;
   }
-  const stats = aggregateTransactions(store.transactions);
+  const accountTypeById = new Map(store.accounts.map((a) => [a.id, a.accountType]));
+  const stats = aggregateTransactions(store.transactions, accountTypeById);
   const summary = buildAccountSummary(account, stats);
   const { inflow, outflow } = classifyFlows(account, store);
-  const spentThisCycle = account.accountType === 'allowance' ? outflow : 0;
+  // For allowance accounts, spentThisCycle = actual expense transactions
+  // from the account (not transfers or top-ups).
+  const categoriesById = new Map(store.categories.map((c) => [c.id, c]));
+  const spentThisCycle =
+    account.accountType === 'allowance'
+      ? store.transactions
+          .filter(
+            (tx) =>
+              tx.fromAccountId === account.id &&
+              categoriesById.get(tx.categoryId ?? '')?.type === 'expense'
+          )
+          .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
+      : 0;
   const avgDailyBalance =
     account.accountType === 'checking' ? averageDailyBalance(accountId, store) : 0;
 
@@ -190,7 +217,7 @@ export function buildNetPosition(store: DecryptedStore): NetPositionView {
   let debtAmount = 0;
   for (const a of activeAccounts) {
     if (a.accountType === 'creditcard') {
-      debtAmount += Math.abs(Math.min(0, a.currentBalance));
+      debtAmount += Math.max(0, a.currentBalance);
     } else if (a.accountType === 'savings') {
       protectedAmount += Math.max(0, a.currentBalance);
     } else {

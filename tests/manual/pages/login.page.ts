@@ -73,8 +73,24 @@ export class LoginPage {
     });
   }
 
+  async isRateLimitAlertVisible(): Promise<boolean> {
+    return this.page
+      .getByText(/wait|too many|seconds/i)
+      .first()
+      .isVisible({ timeout: 1000 })
+      .catch(() => false);
+  }
+
   async expectAccountLockedAlertVisible(): Promise<void> {
     await expect(this.page.getByText(/locked|unlock/i).first()).toBeVisible({ timeout: 5000 });
+  }
+
+  async isAccountLockedAlertVisible(): Promise<boolean> {
+    return this.page
+      .getByText(/locked|unlock/i)
+      .first()
+      .isVisible({ timeout: 10000 })
+      .catch(() => false);
   }
 
   async expectSubmitButtonDisabled(): Promise<void> {
@@ -92,6 +108,19 @@ export class LoginPage {
 
   async click2FAVerify(): Promise<void> {
     await this.page.getByRole('button', { name: /verify|confirm/i }).click();
+  }
+
+  async click2FAVerifyExpectingSuccess(): Promise<void> {
+    const responsePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().includes('/v2/auth/2fa/verify') && response.request().method() === 'POST'
+    );
+
+    await this.click2FAVerify();
+    const response = await responsePromise;
+    if (!response.ok()) {
+      throw new Error(`2FA verify failed: ${response.status()} ${await response.text()}`);
+    }
   }
 
   async clickUseRecoveryCode(): Promise<void> {

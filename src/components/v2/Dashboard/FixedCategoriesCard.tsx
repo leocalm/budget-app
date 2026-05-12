@@ -36,43 +36,51 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
     );
   }
 
-  // v2 API returns a flat array of categories
+  // Support both the legacy flat array and the new object with allowances
   const categories = Array.isArray(data) ? data : (data?.categories ?? []);
+  const allowances = data && !Array.isArray(data) ? data.allowances : [];
+  const allowanceTotalBudgeted = data && !Array.isArray(data) ? data.allowanceTotalBudgeted : 0;
+  const allowanceTotalPaid = data && !Array.isArray(data) ? data.allowanceTotalPaid : 0;
+  const hasAllowances = allowances.length > 0;
+  const hasCategories = categories.length > 0;
 
-  if (categories.length === 0) {
+  if (!hasCategories && !hasAllowances) {
     return (
       <div className={classes.card} data-testid="fixed-categories-card-empty">
         <div className={classes.centeredState}>
           <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-            {t('dashboard.fixedCategories.title')}
+            {t('dashboard.fixedSpending.title')}
           </Text>
           <Text fz="sm" c="dimmed" ta="center">
-            {t('dashboard.fixedCategories.empty')}
+            {t('dashboard.fixedSpending.empty')}
           </Text>
         </div>
       </div>
     );
   }
 
-  const totalBudgeted = Array.isArray(data)
-    ? categories.reduce((sum: number, c: { budgeted: number }) => sum + c.budgeted, 0)
-    : (data?.totalBudgeted ?? 0);
-  const totalPaid = Array.isArray(data)
-    ? categories.reduce((sum: number, c: { spent: number }) => sum + c.spent, 0)
-    : (data?.totalPaid ?? 0);
+  const totalBudgeted =
+    (Array.isArray(data)
+      ? categories.reduce((sum: number, c: { budgeted: number }) => sum + c.budgeted, 0)
+      : (data?.totalBudgeted ?? 0)) + allowanceTotalBudgeted;
+  const totalPaid =
+    (Array.isArray(data)
+      ? categories.reduce((sum: number, c: { spent: number }) => sum + c.spent, 0)
+      : (data?.totalPaid ?? 0)) + allowanceTotalPaid;
   const overallPct = totalBudgeted > 0 ? Math.min((totalPaid / totalBudgeted) * 100, 100) : 0;
 
   return (
     <div className={classes.card} data-testid="fixed-categories-card">
       <div className={classes.header}>
         <Text fz="xs" fw={600} tt="uppercase" c="dimmed">
-          {t('dashboard.fixedCategories.title')}
+          {t('dashboard.fixedSpending.title')}
         </Text>
         <Text fz="xs" fw={600} c="var(--v2-primary)">
-          {t('dashboard.fixedCategories.categoryCount', {
-            count: categories.length,
-            label: categories.length === 1 ? t('common.category') : t('common.categories'),
-          })}
+          {hasCategories
+            ? t('dashboard.fixedSpending.categoryCount', {
+                count: categories.length + allowances.length,
+              })
+            : ''}
         </Text>
       </div>
 
@@ -95,7 +103,7 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
       />
 
       <ScrollArea className={classes.scrollArea} type="auto" offsetScrollbars={false}>
-        {categories.map((cat: any) => {
+        {categories.map((cat) => {
           const id = cat.categoryId ?? cat.id;
           const name = cat.categoryName ?? cat.name;
           const paid = cat.spent ?? cat.paid ?? 0;
@@ -119,6 +127,35 @@ export function FixedCategoriesCard({ periodId }: FixedCategoriesCardProps) {
             </div>
           );
         })}
+
+        {/* Allowance envelope items */}
+        {hasAllowances && hasCategories && <div className={classes.divider} />}
+
+        {allowances.map((allowance) => (
+          <div key={allowance.id} className={classes.row}>
+            <div className={classes.checkbox} data-status={allowance.status} />
+            <Text
+              fz="sm"
+              fw={500}
+              truncate
+              c={allowance.status === 'pending' ? 'dimmed' : undefined}
+            >
+              {allowance.name}
+            </Text>
+            <Text fz="xs" c="dimmed" style={{ marginLeft: 4 }}>
+              {t('dashboard.fixedSpending.allowance')}
+            </Text>
+            <Text
+              fz="xs"
+              c="dimmed"
+              ff="var(--mantine-font-family-monospace)"
+              className={classes.amount}
+            >
+              <CurrencyValue cents={allowance.paid} />
+            </Text>
+            <StatusBadge status={allowance.status} />
+          </div>
+        ))}
       </ScrollArea>
     </div>
   );

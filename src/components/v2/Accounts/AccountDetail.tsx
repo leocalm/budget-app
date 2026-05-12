@@ -15,7 +15,6 @@ import {
 import { toast } from '@/lib/toast';
 import { useV2Theme } from '@/theme/v2';
 import type { AccountExt } from '../Dashboard/AccountCard.types';
-import { formatDate } from '../Dashboard/AccountCardSections';
 import { getAccountTypeColor, getAccountTypeLabel } from '../Dashboard/accountTypeColors';
 import { AccountFormDrawer } from './AccountFormDrawer';
 import classes from './Accounts.module.css';
@@ -229,7 +228,7 @@ function CheckingDetail({ acct }: { acct: AccountExt }) {
 function AllowanceDetail({ acct }: { acct: AccountExt }) {
   const { t } = useTranslation('v2');
   const available = Math.max(acct.currentBalance, 0);
-  const balanceAfterTopUp = acct.balanceAfterNextTransfer ?? acct.currentBalance;
+  const isOverspent = acct.currentBalance < 0;
 
   return (
     <div className={classes.detailCard}>
@@ -247,26 +246,12 @@ function AllowanceDetail({ acct }: { acct: AccountExt }) {
         </div>
         <div className={classes.detailRow}>
           <Text fz="sm" c="dimmed">
-            {t('accounts.nextTopUpLabel')}
+            {isOverspent ? t('accounts.overspentLabel') : t('accounts.spentThisCycle')}
           </Text>
           <Text fz="sm" ff="var(--mantine-font-family-monospace)">
-            {acct.nextTransfer ? formatDate(acct.nextTransfer, t) : '—'}
-          </Text>
-        </div>
-        <div className={classes.detailRow}>
-          <Text fz="sm" c="dimmed">
-            {t('accounts.afterTopUpLabel')}
-          </Text>
-          <Text fz="sm" ff="var(--mantine-font-family-monospace)">
-            <CurrencyValue cents={balanceAfterTopUp} />
-          </Text>
-        </div>
-        <div className={classes.detailRow}>
-          <Text fz="sm" c="dimmed">
-            {t('accounts.spentThisCycle')}
-          </Text>
-          <Text fz="sm" ff="var(--mantine-font-family-monospace)">
-            <CurrencyValue cents={acct.spentThisCycle} />
+            <CurrencyValue
+              cents={isOverspent ? Math.abs(acct.currentBalance) : acct.spentThisCycle}
+            />
           </Text>
         </div>
         {acct.topUpAmount != null && acct.topUpAmount > 0 && (

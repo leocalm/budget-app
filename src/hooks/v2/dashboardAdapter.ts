@@ -41,7 +41,7 @@ function periodEndDate(period: PeriodResponse | null | undefined): Date | null {
 export function buildCurrentPeriod(
   store: DecryptedStore,
   period: PeriodResponse | null | undefined
-): LegacyCurrentPeriod {
+): LegacyCurrentPeriod & { categoryBudget?: number; allowanceBudget?: number } {
   // `spent` uses the raw iOS rule: sum of transactions that count as
   // budget expense (allowance rule applied). Going through the category
   // summaries would miss transfer-to-allowance amounts, which are
@@ -55,19 +55,23 @@ export function buildCurrentPeriod(
     }
   }
 
-  // Target = sum of budgeted amounts (manual targets + subscription-auto
+  // Category budget = sum of budgeted amounts (manual targets + subscription-auto
   // budgets) for active expense categories. Income target = same for
   // income categories.
   const categories = buildCategorySummaries(store);
-  let target = 0;
+  const categoryBudget = categories
+    .filter((c) => c.status === 'active' && c.type === 'expense' && c.budgeted != null)
+    .reduce((sum, c) => sum + c.budgeted!, 0);
+  const allowanceBudget = store.accounts
+    .filter(
+      (a) => a.status === 'active' && a.accountType === 'allowance' && (a.spendLimit ?? 0) > 0
+    )
+    .reduce((sum, a) => sum + (a.spendLimit ?? 0), 0);
+  const target = categoryBudget + allowanceBudget;
+
   let incomeTarget = 0;
   for (const cat of categories) {
-    if (cat.status !== 'active') {
-      continue;
-    }
-    if (cat.type === 'expense' && cat.budgeted != null) {
-      target += cat.budgeted;
-    } else if (cat.type === 'income' && cat.budgeted != null) {
+    if (cat.status === 'active' && cat.type === 'income' && cat.budgeted != null) {
       incomeTarget += cat.budgeted;
     }
   }
@@ -81,7 +85,16 @@ export function buildCurrentPeriod(
   const projectedSpend =
     daysInPeriod > 0 ? Math.round((spent / daysElapsed) * daysInPeriod) : spent;
 
-  return { spent, target, incomeTarget, daysRemaining, daysInPeriod, projectedSpend };
+  return {
+    spent,
+    target,
+    categoryBudget,
+    allowanceBudget,
+    incomeTarget,
+    daysRemaining,
+    daysInPeriod,
+    projectedSpend,
+  };
 }
 
 export function buildCashFlow(store: DecryptedStore): LegacyCashFlow {
@@ -130,7 +143,19 @@ export function buildTopVendors(store: DecryptedStore, limit = 5): LegacyTopVend
     .slice(0, limit);
 }
 
-export function buildFixedCategories(store: DecryptedStore): LegacyFixedCategories {
+export interface AllowanceItem {
+  id: string;
+  name: string;
+  budgeted: number;
+  paid: number;
+  status: 'paid' | 'partial' | 'pending';
+}
+
+export function buildFixedCategories(store: DecryptedStore): LegacyFixedCategories & {
+  allowances: AllowanceItem[];
+  allowanceTotalBudgeted: number;
+  allowanceTotalPaid: number;
+} {
   const rows = buildCategorySummaries(store).filter(
     (c) => c.status === 'active' && c.type === 'expense' && c.behavior === 'fixed'
   );
@@ -149,7 +174,44 @@ export function buildFixedCategories(store: DecryptedStore): LegacyFixedCategori
     }
     return { id: c.id, name: c.name, budgeted, paid, status };
   });
-  return { totalBudgeted, totalPaid, categories };
+
+  // Allowance accounts (envelope budgeting)
+  const allowanceAccounts = store.accounts.filter(
+    (a) => a.status === 'active' && a.accountType === 'allowance'
+  );
+  const allowanceIds = new Set(allowanceAccounts.map((a) => a.id));
+
+  // Compute how much was transferred TO each allowance account this period
+  const categoriesById = new Map(store.categories.map((c) => [c.id, c]));
+  const transferredToAllowance = new Map<string, number>();
+  for (const tx of store.transactions) {
+    const cat = tx.categoryId ? categoriesById.get(tx.categoryId) : undefined;
+    if (cat?.type === 'transfer' && tx.toAccountId && allowanceIds.has(tx.toAccountId)) {
+      transferredToAllowance.set(
+        tx.toAccountId,
+        (transferredToAllowance.get(tx.toAccountId) ?? 0) + Math.abs(tx.amount)
+      );
+    }
+  }
+
+  const allowances: AllowanceItem[] = allowanceAccounts
+    .filter((a) => (a.spendLimit ?? 0) > 0)
+    .map((a) => {
+      const budgeted = a.spendLimit ?? 0;
+      const paid = transferredToAllowance.get(a.id) ?? 0;
+      const status: 'paid' | 'partial' | 'pending' =
+        paid >= budgeted ? 'paid' : paid > 0 ? 'partial' : 'pending';
+      return { id: a.id, name: a.name, budgeted, paid, status };
+    });
+
+  return {
+    totalBudgeted,
+    totalPaid,
+    categories,
+    allowances,
+    allowanceTotalBudgeted: allowances.reduce((s, a) => s + a.budgeted, 0),
+    allowanceTotalPaid: allowances.reduce((s, a) => s + a.paid, 0),
+  };
 }
 
 export function buildSubscriptionsDashboard(store: DecryptedStore): LegacySubscriptionsDashboard {
