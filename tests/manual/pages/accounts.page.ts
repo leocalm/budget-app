@@ -39,18 +39,36 @@ export class AccountsPage {
   }
 
   async fillInitialBalance(value: number | string): Promise<void> {
-    await this.page.getByTestId('account-balance-input').fill(String(value));
+    await this.clearAndType(this.page.getByTestId('account-balance-input'), String(value));
   }
 
   async fillSpendLimit(value: number | string): Promise<void> {
-    await this.page.getByTestId('account-spend-limit-input').fill(String(value));
+    await this.clearAndType(this.page.getByTestId('account-spend-limit-input'), String(value));
+  }
+
+  private async clearAndType(input: Locator, value: string): Promise<void> {
+    // Mantine NumberInput wraps react-number-format which intercepts user
+    // input, so Locator.fill() / pressSequentially can be inconsistent on
+    // pre-populated fields. Drive the native input setter + dispatch the
+    // input event the way React's synthetic-event system expects.
+    await input.evaluate((el: HTMLInputElement, val: string) => {
+      const setter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+      )?.set;
+      setter?.call(el, val);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, value);
+    await input.press('Tab');
   }
 
   async fillColor(hex: string): Promise<void> {
-    const input = this.page.getByTestId('account-color-input').locator('input');
-    await input.clear();
+    // Mantine ColorInput's data-testid is not forwarded to the inner input,
+    // so target the textbox by its accessible label.
+    const input = this.page.getByRole('textbox', { name: 'Color' });
+    await input.click({ clickCount: 3 });
     await input.fill(hex);
-    await input.press('Enter');
+    await input.press('Tab');
   }
 
   async submitForm(): Promise<void> {
@@ -66,11 +84,13 @@ export class AccountsPage {
   }
 
   async expectFormDrawerVisible(): Promise<void> {
-    await expect(this.page.getByTestId('account-form-drawer')).toBeVisible({ timeout: 10000 });
+    // Mantine Drawer keeps the root in the DOM and lazy-mounts its content,
+    // so assert on a field inside the form instead of the root testid.
+    await expect(this.page.getByTestId('account-name-input')).toBeVisible({ timeout: 10000 });
   }
 
   async expectFormDrawerClosed(): Promise<void> {
-    await expect(this.page.getByTestId('account-form-drawer')).toBeHidden({ timeout: 15000 });
+    await expect(this.page.getByTestId('account-name-input')).toBeHidden({ timeout: 15000 });
   }
 
   async createAccount(opts: CreateAccountOpts): Promise<void> {
@@ -132,9 +152,11 @@ export class AccountsPage {
   }
 
   async confirmDelete(): Promise<void> {
-    await expect(this.page.getByTestId('confirm-delete-modal')).toBeVisible({ timeout: 5000 });
+    // Mantine Modal keeps the root in the DOM and lazy-mounts its content,
+    // so assert on the confirm button (which only exists when the modal is open).
+    await expect(this.page.getByTestId('confirm-delete-confirm')).toBeVisible({ timeout: 5000 });
     await this.page.getByTestId('confirm-delete-confirm').click();
-    await expect(this.page.getByTestId('confirm-delete-modal')).toBeHidden({ timeout: 10000 });
+    await expect(this.page.getByTestId('confirm-delete-confirm')).toBeHidden({ timeout: 10000 });
   }
 
   async cancelDelete(): Promise<void> {
@@ -142,16 +164,20 @@ export class AccountsPage {
   }
 
   async isDeleteMenuItemVisible(): Promise<boolean> {
+    // Note: Playwright's isVisible() does NOT wait — its timeout arg is ignored.
+    // Use waitFor to actually wait for the portal-rendered menu item to mount.
     return this.page
       .getByTestId('account-menu-delete')
-      .isVisible({ timeout: 2000 })
+      .waitFor({ state: 'visible', timeout: 2000 })
+      .then(() => true)
       .catch(() => false);
   }
 
   async isArchiveMenuItemVisible(): Promise<boolean> {
     return this.page
       .getByTestId('account-menu-archive')
-      .isVisible({ timeout: 2000 })
+      .waitFor({ state: 'visible', timeout: 2000 })
+      .then(() => true)
       .catch(() => false);
   }
 

@@ -104,6 +104,8 @@ export async function getCurrentPeriodId(pageRequest: APIRequestContext): Promis
 
 /**
  * Returns any expense category ID from the current user's categories.
+ * If no categories exist (e.g. user skipped that onboarding step),
+ * creates one via the API and returns its id.
  */
 export async function getDefaultCategoryId(pageRequest: APIRequestContext): Promise<string> {
   const res = await pageRequest.get(`${e2eEnv.baseUrl}/v2/categories`);
@@ -114,11 +116,27 @@ export async function getDefaultCategoryId(pageRequest: APIRequestContext): Prom
     ? body
     : (body.data ?? []);
 
-  if (items.length === 0) {
-    throw new Error('No categories found — cannot seed transactions without a category');
+  if (items.length > 0) {
+    return items[0].id;
   }
 
-  return items[0].id;
+  // Seed a category so transaction-dependent tests can run.
+  const createRes = await pageRequest.post(`${e2eEnv.baseUrl}/v2/categories`, {
+    data: {
+      name: `E2E Seed Category ${Date.now()}`,
+      type: 'expense',
+      icon: '🛒',
+      color: '#6B8FD4',
+      behavior: 'variable',
+    },
+  });
+  if (!createRes.ok()) {
+    throw new Error(
+      `Could not auto-seed a category: ${createRes.status()} ${await createRes.text()}`
+    );
+  }
+  const created = (await createRes.json()) as { id: string };
+  return created.id;
 }
 
 export interface SeedTransactionOpts {
@@ -137,9 +155,12 @@ export async function seedTransaction(
   pageRequest: APIRequestContext,
   opts: SeedTransactionOpts
 ): Promise<void> {
+  // The encrypted v2 API expects PascalCase transactionType ('Regular'),
+  // even though the generated OpenAPI types describe it lowercase.
+  // Mirrors the cast used in src/components/v2/Transactions/QuickAdd.tsx.
   const res = await pageRequest.post(`${e2eEnv.baseUrl}/v2/transactions`, {
     data: {
-      transactionType: 'regular',
+      transactionType: 'Regular',
       date: opts.date ?? new Date().toISOString().slice(0, 10),
       description: opts.description ?? 'seed',
       amount: opts.amount,

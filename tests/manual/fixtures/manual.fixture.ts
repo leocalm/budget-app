@@ -64,22 +64,49 @@ export const test = base.extend<ManualFixtures>({
     await expect(page).toHaveURL(/\/(dashboard|onboarding)/, { timeout: 15000 });
 
     if (page.url().includes('/onboarding')) {
-      for (let i = 0; i < 15; i++) {
+      // Wait for the wizard to mount before driving it.
+      await expect(page.getByTestId('onboarding-wizard')).toBeVisible({ timeout: 10000 });
+
+      for (let i = 0; i < 20; i++) {
         if (!page.url().includes('/onboarding')) {
           break;
         }
 
-        for (const testId of ['onboarding-go-to-dashboard', 'onboarding-skip', 'onboarding-next']) {
-          const btn = page.getByTestId(testId);
-          const visible = await btn.isVisible({ timeout: 1000 }).catch(() => {
-            return false;
-          });
-          if (visible) {
-            await btn.click();
-            await page.waitForTimeout(500);
+        const goToDashboard = page.getByTestId('onboarding-go-to-dashboard');
+        if (await goToDashboard.isVisible({ timeout: 200 }).catch(() => false)) {
+          await goToDashboard.click();
+          await page.waitForTimeout(500);
+          continue;
+        }
+
+        const skip = page.getByTestId('onboarding-skip');
+        if (await skip.isVisible({ timeout: 200 }).catch(() => false)) {
+          await skip.click();
+          await page.waitForTimeout(500);
+          continue;
+        }
+
+        const next = page.getByTestId('onboarding-next');
+        // Wait up to 5s for the next button on the current step to be ready.
+        const nextVisible = await next.isVisible({ timeout: 5000 }).catch(() => false);
+        if (!nextVisible) {
+          break;
+        }
+
+        if (await next.isDisabled().catch(() => false)) {
+          // Currency step requires picking a currency before Next enables.
+          const firstCurrency = page.getByRole('radio').first();
+          if (await firstCurrency.isVisible({ timeout: 2000 }).catch(() => false)) {
+            await firstCurrency.click();
+            // Wait for Next to enable.
+            await expect(next).toBeEnabled({ timeout: 3000 });
+          } else {
             break;
           }
         }
+
+        await next.click();
+        await page.waitForTimeout(500);
       }
     }
 
