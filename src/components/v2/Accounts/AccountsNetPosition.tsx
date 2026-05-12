@@ -66,7 +66,12 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
           >
             <CurrencyValue cents={data.total} />
           </Text>
-          <Text fz="sm" c="dimmed" ff="var(--mantine-font-family-monospace)">
+          <Text
+            data-testid="net-position-difference"
+            fz="sm"
+            c="dimmed"
+            ff="var(--mantine-font-family-monospace)"
+          >
             <span>
               {changePrefix}
               <CurrencyValue cents={Math.abs(data.differenceThisPeriod)} />
@@ -80,17 +85,20 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
             label={t('accounts.netPosition.liquid')}
             cents={data.liquidAmount}
             color={accents.primary}
+            testId="net-position-liquid"
           />
           <LegendItem
             label={t('accounts.netPosition.protected')}
             cents={data.protectedAmount}
             color={accents.tertiary}
+            testId="net-position-protected"
           />
           {data.debtAmount > 0 && (
             <LegendItem
               label={t('accounts.netPosition.debt')}
               cents={data.debtAmount}
               color={accents.secondary}
+              testId="net-position-debt"
             />
           )}
         </div>
@@ -128,9 +136,19 @@ export function AccountsNetPosition({ periodId }: AccountsNetPositionProps) {
   );
 }
 
-function LegendItem({ label, cents, color }: { label: string; cents: number; color: string }) {
+function LegendItem({
+  label,
+  cents,
+  color,
+  testId,
+}: {
+  label: string;
+  cents: number;
+  color: string;
+  testId?: string;
+}) {
   return (
-    <div className={classes.legendItem}>
+    <div className={classes.legendItem} data-testid={testId}>
       <span className={classes.legendDot} style={{ backgroundColor: color }} />
       <Text fz="xs" c="dimmed" ff="var(--mantine-font-family-monospace)">
         {label} <CurrencyValue cents={cents} />

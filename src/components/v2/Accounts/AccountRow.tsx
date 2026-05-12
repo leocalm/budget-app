@@ -112,7 +112,12 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
       >
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" size="sm">
+            <ActionIcon
+              data-testid={`account-row-${account.id}-menu`}
+              variant="subtle"
+              color="gray"
+              size="sm"
+            >
               <Text fz="lg" lh={1}>
                 ⋮
               </Text>
@@ -120,15 +125,29 @@ export function AccountRow({ account, periodId, onEdit, onArchive, onUnarchive }
           </Menu.Target>
           <Menu.Dropdown>
             {!isArchived && (
-              <Menu.Item onClick={() => onEdit(account.id)}>{t('common.edit')}</Menu.Item>
+              <Menu.Item data-testid="account-menu-edit" onClick={() => onEdit(account.id)}>
+                {t('common.edit')}
+              </Menu.Item>
             )}
-            <Menu.Item onClick={() => navigate(`/accounts/${account.id}`)}>
+            <Menu.Item
+              data-testid="account-menu-view-details"
+              onClick={() => navigate(`/accounts/${account.id}`)}
+            >
               {t('common.viewDetails')}
             </Menu.Item>
             {isArchived ? (
-              <Menu.Item onClick={() => onUnarchive(account.id)}>{t('common.unarchive')}</Menu.Item>
+              <Menu.Item
+                data-testid="account-menu-unarchive"
+                onClick={() => onUnarchive(account.id)}
+              >
+                {t('common.unarchive')}
+              </Menu.Item>
             ) : (
-              <Menu.Item color="red" onClick={() => onArchive(account.id)}>
+              <Menu.Item
+                data-testid="account-menu-archive"
+                color="red"
+                onClick={() => onArchive(account.id)}
+              >
                 {t('common.archive')}
               </Menu.Item>
             )}

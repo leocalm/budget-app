@@ -183,6 +183,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
               {ACCOUNT_TYPES.map((acctType) => (
                 <UnstyledButton
                   key={acctType.value}
+                  data-testid={`account-type-${acctType.value}`}
                   className={
                     type === acctType.value ? classes.typeButtonActive : classes.typeButton
                   }
@@ -210,6 +211,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
 
         {/* Color */}
         <ColorInput
+          data-testid="account-color-input"
           label={t('accounts.form.color')}
           value={color}
           onChange={setColor}
@@ -243,6 +245,7 @@ export function AccountFormDrawer({ opened, onClose, editAccountId }: AccountFor
         {/* Credit Card / Allowance: Spend Limit */}
         {(type === 'CreditCard' || type === 'Allowance') && (
           <NumberInput
+            data-testid="account-spend-limit-input"
             label={t('accounts.form.spendLimit')}
             description={
               type === 'CreditCard'
