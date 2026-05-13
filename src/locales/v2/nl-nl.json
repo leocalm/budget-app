@@ -1,0 +1,1813 @@
+{
+  "accounts": {
+    "actions": {
+      "archive": "Archiveren",
+      "unarchive": "Uit archief halen",
+      "viewDetails": "Bekijk details"
+    },
+    "addAccount": "+ Rekening toevoegen",
+    "addFirst": "+ Voeg je eerste rekening toe",
+    "addFirstAccount": "+ Voeg je eerste rekening toe",
+    "afterTopUp": "Na opwaardering",
+    "afterTopUpLabel": "Na opwaardering:",
+    "allowanceDetails": "Details van het zakgeld",
+    "archiveFailed": "Kan rekening niet archiveren",
+    "archived": "Rekening gearchiveerd",
+    "archivedAccounts": "Gearchiveerde rekeningen ({{count}})",
+    "archivedNamed": "{{name}} gearchiveerd",
+    "archivedToggle": "Gearchiveerde rekeningen",
+    "available": "Beschikbaar",
+    "availableLabel": "Beschikbaar:",
+    "overspentLabel": "Overschreden:",
+    "avgDailyBalance": "Gemiddeld dagsaldo",
+    "balanceHistory": "Saldogeschiedenis",
+    "balanceHistoryFor": "Saldogeschiedenis van {{name}}",
+    "balanceHistoryLabel": "Saldogeschiedenis",
+    "breadcrumb": "← Rekeningen",
+    "checkingDetails": "Details van de betaalrekening",
+    "created": "Rekening aangemaakt",
+    "creditCardDetails": "Details van de creditcard",
+    "creditLimit": "Kredietlimiet",
+    "currentBalance": "Huidig saldo",
+    "detail": {
+      "afterTopUp": "Na opwaardering:",
+      "allowance": {
+        "afterTopUp": "Na opwaardering",
+        "available": "Beschikbaar",
+        "nextTopUp": "Volgende opwaardering",
+        "spentThisCycle": "Uitgegeven deze cyclus",
+        "title": "Details van het zakgeld",
+        "topUpAmount": "Opwaarderingsbedrag"
+      },
+      "available": "Beschikbaar:",
+      "backLink": "← Rekeningen",
+      "balanceHistory": "Saldogeschiedenis",
+      "checking": {
+        "avgDailyBalance": "Gemiddeld dagsaldo",
+        "title": "Details van de betaalrekening"
+      },
+      "creditCard": {
+        "creditLimit": "Kredietlimiet",
+        "currentBalance": "Huidig saldo",
+        "paymentDue": "Betaling vervalt",
+        "statementCloses": "Afsluitdatum afschrift",
+        "title": "Details van de creditcard"
+      },
+      "inflows": "Inkomsten",
+      "nextTopUp": "Volgende opwaardering:",
+      "noChart": "Nog niet genoeg gegevens om een grafiek te tonen.",
+      "outflows": "Uitgaven",
+      "transactions": "Transacties"
+    },
+    "empty": {
+      "message": "Voeg je eerste rekening toe om saldo's bij te houden. Je kunt betaal-, spaar-, creditcard-, wallet- of zakgeldrekeningen toevoegen.",
+      "title": "Nog geen rekeningen"
+    },
+    "emptyDescription": "Voeg je eerste rekening toe om saldo's bij te houden. Je kunt betaal-, spaar-, creditcard-, wallet- of zakgeldrekeningen toevoegen.",
+    "emptyTitle": "Nog geen rekeningen",
+    "form": {
+      "accountName": "Naam van de rekening",
+      "accountNamePlaceholder": "bijv. Hoofdrekening",
+      "accountType": "Type rekening",
+      "color": "Kleur",
+      "createTitle": "Rekening aanmaken",
+      "currency": "Valuta",
+      "cycles": {
+        "biWeekly": "Tweewekelijks",
+        "monthly": "Maandelijks",
+        "weekly": "Wekelijks"
+      },
+      "dayOfMonth": "Dag van de maand (1-31)",
+      "editTitle": "Rekening bewerken",
+      "initialBalance": "Beginsaldo",
+      "name": "Naam van de rekening",
+      "namePlaceholder": "bijv. Hoofdrekening",
+      "paymentDueDay": "Vervaldag van de betaling",
+      "spendLimit": "Uitgavenlimiet",
+      "spendLimitAllowance": "Maximale uitgaven per cyclus",
+      "spendLimitCreditCard": "Kredietlimiet van de kaart",
+      "statementCloseDay": "Afsluitdag van het afschrift",
+      "toast": {
+        "created": "Rekening aangemaakt",
+        "error": "Kan rekening niet {{action}}",
+        "updated": "Rekening bijgewerkt"
+      },
+      "topUpAmount": "Opwaarderingsbedrag",
+      "topUpAmountDesc": "Bedrag dat elke cyclus wordt toegevoegd",
+      "topUpCycle": "Opwaarderingscyclus",
+      "topUpDay": "Opwaarderingsdag",
+      "topUpDayMonth": "Dag van de maand (1-31)",
+      "topUpDayWeek": "Dag van de week (0=zo, 6=za)",
+      "createButton": "Rekening aanmaken"
+    },
+    "inflows": "Inkomsten",
+    "loadError": "Er ging iets mis bij het laden van je rekeningen.",
+    "netPosition": {
+      "debt": "Schuld",
+      "liquid": "Liquide",
+      "loadError": "Er ging iets mis bij het laden van de positiegegevens.",
+      "protected": "Beschermd",
+      "title": "Nettopositie"
+    },
+    "nextTopUp": "Volgende opwaardering:",
+    "nextTopUpLabel": "Volgende opwaardering",
+    "noPeriodDescription": "Kies een periode om je rekeningen te bekijken.",
+    "notEnoughData": "Nog niet genoeg gegevens om een grafiek te tonen.",
+    "notFound": "Rekening niet gevonden.",
+    "outflows": "Uitgaven",
+    "paymentDue": "Betaling vervalt",
+    "saveFailed": "Kan rekening niet opslaan",
+    "spentThisCycle": "Uitgegeven deze cyclus",
+    "statementCloses": "Afsluitdatum afschrift",
+    "subtitle": "Je rekeningen in één oogopslag",
+    "title": "Rekeningen",
+    "toast": {
+      "archiveError": "Kan rekening niet archiveren",
+      "archived": "Rekening gearchiveerd",
+      "unarchiveError": "Kan rekening niet uit archief halen",
+      "unarchived": "Rekening uit archief gehaald"
+    },
+    "topUpAmount": "Opwaarderingsbedrag",
+    "transactions": "Transacties",
+    "txnsThisPeriod": "{{count}} tx in deze periode",
+    "types": {
+      "Allowance": "Zakgeld",
+      "Checking": "Betaalrekening",
+      "CreditCard": "Creditcards",
+      "Savings": "Spaarrekening",
+      "Wallet": "Wallets",
+      "checking": "Betaalrekening",
+      "savings": "Spaarrekening",
+      "creditCard": "Creditcard",
+      "creditCards": "Creditcards",
+      "wallet": "Wallet",
+      "wallets": "Wallets",
+      "allowance": "Zakgeld"
+    },
+    "unarchiveFailed": "Kan rekening niet uit archief halen",
+    "unarchived": "Rekening uit archief gehaald",
+    "unarchivedNamed": "{{name}} uit archief gehaald",
+    "updated": "Rekening bijgewerkt",
+    "topUpCycles": {
+      "weekly": "Wekelijks",
+      "biWeekly": "Tweewekelijks",
+      "monthly": "Maandelijks"
+    },
+    "emptyTips": {
+      "types": "Je kunt betaal-, spaar-, creditcard-, wallet- of zakgeldrekeningen toevoegen.",
+      "balance": "Stel je huidige saldo in bij het aanmaken — het wordt bijgewerkt zodra je transacties toevoegt.",
+      "archive": "Archiveer rekeningen die je niet meer gebruikt om je lijst overzichtelijk te houden."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Maak een rekening aan",
+        "description": "Kies het type rekening en geef een naam en beginsaldo op."
+      },
+      "balance": {
+        "title": "Stel het beginsaldo in",
+        "description": "Vul je daadwerkelijke saldo in zodat de app je financiën nauwkeurig weergeeft."
+      },
+      "use": {
+        "title": "Gebruik bij transacties",
+        "description": "Kies bij het vastleggen van een transactie van of naar welke rekening het geld gaat."
+      }
+    }
+  },
+  "appShell": {
+    "brand": "PiggyPulse",
+    "collapseSidebar": "Zijbalk inklappen",
+    "expandSidebar": "Zijbalk uitklappen",
+    "mainNavigation": "Hoofdnavigatie",
+    "more": "Meer",
+    "switchToDarkMode": "Wissel naar donkere modus",
+    "switchToLightMode": "Wissel naar lichte modus",
+    "userMenu": "Gebruikersmenu"
+  },
+  "auth": {
+    "defaultTagline": "Jouw financiële pols — rustig, helder en helemaal van jou.",
+    "forgotPassword": {
+      "backToSignIn": "Terug naar inloggen",
+      "didNotReceive": "Niet ontvangen? Bekijk je spam-map of",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "naam@voorbeeld.com",
+      "hasPassword": "Weet je je wachtwoord weer?",
+      "rememberPassword": "Weet je je wachtwoord weer?",
+      "resendLink": "stuur de link opnieuw",
+      "sent": {
+        "backToSignIn": "Terug naar inloggen",
+        "didntReceive": "Niet ontvangen? Bekijk je spam-map of",
+        "instruction": "Klik op de link in de e-mail om je wachtwoord te resetten.",
+        "message": "We hebben een reset-link gestuurd naar {{email}}.",
+        "resend": "stuur de link opnieuw",
+        "title": "Bekijk je e-mail"
+      },
+      "sentInstruction": "Klik op de link in de e-mail om je wachtwoord te resetten.",
+      "sentSubtitle": "We hebben een reset-link gestuurd naar",
+      "sentTitle": "Bekijk je e-mail",
+      "signIn": "Inloggen",
+      "submit": "Link versturen",
+      "submitButton": "Link versturen",
+      "subtitle": "Vul je e-mail in en we sturen je een link om hem te resetten.",
+      "title": "Wachtwoord vergeten?"
+    },
+    "login": {
+      "createOne": "Maak er een",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "naam@voorbeeld.com",
+      "errorAccountLocked": "Account vergrendeld. Bekijk je e-mail voor de ontgrendelingslink.",
+      "errorGeneric": "Inloggen lukt niet. Probeer het opnieuw.",
+      "errorInvalidCredentials": "Onjuist e-mailadres of wachtwoord",
+      "errorTooManyAttempts": "Te veel pogingen. Wacht even en probeer het opnieuw.",
+      "errorUnknown": "Er ging iets mis",
+      "errors": {
+        "accountLocked": "Account vergrendeld. Bekijk je e-mail voor de ontgrendelingslink.",
+        "generic": "Inloggen lukt niet. Probeer het opnieuw.",
+        "invalidCredentials": "Onjuist e-mailadres of wachtwoord",
+        "somethingWentWrong": "Er ging iets mis",
+        "tooManyAttempts": "Te veel pogingen. Wacht even en probeer het opnieuw."
+      },
+      "forgotPassword": "Wachtwoord vergeten?",
+      "noAccount": "Nog geen account?",
+      "password": "Wachtwoord",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Vul je wachtwoord in",
+      "rememberMe": "Ingelogd blijven",
+      "sessionExpired": "Je sessie is verlopen. Log opnieuw in.",
+      "submit": "Inloggen",
+      "submitButton": "Inloggen",
+      "subtitle": "Ga naar je account.",
+      "title": "Inloggen",
+      "twoFactor": {
+        "codePlaceholder": "000000",
+        "enterCode": "Vul de 6-cijferige code uit je authenticator-app in.",
+        "enterRecovery": "Vul een van je herstelcodes in.",
+        "invalidCode": "Onjuiste code. Probeer het opnieuw.",
+        "recoveryCode": "Herstelcode",
+        "recoveryPlaceholder": "XXXX-XXXX",
+        "useAuthenticator": "Gebruik de code uit de authenticator-app",
+        "useRecovery": "Of gebruik een herstelcode",
+        "verify": "Verifiëren"
+      },
+      "waitSeconds": "Wacht {{seconds}}s",
+      "accountLockedAlert": "Je account is tijdelijk vergrendeld door te veel mislukte pogingen. Bekijk je e-mail voor de ontgrendelingsinstructies.",
+      "tooManyAttemptsAlert": "Te veel mislukte pogingen. Wacht {{seconds}} seconden voor je het opnieuw probeert."
+    },
+    "register": {
+      "agreeToTermsPrefix": "Ik ga akkoord met de",
+      "alreadyHaveAccount": "Heb je al een account?",
+      "and": "en",
+      "confirmPassword": "Wachtwoord bevestigen",
+      "confirmPasswordLabel": "Wachtwoord bevestigen",
+      "confirmPasswordPlaceholder": "Herhaal je wachtwoord",
+      "confirmPlaceholder": "Herhaal je wachtwoord",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "naam@voorbeeld.com",
+      "error": "Account aanmaken is niet gelukt. Het e-mailadres is mogelijk al in gebruik.",
+      "errorGeneric": "Account aanmaken is niet gelukt. Het e-mailadres is mogelijk al in gebruik.",
+      "hasAccount": "Heb je al een account?",
+      "name": "Naam",
+      "nameLabel": "Naam",
+      "namePlaceholder": "Anne",
+      "password": "Wachtwoord",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Kies een sterk wachtwoord",
+      "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+      "passwordsMismatch": "Wachtwoorden komen niet overeen",
+      "privacyPolicy": "Privacybeleid",
+      "signIn": "Inloggen",
+      "submit": "Account aanmaken",
+      "submitButton": "Account aanmaken",
+      "subtitle": "Breng rust in je budget.",
+      "terms": "Ik ga akkoord met de",
+      "termsOfService": "Gebruiksvoorwaarden",
+      "title": "Maak je account aan"
+    },
+    "resetPassword": {
+      "confirmPassword": "Wachtwoord bevestigen",
+      "confirmPasswordLabel": "Wachtwoord bevestigen",
+      "errorExpired": "De reset-link is verlopen. Vraag een nieuwe aan.",
+      "goToSignIn": "Naar inloggen",
+      "invalidLink": {
+        "goToSignIn": "Naar inloggen",
+        "message": "Deze link is verlopen of niet geldig.",
+        "title": "Reset-link niet geldig"
+      },
+      "invalidLinkMessage": "Deze link is verlopen of niet geldig.",
+      "invalidLinkTitle": "Reset-link niet geldig",
+      "newPassword": "Nieuw wachtwoord",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+      "passwordsMismatch": "Wachtwoorden komen niet overeen",
+      "requestNewLink": "Vraag een nieuwe link aan",
+      "submit": "Wachtwoord resetten",
+      "submitButton": "Wachtwoord resetten",
+      "subtitle": "Kies een sterk, uniek wachtwoord.",
+      "success": {
+        "goToSignIn": "Naar inloggen",
+        "instruction": "Je kunt nu inloggen met je nieuwe wachtwoord.",
+        "message": "Je wachtwoord is gereset.",
+        "title": "Wachtwoord bijgewerkt"
+      },
+      "successMessage": "Je wachtwoord is gereset.",
+      "successSubtext": "Je kunt nu inloggen met je nieuwe wachtwoord.",
+      "successTitle": "Wachtwoord bijgewerkt",
+      "title": "Stel een nieuw wachtwoord in"
+    },
+    "tagline": {
+      "default": "Jouw financiële pols — rustig, helder en helemaal van jou.",
+      "forgotPassword": "Geen probleem. We helpen je terug naar binnen.",
+      "login": "Welkom terug. Je gegevens staan precies waar je ze achterliet.",
+      "register": "Breng rust in je financiën.",
+      "resetPassword": "Bijna klaar. Kies een nieuw wachtwoord.",
+      "unlock": "Bevestig je identiteit om door te gaan.",
+      "emergency2faDisable": "We helpen je weer toegang te krijgen tot je account."
+    },
+    "taglines": {
+      "forgotPassword": "Geen probleem. We helpen je terug naar binnen.",
+      "login": "Welkom terug. Je gegevens staan precies waar je ze achterliet.",
+      "register": "Breng rust in je financiën.",
+      "resetPassword": "Bijna klaar. Kies een nieuw wachtwoord.",
+      "unlock": "Bevestig je identiteit om door te gaan."
+    },
+    "twoFactor": {
+      "errorInvalidCode": "Onjuiste code. Probeer het opnieuw.",
+      "placeholder": "000000",
+      "recoveryPlaceholder": "XXXX-XXXX",
+      "recoverySubtitle": "Vul een van je herstelcodes in.",
+      "recoveryTitle": "Herstelcode",
+      "subtitle": "Vul de 6-cijferige code uit je authenticator-app in.",
+      "title": "Vul de verificatiecode in",
+      "useAuthenticator": "Gebruik de code uit de authenticator-app",
+      "useRecoveryCode": "Of gebruik een herstelcode",
+      "verifyButton": "Verifiëren",
+      "waitSeconds": "Wacht {{seconds}}s",
+      "accountLocked": "Je account is tijdelijk vergrendeld door te veel mislukte pogingen. Bekijk je e-mail voor de ontgrendelingsinstructies.",
+      "tooManyAttempts": "Te veel mislukte pogingen. Wacht {{seconds}} seconden voor je het opnieuw probeert."
+    },
+    "unlock": {
+      "errorMessage": "Deze link is verlopen of niet geldig.",
+      "errorTitle": "Ontgrendelingslink niet geldig",
+      "goToSignIn": "Naar inloggen",
+      "invalidLink": {
+        "goToSignIn": "Naar inloggen",
+        "message": "Deze link is verlopen of niet geldig.",
+        "title": "Ontgrendelingslink niet geldig"
+      },
+      "loading": "Je account wordt ontgrendeld…",
+      "success": {
+        "goToSignIn": "Naar inloggen",
+        "message": "Je account is ontgrendeld. Je kunt nu inloggen.",
+        "title": "Account ontgrendeld"
+      },
+      "successMessage": "Je account is ontgrendeld. Je kunt nu inloggen.",
+      "successTitle": "Account ontgrendeld"
+    },
+    "emergency2fa": {
+      "title": "Noodontgrendeling van 2FA",
+      "subtitle": "Vul je e-mail in en we sturen je een veilige link om tweestapsverificatie uit te schakelen.",
+      "infoMessage": "Gebruik deze optie alleen als je geen toegang meer hebt tot je authenticator-app en niet kunt inloggen.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "naam@voorbeeld.com",
+      "submitButton": "Uitschakellink versturen",
+      "rememberPassword": "Weet je je toegang weer?",
+      "signIn": "Inloggen",
+      "sentTitle": "Bekijk je e-mail",
+      "sentMessage": "Als 2FA actief is op je account, ontvang je binnenkort een link om het uit te schakelen. Bekijk je spam-map als je hem niet kunt vinden.",
+      "backToSignIn": "Terug naar inloggen",
+      "confirmTitle": "Tweestapsverificatie uitschakelen",
+      "confirmWarning": "Je staat op het punt om tweestapsverificatie uit te schakelen. Dat maakt je account minder veilig.",
+      "confirmDescription": "Klik op de knop hieronder om te bevestigen. Je kunt 2FA op elk moment weer inschakelen via je accountinstellingen.",
+      "confirmButton": "Bevestigen — 2FA uitschakelen",
+      "confirmError": "Deze link is verlopen of niet geldig. Vraag een nieuwe aan.",
+      "disabledTitle": "2FA uitgeschakeld",
+      "disabledMessage": "Tweestapsverificatie is uitgeschakeld. Je kunt nu alleen met je wachtwoord inloggen.",
+      "goToSignIn": "Naar inloggen"
+    },
+    "session": {
+      "refreshFailed": "We konden je sessie niet herstellen. Log opnieuw in."
+    }
+  },
+  "categories": {
+    "actions": {
+      "archive": "Archiveren",
+      "delete": "Verwijderen",
+      "unarchive": "Uit archief halen"
+    },
+    "addCategory": "+ Categorie toevoegen",
+    "addFirst": "+ Voeg je eerste categorie toe",
+    "addFirstCategory": "+ Voeg je eerste categorie toe",
+    "archiveFailed": "Kan categorie niet archiveren",
+    "archived": "Categorie gearchiveerd",
+    "archivedCount": "Gearchiveerd ({{count}})",
+    "archivedNamed": "{{name}} gearchiveerd",
+    "archivedToggle": "Gearchiveerd",
+    "behaviors": {
+      "fixed": "Vast",
+      "subscription": "Abonnement",
+      "variable": "Variabel"
+    },
+    "breadcrumb": "← Categorieën",
+    "budget": "Budget",
+    "budgeted": "met budget",
+    "categoriesCount": "Categorieën",
+    "created": "Categorie aangemaakt",
+    "deleteFailed": "Kan categorie niet verwijderen",
+    "deleted": "Categorie verwijderd",
+    "detail": {
+      "backLink": "← Categorieën",
+      "budget": "Budget",
+      "recentTransactions": "Recente transacties",
+      "remaining": "Resterend",
+      "spendingTrend": "Uitgaventrend — Laatste {{count}} periodes",
+      "spent": "Uitgegeven",
+      "transactions": "Transacties"
+    },
+    "detailLoadError": "Er ging iets mis bij het laden van deze categorie.",
+    "empty": {
+      "message": "Maak je eerste categorie aan om transacties te ordenen en de structuur van je budget te bepalen.",
+      "title": "Nog geen categorieën"
+    },
+    "emptyDescription": "Maak je eerste categorie aan om transacties te ordenen en de structuur van je budget te bepalen.",
+    "emptyTitle": "Nog geen categorieën",
+    "expenseBudget": "Uitgavenbudget",
+    "form": {
+      "behavior": "Gedrag",
+      "budgetTarget": "Budgetdoel",
+      "budgetTargetDesc": "Maandelijks uitgaven- of inkomstendoel (optioneel)",
+      "categoryName": "Naam van de categorie",
+      "categoryNamePlaceholder": "bijv. Boodschappen",
+      "createButton": "Categorie aanmaken",
+      "createTitle": "Categorie toevoegen",
+      "description": "Omschrijving",
+      "descriptionPlaceholder": "Optionele omschrijving",
+      "editTitle": "Categorie bewerken",
+      "icon": "Pictogram",
+      "name": "Naam van de categorie",
+      "namePlaceholder": "bijv. Boodschappen",
+      "toast": {
+        "created": "Categorie aangemaakt",
+        "error": "Kan categorie niet {{action}}",
+        "updated": "Categorie bijgewerkt"
+      },
+      "type": "Type",
+      "behaviorLockedSubs": "Het gedrag kan niet worden gewijzigd zolang er actieve abonnementen zijn"
+    },
+    "incomeTarget": "Inkomstendoel",
+    "incoming": "Inkomsten",
+    "loadError": "Er ging iets mis bij het laden van je categorieën.",
+    "notFound": "Categorie niet gevonden.",
+    "outgoing": "Uitgaven",
+    "recentTransactions": "Recente transacties",
+    "remaining": "Resterend",
+    "saveFailed": "Kan categorie niet opslaan",
+    "searchPlaceholder": "Categorieën zoeken…",
+    "spendingTrend": "Uitgaventrend — Laatste {{count}} periodes",
+    "spent": "Uitgegeven",
+    "stats": {
+      "categories": "Categorieën",
+      "expenseBudget": "Uitgavenbudget",
+      "incomeTarget": "Inkomstendoel",
+      "totalSpent": "Totaal uitgegeven",
+      "unbudgeted": "Zonder budget"
+    },
+    "subtitle": "De structuur van je budget",
+    "title": "Categorieën",
+    "toast": {
+      "archiveError": "Kan categorie niet archiveren",
+      "archived": "Categorie gearchiveerd",
+      "deleteError": "Kan categorie niet verwijderen",
+      "deleted": "Categorie verwijderd",
+      "unarchiveError": "Kan categorie niet uit archief halen",
+      "unarchived": "Categorie uit archief gehaald"
+    },
+    "totalSpent": "Totaal uitgegeven",
+    "types": {
+      "expense": "Uitgave",
+      "income": "Inkomen",
+      "transfer": "Overboeking"
+    },
+    "unarchiveFailed": "Kan categorie niet uit archief halen",
+    "unarchived": "Categorie uit archief gehaald",
+    "unarchivedNamed": "{{name}} uit archief gehaald",
+    "unbudgeted": "Zonder budget",
+    "updated": "Categorie bijgewerkt",
+    "subscriptionSection": {
+      "title": "Abonnementen",
+      "monthlyTotal": "Maandtotaal",
+      "empty": "Nog geen abonnementen. Voeg er hieronder een toe.",
+      "inlineTitle": "Eerste abonnement",
+      "createHint": "Nadat je deze categorie hebt aangemaakt, kun je er direct vanuit de categorie-instellingen abonnementen aan toevoegen.",
+      "actionsFor": "Acties voor {{name}}",
+      "deleteConfirmTitle": "Abonnement verwijderen",
+      "deleteConfirmDesc": "Weet je zeker dat je „{{name}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
+    }
+  },
+  "common": {
+    "account": "Rekening",
+    "add": "Toevoegen",
+    "archive": "Archiveren",
+    "archived": "Gearchiveerd",
+    "back": "Terug",
+    "budgeted": "met budget",
+    "cancel": "Annuleren",
+    "cancelled": "Opgezegd",
+    "categories": "categorieën",
+    "category": "categorie",
+    "comingSoon": "Deze pagina is binnenkort beschikbaar",
+    "continue": "Doorgaan",
+    "create": "Aanmaken",
+    "daysLeft": "Nog {{count}}d",
+    "delete": "Verwijderen",
+    "deleteConfirmTitle": "Verwijderen bevestigen",
+    "deleteConfirmMessage": "Weet je zeker dat je „{{name}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+    "done": "Klaar",
+    "edit": "Bewerken",
+    "enabled": "Ingeschakeld",
+    "ended": "geëindigd",
+    "export": "Exporteren",
+    "import": "Importeren",
+    "inDays": "Over {{count}} dagen",
+    "inMonths": "Over {{count}} maanden",
+    "incoming": "Inkomsten",
+    "individualAccountCard": "Rekeningkaart",
+    "logOut": "Uitloggen",
+    "merge": "Samenvoegen",
+    "more": "Meer",
+    "next": "Volgende",
+    "noMatch": "Geen treffers in {{entity}}",
+    "noPeriodSelected": "Geen budgetperiode geselecteerd.",
+    "noPeriodSelectedDetail": "Kies een periode om {{page}} te bekijken.",
+    "noPeriodSelectedShort": "Geen budgetperiode geselecteerd.",
+    "notFound": "{{entity}} niet gevonden.",
+    "outgoing": "Uitgaven",
+    "paused": "Gepauzeerd",
+    "piggyPulse": "PiggyPulse",
+    "previous": "Vorige:",
+    "reset": "Resetten",
+    "retry": "Opnieuw proberen",
+    "save": "Wijzigingen opslaan",
+    "saveChanges": "Wijzigingen opslaan",
+    "search": "Zoeken",
+    "settings": "Instellingen",
+    "skipForNow": "Nu overslaan",
+    "somethingWentWrong": "Er ging iets mis bij het laden van {{entity}}.",
+    "switchToDark": "Wissel naar donkere modus",
+    "switchToLight": "Wissel naar lichte modus",
+    "thisPeriod": "deze periode",
+    "today": "Vandaag",
+    "tomorrow": "Morgen",
+    "transfer": "Overboeking",
+    "txns": "{{count}} tx",
+    "txnsThisPeriod": "{{count}} tx in deze periode",
+    "unarchive": "Uit archief halen",
+    "userMenu": "Gebruikersmenu",
+    "viewDetails": "Bekijk details",
+    "noPeriodStateDescription": "Kies of maak een budgetperiode om deze pagina te bekijken. Periodes bepalen het tijdvenster voor je transacties en doelen.",
+    "goToPeriods": "Naar periodes",
+    "close": "Sluiten",
+    "error": "Fout"
+  },
+  "dashboard": {
+    "account": {
+      "archived": "Deze rekening is gearchiveerd.",
+      "available": "beschikbaar",
+      "availableToSpend": "Beschikbaar om uit te geven",
+      "avgDailyBalance": "Gemiddeld dagsaldo",
+      "balance": "Saldo",
+      "balanceAfterTopUp": "Saldo na opwaardering",
+      "creditUsed": "Gebruikt krediet: {{pct}}% van de limiet",
+      "currentBalance": "huidig saldo",
+      "error": "Er ging iets mis bij het laden van deze rekening.",
+      "inDays": "Over {{count}} dagen",
+      "inDaysParens": "(over {{count}} dagen)",
+      "inflows": "Inkomsten",
+      "limit": "limiet",
+      "nextTopUp": "Volgende opwaardering",
+      "noTransactions": "Nog geen transacties in deze periode.",
+      "outflows": "Uitgaven",
+      "overspent": "Overschreden",
+      "paymentDue": "Betaling vervalt",
+      "periodChange": "Verandering in periode",
+      "spentThisCycle": "Uitgegeven deze cyclus",
+      "statementCloses": "Afsluitdatum afschrift",
+      "title": "Rekening",
+      "today": "Vandaag",
+      "todayParens": "(Vandaag)",
+      "tomorrow": "Morgen",
+      "transactions": "Transacties"
+    },
+    "accountCard": {
+      "archived": "Deze rekening is gearchiveerd.",
+      "error": "Er ging iets mis bij het laden van deze rekening.",
+      "noTransactions": "Nog geen transacties in deze periode."
+    },
+    "addWidget": "+ Widget toevoegen",
+    "addWidgetButton": "+ Widget toevoegen",
+    "cancel": "Annuleren",
+    "cashFlow": {
+      "empty": "Geen inkomsten of uitgaven geregistreerd in deze periode.",
+      "error": "Er ging iets mis bij het laden van je cashflow.",
+      "in": "In",
+      "inflowsAria": "Inkomsten: {{pct}}% van het periodemaximum",
+      "inflowsPct": "Inkomsten: {{pct}}% van het periodemaximum",
+      "net": "Netto",
+      "out": "Uit",
+      "outflowsAria": "Uitgaven: {{pct}}% van het periodemaximum",
+      "outflowsPct": "Uitgaven: {{pct}}% van het periodemaximum",
+      "title": "Cashflow"
+    },
+    "currentPeriod": {
+      "budget": "Budget",
+      "budgetLabel": "Budget",
+      "budgetUsed": "Budget gebruikt: {{pct}}%",
+      "daysLeft": "Nog {{count}} dagen",
+      "empty": "Nog geen budgetperiode ingesteld.",
+      "error": "Er ging iets mis bij het laden van de periodegegevens.",
+      "expectedIncome": "<currency /> aan verwachte inkomsten",
+      "noBudget": "geen budget ingesteld",
+      "noBudgetSet": "geen budget ingesteld",
+      "noPeriod": "Nog geen budgetperiode ingesteld.",
+      "ofBudgeted": "van <currency /> begroot",
+      "perDayLeft": "Per resterende dag",
+      "projected": "Verwacht",
+      "remaining": "Resterend",
+      "time": "Tijd",
+      "timeElapsed": "Verstreken tijd: {{pct}}%",
+      "timeLabel": "Tijd",
+      "title": "Huidige periode",
+      "totalSpent": "Totaal uitgegeven in deze periode",
+      "totalSpentThisPeriod": "Totaal uitgegeven in deze periode"
+    },
+    "customize": "Aanpassen",
+    "done": "Klaar",
+    "emptyTitle": "Geen widgets om te tonen",
+    "emptyDescription": "Gebruik de knop Aanpassen om widgets aan je dashboard toe te voegen.",
+    "fixedSpending": {
+      "title": "Vaste uitgaven",
+      "empty": "Geen vaste uitgaven ingesteld.",
+      "allowance": "envelop",
+      "categoryCount": "{{count}} items"
+    },
+    "fixedCategories": {
+      "categoryCount": "{{count}} {{label}}",
+      "count_one": "{{count}} categorie",
+      "count_other": "{{count}} categorieën",
+      "empty": "Nog geen vaste categorieën ingesteld. Markeer een categorie als „vast\" en koppel er een budget aan om hem hier te volgen.",
+      "error": "Er ging iets mis bij het laden van je vaste uitgaven.",
+      "ofPaid": "van <currency /> betaald",
+      "overallAria": "Totaal betaalde vaste uitgaven: {{pct}}%",
+      "overallPaid": "Totaal betaalde vaste uitgaven: {{pct}}%",
+      "paid": "Betaald",
+      "partial": "Gedeeltelijk",
+      "pending": "In afwachting",
+      "title": "Vaste categorieën"
+    },
+    "netPosition": {
+      "accountTypes": {
+        "Allowance": "Zakgeld",
+        "Checking": "Betaalrekening",
+        "CreditCard": "Creditcard",
+        "Savings": "Spaarrekening",
+        "Wallet": "Wallet"
+      },
+      "accounts": "{{count}} rekeningen",
+      "accountsCount": "{{count}} rekeningen",
+      "debt": "Schuld",
+      "empty": "Nog geen rekeningen ingesteld. Voeg een rekening toe om je nettopositie te zien.",
+      "error": "Er ging iets mis bij het laden van de positiegegevens.",
+      "liquid": "Liquide",
+      "noAccounts": "Nog geen rekeningen ingesteld. Voeg een rekening toe om je nettopositie te zien.",
+      "protected": "Beschermd",
+      "title": "Nettopositie"
+    },
+    "noPeriodSelected": "Geen budgetperiode geselecteerd. Kies een periode om het dashboard te bekijken.",
+    "recentTransactions": {
+      "empty": "Nog geen transacties in deze periode.",
+      "error": "Er ging iets mis bij het laden van je transacties.",
+      "thisPeriod": "Deze periode",
+      "title": "Recente transacties",
+      "viewAll": "Bekijk alle transacties"
+    },
+    "spendingTrend": {
+      "average": "Gemiddelde per periode",
+      "chartAria": "Staafdiagram van de uitgaven over de laatste {{count}} budgetperiodes",
+      "chartLabel": "Staafdiagram van de uitgaven over de laatste {{count}} budgetperiodes",
+      "empty": "Er zijn minstens 2 afgesloten periodes nodig voor een trend.",
+      "error": "Er ging iets mis bij het laden van de uitgaventrend.",
+      "lastPeriods": "Laatste {{count}} periodes",
+      "periodAverage": "Gemiddelde per periode",
+      "title": "Uitgaventrend"
+    },
+    "subscriptions": {
+      "active": "{{count}} actief",
+      "activeCount": "{{count}} actief",
+      "charged": "Afgeschreven",
+      "empty": "Geen afschrijvingen voorzien in deze periode.",
+      "error": "Er ging iets mis bij het laden van je abonnementen.",
+      "inDays": "Over {{count}} dagen",
+      "inMonths": "Over {{count}} maanden",
+      "inOneDay": "Over 1 dag",
+      "inOneMonth": "Over 1 maand",
+      "inOneWeek": "Over 1 week",
+      "inWeeks": "Over {{count}} weken",
+      "perMonth": "/mnd",
+      "perQuarter": "/kw",
+      "perYear": "/jr",
+      "title": "Abonnementen",
+      "today": "Vandaag"
+    },
+    "subtitle": "Je financiën in één oogopslag",
+    "title": "Dashboard",
+    "topVendors": {
+      "empty": "Geen handelaars-transacties in deze periode.",
+      "error": "Er ging iets mis bij het laden van de belangrijkste handelaars.",
+      "rank": "Positie {{rank}}",
+      "rankAria": "Positie {{rank}}",
+      "title": "Belangrijkste handelaars",
+      "txns": "{{count}} tx"
+    },
+    "variableCategories": {
+      "category": "Categorie",
+      "categoryCount": "{{count}} {{label}}",
+      "columnCategory": "Categorie",
+      "columnPercent": "%",
+      "columnProgress": "Voortgang",
+      "columnSpentBudget": "Uitgegeven / Budget",
+      "count_one": "{{count}} categorie",
+      "count_other": "{{count}} categorieën",
+      "empty": "Nog geen variabele categorieën met budget. Markeer een categorie als „variabel\" en koppel er een budget aan om hem hier te zien.",
+      "error": "Er ging iets mis bij het laden van je categorieën.",
+      "ofBudgeted": "van <currency /> begroot",
+      "overallAria": "Totaal gebruikt variabel budget: {{pct}}%",
+      "overallUsed": "Totaal gebruikt variabel budget: {{pct}}%",
+      "pct": "%",
+      "progress": "Voortgang",
+      "spentBudget": "Uitgegeven / Budget",
+      "title": "Variabele categorieën"
+    },
+    "addWidgetHint": "Kies een widget om aan je dashboard toe te voegen.",
+    "alreadyAdded": "Al toegevoegd"
+  },
+  "onboarding": {
+    "accounts": {
+      "accountNamePlaceholder": "Naam van de rekening",
+      "addAccount": "+ Rekening toevoegen",
+      "balanceDesc": "Je werkelijke saldo nu",
+      "balanceHint": "Je werkelijke saldo nu",
+      "balancePlaceholder": "Huidig saldo",
+      "continue": "Doorgaan",
+      "createFailed": "Kan rekening „{{name}}\" niet aanmaken",
+      "currentBalance": "Huidig saldo",
+      "description": "Waar staat je geld? Rekeningen vertegenwoordigen je echte rekeningen en zijn niet met je bank verbonden.",
+      "description1": "Waar staat je geld? Rekeningen vertegenwoordigen je echte rekeningen en zijn niet met je bank verbonden.",
+      "description2": "Voeg er zoveel toe als je wilt — of sla over en voeg ze later toe.",
+      "error": "Kan rekening „{{name}}\" niet aanmaken",
+      "namePlaceholder": "Naam van de rekening",
+      "optional": "Voeg er zoveel toe als je wilt — of sla over en voeg ze later toe.",
+      "skip": "Nu overslaan",
+      "title": "Voeg je rekeningen toe",
+      "types": {
+        "Checking": "Betaalrekening",
+        "Savings": "Spaarrekening",
+        "Wallet": "Wallet"
+      }
+    },
+    "appName": "PiggyPulse",
+    "categories": {
+      "applyFailed": "Kan de sjabloon niet toepassen",
+      "colorHint": "Kleuren worden automatisch toegekend op basis van richting en gedrag. Je kunt categorieën altijd aanpassen.",
+      "colorNote": "Kleuren worden automatisch toegekend op basis van richting en gedrag. Je kunt categorieën altijd aanpassen.",
+      "continue": "Doorgaan",
+      "description": "Categorieën helpen je transacties te ordenen en doelen te stellen.",
+      "description1": "Categorieën helpen je transacties te ordenen en doelen te stellen.",
+      "description2": "Kies een startsjabloon — je kunt categorieën altijd toevoegen, verwijderen of wijzigen.",
+      "error": "Kan de sjabloon niet toepassen",
+      "skip": "Nu overslaan",
+      "templateHint": "Kies een startsjabloon — je kunt categorieën altijd toevoegen, verwijderen of wijzigen.",
+      "title": "Stel je categorieën in"
+    },
+    "complete": {
+      "addFirstTransaction": "Voeg je eerste transactie toe",
+      "completeFailed": "Kan de inrichting niet afronden",
+      "currency": "Valuta",
+      "goToDashboard": "Naar dashboard",
+      "periods": "Periodes",
+      "periodsDefault": "Maandelijks, vanaf dag 1",
+      "subtitle": "Je dashboard is klaar. Dit is wat we hebben ingesteld:",
+      "title": "Helemaal klaar!"
+    },
+    "currency": {
+      "continue": "Doorgaan",
+      "description": "Al je rekeningen en transacties gebruiken deze valuta.",
+      "multiCurrencyNote": "Op dit moment ondersteunt PiggyPulse geen meerdere valuta. Deze functie komt binnenkort.",
+      "required": "Dit is de enige verplichte stap.",
+      "requiredStep": "Dit is de enige verplichte stap.",
+      "saveFailed": "Kan de valuta niet opslaan",
+      "searchPlaceholder": "Valuta zoeken…",
+      "title": "Kies je valuta"
+    },
+    "errors": {
+      "complete": "Kan de inrichting niet afronden",
+      "saveCurrency": "Kan de valuta niet opslaan",
+      "setupPeriods": "Kan periodes niet instellen"
+    },
+    "periods": {
+      "autoAssignment": "Transacties worden op basis van hun datum aan periodes toegewezen — handmatig toewijzen is niet nodig.",
+      "changeHint": "Je kunt deze instellingen later aanpassen bij Periodes → Kalender.",
+      "changeLater": "Je kunt deze instellingen later aanpassen bij Periodes → Kalender.",
+      "continue": "Doorgaan",
+      "defaultAhead": "3 periodes vooraf voorbereid",
+      "defaultLabel": "We stellen de standaardoptie in:",
+      "defaultMonthly": "Maandelijkse periodes, vanaf dag 1",
+      "description": "Periodes zijn tijdvensters die je transacties ordenen. Zie ze als hoofdstukken van je financiële verhaal, met telkens een begin- en einddatum.",
+      "description1": "Periodes zijn tijdvensters die je transacties ordenen.",
+      "description2": "Transacties worden op basis van hun datum aan periodes toegewezen — handmatig toewijzen is niet nodig.",
+      "monthlyStart": "Maandelijkse periodes, vanaf dag 1",
+      "setupFailed": "Kan periodes niet instellen",
+      "threeAhead": "3 periodes vooraf voorbereid",
+      "title": "Zo deelt PiggyPulse de tijd in"
+    },
+    "steps": {
+      "accounts": "Rekeningen",
+      "categories": "Categorieën",
+      "currency": "Valuta",
+      "periods": "Periodes",
+      "welcome": "Welkom"
+    },
+    "summary": {
+      "accounts": "Rekeningen",
+      "addFirstTransaction": "Voeg je eerste transactie toe",
+      "categories": "Categorieën",
+      "currency": "Valuta",
+      "goToDashboard": "Naar dashboard",
+      "monthlyStart": "Maandelijks, vanaf dag 1",
+      "periods": "Periodes",
+      "subtitle": "Je dashboard is klaar. Dit is wat we hebben ingesteld:",
+      "threeAhead": "3 periodes vooraf voorbereid",
+      "title": "Helemaal klaar!"
+    },
+    "welcome": {
+      "getStarted": "Aan de slag",
+      "justClarity": "Alleen helderheid",
+      "justClarityDesc": "bekijk je gegevens, begrijp je patronen",
+      "noJudgment": "Geen oordeel",
+      "noJudgmentDesc": "we beoordelen uitgaven niet als goed of slecht",
+      "quote": "PiggyPulse laat je de werkelijkheid zien aan de hand van data. We vieren niets en bekritiseren niets — jij beslist wat je cijfers betekenen.",
+      "subtitle": "Jouw financiële pols — rustig, helder en helemaal van jou.",
+      "title": "Welkom bij PiggyPulse",
+      "yourRules": "Jouw regels",
+      "yourRulesDesc": "jij beslist wat je cijfers betekenen"
+    }
+  },
+  "periodSelector": {
+    "createPeriod": "Periode aanmaken",
+    "daysLeft": "Nog {{count}} dagen",
+    "daysLeftLong": "Nog {{count}} dagen",
+    "ended": "geëindigd",
+    "gapWarning": "Vandaag valt buiten elke periode",
+    "inGap": "Je zit tussen periodes in",
+    "noActivePeriod": "Geen actieve periode",
+    "noPeriods": "Geen periodes gevonden",
+    "noPeriodsFound": "Geen periodes gevonden",
+    "period": "Periode",
+    "selectPeriod": "Periode kiezen",
+    "title": "Periode kiezen"
+  },
+  "periods": {
+    "addFirst": "+ Eerste periode aanmaken",
+    "addPeriod": "+ Nieuwe periode",
+    "autoGenActive": "Automatisch aanmaken aan",
+    "autoGenInactive": "Automatisch aanmaken uit",
+    "budget": "Budget",
+    "card": {
+      "actions": "Acties voor periode",
+      "auto": "Auto",
+      "budget": "Budget",
+      "confirmDelete": "„{{name}}\" verwijderen?",
+      "spend": "Uitgave",
+      "txns": "Tx"
+    },
+    "createFirstPeriod": "+ Eerste periode aanmaken",
+    "created": "Periode aangemaakt",
+    "days": "{{count}} dagen",
+    "deleteConfirm": "„{{name}}\" verwijderen?",
+    "deleteFailed": "Kan periode niet verwijderen",
+    "deleted": "Periode verwijderd",
+    "empty": {
+      "message": "Maak je eerste budgetperiode aan om uitgaven bij te houden, of zet automatisch aanmaken aan zodat ze vanzelf worden aangemaakt.",
+      "title": "Nog geen periodes"
+    },
+    "emptyDescription": "Maak je eerste budgetperiode aan om uitgaven bij te houden, of zet automatisch aanmaken aan zodat ze vanzelf worden aangemaakt.",
+    "emptyTitle": "Nog geen periodes",
+    "form": {
+      "createButton": "Periode aanmaken",
+      "createTitle": "Periode aanmaken",
+      "days": "Dagen",
+      "duration": "Duur",
+      "durationBased": "Op basis van duur",
+      "editTitle": "Periode bewerken",
+      "endDate": "Einddatum",
+      "manualEndDate": "Handmatige einddatum",
+      "months": "Maanden",
+      "name": "Naam van de periode",
+      "namePlaceholder": "bijv. April 2026",
+      "pastPeriodMessage": "Als je de datums van een afgelopen periode wijzigt, verschuiven transacties tussen periodes.",
+      "pastPeriodWarning": "Afgelopen periode",
+      "pastWarning": "Als je de datums van een afgelopen periode wijzigt, verschuiven transacties tussen periodes.",
+      "periodName": "Naam van de periode",
+      "periodNamePlaceholder": "bijv. April 2026",
+      "periodType": "Type periode",
+      "startDate": "Startdatum",
+      "toast": {
+        "created": "Periode aangemaakt",
+        "error": "Kan periode niet {{action}}",
+        "updated": "Periode bijgewerkt"
+      },
+      "unit": "Eenheid",
+      "units": {
+        "days": "Dagen",
+        "months": "Maanden",
+        "weeks": "Weken"
+      },
+      "weeks": "Weken"
+    },
+    "newPeriod": "+ Nieuwe periode",
+    "periodActions": "Acties voor periode",
+    "saveFailed": "Kan periode niet opslaan",
+    "schedule": {
+      "active": "Automatisch aanmaken aan",
+      "availableVars": "Beschikbare variabelen:",
+      "businessDay": "Werkdag",
+      "businessDayDesc": "De periode begint op de N-de werkdag",
+      "businessDayLabel": "Werkdag",
+      "businessDayLabelDesc": "N-de werkdag van de maand (bijv. 1 = eerste werkdag)",
+      "dayOfMonth": "Dag van de maand",
+      "dayOfMonthDesc": "De periode begint op een specifieke kalenderdag",
+      "dayOfWeek": "Dag van de week",
+      "dayOfWeekDesc": "De periode begint op een specifieke weekdag",
+      "dayOfWeekLabel": "Dag van de week",
+      "disabled": "Automatisch aanmaken uitgeschakeld",
+      "enableDesc": "Stel regels in om budgetperiodes automatisch aan te maken",
+      "enableLabel": "Automatisch aanmaken",
+      "enabled": "Automatisch aanmaken ingeschakeld",
+      "inactive": "Stel regels in om budgetperiodes automatisch aan te maken",
+      "namePattern": "Naampatroon",
+      "namePatternDesc": "Sjabloon voor de namen van automatisch aangemaakte periodes",
+      "periodLength": "Duur van de periode",
+      "periodsAhead": "Periodes vooraf voorbereiden",
+      "periodsAheadDesc": "Aantal toekomstige periodes dat vooraf wordt aangemaakt",
+      "periodsToPrep": "Periodes vooraf voorbereiden",
+      "periodsToPrepDesc": "Aantal toekomstige periodes dat vooraf wordt aangemaakt",
+      "policies": {
+        "friday": "Verplaats naar vrijdag",
+        "keep": "Ongewijzigd laten",
+        "monday": "Verplaats naar maandag"
+      },
+      "preview": "Voorbeeld",
+      "recurrenceMethod": "Herhalingsmethode",
+      "saturdayLabel": "Als de start op zaterdag valt",
+      "saturdayPolicy": "Als de start op zaterdag valt",
+      "saveRules": "Regels opslaan",
+      "scheduleFailed": "Kan de kalender-configuratie niet opslaan",
+      "scheduleSaved": "Kalender bijgewerkt",
+      "startDayOfMonth": "Startdag van de maand",
+      "startDayOfMonthDesc": "Dag van de maand waarop de periode begint (1-31)",
+      "sundayLabel": "Als de start op zondag valt",
+      "sundayPolicy": "Als de start op zondag valt",
+      "title": "Periodes automatisch aanmaken",
+      "toast": {
+        "enabled": "Automatisch aanmaken ingeschakeld",
+        "error": "Kan de kalender-configuratie niet opslaan",
+        "updated": "Kalender bijgewerkt"
+      },
+      "variableDescriptions": {
+        "END": "Einddatum",
+        "MON": "Maand in 3 letters",
+        "MONTH": "Volledige maandnaam",
+        "SEQ": "Volgnr.",
+        "START": "Startdatum",
+        "YY": "Jaar in 2 cijfers",
+        "YYYY": "Jaar in 4 cijfers"
+      },
+      "variables": "Beschikbare variabelen:",
+      "weekdays": {
+        "friday": "Vrijdag",
+        "monday": "Maandag",
+        "saturday": "Zaterdag",
+        "sunday": "Zondag",
+        "thursday": "Donderdag",
+        "tuesday": "Dinsdag",
+        "wednesday": "Woensdag"
+      },
+      "weekendHandling": "Behandeling van het weekend",
+      "keepAsIs": "Ongewijzigd laten",
+      "moveToMonday": "Verplaats naar maandag",
+      "moveToFriday": "Verplaats naar vrijdag"
+    },
+    "spend": "Uitgave",
+    "subtitle": "Beheer je budgetperiodes",
+    "title": "Periodes",
+    "toast": {
+      "deleteError": "Kan periode niet verwijderen",
+      "deleted": "Periode verwijderd"
+    },
+    "txns": "Tx",
+    "updated": "Periode bijgewerkt",
+    "groupCurrent": "Huidig",
+    "groupFuture": "Toekomst",
+    "groupPast": "Verleden",
+    "badgeDaysLeft": "Nog {{count}} dagen",
+    "badgeInDays": "over {{count}} dagen",
+    "badgeDaysAgo": "{{count}} dagen geleden",
+    "emptyTips": {
+      "timeframe": "Een periode bepaalt het tijdvenster van je budget — de meeste mensen kiezen voor maandelijkse periodes.",
+      "autoGen": "Zet automatisch aanmaken aan zodat er een nieuwe periode wordt aangemaakt als de huidige eindigt.",
+      "compare": "Met meerdere periodes kun je uitgaven over verschillende tijdvensters vergelijken."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Maak een periode aan",
+        "description": "Kies een start- en einddatum om je eerste budgetvenster aan te maken."
+      },
+      "configure": {
+        "title": "Zet automatisch aanmaken aan (optioneel)",
+        "description": "Zet automatisch aanmaken aan zodat je periodes niet elke maand handmatig hoeft aan te maken."
+      },
+      "select": {
+        "title": "Kies de periode",
+        "description": "Wissel met de periodekiezer in de zijbalk tussen periodes in de hele app."
+      }
+    }
+  },
+  "placeholder": {
+    "comingSoon": "Deze pagina is binnenkort beschikbaar"
+  },
+  "settings": {
+    "appearance": {
+      "description": "Pas het uiterlijk van PiggyPulse aan",
+      "prefsFailed": "Kan voorkeuren niet bijwerken",
+      "schemeFailed": "Kan kleurenschema niet bijwerken",
+      "themeFailed": "Kan thema niet bijwerken",
+      "title": "Uiterlijk",
+      "colorSchemeLabel": "Kleurenschema",
+      "themeLabel": "Thema",
+      "languageLabel": "Taal",
+      "dateFormatLabel": "Datumnotatie",
+      "compactMode": "Compacte modus",
+      "compactModeDesc": "Compactere weergave voor lijsten met veel items (categorieën, transacties)"
+    },
+    "avatars": {
+      "books": "Boeken",
+      "cool": "Cool",
+      "headphones": "Koptelefoon",
+      "pig": "Varken",
+      "scarf": "Sjaal",
+      "sleepy": "Slaperig",
+      "topHat": "Hoge hoed",
+      "wink": "Knipoog"
+    },
+    "colorScheme": {
+      "dark": "Donker",
+      "light": "Licht",
+      "system": "Systeem"
+    },
+    "danger": {
+      "deleteAccount": "Account verwijderen",
+      "deleteAccountDesc": "Verwijder je account en alle gegevens definitief",
+      "deleteAccountWarning": "Deze actie kan niet ongedaan worden gemaakt.",
+      "deleteConfirmDesc": "Hiermee worden je account en alle bijbehorende gegevens definitief verwijderd.",
+      "deleteConfirmTitle": "Weet je het zeker?",
+      "deleteFailed": "Kan account niet verwijderen",
+      "deleteMyAccount": "Mijn account verwijderen",
+      "deleteSuccess": "Account verwijderd",
+      "description": "Onomkeerbare acties",
+      "passwordLabel": "Vul je wachtwoord in ter bevestiging",
+      "permanentlyDelete": "Definitief verwijderen",
+      "title": "Gevarenzone"
+    },
+    "dashboard": {
+      "accountCardsFailed": "Kan rekeningkaarten niet bijwerken",
+      "description": "Pas de widgets van je dashboard aan",
+      "layoutFailed": "Kan dashboardindeling niet bijwerken",
+      "resetFailed": "Kan dashboard niet resetten",
+      "resetSuccess": "Dashboard teruggezet naar standaard",
+      "title": "Dashboard",
+      "defaultWidgets": "Standaard-widgets",
+      "defaultWidgetsHint": "Deze widgets verschijnen als je het dashboard voor het eerst opent. Je kunt het altijd vanuit het dashboard zelf aanpassen.",
+      "accountCards": "Rekeningkaarten",
+      "accountCardsHint": "Kies welke rekeningen als losse kaarten op je dashboard verschijnen.",
+      "allAccountsShown": "Op dit moment worden alle actieve rekeningen getoond.",
+      "resetLayout": "Dashboardindeling resetten",
+      "resetLayoutDesc": "Zet de standaardposities en -selectie van widgets terug",
+      "accountTypeChecking": "Betaalrekening",
+      "accountTypeSavings": "Spaarrekening",
+      "accountTypeCreditCard": "Creditcard"
+    },
+    "data": {
+      "description": "Importeer en exporteer je gegevens",
+      "export": "Exporteren",
+      "exportAll": "Alle gegevens exporteren",
+      "exportAllDesc": "Download al je gegevens als JSON",
+      "exportAllFailed": "Kan gegevens niet exporteren",
+      "exportFailed": "Kan gegevens niet exporteren",
+      "exportTransactions": "Transacties exporteren",
+      "exportTransactionsDesc": "Download je transacties als CSV",
+      "import": "Importeren",
+      "importData": "Gegevens importeren",
+      "importDataDesc": "Herstel vanuit een JSON-back-up",
+      "importFailed": "Kan gegevens niet importeren",
+      "importInvalidJson": "Ongeldig JSON-bestand",
+      "importSuccess": "Gegevens geïmporteerd",
+      "title": "Gegevens"
+    },
+    "profile": {
+      "description": "Je persoonlijke gegevens",
+      "saveFailed": "Kan profiel niet opslaan",
+      "saved": "Profiel opgeslagen",
+      "title": "Profiel",
+      "avatarLabel": "Avatar",
+      "avatarHint": "Kies een avatar voor je profiel. Er komen binnenkort meer illustraties bij.",
+      "displayName": "Weergavenaam",
+      "email": "E-mail",
+      "emailHint": "Voor het wijzigen van je e-mail is verificatie nodig",
+      "currency": "Valuta",
+      "currencyHint": "Ingesteld tijdens de eerste configuratie. Het wijzigen van de valuta beïnvloedt alle getoonde bedragen.",
+      "userFallback": "Gebruiker",
+      "currencyEur": "EUR — Euro",
+      "currencyUsd": "USD — Amerikaanse dollar",
+      "currencyGbp": "GBP — Britse pond",
+      "currencyBrl": "BRL — Braziliaanse real"
+    },
+    "security": {
+      "changePassword": "Wachtwoord wijzigen",
+      "confirmNewPassword": "Nieuw wachtwoord bevestigen",
+      "currentPassword": "Huidig wachtwoord",
+      "description": "Wachtwoord en tweestapsverificatie",
+      "disable2fa": "2FA uitschakelen",
+      "disable2faDesc": "Vul de 6-cijferige code uit de authenticator-app in om 2FA uit te schakelen",
+      "disable2faFailed": "Kan 2FA niet uitschakelen",
+      "disable2faTitle": "Tweestapsverificatie uitschakelen",
+      "enable2fa": "2FA inschakelen",
+      "newPassword": "Nieuw wachtwoord",
+      "password": "Wachtwoord",
+      "passwordChanged": "Wachtwoord gewijzigd",
+      "passwordDesc": "Wijzig het wachtwoord van je account",
+      "passwordFailed": "Kan wachtwoord niet wijzigen",
+      "passwordMismatch": "Wachtwoorden komen niet overeen",
+      "reconfigure": "Opnieuw instellen",
+      "reconfigureHint": "Stel een nieuw authenticatie-apparaat in",
+      "title": "Beveiliging",
+      "twoFactor": "Tweestapsverificatie",
+      "twoFactorDisabled": "2FA is uitgeschakeld",
+      "twoFactorDisabledSuccess": "2FA uitgeschakeld",
+      "twoFactorEnabled": "2FA is ingeschakeld"
+    },
+    "subtitle": "Beheer je account en voorkeuren",
+    "tabs": {
+      "appearance": "Uiterlijk",
+      "dangerZone": "Gevarenzone",
+      "dashboard": "Dashboard",
+      "data": "Gegevens",
+      "profile": "Profiel",
+      "security": "Beveiliging"
+    },
+    "title": "Instellingen",
+    "toast": {
+      "colorSchemeError": "Kan kleurenschema niet bijwerken",
+      "dashboardError": "Kan dashboardindeling niet bijwerken",
+      "preferencesError": "Kan voorkeuren niet bijwerken",
+      "profileError": "Kan profiel niet opslaan",
+      "profileSaved": "Profiel opgeslagen",
+      "themeError": "Kan thema niet bijwerken"
+    },
+    "twoFactor": {
+      "cantScan": "Scannen lukt niet? Vul deze code handmatig in:",
+      "codesNotGenerated": "De herstelcodes konden niet worden gegenereerd. Je kunt ze opnieuw genereren bij de instellingen.",
+      "copied": "Gekopieerd",
+      "copy": "Kopiëren",
+      "copyAll": "Alles kopiëren",
+      "download": "Downloaden",
+      "enterCode": "Vul de 6-cijferige code uit de authenticator-app in om de instelling te bevestigen.",
+      "next": "Volgende",
+      "preparing": "2FA-instelling wordt voorbereid…",
+      "recoveryTitle": "Bewaar je herstelcodes",
+      "saveRecoveryCodes": "Bewaar deze herstelcodes op een veilige plek. Ze dienen als back-up als je geen toegang meer hebt tot je authenticator-app.",
+      "savedCodes": "Ik heb mijn herstelcodes bewaard",
+      "scanQR": "Scan deze QR-code met je authenticator-app (Google Authenticator, Authy, Microsoft Authenticator, enz.)",
+      "setupTitle": "Tweestapsverificatie instellen",
+      "verifyEnable": "Verifiëren en 2FA inschakelen"
+    },
+    "twoFactorSetup": {
+      "cantScan": "Scannen lukt niet? Vul deze code handmatig in:",
+      "codesFailedFallback": "De herstelcodes konden niet worden gegenereerd. Je kunt ze opnieuw genereren bij de instellingen.",
+      "codesTitle": "Bewaar je herstelcodes",
+      "copied": "Gekopieerd",
+      "copy": "Kopiëren",
+      "copyAll": "Alles kopiëren",
+      "download": "Downloaden",
+      "enabled": "2FA ingeschakeld",
+      "enterCode": "Vul de 6-cijferige code uit de authenticator-app in om de instelling te bevestigen.",
+      "invalidCode": "Ongeldige code",
+      "loading": "2FA-instelling wordt voorbereid…",
+      "saveCodesAlert": "Bewaar deze herstelcodes op een veilige plek.",
+      "savedCodes": "Ik heb mijn herstelcodes bewaard",
+      "scanQr": "Scan deze QR-code met je authenticator-app",
+      "setupFailed": "Kan 2FA niet instellen",
+      "setupTitle": "Tweestapsverificatie instellen",
+      "verifyAndEnable": "Verifiëren en 2FA inschakelen"
+    },
+    "widgets": {
+      "budgetStability": {
+        "description": "Historische consistentie",
+        "name": "Budgetstabiliteit"
+      },
+      "cashFlow": {
+        "description": "Inkomsten vs. uitgaven",
+        "name": "Cashflow"
+      },
+      "currentPeriod": {
+        "description": "Voortgang van het budget in de actieve periode",
+        "name": "Huidige periode"
+      },
+      "fixedCategories": {
+        "description": "Overzicht van voorspelbare uitgaven",
+        "name": "Vaste categorieën"
+      },
+      "netPosition": {
+        "description": "Totaal over alle rekeningen",
+        "name": "Nettopositie"
+      },
+      "recentTransactions": {
+        "description": "Meest recente activiteit",
+        "name": "Recente transacties"
+      },
+      "spendingTrend": {
+        "description": "Uitgaven in de tijd",
+        "name": "Uitgaventrend"
+      },
+      "subscriptions": {
+        "description": "Kalender van terugkerende afschrijvingen",
+        "name": "Abonnementen"
+      },
+      "topVendors": {
+        "description": "Waar je geld naartoe gaat",
+        "name": "Belangrijkste handelaars"
+      },
+      "variableCategories": {
+        "description": "Variabele uitgaven in de tijd",
+        "name": "Variabele categorieën"
+      },
+      "gettingStarted": {
+        "name": "Aan de slag",
+        "description": "Instelchecklist voor nieuwe gebruikers"
+      }
+    }
+  },
+  "subscriptions": {
+    "activeCount": "{{count}} actief",
+    "activeSince": "Actief sinds",
+    "activeSubscriptions": "Actieve abonnementen",
+    "addFirst": "+ Voeg je eerste abonnement toe",
+    "addFirstSubscription": "+ Voeg je eerste abonnement toe",
+    "addSubscription": "+ Abonnement toevoegen",
+    "allTime": "Allertijden",
+    "amount": "Bedrag",
+    "autoDetected": "Automatisch herkend",
+    "billingDay": "Afschrijvingsdag",
+    "billingHistory": "Afschrijvingsgeschiedenis",
+    "breadcrumb": "← Abonnementen",
+    "cancel": {
+      "amount": "Bedrag:",
+      "cancellationDate": "Opzegdatum",
+      "cancellationDateDesc": "Wanneer je hebt opgezegd (of van plan bent op te zeggen) bij de aanbieder",
+      "confirmCancel": "Abonnement opzeggen",
+      "description": "Markeer „{{name}}\" in PiggyPulse als opgezegd.",
+      "failed": "Kan abonnement niet opzeggen",
+      "keepActive": "Actief houden",
+      "subscription": "Abonnement:",
+      "success": "Abonnement opgezegd",
+      "title": "Abonnement opzeggen",
+      "warning": "Dit markeert het abonnement alleen in PiggyPulse als opgezegd. Je moet het ook direct bij de aanbieder opzeggen."
+    },
+    "cancelModal": {
+      "amount": "Bedrag:",
+      "dateDescription": "Wanneer je hebt opgezegd (of van plan bent op te zeggen) bij de aanbieder",
+      "dateLabel": "Opzegdatum",
+      "description": "Markeer „{{name}}\" in PiggyPulse als opgezegd.",
+      "disclaimer": "Dit markeert het abonnement alleen in PiggyPulse als opgezegd. Je moet het ook direct bij de aanbieder opzeggen. Komt er na opzegging toch nog een afschrijving binnen, dan markeert PiggyPulse die voor jou.",
+      "keepActive": "Actief houden",
+      "submit": "Abonnement opzeggen",
+      "subscription": "Abonnement:",
+      "title": "Abonnement opzeggen"
+    },
+    "cancelledCount": "Opgezegd ({{count}})",
+    "cancelledToggle": "Opgezegd",
+    "cycleSuffix": {
+      "monthly": "/mnd",
+      "quarterly": "/kw",
+      "yearly": "/jr"
+    },
+    "deleteFailed": "Kan abonnement niet verwijderen",
+    "deleted": "Abonnement verwijderd",
+    "detail": {
+      "activeSince": "Actief sinds",
+      "allTime": "Allertijden",
+      "amount": "Bedrag",
+      "autoDetected": "Automatisch herkend",
+      "backLink": "← Abonnementen",
+      "billingDay": "Afschrijvingsdag",
+      "billingHistory": "Afschrijvingsgeschiedenis",
+      "cancel": "Opzeggen",
+      "month": "maand",
+      "nextCharge": "Volgende afschrijving",
+      "ofEach": "van elke",
+      "postCancellation": {
+        "count_one": "{{count}} afschrijving na opzegging gedetecteerd.",
+        "count_other": "{{count}} afschrijvingen na opzegging gedetecteerd.",
+        "review": "Bekijk hieronder de afschrijvingsgeschiedenis.",
+        "title": "Onverwachte afschrijving na opzegging"
+      },
+      "postCancellationLabel": "Na opzegging",
+      "quarter": "kwartaal",
+      "status": "Status",
+      "thisYear": "Dit jaar",
+      "year": "jaar"
+    },
+    "empty": {
+      "message": "Maak een categorie met gedrag „Abonnement\" om terugkerende afschrijvingen te volgen. Je ziet daar afschrijvingsdatums, kosten en betaalgeschiedenis.",
+      "title": "Nog geen abonnementen"
+    },
+    "emptyDescription": "Maak een categorie met gedrag „Abonnement\" om terugkerende afschrijvingen te volgen.",
+    "emptyTitle": "Nog geen abonnementen",
+    "loadError": "Er ging iets mis bij het laden van je abonnementen.",
+    "monthlyCost": "Maandelijkse kosten",
+    "monthlyCount": "{{count}} actief",
+    "nextCharge": "Volgende afschrijving",
+    "nextChargeDate": "Volgende afschrijving",
+    "notFound": "Abonnement niet gevonden.",
+    "paused": "Gepauzeerd",
+    "postCancellation": "Na opzegging",
+    "row": {
+      "cancelled": "Opgezegd",
+      "next": "Volgende:"
+    },
+    "stats": {
+      "active": "Actief",
+      "monthlyCost": "Maandelijkse kosten",
+      "nextCharge": "Volgende afschrijving",
+      "yearlyTotal": "Jaartotaal"
+    },
+    "status": "Status",
+    "subtitle": "Volg je terugkerende afschrijvingen",
+    "thisYear": "Dit jaar",
+    "title": "Abonnementen",
+    "unexpectedCharge": "Onverwachte afschrijving na opzegging",
+    "unexpectedChargeDesc": "{{count}} afschrijvingen na opzegging gedetecteerd.",
+    "upcomingCharges": "Aankomende afschrijvingen",
+    "yearlyTotal": "Jaartotaal",
+    "form": {
+      "editTitle": "Abonnement bewerken",
+      "createTitle": "Abonnement toevoegen",
+      "name": "Naam van het abonnement",
+      "namePlaceholder": "bijv. Netflix",
+      "category": "Categorie",
+      "categoryDesc": "Koppel aan een categorie met abonnementsgedrag",
+      "vendor": "Handelaar",
+      "billing": "Afschrijving",
+      "amount": "Bedrag",
+      "cycle": "Cyclus",
+      "billingDay": "Afschrijvingsdag",
+      "billingDayDesc": "Dag van de maand (1-31)",
+      "nextCharge": "Verwachte volgende afschrijving",
+      "createButton": "Abonnement aanmaken",
+      "updated": "Abonnement bijgewerkt",
+      "created": "Abonnement aangemaakt",
+      "error": "Kan abonnement niet {{action}}",
+      "cycles": {
+        "monthly": "Maandelijks",
+        "quarterly": "Per kwartaal",
+        "yearly": "Per jaar"
+      },
+      "categoryFixed": "De categorie is vooraf geselecteerd en kan niet worden gewijzigd"
+    },
+    "emptyTips": {
+      "recurring": "Abonnementen zijn iets anders dan gewone transacties — ze staan voor terugkerende verplichtingen.",
+      "upcoming": "Na het toevoegen verschijnen de volgende afschrijvingen op deze pagina, zodat je ze kunt inplannen.",
+      "cancel": "Je kunt abonnementen pauzeren of opzeggen om hun levenscyclus te volgen."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Voeg een abonnement toe",
+        "description": "Geef de naam van de dienst, het afgeschreven bedrag en de frequentie op."
+      },
+      "schedule": {
+        "title": "Stel het afschrijvingsritme in",
+        "description": "Kies maandelijkse, kwartaal- of jaarafschrijving zodat volgende afschrijvingen worden berekend."
+      },
+      "monitor": {
+        "title": "Houd komende kosten in de gaten",
+        "description": "Het onderdeel „Aankomende afschrijvingen\" laat zien wat wanneer aan de beurt is."
+      }
+    },
+    "manage": "Categorie beheren"
+  },
+  "targets": {
+    "actual": "Werkelijk",
+    "category": "Categorie",
+    "empty": {
+      "message": "Stel budgetdoelen in bij het aanmaken of bewerken van categorieën.",
+      "title": "Geen doelen ingesteld"
+    },
+    "emptyDescription": "Stel budgetdoelen in bij het aanmaken of bewerken van categorieën.",
+    "emptyTitle": "Geen doelen ingesteld",
+    "excludeFailed": "Kan categorie niet uitsluiten",
+    "excludeFromTargets": "Uitsluiten van doelen",
+    "excluded": "{{name}} uitgesloten van doelen",
+    "allowanceBudget": "Zakgeld-enveloppen",
+    "expenseBudget": "Uitgavenbudget",
+    "incomeTarget": "Inkomstendoel",
+    "loadError": "Er ging iets mis bij het laden van je doelen.",
+    "period": "Periode",
+    "previous": "Vorige:",
+    "progress": "Voortgang",
+    "stats": {
+      "expenseBudget": "Uitgavenbudget",
+      "incomeTarget": "Inkomstendoel",
+      "period": "Periode",
+      "withTargets": "Met doel"
+    },
+    "subtitle": "Budgetdoelen voor deze periode. Pas ze aan onder Categorieën.",
+    "tableHeader": {
+      "actual": "Werkelijk",
+      "category": "Categorie",
+      "progress": "Voortgang",
+      "target": "Doel"
+    },
+    "target": "Doel",
+    "title": "Doelen",
+    "toast": {
+      "excludeError": "Kan categorie niet uitsluiten",
+      "excluded": "{{name}} uitgesloten van doelen"
+    },
+    "withTargets": "Met doel"
+  },
+  "transactions": {
+    "addFirst": "+ Voeg je eerste transactie toe",
+    "addFirstTransaction": "+ Voeg je eerste transactie toe",
+    "addTransaction": "+ Transactie toevoegen",
+    "confirmDelete": "Deze transactie verwijderen?",
+    "created": "Transactie toegevoegd",
+    "dateGroupCount": "{{count}} transacties",
+    "deleteConfirm": "Deze transactie verwijderen?",
+    "deleteFailed": "Kan transactie niet verwijderen",
+    "deleted": "Transactie verwijderd",
+    "directionAll": "Alles",
+    "directionIn": "In",
+    "directionOut": "Uit",
+    "directionTransfer": "Overboeking",
+    "empty": {
+      "message": "Voeg je eerste transactie toe om je uitgaven en inkomsten te volgen.",
+      "noMatch": "Geen transactie voldoet aan de filters. Pas je zoekopdracht of filters aan.",
+      "title": "Nog geen transacties"
+    },
+    "emptyDescription": "Voeg je eerste transactie toe om je uitgaven en inkomsten te volgen.",
+    "emptyFilterDescription": "Geen transactie voldoet aan de filters. Pas je zoekopdracht of filters aan.",
+    "emptyTitle": "Nog geen transacties",
+    "filters": {
+      "account": "Rekening",
+      "all": "Alles",
+      "category": "Categorie",
+      "in": "In",
+      "out": "Uit",
+      "transfer": "Overboeking",
+      "vendor": "Handelaar"
+    },
+    "form": {
+      "account": "Rekening",
+      "addTitle": "Transactie toevoegen",
+      "addTransaction": "Transactie toevoegen",
+      "addTransactionButton": "Transactie toevoegen",
+      "addTransfer": "Overboeking toevoegen",
+      "addTransferButton": "Overboeking toevoegen",
+      "addTransferTitle": "Overboeking toevoegen",
+      "amount": "Bedrag",
+      "category": "Categorie",
+      "date": "Datum",
+      "descPlaceholder": "bijv. Boodschappen Albert Heijn",
+      "descPlaceholderTransfer": "bijv. Zakgeld-overboeking",
+      "description": "Omschrijving",
+      "descriptionPlaceholder": "bijv. Boodschappen Albert Heijn",
+      "descriptionTransferPlaceholder": "bijv. Zakgeld-overboeking",
+      "editTitle": "Transactie bewerken",
+      "fromAccount": "Van rekening",
+      "isTransfer": "Overboeking tussen rekeningen",
+      "toAccount": "Naar rekening",
+      "toast": {
+        "created": "Transactie toegevoegd",
+        "error": "Kan transactie niet {{action}}",
+        "updated": "Transactie bijgewerkt"
+      },
+      "transferHint": "wordt afgeschreven van de bron en bijgeschreven op de bestemming",
+      "missingFields": "Vul alle verplichte velden in.",
+      "missingToAccount": "Kies een doelrekening.",
+      "createTransferFailed": "Kan overboekingscategorie niet aanmaken.",
+      "missingTransferCategory": "Overboekingscategorie niet gevonden. Zorg dat er een categorie van het type „overboeking\" bestaat.",
+      "transferNote": "Categorie en handelaar gelden niet voor overboekingen",
+      "transferOffDesc": "Schakel in om geld tussen je rekeningen te verplaatsen",
+      "transferOnDesc": "Categorie en handelaar gelden niet voor overboekingen",
+      "transferSummaryFull": "wordt afgeschreven van de bron en bijgeschreven op de bestemming",
+      "transferToggle": "Schakel in om geld tussen je rekeningen te verplaatsen",
+      "vendor": "Handelaar (optioneel)",
+      "vendorOptional": "Handelaar (optioneel)"
+    },
+    "inflows": "Inkomsten",
+    "loadError": "Er ging iets mis bij het laden van je transacties.",
+    "net": "Netto",
+    "outflows": "Uitgaven",
+    "quickAdd": {
+      "account": "Rekening",
+      "accountPlaceholder": "Rekening",
+      "add": "Toevoegen",
+      "amount": "Bedrag",
+      "amountPlaceholder": "Bedrag",
+      "category": "Categorie",
+      "categoryPlaceholder": "Categorie",
+      "description": "Omschrijving",
+      "descriptionPlaceholder": "Omschrijving",
+      "failed": "Kan transactie niet toevoegen",
+      "hint": "Druk op Enter om toe te voegen en door te gaan. Categorie en rekening blijven bewaard voor opeenvolgende invoer.",
+      "success": "Transactie toegevoegd",
+      "title": "Snel toevoegen",
+      "vendor": "Handelaar",
+      "vendorPlaceholder": "Handelaar"
+    },
+    "saveFailed": "Kan transactie niet opslaan",
+    "searchPlaceholder": "Zoek op omschrijving of bedrag…",
+    "stats": {
+      "count": "transacties",
+      "inflows": "Inkomsten",
+      "net": "Netto",
+      "outflows": "Uitgaven"
+    },
+    "subtitle": "{{count}} transacties",
+    "title": "Transacties",
+    "toast": {
+      "deleteError": "Kan transactie niet verwijderen",
+      "deleted": "Transactie verwijderd"
+    },
+    "transactionsCount": "transacties",
+    "transferAdded": "Overboeking toegevoegd",
+    "updated": "Transactie bijgewerkt",
+    "emptyTips": {
+      "quickAdd": "Gebruik de balk „Snel toevoegen\" hierboven om transacties zonder formulier vast te leggen.",
+      "categorize": "Elke transactie is gekoppeld aan een categorie, wat bepaalt hoe ze in je budget verschijnt.",
+      "filters": "Gebruik de filters voor richting en categorie om specifieke transacties terug te vinden."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Voeg een transactie toe",
+        "description": "Gebruik de knop hierboven of de balk „Snel toevoegen\" om je eerste transactie vast te leggen."
+      },
+      "categorize": {
+        "title": "Wijs een categorie toe",
+        "description": "Kies een inkomsten- of uitgavencategorie zodat de transactie meetelt in je budget."
+      },
+      "review": {
+        "title": "Bekijk in het dashboard",
+        "description": "Je transacties verschijnen in widgets zoals Cashflow en Recente transacties."
+      }
+    }
+  },
+  "vendors": {
+    "actions": {
+      "archive": "Archiveren",
+      "delete": "Verwijderen",
+      "merge": "Samenvoegen",
+      "unarchive": "Uit archief halen"
+    },
+    "active": "Actief",
+    "addFirst": "+ Voeg je eerste handelaar toe",
+    "addFirstVendor": "+ Voeg je eerste handelaar toe",
+    "addVendor": "+ Handelaar toevoegen",
+    "archiveFailed": "Kan handelaar niet archiveren",
+    "archived": "Handelaar gearchiveerd",
+    "archivedNamed": "{{name}} gearchiveerd",
+    "archivedToggle": "Gearchiveerde handelaars",
+    "archivedVendors": "Gearchiveerde handelaars ({{count}})",
+    "avgPerTxn": "Gem. / tx",
+    "avgPerVendor": "Gem. / handelaar",
+    "breadcrumb": "← Handelaars",
+    "created": "Handelaar aangemaakt",
+    "deleteFailed": "Verwijderen lukt niet — archiveer of voeg samen.",
+    "deleteFailedShort": "Kan handelaar niet verwijderen",
+    "deleted": "Handelaar verwijderd",
+    "detail": {
+      "avgPerTxn": "Gem. / tx",
+      "backLink": "← Handelaars",
+      "recentTransactions": "Recente transacties — {{count}} getoond",
+      "spendingTrend": "Uitgaven bij deze handelaar — Laatste {{count}} periodes",
+      "spent": "Uitgegeven",
+      "topCategories": "Top-categorieën bij deze handelaar",
+      "transactions": "Transacties"
+    },
+    "detailLoadError": "Er ging iets mis bij het laden van deze handelaar.",
+    "empty": {
+      "message": "Met handelaars zie je waar je geld naartoe gaat. Voeg je eerste handelaar toe om uitgaven te categoriseren.",
+      "title": "Nog geen handelaars"
+    },
+    "emptyDescription": "Met handelaars zie je waar je geld naartoe gaat. Voeg je eerste handelaar toe om uitgaven te categoriseren.",
+    "emptyTitle": "Nog geen handelaars",
+    "form": {
+      "createButton": "Handelaar aanmaken",
+      "createTitle": "Handelaar toevoegen",
+      "description": "Omschrijving",
+      "descriptionPlaceholder": "Optionele omschrijving",
+      "editTitle": "Handelaar bewerken",
+      "name": "Naam van de handelaar",
+      "namePlaceholder": "bijv. Albert Heijn",
+      "toast": {
+        "created": "Handelaar aangemaakt",
+        "error": "Kan handelaar niet {{action}}",
+        "updated": "Handelaar bijgewerkt"
+      },
+      "vendorName": "Naam van de handelaar",
+      "vendorNamePlaceholder": "bijv. Albert Heijn"
+    },
+    "loadError": "Er ging iets mis bij het laden van je handelaars.",
+    "merge": {
+      "description": "Alle transacties van „{{source}}\" worden naar de doelhandelaar verplaatst. De bronhandelaar wordt verwijderd.",
+      "failed": "Kan handelaars niet samenvoegen",
+      "mergeAndDelete": "Samenvoegen en bron verwijderen",
+      "mergeInto": "Samenvoegen met",
+      "selectTarget": "Kies de doelhandelaar…",
+      "source": "Bron:",
+      "submit": "Samenvoegen en bron verwijderen",
+      "success": "Handelaar samengevoegd",
+      "title": "Handelaar samenvoegen",
+      "toast": {
+        "error": "Kan handelaars niet samenvoegen",
+        "success": "„{{source}}\" samengevoegd met doelhandelaar"
+      }
+    },
+    "noMatch": "Geen handelaar voldoet aan je zoekopdracht",
+    "notFound": "Handelaar niet gevonden.",
+    "recentTransactions": "Recente transacties — {{count}} getoond",
+    "saveFailed": "Kan handelaar niet opslaan",
+    "searchPlaceholder": "Handelaars zoeken…",
+    "spendingTrend": "Uitgaven bij deze handelaar — Laatste {{count}} periodes",
+    "spent": "Uitgegeven",
+    "stats": {
+      "active": "Actief",
+      "avgPerVendor": "Gem. / handelaar",
+      "totalSpent": "Totaal uitgegeven"
+    },
+    "subtitle": "Waar je geld naartoe gaat",
+    "title": "Handelaars",
+    "toast": {
+      "archiveError": "Kan handelaar niet archiveren",
+      "archived": "Handelaar gearchiveerd",
+      "deleteError": "Verwijderen lukt niet — archiveer of voeg samen.",
+      "deleted": "Handelaar verwijderd",
+      "unarchiveError": "Kan handelaar niet uit archief halen",
+      "unarchived": "Handelaar uit archief gehaald"
+    },
+    "topCategories": "Top-categorieën bij deze handelaar",
+    "totalSpent": "Totaal uitgegeven",
+    "transactions": "Transacties",
+    "unarchiveFailed": "Kan handelaar niet uit archief halen",
+    "unarchived": "Handelaar uit archief gehaald",
+    "unarchivedNamed": "{{name}} uit archief gehaald",
+    "updated": "Handelaar bijgewerkt",
+    "emptyTips": {
+      "organize": "Met handelaars zie je in de tijd waar je het meeste uitgeeft.",
+      "merge": "Heb je dubbele handelaars? Dan kun je ze samenvoegen tot één.",
+      "archive": "Archiveer handelaars die je niet meer gebruikt om je lijst overzichtelijk te houden."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Maak een handelaar aan",
+        "description": "Voeg de naam toe van een winkel, dienst of ontvanger waar je regelmatig zaken mee doet."
+      },
+      "link": {
+        "title": "Koppel aan transacties",
+        "description": "Kies bij het toevoegen van een transactie een handelaar om de uitgave te koppelen."
+      },
+      "track": {
+        "title": "Volg je uitgavenpatronen",
+        "description": "Bekijk op de detailpagina van de handelaar hoeveel je in de tijd per handelaar uitgeeft."
+      }
+    }
+  },
+  "nav": {
+    "overview": "Overzicht",
+    "planning": "Planning",
+    "tracking": "Volgen",
+    "dashboard": "Dashboard",
+    "transactions": "Transacties",
+    "periods": "Periodes",
+    "categories": "Categorieën",
+    "targets": "Doelen",
+    "accounts": "Rekeningen",
+    "subscriptions": "Abonnementen",
+    "vendors": "Handelaars",
+    "settings": "Instellingen"
+  },
+  "hints": {
+    "dashboard": "Je dashboard toont een momentopname van je financiën voor de gekozen periode. Gebruik de knop Aanpassen om widgets te kiezen en te herordenen.",
+    "transactions": "Transacties zijn de kern van je budget. Elke transactie is gekoppeld aan een categorie en een rekening, zodat je per periode ziet waar je geld naartoe gaat.",
+    "vendors": "Handelaars staan voor de plekken waar je geld uitgeeft. Door transacties aan handelaars te koppelen, zie je uitgavenpatronen in de tijd.",
+    "subscriptions": "Abonnementen volgen terugkerende afschrijvingen — streamingdiensten, lidmaatschappen, rekeningen. Door ze hier toe te voegen, plan je toekomstige kosten beter in.",
+    "periods": "Periodes zijn tijdvensters voor je budget — meestal maandelijks. Alle transacties en doelen zijn gekoppeld aan de actieve periode.",
+    "accounts": "Rekeningen staan voor waar je geld zich bevindt — betaalrekening, spaarrekening, creditcards of wallets. De saldo's worden bijgewerkt zodra je transacties toevoegt."
+  },
+  "gettingStarted": {
+    "title": "Aan de slag",
+    "subtitle": "Doorloop deze stappen om je budget in te richten",
+    "steps": {
+      "createAccount": {
+        "title": "Maak een rekening aan",
+        "description": "Voeg een betaal-, spaar- of creditcardrekening toe om saldo's te volgen"
+      },
+      "createPeriod": {
+        "title": "Stel een budgetperiode in",
+        "description": "Maak een tijdvenster (bijv. maandelijks) om transacties en doelen in te kaderen"
+      },
+      "setCategories": {
+        "title": "Stel categorieën in",
+        "description": "Maak inkomsten- en uitgavencategorieën om transacties te ordenen"
+      },
+      "addTransaction": {
+        "title": "Voeg je eerste transactie toe",
+        "description": "Leg een transactie vast om je uitgaven te gaan volgen"
+      }
+    }
+  },
+  "states": {
+    "contract": {
+      "emptyTitle": "Nog geen {{items}}.",
+      "items": {
+        "data": "items"
+      }
+    },
+    "empty": {
+      "filter": {
+        "removeTag": "Filter {{tag}} verwijderen"
+      },
+      "search": {
+        "noResults": "Geen resultaten gevonden voor"
+      },
+      "tips": {
+        "title": "Snelle tips"
+      }
+    },
+    "locked": {
+      "message": {
+        "periodRequired": "Voor deze inhoud is een budgetperiode nodig."
+      },
+      "status": {
+        "notConfigured": "Niet ingesteld"
+      }
+    },
+    "error": {
+      "403": {
+        "title": "Toegang geweigerd",
+        "message": "Je hebt geen toegang tot deze bron. Denk je dat dit een fout is? Neem contact op met je beheerder."
+      },
+      "404": {
+        "title": "Pagina niet gevonden",
+        "message": "De pagina die je zoekt bestaat niet of is verplaatst. We brengen je weer op de juiste plek."
+      },
+      "500": {
+        "title": "Er ging iets mis",
+        "message": "We hebben technische problemen. Ons team is op de hoogte en werkt aan een oplossing. Probeer het later opnieuw."
+      },
+      "503": {
+        "title": "Dienst niet beschikbaar",
+        "message": "De dienst is tijdelijk niet beschikbaar. Probeer het over enkele minuten opnieuw."
+      },
+      "retry": "Opnieuw proberen",
+      "loadFailed": {
+        "message": "We konden je gegevens niet laden. Dit kan een tijdelijk probleem met onze servers zijn."
+      },
+      "generic": {
+        "title": "Er ging iets mis",
+        "message": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
+      },
+      "details": {
+        "title": "Foutdetails",
+        "code": "Foutcode",
+        "requestId": "Verzoek-ID",
+        "timestamp": "Tijdstempel"
+      },
+      "actions": {
+        "refresh": "Pagina verversen",
+        "goHome": "Naar dashboard",
+        "goBack": "Terug",
+        "requestAccess": "Toegang aanvragen"
+      }
+    }
+  }
+}
