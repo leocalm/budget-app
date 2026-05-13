@@ -240,7 +240,12 @@ export function VendorsV2Page() {
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
                   {t('vendors.active')}
                 </Text>
-                <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+                <Text
+                  data-testid="vendors-stat-total"
+                  fz="md"
+                  fw={600}
+                  ff="var(--mantine-font-family-monospace)"
+                >
                   {stats.totalVendors}
                 </Text>
               </div>
@@ -248,7 +253,12 @@ export function VendorsV2Page() {
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
                   {t('vendors.totalSpent')}
                 </Text>
-                <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+                <Text
+                  data-testid="vendors-stat-spent"
+                  fz="md"
+                  fw={600}
+                  ff="var(--mantine-font-family-monospace)"
+                >
                   <CurrencyValue cents={stats.totalSpendThisPeriod} />
                 </Text>
               </div>
@@ -256,7 +266,12 @@ export function VendorsV2Page() {
                 <Text fz="xs" c="dimmed" tt="uppercase" fw={600}>
                   {t('vendors.avgPerVendor')}
                 </Text>
-                <Text fz="md" fw={600} ff="var(--mantine-font-family-monospace)">
+                <Text
+                  data-testid="vendors-stat-avg"
+                  fz="md"
+                  fw={600}
+                  ff="var(--mantine-font-family-monospace)"
+                >
                   <CurrencyValue cents={stats.avgSpendPerVendor} />
                 </Text>
               </div>
