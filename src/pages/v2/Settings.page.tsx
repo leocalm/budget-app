@@ -553,6 +553,7 @@ export function SettingsV2Page() {
                       { value: 'en', label: 'English' },
                       { value: 'pt', label: 'Portugu\u00eas (Brasil)' },
                       { value: 'pt-pt', label: 'Portugu\u00eas (Portugal)' },
+                      { value: 'nl-nl', label: 'Nederlands' },
                     ]}
                     styles={{
                       input: {
