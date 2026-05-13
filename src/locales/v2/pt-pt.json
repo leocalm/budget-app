@@ -119,7 +119,7 @@
     "saveFailed": "Falha ao guardar a conta",
     "spentThisCycle": "Gasto neste ciclo",
     "statementCloses": "Fecho do extrato",
-    "subtitle": "As suas contas financeiras num relance",
+    "subtitle": "As suas contas num relance",
     "title": "Contas",
     "toast": {
       "archiveError": "Falha ao arquivar a conta",
@@ -184,13 +184,13 @@
     "userMenu": "Menu do utilizador"
   },
   "auth": {
-    "defaultTagline": "O seu pulso financeiro — calmo, claro e totalmente seu.",
+    "defaultTagline": "O seu pulso financeiro — calmo, claro e seu.",
     "forgotPassword": {
       "backToSignIn": "Voltar ao início de sessão",
       "didNotReceive": "Não recebeu? Verifique a pasta de spam ou",
       "email": "Email",
       "emailLabel": "Email",
-      "emailPlaceholder": "voce@exemplo.com",
+      "emailPlaceholder": "nome@exemplo.com",
       "hasPassword": "Lembra-se da sua palavra-passe?",
       "rememberPassword": "Lembra-se da sua palavra-passe?",
       "resendLink": "reenviar a ligação",
@@ -198,46 +198,46 @@
         "backToSignIn": "Voltar ao início de sessão",
         "didntReceive": "Não recebeu? Verifique a pasta de spam ou",
         "instruction": "Clique na ligação no email para repor a sua palavra-passe.",
-        "message": "Enviámos uma ligação de reposição de palavra-passe para {{email}}.",
+        "message": "Enviámos uma ligação de reposição para {{email}}.",
         "resend": "reenviar a ligação",
         "title": "Verifique o seu email"
       },
       "sentInstruction": "Clique na ligação no email para repor a sua palavra-passe.",
-      "sentSubtitle": "Enviámos uma ligação de reposição de palavra-passe para",
+      "sentSubtitle": "Enviámos uma ligação de reposição para",
       "sentTitle": "Verifique o seu email",
       "signIn": "Iniciar sessão",
       "submit": "Enviar ligação de reposição",
       "submitButton": "Enviar ligação de reposição",
-      "subtitle": "Indique o seu email e enviar-lhe-emos uma ligação para a repor.",
+      "subtitle": "Indique o seu email e enviamos-lhe uma ligação para a repor.",
       "title": "Esqueceu-se da palavra-passe?"
     },
     "login": {
       "createOne": "Criar conta",
       "email": "Email",
       "emailLabel": "Email",
-      "emailPlaceholder": "voce@exemplo.com",
+      "emailPlaceholder": "nome@exemplo.com",
       "errorAccountLocked": "Conta bloqueada. Verifique o seu email para a ligação de desbloqueio.",
-      "errorGeneric": "Não foi possível iniciar sessão. Tente novamente.",
+      "errorGeneric": "Não foi possível iniciar sessão. Tente de novo.",
       "errorInvalidCredentials": "Email ou palavra-passe inválidos",
-      "errorTooManyAttempts": "Demasiadas tentativas. Aguarde e tente novamente.",
+      "errorTooManyAttempts": "Demasiadas tentativas. Aguarde e tente de novo.",
       "errorUnknown": "Algo correu mal",
       "errors": {
         "accountLocked": "Conta bloqueada. Verifique o seu email para a ligação de desbloqueio.",
-        "generic": "Não foi possível iniciar sessão. Tente novamente.",
+        "generic": "Não foi possível iniciar sessão. Tente de novo.",
         "invalidCredentials": "Email ou palavra-passe inválidos",
         "somethingWentWrong": "Algo correu mal",
-        "tooManyAttempts": "Demasiadas tentativas. Aguarde e tente novamente."
+        "tooManyAttempts": "Demasiadas tentativas. Aguarde e tente de novo."
       },
       "forgotPassword": "Esqueceu-se da palavra-passe?",
       "noAccount": "Ainda não tem conta?",
       "password": "Palavra-passe",
       "passwordLabel": "Palavra-passe",
-      "passwordPlaceholder": "Indique a sua palavra-passe",
+      "passwordPlaceholder": "Introduza a sua palavra-passe",
       "rememberMe": "Manter sessão iniciada",
-      "sessionExpired": "A sua sessão expirou. Inicie sessão novamente.",
+      "sessionExpired": "A sua sessão expirou. Inicie sessão de novo.",
       "submit": "Iniciar sessão",
       "submitButton": "Iniciar sessão",
-      "subtitle": "Aceda ao seu pulso financeiro.",
+      "subtitle": "Aceda à sua conta.",
       "title": "Iniciar sessão",
       "twoFactor": {
         "codePlaceholder": "000000",
@@ -251,8 +251,8 @@
         "verify": "Verificar"
       },
       "waitSeconds": "Aguarde {{seconds}}s",
-      "accountLockedAlert": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para instruções de desbloqueio.",
-      "tooManyAttemptsAlert": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar novamente."
+      "accountLockedAlert": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para receber instruções de desbloqueio.",
+      "tooManyAttemptsAlert": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar de novo."
     },
     "register": {
       "agreeToTermsPrefix": "Concordo com os",
@@ -264,25 +264,25 @@
       "confirmPlaceholder": "Repita a palavra-passe",
       "email": "Email",
       "emailLabel": "Email",
-      "emailPlaceholder": "leo@exemplo.com",
-      "error": "Não foi possível criar a conta. O email pode já estar em utilização.",
-      "errorGeneric": "Não foi possível criar a conta. O email pode já estar em utilização.",
+      "emailPlaceholder": "nome@exemplo.com",
+      "error": "Não foi possível criar a conta. O email já pode estar a ser utilizado.",
+      "errorGeneric": "Não foi possível criar a conta. O email já pode estar a ser utilizado.",
       "hasAccount": "Já tem conta?",
       "name": "Nome",
       "nameLabel": "Nome",
-      "namePlaceholder": "Leonardo",
+      "namePlaceholder": "Maria",
       "password": "Palavra-passe",
       "passwordLabel": "Palavra-passe",
-      "passwordPlaceholder": "Indique uma palavra-passe forte",
+      "passwordPlaceholder": "Crie uma palavra-passe forte",
       "passwordsDoNotMatch": "As palavras-passe não coincidem",
       "passwordsMismatch": "As palavras-passe não coincidem",
       "privacyPolicy": "Política de Privacidade",
       "signIn": "Iniciar sessão",
       "submit": "Criar conta",
       "submitButton": "Criar conta",
-      "subtitle": "Comece a sua jornada calma de orçamentação.",
+      "subtitle": "Comece a organizar o seu orçamento.",
       "terms": "Concordo com os",
-      "termsOfService": "Termos do Serviço",
+      "termsOfService": "Termos de Serviço",
       "title": "Crie a sua conta"
     },
     "resetPassword": {
@@ -304,31 +304,31 @@
       "requestNewLink": "Solicitar nova ligação",
       "submit": "Repor palavra-passe",
       "submitButton": "Repor palavra-passe",
-      "subtitle": "Torne-a forte e única.",
+      "subtitle": "Escolha uma palavra-passe forte e única.",
       "success": {
         "goToSignIn": "Ir para o início de sessão",
-        "instruction": "Já pode iniciar sessão com a sua nova palavra-passe.",
+        "instruction": "Já pode iniciar sessão com a nova palavra-passe.",
         "message": "A sua palavra-passe foi reposta com sucesso.",
         "title": "Palavra-passe atualizada"
       },
       "successMessage": "A sua palavra-passe foi reposta com sucesso.",
-      "successSubtext": "Já pode iniciar sessão com a sua nova palavra-passe.",
+      "successSubtext": "Já pode iniciar sessão com a nova palavra-passe.",
       "successTitle": "Palavra-passe atualizada",
       "title": "Definir nova palavra-passe"
     },
     "tagline": {
-      "default": "O seu pulso financeiro — calmo, claro e totalmente seu.",
-      "forgotPassword": "Sem problema — vamos ajudá-lo a voltar a entrar.",
-      "login": "Bem-vindo de volta. Os seus dados estão tal como os deixou.",
-      "register": "Comece a sua jornada rumo à clareza financeira.",
+      "default": "O seu pulso financeiro — calmo, claro e seu.",
+      "forgotPassword": "Sem problema. Vamos ajudá-lo a entrar de novo.",
+      "login": "Bem-vindo de volta. Os seus dados estão onde os deixou.",
+      "register": "Comece a organizar as suas finanças.",
       "resetPassword": "Está quase. Escolha uma nova palavra-passe.",
       "unlock": "Verifique a sua identidade para continuar.",
-      "emergency2faDisable": "Vamos ajudá-lo a recuperar o acesso à sua conta."
+      "emergency2faDisable": "Vamos ajudá-lo a recuperar o acesso à conta."
     },
     "taglines": {
-      "forgotPassword": "Sem problema — vamos ajudá-lo a voltar a entrar.",
-      "login": "Bem-vindo de volta. Os seus dados estão tal como os deixou.",
-      "register": "Comece a sua jornada rumo à clareza financeira.",
+      "forgotPassword": "Sem problema. Vamos ajudá-lo a entrar de novo.",
+      "login": "Bem-vindo de volta. Os seus dados estão onde os deixou.",
+      "register": "Comece a organizar as suas finanças.",
       "resetPassword": "Está quase. Escolha uma nova palavra-passe.",
       "unlock": "Verifique a sua identidade para continuar."
     },
@@ -344,8 +344,8 @@
       "useRecoveryCode": "Ou utilizar um código de recuperação",
       "verifyButton": "Verificar",
       "waitSeconds": "Aguarde {{seconds}}s",
-      "accountLocked": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para instruções de desbloqueio.",
-      "tooManyAttempts": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar novamente."
+      "accountLocked": "A sua conta foi temporariamente bloqueada devido a demasiadas tentativas falhadas. Verifique o seu email para receber instruções de desbloqueio.",
+      "tooManyAttempts": "Demasiadas tentativas falhadas. Aguarde {{seconds}} segundos antes de tentar de novo."
     },
     "unlock": {
       "errorMessage": "Esta ligação expirou ou é inválida.",
@@ -356,7 +356,7 @@
         "message": "Esta ligação expirou ou é inválida.",
         "title": "Ligação de desbloqueio inválida"
       },
-      "loading": "A desbloquear a sua conta...",
+      "loading": "A desbloquear a sua conta…",
       "success": {
         "goToSignIn": "Ir para o início de sessão",
         "message": "A sua conta foi desbloqueada. Já pode iniciar sessão.",
@@ -367,10 +367,10 @@
     },
     "emergency2fa": {
       "title": "Desativação de emergência da 2FA",
-      "subtitle": "Indique o seu email e enviar-lhe-emos uma ligação segura para desativar a autenticação de dois fatores.",
+      "subtitle": "Indique o seu email e enviamos-lhe uma ligação segura para desativar a autenticação de dois fatores.",
       "infoMessage": "Utilize esta opção apenas se perdeu o acesso à aplicação de autenticação e não consegue iniciar sessão.",
       "emailLabel": "Endereço de email",
-      "emailPlaceholder": "voce@exemplo.com",
+      "emailPlaceholder": "nome@exemplo.com",
       "submitButton": "Enviar ligação de desativação",
       "rememberPassword": "Já se lembrou do acesso?",
       "signIn": "Iniciar sessão",
@@ -379,15 +379,15 @@
       "backToSignIn": "Voltar ao início de sessão",
       "confirmTitle": "Desativar a autenticação de dois fatores",
       "confirmWarning": "Está prestes a desativar a autenticação de dois fatores. Isto irá reduzir a segurança da sua conta.",
-      "confirmDescription": "Clique no botão abaixo para confirmar. Pode reativar a 2FA em qualquer momento a partir das definições da conta.",
+      "confirmDescription": "Clique no botão abaixo para confirmar. Pode reativar a 2FA a qualquer momento nas definições da conta.",
       "confirmButton": "Confirmar — desativar 2FA",
       "confirmError": "Esta ligação expirou ou é inválida. Solicite uma nova.",
       "disabledTitle": "2FA desativada",
-      "disabledMessage": "A autenticação de dois fatores foi desativada. Pode agora iniciar sessão apenas com a palavra-passe.",
+      "disabledMessage": "A autenticação de dois fatores foi desativada. Já pode iniciar sessão apenas com a palavra-passe.",
       "goToSignIn": "Ir para o início de sessão"
     },
     "session": {
-      "refreshFailed": "Não foi possível restaurar a sua sessão. Inicie sessão novamente."
+      "refreshFailed": "Não foi possível restaurar a sua sessão. Inicie sessão de novo."
     }
   },
   "categories": {
@@ -499,7 +499,7 @@
       "monthlyTotal": "Total mensal",
       "empty": "Ainda não existem subscrições. Adicione uma abaixo.",
       "inlineTitle": "Primeira subscrição",
-      "createHint": "Depois de criar esta categoria, pode adicionar-lhe subscrições diretamente a partir das definições da categoria.",
+      "createHint": "Depois de criar esta categoria, pode adicionar-lhe subscrições nas definições da categoria.",
       "actionsFor": "Ações para {{name}}",
       "deleteConfirmTitle": "Eliminar subscrição",
       "deleteConfirmDesc": "Tem a certeza de que pretende eliminar \"{{name}}\"? Esta ação não pode ser anulada."
@@ -530,9 +530,9 @@
     "export": "Exportar",
     "import": "Importar",
     "inDays": "Daqui a {{count}} dias",
-    "inMonths": "DAQUI A {{count}} MESES",
+    "inMonths": "Daqui a {{count}} meses",
     "incoming": "Receita",
-    "individualAccountCard": "Cartão de conta individual",
+    "individualAccountCard": "Cartão de conta",
     "logOut": "Terminar sessão",
     "merge": "Unir",
     "more": "Mais",
@@ -702,24 +702,24 @@
       "title": "Tendência de despesa"
     },
     "subscriptions": {
-      "active": "{{count}} ativa(s)",
-      "activeCount": "{{count}} ativa(s)",
-      "charged": "COBRADA",
+      "active": "{{count}} em curso",
+      "activeCount": "{{count}} em curso",
+      "charged": "Cobrada",
       "empty": "Não há subscrições com cobrança prevista neste período.",
       "error": "Ocorreu um problema ao carregar as suas subscrições.",
-      "inDays": "DAQUI A {{count}} DIAS",
-      "inMonths": "DAQUI A {{count}} MESES",
-      "inOneDay": "DAQUI A 1 DIA",
-      "inOneMonth": "DAQUI A 1 MÊS",
-      "inOneWeek": "DAQUI A 1 SEMANA",
-      "inWeeks": "DAQUI A {{count}} SEMANAS",
+      "inDays": "Daqui a {{count}} dias",
+      "inMonths": "Daqui a {{count}} meses",
+      "inOneDay": "Daqui a 1 dia",
+      "inOneMonth": "Daqui a 1 mês",
+      "inOneWeek": "Daqui a 1 semana",
+      "inWeeks": "Daqui a {{count}} semanas",
       "perMonth": "/mês",
       "perQuarter": "/trim",
       "perYear": "/ano",
       "title": "Subscrições",
-      "today": "HOJE"
+      "today": "Hoje"
     },
-    "subtitle": "O seu pulso financeiro, num relance",
+    "subtitle": "As suas finanças num relance",
     "title": "Painel",
     "topVendors": {
       "empty": "Sem transações de comerciantes neste período.",
@@ -796,13 +796,13 @@
       "goToDashboard": "Ir para o painel",
       "periods": "Períodos",
       "periodsDefault": "Mensais, a começar no dia 1",
-      "subtitle": "O seu painel está pronto. Aqui está o que ficou configurado:",
-      "title": "Está tudo a postos!"
+      "subtitle": "O seu painel está pronto. Eis o que ficou configurado:",
+      "title": "Está tudo pronto!"
     },
     "currency": {
       "continue": "Continuar",
       "description": "Todas as suas contas e transações utilizarão esta moeda.",
-      "multiCurrencyNote": "De momento, o PiggyPulse não suporta múltiplas moedas. Esta funcionalidade chegará brevemente.",
+      "multiCurrencyNote": "De momento, o PiggyPulse não suporta múltiplas moedas. Esta funcionalidade chega em breve.",
       "required": "Este é o único passo obrigatório.",
       "requiredStep": "Este é o único passo obrigatório.",
       "saveFailed": "Falha ao guardar a moeda",
@@ -845,9 +845,9 @@
       "goToDashboard": "Ir para o painel",
       "monthlyStart": "Mensais, a começar no dia 1",
       "periods": "Períodos",
-      "subtitle": "O seu painel está pronto. Aqui está o que ficou configurado:",
+      "subtitle": "O seu painel está pronto. Eis o que ficou configurado:",
       "threeAhead": "3 períodos preparados com antecedência",
-      "title": "Está tudo a postos!"
+      "title": "Está tudo pronto!"
     },
     "welcome": {
       "getStarted": "Vamos começar",
@@ -855,8 +855,8 @@
       "justClarityDesc": "veja os seus dados, perceba os seus padrões",
       "noJudgment": "Sem julgamento",
       "noJudgmentDesc": "não classificamos a despesa como boa ou má",
-      "quote": "O PiggyPulse mostra-lhe a realidade através dos dados. Não celebramos nem criticamos — é você quem decide o que os seus números significam.",
-      "subtitle": "O seu pulso financeiro — calmo, claro e totalmente seu.",
+      "quote": "O PiggyPulse mostra-lhe a realidade através dos dados. Não celebramos nem criticamos — é você quem dá significado aos seus números.",
+      "subtitle": "O seu pulso financeiro — calmo, claro e seu.",
       "title": "Bem-vindo ao PiggyPulse",
       "yourRules": "As suas regras",
       "yourRulesDesc": "é você quem decide o que os seus números significam"
@@ -1096,7 +1096,7 @@
       "resetSuccess": "Painel reposto para a predefinição",
       "title": "Painel",
       "defaultWidgets": "Widgets predefinidos",
-      "defaultWidgetsHint": "Estes widgets aparecem ao abrir o painel pela primeira vez. Pode sempre personalizar a partir do próprio painel.",
+      "defaultWidgetsHint": "Estes widgets aparecem quando abre o painel pela primeira vez. Pode personalizar a qualquer momento a partir do próprio painel.",
       "accountCards": "Cartões de conta",
       "accountCardsHint": "Escolha quais as contas que aparecem como cartões individuais no seu painel.",
       "allAccountsShown": "Todas as contas ativas estão atualmente visíveis.",
@@ -1129,7 +1129,7 @@
       "saved": "Perfil guardado",
       "title": "Perfil",
       "avatarLabel": "Avatar",
-      "avatarHint": "Avatares com tema porquinho — escolha a sua personalidade. Ilustrações personalizadas virão do Figma.",
+      "avatarHint": "Escolha um avatar para o seu perfil. Mais ilustrações em breve.",
       "displayName": "Nome a apresentar",
       "email": "Email",
       "emailHint": "Alterar o email exige verificação",
@@ -1233,7 +1233,7 @@
         "name": "Período atual"
       },
       "fixedCategories": {
-        "description": "Checklist de despesas previsíveis",
+        "description": "Lista de despesas previsíveis",
         "name": "Categorias fixas"
       },
       "netPosition": {
@@ -1249,7 +1249,7 @@
         "name": "Tendência de despesa"
       },
       "subscriptions": {
-        "description": "Cronograma de cobranças recorrentes",
+        "description": "Calendário de cobranças recorrentes",
         "name": "Subscrições"
       },
       "topVendors": {
@@ -1257,17 +1257,17 @@
         "name": "Principais comerciantes"
       },
       "variableCategories": {
-        "description": "Monitor da despesa discricionária",
+        "description": "Despesa variável ao longo do tempo",
         "name": "Categorias variáveis"
       },
       "gettingStarted": {
         "name": "Como começar",
-        "description": "Checklist de configuração para novos utilizadores"
+        "description": "Lista de configuração para novos utilizadores"
       }
     }
   },
   "subscriptions": {
-    "activeCount": "{{count}} ativa(s)",
+    "activeCount": "{{count}} em curso",
     "activeSince": "Ativa desde",
     "activeSubscriptions": "Subscrições ativas",
     "addFirst": "+ Adicionar a primeira subscrição",
@@ -1290,14 +1290,14 @@
       "subscription": "Subscrição:",
       "success": "Subscrição cancelada",
       "title": "Cancelar subscrição",
-      "warning": "Isto apenas marca a subscrição como cancelada no PiggyPulse. Ainda terá de a cancelar diretamente junto do fornecedor."
+      "warning": "Isto apenas marca a subscrição como cancelada no PiggyPulse. Ainda tem de a cancelar diretamente junto do fornecedor."
     },
     "cancelModal": {
       "amount": "Valor:",
       "dateDescription": "Quando cancelou (ou planeia cancelar) junto do fornecedor",
       "dateLabel": "Data de cancelamento",
       "description": "Marque \"{{name}}\" como cancelada no PiggyPulse.",
-      "disclaimer": "Isto apenas marca a subscrição como cancelada no PiggyPulse. Ainda terá de a cancelar diretamente junto do fornecedor. Se chegar uma cobrança após o cancelamento, o PiggyPulse irá sinalizá-la para sua atenção.",
+      "disclaimer": "Isto apenas marca a subscrição como cancelada no PiggyPulse. Ainda tem de a cancelar diretamente junto do fornecedor. Se aparecer uma cobrança após o cancelamento, o PiggyPulse sinaliza-a para sua atenção.",
       "keepActive": "Manter ativa",
       "submit": "Cancelar subscrição",
       "subscription": "Subscrição:",
@@ -1328,7 +1328,7 @@
         "count_one": "Foi detetada {{count}} cobrança após o cancelamento.",
         "count_other": "Foram detetadas {{count}} cobranças após o cancelamento.",
         "review": "Reveja o histórico de cobranças abaixo.",
-        "title": "Cobrança inesperada após o cancelamento"
+        "title": "Cobrança inesperada após cancelamento"
       },
       "postCancellationLabel": "Após cancelamento",
       "quarter": "trimestre",
@@ -1344,7 +1344,7 @@
     "emptyTitle": "Ainda não existem subscrições",
     "loadError": "Ocorreu um problema ao carregar as suas subscrições.",
     "monthlyCost": "Custo mensal",
-    "monthlyCount": "{{count}} ativa(s)",
+    "monthlyCount": "{{count}} em curso",
     "nextCharge": "Próxima cobrança",
     "nextChargeDate": "Próxima cobrança",
     "notFound": "Subscrição não encontrada.",
@@ -1364,7 +1364,7 @@
     "subtitle": "Acompanhe as suas cobranças recorrentes",
     "thisYear": "Este ano",
     "title": "Subscrições",
-    "unexpectedCharge": "Cobrança inesperada após o cancelamento",
+    "unexpectedCharge": "Cobrança inesperada após cancelamento",
     "unexpectedChargeDesc": "Foram detetadas {{count}} cobranças após o cancelamento.",
     "upcomingCharges": "Próximas cobranças",
     "yearlyTotal": "Total anual",
@@ -1601,7 +1601,7 @@
     "avgPerVendor": "Média / Comerciante",
     "breadcrumb": "← Comerciantes",
     "created": "Comerciante criado",
-    "deleteFailed": "Não é possível eliminar — arquive ou una em alternativa",
+    "deleteFailed": "Não é possível eliminar — arquive ou una.",
     "deleteFailedShort": "Não é possível eliminar o comerciante",
     "deleted": "Comerciante eliminado",
     "detail": {
@@ -1669,7 +1669,7 @@
     "toast": {
       "archiveError": "Falha ao arquivar o comerciante",
       "archived": "Comerciante arquivado",
-      "deleteError": "Não é possível eliminar — arquive ou una em alternativa",
+      "deleteError": "Não é possível eliminar — arquive ou una.",
       "deleted": "Comerciante eliminado",
       "unarchiveError": "Falha ao desarquivar o comerciante",
       "unarchived": "Comerciante desarquivado"
@@ -1765,7 +1765,7 @@
     },
     "locked": {
       "message": {
-        "periodRequired": "É necessário um período de orçamento antes de este conteúdo poder ser apresentado."
+        "periodRequired": "É preciso um período de orçamento antes de poder mostrar este conteúdo."
       },
       "status": {
         "notConfigured": "Não configurado"
@@ -1782,7 +1782,7 @@
       },
       "500": {
         "title": "Algo correu mal",
-        "message": "Estamos a enfrentar dificuldades técnicas. A nossa equipa foi notificada e está a trabalhar numa correção. Tente novamente mais tarde."
+        "message": "Estamos com dificuldades técnicas. A nossa equipa foi notificada e está a trabalhar numa correção. Tente de novo mais tarde."
       },
       "503": {
         "title": "Serviço indisponível",
