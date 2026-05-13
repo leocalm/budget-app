@@ -138,6 +138,18 @@ Document names only, never values. Verified names include:
 - `VITE_API_BASE_URL`
 - `VITE_API_PROXY_TARGET`
 - `VITE_DEV_HTTPS`
+- `VITE_SENTRY_DSN` (enables Sentry SDK when set)
+- `VITE_SENTRY_ENVIRONMENT`
+- `VITE_SENTRY_RELEASE`
+- `VITE_SENTRY_TRACES_SAMPLE_RATE`
+- `VITE_UMAMI_SCRIPT_URL` (enables Umami when set together with website id)
+- `VITE_UMAMI_WEBSITE_ID`
+- `VITE_UMAMI_HOST_URL` (optional override of Umami collect endpoint)
+- `SENTRY_AUTH_TOKEN` (build-time only; enables source-map upload)
+- `SENTRY_ORG` (build-time only)
+- `SENTRY_PROJECT` (build-time only)
+- `SENTRY_URL` (build-time only; self-hosted Sentry URL override)
+- `SENTRY_RELEASE` (build-time only)
 - `E2E_TARGET`
 - `E2E_API_MODE`
 - `E2E_BASE_URL`
