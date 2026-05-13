@@ -164,6 +164,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
   return (
     <Drawer
+      data-testid="schedule-drawer"
       opened={opened}
       onClose={onClose}
       title={t('periods.schedule.title')}
@@ -177,6 +178,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
       <Stack gap="lg">
         {/* Enable toggle */}
         <Switch
+          data-testid="schedule-enable-switch"
           label={t('periods.schedule.enableLabel')}
           description={t('periods.schedule.enableDesc')}
           checked={enabled}
@@ -198,6 +200,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
                   description={t('periods.schedule.dayOfMonthDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
+                  testId="schedule-recurrence-dayOfMonth"
                 />
                 <RecurrenceOption
                   value="businessDay"
@@ -205,6 +208,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
                   description={t('periods.schedule.businessDayDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
+                  testId="schedule-recurrence-businessDay"
                 />
                 <RecurrenceOption
                   value="dayOfWeek"
@@ -212,6 +216,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
                   description={t('periods.schedule.dayOfWeekDesc')}
                   selected={recurrenceMethod}
                   onChange={setRecurrenceMethod}
+                  testId="schedule-recurrence-dayOfWeek"
                 />
               </Stack>
             </div>
@@ -219,6 +224,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Start day */}
             {recurrenceMethod === 'dayOfMonth' && (
               <NumberInput
+                data-testid="schedule-start-day-month"
                 label={t('periods.schedule.startDayOfMonth')}
                 description={t('periods.schedule.startDayOfMonthDesc')}
                 value={startDay}
@@ -229,6 +235,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             )}
             {recurrenceMethod === 'businessDay' && (
               <NumberInput
+                data-testid="schedule-start-day-business"
                 label={t('periods.schedule.businessDayLabel')}
                 description={t('periods.schedule.businessDayLabelDesc')}
                 value={startDay}
@@ -239,6 +246,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             )}
             {recurrenceMethod === 'dayOfWeek' && (
               <Select
+                data-testid="schedule-start-day-week"
                 label={t('periods.schedule.dayOfWeekLabel')}
                 data={[
                   { value: '1', label: t('periods.schedule.weekdays.monday') },
@@ -257,6 +265,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             {/* Period duration */}
             <Group grow>
               <NumberInput
+                data-testid="schedule-period-length"
                 label={t('periods.schedule.periodLength')}
                 value={periodDuration}
                 onChange={setPeriodDuration}
@@ -264,6 +273,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
                 max={366}
               />
               <Select
+                data-testid="schedule-duration-unit"
                 label={t('periods.form.unit')}
                 data={[
                   { value: 'days', label: t('periods.form.days') },
@@ -277,6 +287,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
             {/* Generate ahead */}
             <NumberInput
+              data-testid="schedule-generate-ahead"
               label={t('periods.schedule.periodsToPrep')}
               description={t('periods.schedule.periodsToPrepDesc')}
               value={generateAhead}
@@ -291,12 +302,14 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
             </Text>
             <div className={classes.weekendPolicies}>
               <Select
+                data-testid="schedule-saturday-policy"
                 label={t('periods.schedule.saturdayLabel')}
                 data={WEEKEND_POLICY_KEYS.map((o) => ({ value: o.value, label: t(o.labelKey) }))}
                 value={saturdayPolicy}
                 onChange={(v) => setSaturdayPolicy((v as WeekendPolicy) ?? 'keep')}
               />
               <Select
+                data-testid="schedule-sunday-policy"
                 label={t('periods.schedule.sundayLabel')}
                 data={WEEKEND_POLICY_KEYS.map((o) => ({ value: o.value, label: t(o.labelKey) }))}
                 value={sundayPolicy}
@@ -306,6 +319,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
 
             {/* Name pattern */}
             <TextInput
+              data-testid="schedule-name-pattern"
               label={t('periods.schedule.namePattern')}
               description={t('periods.schedule.namePatternDesc')}
               value={namePattern}
@@ -362,7 +376,7 @@ export function ScheduleDrawer({ opened, onClose }: ScheduleDrawerProps) {
           <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleSubmit} loading={isSubmitting}>
+          <Button data-testid="schedule-save" onClick={handleSubmit} loading={isSubmitting}>
             {t('periods.schedule.saveRules')}
           </Button>
         </Group>
@@ -377,17 +391,20 @@ function RecurrenceOption({
   description,
   selected,
   onChange,
+  testId,
 }: {
   value: RecurrenceMethod;
   label: string;
   description: string;
   selected: RecurrenceMethod;
   onChange: (v: RecurrenceMethod) => void;
+  testId?: string;
 }) {
   const isActive = selected === value;
 
   return (
     <div
+      data-testid={testId}
       className={isActive ? classes.recurrenceOptionActive : classes.recurrenceOption}
       onClick={() => onChange(value)}
       role="radio"

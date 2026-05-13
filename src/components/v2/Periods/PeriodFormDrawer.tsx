@@ -154,6 +154,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {/* Period type */}
         {!isEdit && (
           <Select
+            data-testid="period-type-select"
             label={t('periods.form.periodType')}
             data={[
               { value: 'Duration', label: t('periods.form.durationBased') },
@@ -168,6 +169,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
         {periodType === 'Duration' && (
           <Group grow>
             <NumberInput
+              data-testid="period-duration-units"
               label={t('periods.form.duration')}
               value={durationUnits}
               onChange={setDurationUnits}
@@ -175,6 +177,7 @@ export function PeriodFormDrawer({ opened, onClose, editPeriodId }: PeriodFormDr
               max={366}
             />
             <Select
+              data-testid="period-duration-unit"
               label={t('periods.form.unit')}
               data={[
                 { value: 'days', label: t('periods.form.days') },

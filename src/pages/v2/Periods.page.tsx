@@ -134,7 +134,11 @@ export function PeriodsV2Page() {
           </Text>
         </div>
         <div className={classes.headerActions}>
-          <UnstyledButton className={classes.schedulePill} onClick={openScheduleDrawer}>
+          <UnstyledButton
+            data-testid="periods-schedule-pill"
+            className={classes.schedulePill}
+            onClick={openScheduleDrawer}
+          >
             <span
               className={classes.scheduleDot}
               style={{

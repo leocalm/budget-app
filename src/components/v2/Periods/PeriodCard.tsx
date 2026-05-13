@@ -123,6 +123,7 @@ export function PeriodCard({
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon
+              data-testid={`period-card-${period.id}-menu`}
               variant="subtle"
               color="gray"
               size="sm"
@@ -134,8 +135,14 @@ export function PeriodCard({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={() => onEdit(period.id)}>{t('common.edit')}</Menu.Item>
-            <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
+            <Menu.Item data-testid="period-menu-edit" onClick={() => onEdit(period.id)}>
+              {t('common.edit')}
+            </Menu.Item>
+            <Menu.Item
+              data-testid="period-menu-delete"
+              color="red"
+              onClick={() => setDeleteConfirmOpen(true)}
+            >
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
