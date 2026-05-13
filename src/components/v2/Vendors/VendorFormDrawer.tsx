@@ -81,6 +81,7 @@ export function VendorFormDrawer({ opened, onClose, editVendor }: VendorFormDraw
         />
 
         <Textarea
+          data-testid="vendor-description-input"
           label={t('vendors.form.description')}
           placeholder={t('vendors.form.descriptionPlaceholder')}
           value={description}

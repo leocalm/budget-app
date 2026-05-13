@@ -48,6 +48,7 @@ export function MergeVendorModal({
 
   return (
     <Modal
+      data-testid="vendor-merge-modal"
       opened={opened}
       onClose={onClose}
       title={t('vendors.merge.title')}
@@ -66,6 +67,7 @@ export function MergeVendorModal({
         </Text>
 
         <Select
+          data-testid="vendor-merge-target"
           label={t('vendors.merge.mergeInto')}
           placeholder={t('vendors.merge.selectTarget')}
           data={vendorOptions}
@@ -75,10 +77,16 @@ export function MergeVendorModal({
         />
 
         <Group justify="flex-end" mt="md">
-          <Button variant="subtle" onClick={onClose} disabled={mergeMutation.isPending}>
+          <Button
+            data-testid="vendor-merge-cancel"
+            variant="subtle"
+            onClick={onClose}
+            disabled={mergeMutation.isPending}
+          >
             {t('common.cancel')}
           </Button>
           <Button
+            data-testid="vendor-merge-confirm"
             color="red"
             onClick={handleMerge}
             loading={mergeMutation.isPending}

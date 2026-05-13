@@ -86,6 +86,7 @@ export function VendorRow({
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <ActionIcon
+              data-testid={`vendor-row-${vendor.id}-menu`}
               variant="subtle"
               color="gray"
               size="sm"
@@ -98,17 +99,29 @@ export function VendorRow({
           </Menu.Target>
           <Menu.Dropdown>
             {!isArchived && (
-              <Menu.Item onClick={() => onEdit(vendor.id)}>{t('common.edit')}</Menu.Item>
+              <Menu.Item data-testid="vendor-menu-edit" onClick={() => onEdit(vendor.id)}>
+                {t('common.edit')}
+              </Menu.Item>
             )}
             {!isArchived && (
-              <Menu.Item onClick={() => onMerge(vendor.id)}>{t('common.merge')}</Menu.Item>
+              <Menu.Item data-testid="vendor-menu-merge" onClick={() => onMerge(vendor.id)}>
+                {t('common.merge')}
+              </Menu.Item>
             )}
             {isArchived ? (
-              <Menu.Item onClick={() => onUnarchive(vendor.id)}>{t('common.unarchive')}</Menu.Item>
+              <Menu.Item data-testid="vendor-menu-unarchive" onClick={() => onUnarchive(vendor.id)}>
+                {t('common.unarchive')}
+              </Menu.Item>
             ) : (
-              <Menu.Item onClick={() => onArchive(vendor.id)}>{t('common.archive')}</Menu.Item>
+              <Menu.Item data-testid="vendor-menu-archive" onClick={() => onArchive(vendor.id)}>
+                {t('common.archive')}
+              </Menu.Item>
             )}
-            <Menu.Item color="red" onClick={() => setDeleteConfirmOpen(true)}>
+            <Menu.Item
+              data-testid="vendor-menu-delete"
+              color="red"
+              onClick={() => setDeleteConfirmOpen(true)}
+            >
               {t('common.delete')}
             </Menu.Item>
           </Menu.Dropdown>
