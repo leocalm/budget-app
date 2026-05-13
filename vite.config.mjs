@@ -26,17 +26,22 @@ function cspHeadersPlugin() {
       const umamiScript = process.env.VITE_UMAMI_SCRIPT_URL;
       if (umamiScript) {
         try {
-          scriptExtra.add(new URL(umamiScript).origin);
+          const origin = new URL(umamiScript).origin;
+          scriptExtra.add(origin);
+          // Umami Cloud serves script.js from cloud.umami.is but POSTs collects
+          // to api-gateway.umami.dev. Allowlist both unless the user pinned
+          // VITE_UMAMI_HOST_URL to something specific.
+          if (new URL(umamiScript).hostname === 'cloud.umami.is') {
+            connectExtra.add('https://api-gateway.umami.dev');
+          } else {
+            connectExtra.add(origin);
+          }
         } catch {}
       }
       const umamiHost = process.env.VITE_UMAMI_HOST_URL;
       if (umamiHost) {
         try {
           connectExtra.add(new URL(umamiHost).origin);
-        } catch {}
-      } else if (umamiScript) {
-        try {
-          connectExtra.add(new URL(umamiScript).origin);
         } catch {}
       }
 
