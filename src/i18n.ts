@@ -22,6 +22,11 @@ void i18n.use(initReactI18next).init({
   ns: ['v2'],
   defaultNS: 'v2',
   lng: 'en',
+  // Resources are keyed lowercase ("es-es", "pt-pt", …). By default i18next
+  // normalises incoming codes per BCP-47 (lowercase language, uppercase
+  // region — so "es-es" becomes "es-ES" and misses our resource keys, falling
+  // back to English). Forcing lowercase keeps everything in one shape.
+  lowerCaseLng: true,
   fallbackLng: {
     'pt-pt': ['pt', 'en'],
     default: ['en'],
