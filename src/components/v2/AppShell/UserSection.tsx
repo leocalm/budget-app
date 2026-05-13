@@ -1,7 +1,9 @@
-import { IconLogout, IconMoon, IconSettings, IconSun } from '@tabler/icons-react';
+import { IconLogout, IconMessage, IconMoon, IconSettings, IconSun } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Avatar, Group, Menu, Stack, Text, useMantineColorScheme } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { FeedbackModal } from '@/components/v2/Feedback';
 import { useAuth } from '@/context/AuthContext';
 import classes from './AppShell.module.css';
 
@@ -20,6 +22,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
   const { logout } = useAuth();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const [feedbackOpen, feedback] = useDisclosure(false);
 
   const initials = name
     .split(' ')
@@ -57,6 +60,13 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
             >
               {t('common.settings')}
             </Menu.Item>
+            <Menu.Item
+              leftSection={<IconMessage size={14} />}
+              onClick={feedback.open}
+              data-testid="feedback-menu-item"
+            >
+              {t('feedback.menuItem')}
+            </Menu.Item>
             <Menu.Divider />
             <Menu.Item
               data-testid="user-logout-button"
@@ -68,6 +78,7 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
+        <FeedbackModal opened={feedbackOpen} onClose={feedback.close} />
       </Stack>
     );
   }
@@ -97,7 +108,14 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item leftSection={<IconSettings size={14} />} onClick={() => navigate('/settings')}>
-            Settings
+            {t('common.settings')}
+          </Menu.Item>
+          <Menu.Item
+            leftSection={<IconMessage size={14} />}
+            onClick={feedback.open}
+            data-testid="feedback-menu-item"
+          >
+            {t('feedback.menuItem')}
           </Menu.Item>
           <Menu.Divider />
           <Menu.Item
@@ -106,10 +124,11 @@ export function UserSection({ name, email, collapsed }: UserSectionProps) {
             color="red"
             onClick={handleLogout}
           >
-            Log out
+            {t('common.logOut')}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
+      <FeedbackModal opened={feedbackOpen} onClose={feedback.close} />
       <ActionIcon
         variant="subtle"
         size="sm"

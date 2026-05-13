@@ -1809,5 +1809,19 @@
         "requestAccess": "Solicitar acceso"
       }
     }
+  },
+  "feedback": {
+    "title": "Comparte tu opinión",
+    "subtitle": "¿Has detectado un fallo, te falta una función o has visto algo raro? Cuéntanoslo.",
+    "menuItem": "Comparte tu opinión",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Email",
+    "emailPlaceholder": "nombre@ejemplo.com",
+    "messageLabel": "Tu opinión",
+    "messagePlaceholder": "¿Qué nos quieres contar?",
+    "submit": "Enviar opinión",
+    "success": "Gracias — hemos recibido tu opinión.",
+    "error": "No se ha podido enviar tu opinión. Inténtalo de nuevo."
   }
 }

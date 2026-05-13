@@ -1809,5 +1809,19 @@
         "requestAccess": "Zugriff anfragen"
       }
     }
+  },
+  "feedback": {
+    "title": "Feedback senden",
+    "subtitle": "Einen Fehler entdeckt, eine Funktion vermisst oder etwas Komisches gesehen? Erzähl uns davon.",
+    "menuItem": "Feedback senden",
+    "nameLabel": "Name",
+    "namePlaceholder": "Dein Name",
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "name@beispiel.com",
+    "messageLabel": "Dein Feedback",
+    "messagePlaceholder": "Was möchtest du loswerden?",
+    "submit": "Feedback senden",
+    "success": "Danke — dein Feedback ist unterwegs.",
+    "error": "Dein Feedback konnte nicht gesendet werden. Bitte versuche es erneut."
   }
 }

@@ -1809,5 +1809,19 @@
         "requestAccess": "Demander l'accès"
       }
     }
+  },
+  "feedback": {
+    "title": "Partager un avis",
+    "subtitle": "Vous avez repéré un bug, une fonctionnalité manquante ou un détail à revoir ? Dites-nous ce que vous avez vu.",
+    "menuItem": "Partager un avis",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Votre nom",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "messageLabel": "Votre avis",
+    "messagePlaceholder": "Que voulez-vous nous dire ?",
+    "submit": "Envoyer",
+    "success": "Merci — votre avis a bien été envoyé.",
+    "error": "Impossible d'envoyer votre avis. Veuillez réessayer."
   }
 }

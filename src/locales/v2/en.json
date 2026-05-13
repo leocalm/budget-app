@@ -1809,5 +1809,19 @@
         "requestAccess": "Request Access"
       }
     }
+  },
+  "feedback": {
+    "title": "Share feedback",
+    "subtitle": "Spotted a bug, missing feature, or rough edge? Tell us what you saw.",
+    "menuItem": "Share feedback",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "messageLabel": "Your feedback",
+    "messagePlaceholder": "What's on your mind?",
+    "submit": "Send feedback",
+    "success": "Thanks — your feedback is on its way.",
+    "error": "Couldn't send your feedback. Please try again."
   }
 }

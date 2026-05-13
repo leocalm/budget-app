@@ -1809,5 +1809,19 @@
         "requestAccess": "Solicitar acesso"
       }
     }
+  },
+  "feedback": {
+    "title": "Enviar comentários",
+    "subtitle": "Encontrou um erro, falta-lhe alguma funcionalidade ou viu algo estranho? Diga-nos.",
+    "menuItem": "Enviar comentários",
+    "nameLabel": "Nome",
+    "namePlaceholder": "O seu nome",
+    "emailLabel": "Email",
+    "emailPlaceholder": "nome@exemplo.com",
+    "messageLabel": "Os seus comentários",
+    "messagePlaceholder": "O que gostaria de partilhar?",
+    "submit": "Enviar comentários",
+    "success": "Obrigado — os seus comentários foram enviados.",
+    "error": "Não foi possível enviar os comentários. Tente novamente."
   }
 }

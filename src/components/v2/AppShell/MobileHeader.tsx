@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
-import { IconLogout, IconSettings } from '@tabler/icons-react';
+import { IconLogout, IconMessage, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Group, Image, Menu, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { FeedbackModal } from '@/components/v2/Feedback';
 import { useAuth } from '@/context/AuthContext';
 import { useV2Theme } from '@/theme/v2';
 import classes from './AppShell.module.css';
@@ -29,6 +31,7 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
   const { logout } = useAuth();
   const { colorTheme } = useV2Theme();
   const logoSrc = LOGO_PATHS[colorTheme] ?? LOGO_PATHS.nebula;
+  const [feedbackOpen, feedback] = useDisclosure(false);
 
   const initials = userName
     .split(' ')
@@ -76,6 +79,13 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
             >
               {t('common.settings')}
             </Menu.Item>
+            <Menu.Item
+              leftSection={<IconMessage size={14} />}
+              onClick={feedback.open}
+              data-testid="feedback-menu-item"
+            >
+              {t('feedback.menuItem')}
+            </Menu.Item>
             <Menu.Divider />
             <Menu.Item leftSection={<IconLogout size={14} />} color="red" onClick={handleLogout}>
               {t('common.logOut')}
@@ -84,6 +94,7 @@ export function MobileHeader({ userName, periodSelector }: MobileHeaderProps) {
         </Menu>
       </Group>
       {periodSelector}
+      <FeedbackModal opened={feedbackOpen} onClose={feedback.close} />
     </div>
   );
 }

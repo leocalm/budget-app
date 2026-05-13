@@ -1809,5 +1809,19 @@
         "requestAccess": "Toegang aanvragen"
       }
     }
+  },
+  "feedback": {
+    "title": "Geef feedback",
+    "subtitle": "Bug ontdekt, functie gemist of iets vreemds gezien? Laat het ons weten.",
+    "menuItem": "Geef feedback",
+    "nameLabel": "Naam",
+    "namePlaceholder": "Je naam",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "naam@voorbeeld.com",
+    "messageLabel": "Je feedback",
+    "messagePlaceholder": "Wat wil je delen?",
+    "submit": "Feedback versturen",
+    "success": "Bedankt — je feedback is verstuurd.",
+    "error": "Je feedback kon niet worden verstuurd. Probeer het opnieuw."
   }
 }

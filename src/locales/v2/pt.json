@@ -1809,5 +1809,19 @@
         "requestAccess": "Solicitar Acesso"
       }
     }
+  },
+  "feedback": {
+    "title": "Enviar feedback",
+    "subtitle": "Encontrou um bug, sente falta de uma funcionalidade ou viu algo estranho? Conte para nós.",
+    "menuItem": "Enviar feedback",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Seu nome",
+    "emailLabel": "Email",
+    "emailPlaceholder": "nome@exemplo.com",
+    "messageLabel": "Seu feedback",
+    "messagePlaceholder": "O que você quer compartilhar?",
+    "submit": "Enviar feedback",
+    "success": "Valeu — seu feedback foi enviado.",
+    "error": "Não foi possível enviar o feedback. Tente novamente."
   }
 }
