@@ -1,0 +1,1813 @@
+{
+  "accounts": {
+    "actions": {
+      "archive": "Archiver",
+      "unarchive": "Désarchiver",
+      "viewDetails": "Voir le détail"
+    },
+    "addAccount": "+ Ajouter un compte",
+    "addFirst": "+ Ajouter votre premier compte",
+    "addFirstAccount": "+ Ajouter votre premier compte",
+    "afterTopUp": "Après recharge",
+    "afterTopUpLabel": "Après recharge :",
+    "allowanceDetails": "Détails de l'allocation",
+    "archiveFailed": "Impossible d'archiver le compte",
+    "archived": "Compte archivé",
+    "archivedAccounts": "Comptes archivés ({{count}})",
+    "archivedNamed": "{{name}} archivé",
+    "archivedToggle": "Comptes archivés",
+    "available": "Disponible",
+    "availableLabel": "Disponible :",
+    "overspentLabel": "Dépassé :",
+    "avgDailyBalance": "Solde quotidien moyen",
+    "balanceHistory": "Historique du solde",
+    "balanceHistoryFor": "Historique du solde de {{name}}",
+    "balanceHistoryLabel": "Historique du solde",
+    "breadcrumb": "← Comptes",
+    "checkingDetails": "Détails du compte courant",
+    "created": "Compte créé",
+    "creditCardDetails": "Détails de la carte de crédit",
+    "creditLimit": "Limite de crédit",
+    "currentBalance": "Solde actuel",
+    "detail": {
+      "afterTopUp": "Après recharge :",
+      "allowance": {
+        "afterTopUp": "Après recharge",
+        "available": "Disponible",
+        "nextTopUp": "Prochaine recharge",
+        "spentThisCycle": "Dépensé ce cycle",
+        "title": "Détails de l'allocation",
+        "topUpAmount": "Montant de la recharge"
+      },
+      "available": "Disponible :",
+      "backLink": "← Comptes",
+      "balanceHistory": "Historique du solde",
+      "checking": {
+        "avgDailyBalance": "Solde quotidien moyen",
+        "title": "Détails du compte courant"
+      },
+      "creditCard": {
+        "creditLimit": "Limite de crédit",
+        "currentBalance": "Solde actuel",
+        "paymentDue": "Échéance",
+        "statementCloses": "Clôture du relevé",
+        "title": "Détails de la carte de crédit"
+      },
+      "inflows": "Entrées",
+      "nextTopUp": "Prochaine recharge :",
+      "noChart": "Pas encore assez de données pour afficher un graphique.",
+      "outflows": "Sorties",
+      "transactions": "Transactions"
+    },
+    "empty": {
+      "message": "Ajoutez votre premier compte pour commencer à suivre vos soldes. Vous pouvez ajouter un compte courant, une épargne, une carte de crédit, un portefeuille ou une allocation.",
+      "title": "Aucun compte pour l'instant"
+    },
+    "emptyDescription": "Ajoutez votre premier compte pour commencer à suivre vos soldes. Vous pouvez ajouter un compte courant, une épargne, une carte de crédit, un portefeuille ou une allocation.",
+    "emptyTitle": "Aucun compte pour l'instant",
+    "form": {
+      "accountName": "Nom du compte",
+      "accountNamePlaceholder": "p. ex. Compte courant principal",
+      "accountType": "Type de compte",
+      "color": "Couleur",
+      "createTitle": "Créer un compte",
+      "currency": "Devise",
+      "cycles": {
+        "biWeekly": "Bimensuel",
+        "monthly": "Mensuel",
+        "weekly": "Hebdomadaire"
+      },
+      "dayOfMonth": "Jour du mois (1-31)",
+      "editTitle": "Modifier le compte",
+      "initialBalance": "Solde initial",
+      "name": "Nom du compte",
+      "namePlaceholder": "p. ex. Compte courant principal",
+      "paymentDueDay": "Jour d'échéance du paiement",
+      "spendLimit": "Plafond de dépense",
+      "spendLimitAllowance": "Dépense maximale par cycle",
+      "spendLimitCreditCard": "Plafond de crédit de la carte",
+      "statementCloseDay": "Jour de clôture du relevé",
+      "toast": {
+        "created": "Compte créé",
+        "error": "Impossible de {{action}} le compte",
+        "updated": "Compte mis à jour"
+      },
+      "topUpAmount": "Montant de la recharge",
+      "topUpAmountDesc": "Montant ajouté à chaque cycle",
+      "topUpCycle": "Cycle de recharge",
+      "topUpDay": "Jour de la recharge",
+      "topUpDayMonth": "Jour du mois (1-31)",
+      "topUpDayWeek": "Jour de la semaine (0=Dim, 6=Sam)",
+      "createButton": "Créer un compte"
+    },
+    "inflows": "Entrées",
+    "loadError": "Un problème est survenu lors du chargement de vos comptes.",
+    "netPosition": {
+      "debt": "Dette",
+      "liquid": "Liquide",
+      "loadError": "Un problème est survenu lors du chargement des données de position.",
+      "protected": "Protégé",
+      "title": "Position nette"
+    },
+    "nextTopUp": "Prochaine recharge :",
+    "nextTopUpLabel": "Prochaine recharge",
+    "noPeriodDescription": "Sélectionnez une période pour voir vos comptes.",
+    "notEnoughData": "Pas encore assez de données pour afficher un graphique.",
+    "notFound": "Compte introuvable.",
+    "outflows": "Sorties",
+    "paymentDue": "Échéance",
+    "saveFailed": "Impossible d'enregistrer le compte",
+    "spentThisCycle": "Dépensé ce cycle",
+    "statementCloses": "Clôture du relevé",
+    "subtitle": "Vos comptes en un coup d'œil",
+    "title": "Comptes",
+    "toast": {
+      "archiveError": "Impossible d'archiver le compte",
+      "archived": "Compte archivé",
+      "unarchiveError": "Impossible de désarchiver le compte",
+      "unarchived": "Compte désarchivé"
+    },
+    "topUpAmount": "Montant de la recharge",
+    "transactions": "Transactions",
+    "txnsThisPeriod": "{{count}} tx sur cette période",
+    "types": {
+      "Allowance": "Allocation",
+      "Checking": "Compte courant",
+      "CreditCard": "Cartes de crédit",
+      "Savings": "Épargne",
+      "Wallet": "Portefeuilles",
+      "checking": "Compte courant",
+      "savings": "Épargne",
+      "creditCard": "Carte de crédit",
+      "creditCards": "Cartes de crédit",
+      "wallet": "Portefeuille",
+      "wallets": "Portefeuilles",
+      "allowance": "Allocation"
+    },
+    "unarchiveFailed": "Impossible de désarchiver le compte",
+    "unarchived": "Compte désarchivé",
+    "unarchivedNamed": "{{name}} désarchivé",
+    "updated": "Compte mis à jour",
+    "topUpCycles": {
+      "weekly": "Hebdomadaire",
+      "biWeekly": "Bimensuel",
+      "monthly": "Mensuel"
+    },
+    "emptyTips": {
+      "types": "Vous pouvez ajouter un compte courant, une épargne, une carte de crédit, un portefeuille ou une allocation.",
+      "balance": "Indiquez le solde actuel à la création du compte — il se mettra à jour au fil des transactions.",
+      "archive": "Vous pouvez archiver les comptes que vous n'utilisez plus pour garder la liste lisible."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Créez un compte",
+        "description": "Choisissez le type de compte et indiquez un nom ainsi qu'un solde initial."
+      },
+      "balance": {
+        "title": "Indiquez le solde initial",
+        "description": "Renseignez votre solde réel pour que l'application reflète vos finances."
+      },
+      "use": {
+        "title": "Utilisez-le dans vos transactions",
+        "description": "Lorsque vous enregistrez une transaction, choisissez le compte d'où provient ou vers lequel va l'argent."
+      }
+    }
+  },
+  "appShell": {
+    "brand": "PiggyPulse",
+    "collapseSidebar": "Réduire la barre latérale",
+    "expandSidebar": "Développer la barre latérale",
+    "mainNavigation": "Navigation principale",
+    "more": "Plus",
+    "switchToDarkMode": "Passer en mode sombre",
+    "switchToLightMode": "Passer en mode clair",
+    "userMenu": "Menu utilisateur"
+  },
+  "auth": {
+    "defaultTagline": "Votre pouls financier : calme, clair, et bien à vous.",
+    "forgotPassword": {
+      "backToSignIn": "Retour à la connexion",
+      "didNotReceive": "Vous ne l'avez pas reçu ? Vérifiez vos spams ou",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nom@exemple.com",
+      "hasPassword": "Vous vous souvenez de votre mot de passe ?",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "resendLink": "renvoyer le lien",
+      "sent": {
+        "backToSignIn": "Retour à la connexion",
+        "didntReceive": "Vous ne l'avez pas reçu ? Vérifiez vos spams ou",
+        "instruction": "Cliquez sur le lien reçu par e-mail pour réinitialiser votre mot de passe.",
+        "message": "Nous avons envoyé un lien de réinitialisation à {{email}}.",
+        "resend": "renvoyer le lien",
+        "title": "Vérifiez vos e-mails"
+      },
+      "sentInstruction": "Cliquez sur le lien reçu par e-mail pour réinitialiser votre mot de passe.",
+      "sentSubtitle": "Nous avons envoyé un lien de réinitialisation à",
+      "sentTitle": "Vérifiez vos e-mails",
+      "signIn": "Se connecter",
+      "submit": "Envoyer le lien",
+      "submitButton": "Envoyer le lien",
+      "subtitle": "Indiquez votre e-mail et nous vous enverrons un lien pour le réinitialiser.",
+      "title": "Mot de passe oublié ?"
+    },
+    "login": {
+      "createOne": "Créer un compte",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nom@exemple.com",
+      "errorAccountLocked": "Compte verrouillé. Consultez votre e-mail pour le lien de déverrouillage.",
+      "errorGeneric": "Impossible de se connecter. Veuillez réessayer.",
+      "errorInvalidCredentials": "E-mail ou mot de passe incorrect",
+      "errorTooManyAttempts": "Trop de tentatives. Patientez et réessayez.",
+      "errorUnknown": "Une erreur est survenue",
+      "errors": {
+        "accountLocked": "Compte verrouillé. Consultez votre e-mail pour le lien de déverrouillage.",
+        "generic": "Impossible de se connecter. Veuillez réessayer.",
+        "invalidCredentials": "E-mail ou mot de passe incorrect",
+        "somethingWentWrong": "Une erreur est survenue",
+        "tooManyAttempts": "Trop de tentatives. Patientez et réessayez."
+      },
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Pas encore de compte ?",
+      "password": "Mot de passe",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Saisissez votre mot de passe",
+      "rememberMe": "Rester connecté",
+      "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+      "submit": "Se connecter",
+      "submitButton": "Se connecter",
+      "subtitle": "Accédez à votre compte.",
+      "title": "Connexion",
+      "twoFactor": {
+        "codePlaceholder": "000000",
+        "enterCode": "Saisissez le code à 6 chiffres de votre application d'authentification.",
+        "enterRecovery": "Saisissez l'un de vos codes de récupération.",
+        "invalidCode": "Code incorrect. Veuillez réessayer.",
+        "recoveryCode": "Code de récupération",
+        "recoveryPlaceholder": "XXXX-XXXX",
+        "useAuthenticator": "Utiliser le code de l'application d'authentification",
+        "useRecovery": "Ou utiliser un code de récupération",
+        "verify": "Vérifier"
+      },
+      "waitSeconds": "Patientez {{seconds}}s",
+      "accountLockedAlert": "Votre compte a été temporairement verrouillé après trop de tentatives infructueuses. Consultez votre e-mail pour les instructions de déverrouillage.",
+      "tooManyAttemptsAlert": "Trop de tentatives infructueuses. Patientez {{seconds}} secondes avant de réessayer."
+    },
+    "register": {
+      "agreeToTermsPrefix": "J'accepte les",
+      "alreadyHaveAccount": "Vous avez déjà un compte ?",
+      "and": "et",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+      "confirmPlaceholder": "Confirmez votre mot de passe",
+      "email": "E-mail",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nom@exemple.com",
+      "error": "Impossible de créer le compte. Cette adresse e-mail est peut-être déjà utilisée.",
+      "errorGeneric": "Impossible de créer le compte. Cette adresse e-mail est peut-être déjà utilisée.",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "name": "Nom",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Marie",
+      "password": "Mot de passe",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Choisissez un mot de passe robuste",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "passwordsMismatch": "Les mots de passe ne correspondent pas",
+      "privacyPolicy": "Politique de confidentialité",
+      "signIn": "Se connecter",
+      "submit": "Créer un compte",
+      "submitButton": "Créer un compte",
+      "subtitle": "Commencez à organiser votre budget.",
+      "terms": "J'accepte les",
+      "termsOfService": "Conditions d'utilisation",
+      "title": "Créez votre compte"
+    },
+    "resetPassword": {
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "errorExpired": "Le lien de réinitialisation a expiré. Demandez-en un nouveau.",
+      "goToSignIn": "Aller à la connexion",
+      "invalidLink": {
+        "goToSignIn": "Aller à la connexion",
+        "message": "Ce lien a expiré ou n'est pas valide.",
+        "title": "Lien de réinitialisation non valide"
+      },
+      "invalidLinkMessage": "Ce lien a expiré ou n'est pas valide.",
+      "invalidLinkTitle": "Lien de réinitialisation non valide",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "passwordsMismatch": "Les mots de passe ne correspondent pas",
+      "requestNewLink": "Demander un nouveau lien",
+      "submit": "Réinitialiser le mot de passe",
+      "submitButton": "Réinitialiser le mot de passe",
+      "subtitle": "Choisissez un mot de passe robuste et unique.",
+      "success": {
+        "goToSignIn": "Aller à la connexion",
+        "instruction": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+        "message": "Votre mot de passe a été réinitialisé.",
+        "title": "Mot de passe mis à jour"
+      },
+      "successMessage": "Votre mot de passe a été réinitialisé.",
+      "successSubtext": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+      "successTitle": "Mot de passe mis à jour",
+      "title": "Définir un nouveau mot de passe"
+    },
+    "tagline": {
+      "default": "Votre pouls financier : calme, clair, et bien à vous.",
+      "forgotPassword": "Pas d'inquiétude. Nous allons vous aider à retrouver l'accès.",
+      "login": "Bon retour. Vos données sont là où vous les avez laissées.",
+      "register": "Commencez à organiser vos finances.",
+      "resetPassword": "Vous y êtes presque. Choisissez un nouveau mot de passe.",
+      "unlock": "Vérifiez votre identité pour continuer.",
+      "emergency2faDisable": "Nous allons vous aider à retrouver l'accès à votre compte."
+    },
+    "taglines": {
+      "forgotPassword": "Pas d'inquiétude. Nous allons vous aider à retrouver l'accès.",
+      "login": "Bon retour. Vos données sont là où vous les avez laissées.",
+      "register": "Commencez à organiser vos finances.",
+      "resetPassword": "Vous y êtes presque. Choisissez un nouveau mot de passe.",
+      "unlock": "Vérifiez votre identité pour continuer."
+    },
+    "twoFactor": {
+      "errorInvalidCode": "Code incorrect. Veuillez réessayer.",
+      "placeholder": "000000",
+      "recoveryPlaceholder": "XXXX-XXXX",
+      "recoverySubtitle": "Saisissez l'un de vos codes de récupération.",
+      "recoveryTitle": "Code de récupération",
+      "subtitle": "Saisissez le code à 6 chiffres de votre application d'authentification.",
+      "title": "Saisir le code de vérification",
+      "useAuthenticator": "Utiliser le code de l'application d'authentification",
+      "useRecoveryCode": "Ou utiliser un code de récupération",
+      "verifyButton": "Vérifier",
+      "waitSeconds": "Patientez {{seconds}}s",
+      "accountLocked": "Votre compte a été temporairement verrouillé après trop de tentatives infructueuses. Consultez votre e-mail pour les instructions de déverrouillage.",
+      "tooManyAttempts": "Trop de tentatives infructueuses. Patientez {{seconds}} secondes avant de réessayer."
+    },
+    "unlock": {
+      "errorMessage": "Ce lien a expiré ou n'est pas valide.",
+      "errorTitle": "Lien de déverrouillage non valide",
+      "goToSignIn": "Aller à la connexion",
+      "invalidLink": {
+        "goToSignIn": "Aller à la connexion",
+        "message": "Ce lien a expiré ou n'est pas valide.",
+        "title": "Lien de déverrouillage non valide"
+      },
+      "loading": "Déverrouillage de votre compte…",
+      "success": {
+        "goToSignIn": "Aller à la connexion",
+        "message": "Votre compte a été déverrouillé. Vous pouvez maintenant vous connecter.",
+        "title": "Compte déverrouillé"
+      },
+      "successMessage": "Votre compte a été déverrouillé. Vous pouvez maintenant vous connecter.",
+      "successTitle": "Compte déverrouillé"
+    },
+    "emergency2fa": {
+      "title": "Désactivation 2FA d'urgence",
+      "subtitle": "Indiquez votre e-mail et nous vous enverrons un lien sécurisé pour désactiver l'authentification à deux facteurs.",
+      "infoMessage": "Utilisez cette option uniquement si vous avez perdu l'accès à votre application d'authentification et ne pouvez plus vous connecter.",
+      "emailLabel": "Adresse e-mail",
+      "emailPlaceholder": "nom@exemple.com",
+      "submitButton": "Envoyer le lien de désactivation",
+      "rememberPassword": "Vous vous rappelez de l'accès ?",
+      "signIn": "Se connecter",
+      "sentTitle": "Vérifiez vos e-mails",
+      "sentMessage": "Si la 2FA est active sur votre compte, vous recevrez bientôt un lien pour la désactiver. Vérifiez vos spams si vous ne le trouvez pas.",
+      "backToSignIn": "Retour à la connexion",
+      "confirmTitle": "Désactiver l'authentification à deux facteurs",
+      "confirmWarning": "Vous êtes sur le point de désactiver l'authentification à deux facteurs. Cela réduit la sécurité de votre compte.",
+      "confirmDescription": "Cliquez sur le bouton ci-dessous pour confirmer. Vous pourrez réactiver la 2FA à tout moment dans les paramètres du compte.",
+      "confirmButton": "Confirmer — désactiver la 2FA",
+      "confirmError": "Ce lien a expiré ou n'est pas valide. Demandez-en un nouveau.",
+      "disabledTitle": "2FA désactivée",
+      "disabledMessage": "L'authentification à deux facteurs a été désactivée. Vous pouvez désormais vous connecter avec votre mot de passe uniquement.",
+      "goToSignIn": "Aller à la connexion"
+    },
+    "session": {
+      "refreshFailed": "Impossible de restaurer votre session. Reconnectez-vous."
+    }
+  },
+  "categories": {
+    "actions": {
+      "archive": "Archiver",
+      "delete": "Supprimer",
+      "unarchive": "Désarchiver"
+    },
+    "addCategory": "+ Ajouter une catégorie",
+    "addFirst": "+ Ajouter votre première catégorie",
+    "addFirstCategory": "+ Ajouter votre première catégorie",
+    "archiveFailed": "Impossible d'archiver la catégorie",
+    "archived": "Catégorie archivée",
+    "archivedCount": "Archivées ({{count}})",
+    "archivedNamed": "{{name}} archivée",
+    "archivedToggle": "Archivées",
+    "behaviors": {
+      "fixed": "Fixe",
+      "subscription": "Abonnement",
+      "variable": "Variable"
+    },
+    "breadcrumb": "← Catégories",
+    "budget": "Budget",
+    "budgeted": "budgétées",
+    "categoriesCount": "Catégories",
+    "created": "Catégorie créée",
+    "deleteFailed": "Impossible de supprimer la catégorie",
+    "deleted": "Catégorie supprimée",
+    "detail": {
+      "backLink": "← Catégories",
+      "budget": "Budget",
+      "recentTransactions": "Transactions récentes",
+      "remaining": "Restant",
+      "spendingTrend": "Tendance des dépenses — {{count}} dernières périodes",
+      "spent": "Dépensé",
+      "transactions": "Transactions"
+    },
+    "detailLoadError": "Un problème est survenu lors du chargement de cette catégorie.",
+    "empty": {
+      "message": "Créez votre première catégorie pour commencer à classer vos transactions et structurer votre budget.",
+      "title": "Aucune catégorie pour l'instant"
+    },
+    "emptyDescription": "Créez votre première catégorie pour commencer à classer vos transactions et structurer votre budget.",
+    "emptyTitle": "Aucune catégorie pour l'instant",
+    "expenseBudget": "Budget de dépenses",
+    "form": {
+      "behavior": "Comportement",
+      "budgetTarget": "Objectif de budget",
+      "budgetTargetDesc": "Objectif mensuel de dépense ou de revenu (facultatif)",
+      "categoryName": "Nom de la catégorie",
+      "categoryNamePlaceholder": "p. ex. Courses",
+      "createButton": "Créer la catégorie",
+      "createTitle": "Ajouter une catégorie",
+      "description": "Description",
+      "descriptionPlaceholder": "Description facultative",
+      "editTitle": "Modifier la catégorie",
+      "icon": "Icône",
+      "name": "Nom de la catégorie",
+      "namePlaceholder": "p. ex. Courses",
+      "toast": {
+        "created": "Catégorie créée",
+        "error": "Impossible de {{action}} la catégorie",
+        "updated": "Catégorie mise à jour"
+      },
+      "type": "Type",
+      "behaviorLockedSubs": "Le comportement ne peut pas être modifié tant qu'il existe des abonnements actifs"
+    },
+    "incomeTarget": "Objectif de revenus",
+    "incoming": "Revenus",
+    "loadError": "Un problème est survenu lors du chargement de vos catégories.",
+    "notFound": "Catégorie introuvable.",
+    "outgoing": "Dépenses",
+    "recentTransactions": "Transactions récentes",
+    "remaining": "Restant",
+    "saveFailed": "Impossible d'enregistrer la catégorie",
+    "searchPlaceholder": "Rechercher des catégories…",
+    "spendingTrend": "Tendance des dépenses — {{count}} dernières périodes",
+    "spent": "Dépensé",
+    "stats": {
+      "categories": "Catégories",
+      "expenseBudget": "Budget de dépenses",
+      "incomeTarget": "Objectif de revenus",
+      "totalSpent": "Total dépensé",
+      "unbudgeted": "Sans budget"
+    },
+    "subtitle": "La structure de votre budget",
+    "title": "Catégories",
+    "toast": {
+      "archiveError": "Impossible d'archiver la catégorie",
+      "archived": "Catégorie archivée",
+      "deleteError": "Impossible de supprimer la catégorie",
+      "deleted": "Catégorie supprimée",
+      "unarchiveError": "Impossible de désarchiver la catégorie",
+      "unarchived": "Catégorie désarchivée"
+    },
+    "totalSpent": "Total dépensé",
+    "types": {
+      "expense": "Dépense",
+      "income": "Revenu",
+      "transfer": "Virement"
+    },
+    "unarchiveFailed": "Impossible de désarchiver la catégorie",
+    "unarchived": "Catégorie désarchivée",
+    "unarchivedNamed": "{{name}} désarchivée",
+    "unbudgeted": "Sans budget",
+    "updated": "Catégorie mise à jour",
+    "subscriptionSection": {
+      "title": "Abonnements",
+      "monthlyTotal": "Total mensuel",
+      "empty": "Aucun abonnement pour l'instant. Ajoutez-en un ci-dessous.",
+      "inlineTitle": "Premier abonnement",
+      "createHint": "Après avoir créé cette catégorie, vous pourrez y ajouter des abonnements depuis les paramètres de la catégorie.",
+      "actionsFor": "Actions pour {{name}}",
+      "deleteConfirmTitle": "Supprimer l'abonnement",
+      "deleteConfirmDesc": "Voulez-vous vraiment supprimer « {{name}} » ? Cette action est irréversible."
+    }
+  },
+  "common": {
+    "account": "Compte",
+    "add": "Ajouter",
+    "archive": "Archiver",
+    "archived": "Archivée",
+    "back": "Retour",
+    "budgeted": "budgétées",
+    "cancel": "Annuler",
+    "cancelled": "Annulée",
+    "categories": "catégories",
+    "category": "catégorie",
+    "comingSoon": "Cette page sera bientôt disponible",
+    "continue": "Continuer",
+    "create": "Créer",
+    "daysLeft": "J-{{count}}",
+    "delete": "Supprimer",
+    "deleteConfirmTitle": "Confirmer la suppression",
+    "deleteConfirmMessage": "Voulez-vous vraiment supprimer « {{name}} » ? Cette action est irréversible.",
+    "done": "Terminé",
+    "edit": "Modifier",
+    "enabled": "Activé",
+    "ended": "terminé",
+    "export": "Exporter",
+    "import": "Importer",
+    "inDays": "Dans {{count}} jours",
+    "inMonths": "Dans {{count}} mois",
+    "incoming": "Revenus",
+    "individualAccountCard": "Carte de compte",
+    "logOut": "Se déconnecter",
+    "merge": "Fusionner",
+    "more": "Plus",
+    "next": "Suivant",
+    "noMatch": "Aucune correspondance dans {{entity}}",
+    "noPeriodSelected": "Aucune période de budget sélectionnée.",
+    "noPeriodSelectedDetail": "Sélectionnez une période pour voir {{page}}.",
+    "noPeriodSelectedShort": "Aucune période de budget sélectionnée.",
+    "notFound": "{{entity}} introuvable.",
+    "outgoing": "Dépenses",
+    "paused": "En pause",
+    "piggyPulse": "PiggyPulse",
+    "previous": "Précédent :",
+    "reset": "Réinitialiser",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "saveChanges": "Enregistrer les modifications",
+    "search": "Rechercher",
+    "settings": "Paramètres",
+    "skipForNow": "Passer pour l'instant",
+    "somethingWentWrong": "Un problème est survenu lors du chargement de {{entity}}.",
+    "switchToDark": "Passer en mode sombre",
+    "switchToLight": "Passer en mode clair",
+    "thisPeriod": "cette période",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "transfer": "Virement",
+    "txns": "{{count}} tx",
+    "txnsThisPeriod": "{{count}} tx sur cette période",
+    "unarchive": "Désarchiver",
+    "userMenu": "Menu utilisateur",
+    "viewDetails": "Voir le détail",
+    "noPeriodStateDescription": "Sélectionnez ou créez une période de budget pour afficher cette page. Les périodes définissent la fenêtre temporelle de vos transactions et objectifs.",
+    "goToPeriods": "Aller aux périodes",
+    "close": "Fermer",
+    "error": "Erreur"
+  },
+  "dashboard": {
+    "account": {
+      "archived": "Ce compte a été archivé.",
+      "available": "disponible",
+      "availableToSpend": "Disponible à dépenser",
+      "avgDailyBalance": "Solde quotidien moyen",
+      "balance": "Solde",
+      "balanceAfterTopUp": "Solde après recharge",
+      "creditUsed": "Crédit utilisé : {{pct}}% de la limite",
+      "currentBalance": "solde actuel",
+      "error": "Un problème est survenu lors du chargement de ce compte.",
+      "inDays": "Dans {{count}} jours",
+      "inDaysParens": "(dans {{count}} jours)",
+      "inflows": "Entrées",
+      "limit": "limite",
+      "nextTopUp": "Prochaine recharge",
+      "noTransactions": "Aucune transaction pour cette période.",
+      "outflows": "Sorties",
+      "overspent": "Dépassement",
+      "paymentDue": "Échéance",
+      "periodChange": "Variation de la période",
+      "spentThisCycle": "Dépensé ce cycle",
+      "statementCloses": "Clôture du relevé",
+      "title": "Compte",
+      "today": "Aujourd'hui",
+      "todayParens": "(Aujourd'hui)",
+      "tomorrow": "Demain",
+      "transactions": "Transactions"
+    },
+    "accountCard": {
+      "archived": "Ce compte a été archivé.",
+      "error": "Un problème est survenu lors du chargement de ce compte.",
+      "noTransactions": "Aucune transaction pour cette période."
+    },
+    "addWidget": "+ Ajouter un widget",
+    "addWidgetButton": "+ Ajouter un widget",
+    "cancel": "Annuler",
+    "cashFlow": {
+      "empty": "Aucune entrée ni sortie enregistrée pour cette période.",
+      "error": "Un problème est survenu lors du chargement des flux de trésorerie.",
+      "in": "Entrée",
+      "inflowsAria": "Entrées : {{pct}}% du maximum de la période",
+      "inflowsPct": "Entrées : {{pct}}% du maximum de la période",
+      "net": "Net",
+      "out": "Sortie",
+      "outflowsAria": "Sorties : {{pct}}% du maximum de la période",
+      "outflowsPct": "Sorties : {{pct}}% du maximum de la période",
+      "title": "Trésorerie"
+    },
+    "currentPeriod": {
+      "budget": "Budget",
+      "budgetLabel": "Budget",
+      "budgetUsed": "Budget utilisé : {{pct}}%",
+      "daysLeft": "{{count}} jours restants",
+      "empty": "Aucune période de budget configurée pour l'instant.",
+      "error": "Un problème est survenu lors du chargement des données de la période.",
+      "expectedIncome": "<currency /> de revenus attendus",
+      "noBudget": "aucun budget défini",
+      "noBudgetSet": "aucun budget défini",
+      "noPeriod": "Aucune période de budget configurée pour l'instant.",
+      "ofBudgeted": "sur <currency /> budgétés",
+      "perDayLeft": "Par jour restant",
+      "projected": "Projeté",
+      "remaining": "Restant",
+      "time": "Temps",
+      "timeElapsed": "Temps écoulé : {{pct}}%",
+      "timeLabel": "Temps",
+      "title": "Période en cours",
+      "totalSpent": "Total dépensé sur cette période",
+      "totalSpentThisPeriod": "Total dépensé sur cette période"
+    },
+    "customize": "Personnaliser",
+    "done": "Terminé",
+    "emptyTitle": "Aucun widget à afficher",
+    "emptyDescription": "Utilisez le bouton Personnaliser pour ajouter des widgets à votre tableau de bord.",
+    "fixedSpending": {
+      "title": "Dépenses fixes",
+      "empty": "Aucune dépense fixe configurée.",
+      "allowance": "enveloppe",
+      "categoryCount": "{{count}} éléments"
+    },
+    "fixedCategories": {
+      "categoryCount": "{{count}} {{label}}",
+      "count_one": "{{count}} catégorie",
+      "count_other": "{{count}} catégories",
+      "empty": "Aucune catégorie fixe configurée pour l'instant. Marquez une catégorie comme « fixe » et attribuez-lui un budget pour la suivre ici.",
+      "error": "Un problème est survenu lors du chargement de vos dépenses fixes.",
+      "ofPaid": "sur <currency /> payés",
+      "overallAria": "Dépenses fixes payées au total : {{pct}}%",
+      "overallPaid": "Dépenses fixes payées au total : {{pct}}%",
+      "paid": "Payé",
+      "partial": "Partiel",
+      "pending": "En attente",
+      "title": "Catégories fixes"
+    },
+    "netPosition": {
+      "accountTypes": {
+        "Allowance": "Allocation",
+        "Checking": "Compte courant",
+        "CreditCard": "Carte de crédit",
+        "Savings": "Épargne",
+        "Wallet": "Portefeuille"
+      },
+      "accounts": "{{count}} comptes",
+      "accountsCount": "{{count}} comptes",
+      "debt": "Dette",
+      "empty": "Aucun compte configuré pour l'instant. Ajoutez un compte pour voir votre position nette.",
+      "error": "Un problème est survenu lors du chargement des données de position.",
+      "liquid": "Liquide",
+      "noAccounts": "Aucun compte configuré pour l'instant. Ajoutez un compte pour voir votre position nette.",
+      "protected": "Protégé",
+      "title": "Position nette"
+    },
+    "noPeriodSelected": "Aucune période de budget sélectionnée. Sélectionnez une période pour afficher le tableau de bord.",
+    "recentTransactions": {
+      "empty": "Aucune transaction pour cette période.",
+      "error": "Un problème est survenu lors du chargement de vos transactions.",
+      "thisPeriod": "Cette période",
+      "title": "Transactions récentes",
+      "viewAll": "Voir toutes les transactions"
+    },
+    "spendingTrend": {
+      "average": "Moyenne de la période",
+      "chartAria": "Graphique à barres des dépenses sur les {{count}} dernières périodes de budget",
+      "chartLabel": "Graphique à barres des dépenses sur les {{count}} dernières périodes de budget",
+      "empty": "Au moins 2 périodes clôturées sont nécessaires pour afficher une tendance.",
+      "error": "Un problème est survenu lors du chargement de la tendance des dépenses.",
+      "lastPeriods": "{{count}} dernières périodes",
+      "periodAverage": "Moyenne de la période",
+      "title": "Tendance des dépenses"
+    },
+    "subscriptions": {
+      "active": "{{count}} en cours",
+      "activeCount": "{{count}} en cours",
+      "charged": "Prélevé",
+      "empty": "Aucun abonnement prélevé sur cette période.",
+      "error": "Un problème est survenu lors du chargement de vos abonnements.",
+      "inDays": "Dans {{count}} jours",
+      "inMonths": "Dans {{count}} mois",
+      "inOneDay": "Dans 1 jour",
+      "inOneMonth": "Dans 1 mois",
+      "inOneWeek": "Dans 1 semaine",
+      "inWeeks": "Dans {{count}} semaines",
+      "perMonth": "/mois",
+      "perQuarter": "/trim.",
+      "perYear": "/an",
+      "title": "Abonnements",
+      "today": "Aujourd'hui"
+    },
+    "subtitle": "Vos finances en un coup d'œil",
+    "title": "Tableau de bord",
+    "topVendors": {
+      "empty": "Aucune transaction de commerçant sur cette période.",
+      "error": "Un problème est survenu lors du chargement des principaux commerçants.",
+      "rank": "Rang {{rank}}",
+      "rankAria": "Rang {{rank}}",
+      "title": "Principaux commerçants",
+      "txns": "{{count}} tx"
+    },
+    "variableCategories": {
+      "category": "Catégorie",
+      "categoryCount": "{{count}} {{label}}",
+      "columnCategory": "Catégorie",
+      "columnPercent": "%",
+      "columnProgress": "Progression",
+      "columnSpentBudget": "Dépensé / Budget",
+      "count_one": "{{count}} catégorie",
+      "count_other": "{{count}} catégories",
+      "empty": "Aucune catégorie variable avec budget pour l'instant. Marquez une catégorie comme « variable » et attribuez-lui un budget pour la voir ici.",
+      "error": "Un problème est survenu lors du chargement de vos catégories.",
+      "ofBudgeted": "sur <currency /> budgétés",
+      "overallAria": "Budget variable utilisé au total : {{pct}}%",
+      "overallUsed": "Budget variable utilisé au total : {{pct}}%",
+      "pct": "%",
+      "progress": "Progression",
+      "spentBudget": "Dépensé / Budget",
+      "title": "Catégories variables"
+    },
+    "addWidgetHint": "Choisissez un widget à ajouter à votre tableau de bord.",
+    "alreadyAdded": "Déjà ajouté"
+  },
+  "onboarding": {
+    "accounts": {
+      "accountNamePlaceholder": "Nom du compte",
+      "addAccount": "+ Ajouter un compte",
+      "balanceDesc": "Votre solde réel actuel",
+      "balanceHint": "Votre solde réel actuel",
+      "balancePlaceholder": "Solde actuel",
+      "continue": "Continuer",
+      "createFailed": "Impossible de créer le compte « {{name}} »",
+      "currentBalance": "Solde actuel",
+      "description": "Où se trouve votre argent ? Les comptes représentent vos comptes réels et ne sont pas connectés à votre banque.",
+      "description1": "Où se trouve votre argent ? Les comptes représentent vos comptes réels et ne sont pas connectés à votre banque.",
+      "description2": "Ajoutez-en autant que vous voulez — ou passez et ajoutez-les plus tard.",
+      "error": "Impossible de créer le compte « {{name}} »",
+      "namePlaceholder": "Nom du compte",
+      "optional": "Ajoutez-en autant que vous voulez — ou passez et ajoutez-les plus tard.",
+      "skip": "Passer pour l'instant",
+      "title": "Ajoutez vos comptes",
+      "types": {
+        "Checking": "Compte courant",
+        "Savings": "Épargne",
+        "Wallet": "Portefeuille"
+      }
+    },
+    "appName": "PiggyPulse",
+    "categories": {
+      "applyFailed": "Impossible d'appliquer le modèle",
+      "colorHint": "Les couleurs sont attribuées automatiquement selon le sens et le comportement. Vous pouvez personnaliser les catégories à tout moment.",
+      "colorNote": "Les couleurs sont attribuées automatiquement selon le sens et le comportement. Vous pouvez personnaliser les catégories à tout moment.",
+      "continue": "Continuer",
+      "description": "Les catégories vous aident à organiser vos transactions et à définir des objectifs.",
+      "description1": "Les catégories vous aident à organiser vos transactions et à définir des objectifs.",
+      "description2": "Choisissez un modèle de départ — vous pouvez ajouter, retirer ou modifier des catégories à tout moment.",
+      "error": "Impossible d'appliquer le modèle",
+      "skip": "Passer pour l'instant",
+      "templateHint": "Choisissez un modèle de départ — vous pouvez ajouter, retirer ou modifier des catégories à tout moment.",
+      "title": "Configurer les catégories"
+    },
+    "complete": {
+      "addFirstTransaction": "Ajoutez votre première transaction",
+      "completeFailed": "Impossible de finaliser la configuration",
+      "currency": "Devise",
+      "goToDashboard": "Aller au tableau de bord",
+      "periods": "Périodes",
+      "periodsDefault": "Mensuelles, à partir du 1er",
+      "subtitle": "Votre tableau de bord est prêt. Voici ce qui a été configuré :",
+      "title": "Tout est prêt !"
+    },
+    "currency": {
+      "continue": "Continuer",
+      "description": "Tous vos comptes et transactions utiliseront cette devise.",
+      "multiCurrencyNote": "Pour l'instant, PiggyPulse ne prend pas en charge plusieurs devises. Cette fonctionnalité arrive bientôt.",
+      "required": "C'est la seule étape obligatoire.",
+      "requiredStep": "C'est la seule étape obligatoire.",
+      "saveFailed": "Impossible d'enregistrer la devise",
+      "searchPlaceholder": "Rechercher une devise…",
+      "title": "Choisissez votre devise"
+    },
+    "errors": {
+      "complete": "Impossible de finaliser la configuration",
+      "saveCurrency": "Impossible d'enregistrer la devise",
+      "setupPeriods": "Impossible de configurer les périodes"
+    },
+    "periods": {
+      "autoAssignment": "Les transactions sont affectées aux périodes selon leur date — aucune affectation manuelle n'est nécessaire.",
+      "changeHint": "Vous pourrez modifier ces paramètres plus tard dans Périodes → Calendrier.",
+      "changeLater": "Vous pourrez modifier ces paramètres plus tard dans Périodes → Calendrier.",
+      "continue": "Continuer",
+      "defaultAhead": "3 périodes préparées à l'avance",
+      "defaultLabel": "Nous configurons l'option par défaut :",
+      "defaultMonthly": "Périodes mensuelles, à partir du 1er",
+      "description": "Les périodes sont des fenêtres temporelles qui organisent vos transactions. Voyez-les comme les chapitres de votre histoire financière, chacun avec une date de début et une date de fin.",
+      "description1": "Les périodes sont des fenêtres temporelles qui organisent vos transactions.",
+      "description2": "Les transactions sont affectées aux périodes selon leur date — aucune affectation manuelle n'est nécessaire.",
+      "monthlyStart": "Périodes mensuelles, à partir du 1er",
+      "setupFailed": "Impossible de configurer les périodes",
+      "threeAhead": "3 périodes préparées à l'avance",
+      "title": "Comment PiggyPulse organise le temps"
+    },
+    "steps": {
+      "accounts": "Comptes",
+      "categories": "Catégories",
+      "currency": "Devise",
+      "periods": "Périodes",
+      "welcome": "Bienvenue"
+    },
+    "summary": {
+      "accounts": "Comptes",
+      "addFirstTransaction": "Ajoutez votre première transaction",
+      "categories": "Catégories",
+      "currency": "Devise",
+      "goToDashboard": "Aller au tableau de bord",
+      "monthlyStart": "Mensuelles, à partir du 1er",
+      "periods": "Périodes",
+      "subtitle": "Votre tableau de bord est prêt. Voici ce qui a été configuré :",
+      "threeAhead": "3 périodes préparées à l'avance",
+      "title": "Tout est prêt !"
+    },
+    "welcome": {
+      "getStarted": "C'est parti",
+      "justClarity": "Rien que de la clarté",
+      "justClarityDesc": "consultez vos données, comprenez vos tendances",
+      "noJudgment": "Sans jugement",
+      "noJudgmentDesc": "nous ne qualifions pas vos dépenses de bonnes ou mauvaises",
+      "quote": "PiggyPulse vous montre la réalité à travers les données. Nous ne célébrons rien et ne critiquons rien — c'est vous qui décidez ce que vos chiffres veulent dire.",
+      "subtitle": "Votre pouls financier : calme, clair, et bien à vous.",
+      "title": "Bienvenue sur PiggyPulse",
+      "yourRules": "Vos règles",
+      "yourRulesDesc": "c'est vous qui décidez ce que vos chiffres veulent dire"
+    }
+  },
+  "periodSelector": {
+    "createPeriod": "Créer une période",
+    "daysLeft": "{{count}} jours restants",
+    "daysLeftLong": "{{count}} jours restants",
+    "ended": "terminé",
+    "gapWarning": "Aujourd'hui ne fait partie d'aucune période",
+    "inGap": "Vous êtes entre deux périodes",
+    "noActivePeriod": "Aucune période active",
+    "noPeriods": "Aucune période trouvée",
+    "noPeriodsFound": "Aucune période trouvée",
+    "period": "Période",
+    "selectPeriod": "Sélectionner une période",
+    "title": "Sélectionner une période"
+  },
+  "periods": {
+    "addFirst": "+ Créer la première période",
+    "addPeriod": "+ Nouvelle période",
+    "autoGenActive": "Génération automatique active",
+    "autoGenInactive": "Génération automatique inactive",
+    "budget": "Budget",
+    "card": {
+      "actions": "Actions de la période",
+      "auto": "Auto",
+      "budget": "Budget",
+      "confirmDelete": "Supprimer « {{name}} » ?",
+      "spend": "Dépense",
+      "txns": "Tx"
+    },
+    "createFirstPeriod": "+ Créer la première période",
+    "created": "Période créée",
+    "days": "{{count}} jours",
+    "deleteConfirm": "Supprimer « {{name}} » ?",
+    "deleteFailed": "Impossible de supprimer la période",
+    "deleted": "Période supprimée",
+    "empty": {
+      "message": "Créez votre première période de budget pour commencer à suivre vos dépenses, ou activez la génération automatique pour qu'elles se créent toutes seules.",
+      "title": "Aucune période pour l'instant"
+    },
+    "emptyDescription": "Créez votre première période de budget pour commencer à suivre vos dépenses, ou activez la génération automatique pour qu'elles se créent toutes seules.",
+    "emptyTitle": "Aucune période pour l'instant",
+    "form": {
+      "createButton": "Créer la période",
+      "createTitle": "Créer une période",
+      "days": "Jours",
+      "duration": "Durée",
+      "durationBased": "Par durée",
+      "editTitle": "Modifier la période",
+      "endDate": "Date de fin",
+      "manualEndDate": "Date de fin manuelle",
+      "months": "Mois",
+      "name": "Nom de la période",
+      "namePlaceholder": "p. ex. Avril 2026",
+      "pastPeriodMessage": "Modifier les dates d'une période passée déplacera des transactions entre périodes.",
+      "pastPeriodWarning": "Période passée",
+      "pastWarning": "Modifier les dates d'une période passée déplacera des transactions entre périodes.",
+      "periodName": "Nom de la période",
+      "periodNamePlaceholder": "p. ex. Avril 2026",
+      "periodType": "Type de période",
+      "startDate": "Date de début",
+      "toast": {
+        "created": "Période créée",
+        "error": "Impossible de {{action}} la période",
+        "updated": "Période mise à jour"
+      },
+      "unit": "Unité",
+      "units": {
+        "days": "Jours",
+        "months": "Mois",
+        "weeks": "Semaines"
+      },
+      "weeks": "Semaines"
+    },
+    "newPeriod": "+ Nouvelle période",
+    "periodActions": "Actions de la période",
+    "saveFailed": "Impossible d'enregistrer la période",
+    "schedule": {
+      "active": "Génération automatique active",
+      "availableVars": "Variables disponibles :",
+      "businessDay": "Jour ouvré",
+      "businessDayDesc": "La période commence au Nème jour ouvré",
+      "businessDayLabel": "Jour ouvré",
+      "businessDayLabelDesc": "Nème jour ouvré du mois (p. ex. 1 = premier jour ouvré)",
+      "dayOfMonth": "Jour du mois",
+      "dayOfMonthDesc": "La période commence un jour précis du calendrier",
+      "dayOfWeek": "Jour de la semaine",
+      "dayOfWeekDesc": "La période commence un jour précis de la semaine",
+      "dayOfWeekLabel": "Jour de la semaine",
+      "disabled": "Génération automatique désactivée",
+      "enableDesc": "Définissez des règles pour créer automatiquement les périodes de budget",
+      "enableLabel": "Génération automatique",
+      "enabled": "Génération automatique activée",
+      "inactive": "Définissez des règles pour créer automatiquement les périodes de budget",
+      "namePattern": "Modèle de nom",
+      "namePatternDesc": "Modèle pour les noms des périodes générées automatiquement",
+      "periodLength": "Durée de la période",
+      "periodsAhead": "Périodes à préparer à l'avance",
+      "periodsAheadDesc": "Nombre de périodes futures à pré-générer",
+      "periodsToPrep": "Périodes à préparer à l'avance",
+      "periodsToPrepDesc": "Nombre de périodes futures à pré-générer",
+      "policies": {
+        "friday": "Décaler au vendredi",
+        "keep": "Conserver tel quel",
+        "monday": "Décaler au lundi"
+      },
+      "preview": "Aperçu",
+      "recurrenceMethod": "Méthode de récurrence",
+      "saturdayLabel": "Si le début tombe un samedi",
+      "saturdayPolicy": "Si le début tombe un samedi",
+      "saveRules": "Enregistrer les règles",
+      "scheduleFailed": "Impossible d'enregistrer la configuration du calendrier",
+      "scheduleSaved": "Calendrier mis à jour",
+      "startDayOfMonth": "Jour du mois de début",
+      "startDayOfMonthDesc": "Jour du mois où la période commence (1-31)",
+      "sundayLabel": "Si le début tombe un dimanche",
+      "sundayPolicy": "Si le début tombe un dimanche",
+      "title": "Générer les périodes automatiquement",
+      "toast": {
+        "enabled": "Génération automatique activée",
+        "error": "Impossible d'enregistrer la configuration du calendrier",
+        "updated": "Calendrier mis à jour"
+      },
+      "variableDescriptions": {
+        "END": "Date de fin",
+        "MON": "Mois sur 3 lettres",
+        "MONTH": "Nom complet du mois",
+        "SEQ": "N° de séquence",
+        "START": "Date de début",
+        "YY": "Année sur 2 chiffres",
+        "YYYY": "Année sur 4 chiffres"
+      },
+      "variables": "Variables disponibles :",
+      "weekdays": {
+        "friday": "Vendredi",
+        "monday": "Lundi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+        "thursday": "Jeudi",
+        "tuesday": "Mardi",
+        "wednesday": "Mercredi"
+      },
+      "weekendHandling": "Gestion du week-end",
+      "keepAsIs": "Conserver tel quel",
+      "moveToMonday": "Décaler au lundi",
+      "moveToFriday": "Décaler au vendredi"
+    },
+    "spend": "Dépense",
+    "subtitle": "Gérez vos périodes de budget",
+    "title": "Périodes",
+    "toast": {
+      "deleteError": "Impossible de supprimer la période",
+      "deleted": "Période supprimée"
+    },
+    "txns": "Tx",
+    "updated": "Période mise à jour",
+    "groupCurrent": "En cours",
+    "groupFuture": "À venir",
+    "groupPast": "Passées",
+    "badgeDaysLeft": "{{count}} jours restants",
+    "badgeInDays": "dans {{count}} jours",
+    "badgeDaysAgo": "il y a {{count}} jours",
+    "emptyTips": {
+      "timeframe": "Une période définit la fenêtre temporelle de votre budget — la plupart des utilisateurs créent des périodes mensuelles.",
+      "autoGen": "Activez la génération automatique pour qu'une nouvelle période soit créée à la fin de la période en cours.",
+      "compare": "Avec plusieurs périodes, vous pouvez comparer vos dépenses sur différentes fenêtres temporelles."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Créez une période",
+        "description": "Définissez une date de début et de fin pour créer votre première fenêtre de budget."
+      },
+      "configure": {
+        "title": "Activez la génération automatique (facultatif)",
+        "description": "Activez la création automatique des périodes pour ne pas avoir à les créer manuellement chaque mois."
+      },
+      "select": {
+        "title": "Sélectionnez la période",
+        "description": "Utilisez le sélecteur de période dans la barre latérale pour passer d'une période à l'autre dans toute l'application."
+      }
+    }
+  },
+  "placeholder": {
+    "comingSoon": "Cette page sera bientôt disponible"
+  },
+  "settings": {
+    "appearance": {
+      "description": "Personnalisez l'apparence de PiggyPulse",
+      "prefsFailed": "Impossible de mettre à jour les préférences",
+      "schemeFailed": "Impossible de mettre à jour le jeu de couleurs",
+      "themeFailed": "Impossible de mettre à jour le thème",
+      "title": "Apparence",
+      "colorSchemeLabel": "Jeu de couleurs",
+      "themeLabel": "Thème",
+      "languageLabel": "Langue",
+      "dateFormatLabel": "Format de date",
+      "compactMode": "Mode compact",
+      "compactModeDesc": "Affichage condensé pour les listes contenant beaucoup d'éléments (catégories, transactions)"
+    },
+    "avatars": {
+      "books": "Livres",
+      "cool": "Cool",
+      "headphones": "Casque",
+      "pig": "Cochon",
+      "scarf": "Écharpe",
+      "sleepy": "Endormi",
+      "topHat": "Haut-de-forme",
+      "wink": "Clin d'œil"
+    },
+    "colorScheme": {
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système"
+    },
+    "danger": {
+      "deleteAccount": "Supprimer le compte",
+      "deleteAccountDesc": "Supprimer définitivement votre compte et toutes vos données",
+      "deleteAccountWarning": "Cette action est irréversible.",
+      "deleteConfirmDesc": "Votre compte et toutes les données associées seront supprimés définitivement.",
+      "deleteConfirmTitle": "Vous êtes sûr ?",
+      "deleteFailed": "Impossible de supprimer le compte",
+      "deleteMyAccount": "Supprimer mon compte",
+      "deleteSuccess": "Compte supprimé",
+      "description": "Actions irréversibles",
+      "passwordLabel": "Saisissez votre mot de passe pour confirmer",
+      "permanentlyDelete": "Supprimer définitivement",
+      "title": "Zone dangereuse"
+    },
+    "dashboard": {
+      "accountCardsFailed": "Impossible de mettre à jour les cartes de compte",
+      "description": "Personnalisez les widgets de votre tableau de bord",
+      "layoutFailed": "Impossible de mettre à jour la disposition du tableau de bord",
+      "resetFailed": "Impossible de réinitialiser le tableau de bord",
+      "resetSuccess": "Tableau de bord réinitialisé aux valeurs par défaut",
+      "title": "Tableau de bord",
+      "defaultWidgets": "Widgets par défaut",
+      "defaultWidgetsHint": "Ces widgets apparaissent à la première ouverture du tableau de bord. Vous pouvez personnaliser à tout moment depuis le tableau de bord lui-même.",
+      "accountCards": "Cartes de compte",
+      "accountCardsHint": "Choisissez les comptes qui apparaîtront comme cartes individuelles sur votre tableau de bord.",
+      "allAccountsShown": "Tous les comptes actifs sont actuellement affichés.",
+      "resetLayout": "Réinitialiser la disposition",
+      "resetLayoutDesc": "Restaurer les positions et la sélection de widgets par défaut",
+      "accountTypeChecking": "Compte courant",
+      "accountTypeSavings": "Épargne",
+      "accountTypeCreditCard": "Carte de crédit"
+    },
+    "data": {
+      "description": "Importez et exportez vos données",
+      "export": "Exporter",
+      "exportAll": "Tout exporter",
+      "exportAllDesc": "Télécharger toutes vos données au format JSON",
+      "exportAllFailed": "Impossible d'exporter les données",
+      "exportFailed": "Impossible d'exporter les données",
+      "exportTransactions": "Exporter les transactions",
+      "exportTransactionsDesc": "Télécharger vos transactions au format CSV",
+      "import": "Importer",
+      "importData": "Importer des données",
+      "importDataDesc": "Restaurer depuis une sauvegarde JSON",
+      "importFailed": "Impossible d'importer les données",
+      "importInvalidJson": "Fichier JSON non valide",
+      "importSuccess": "Données importées",
+      "title": "Données"
+    },
+    "profile": {
+      "description": "Vos informations personnelles",
+      "saveFailed": "Impossible d'enregistrer le profil",
+      "saved": "Profil enregistré",
+      "title": "Profil",
+      "avatarLabel": "Avatar",
+      "avatarHint": "Choisissez un avatar pour votre profil. D'autres illustrations à venir.",
+      "displayName": "Nom affiché",
+      "email": "E-mail",
+      "emailHint": "Changer d'e-mail nécessite une vérification",
+      "currency": "Devise",
+      "currencyHint": "Définie lors de la configuration initiale. Changer de devise affecte tous les montants affichés.",
+      "userFallback": "Utilisateur",
+      "currencyEur": "EUR — Euro",
+      "currencyUsd": "USD — Dollar américain",
+      "currencyGbp": "GBP — Livre sterling",
+      "currencyBrl": "BRL — Réal brésilien"
+    },
+    "security": {
+      "changePassword": "Changer le mot de passe",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "description": "Mot de passe et authentification à deux facteurs",
+      "disable2fa": "Désactiver la 2FA",
+      "disable2faDesc": "Saisissez le code à 6 chiffres de l'application d'authentification pour désactiver la 2FA",
+      "disable2faFailed": "Impossible de désactiver la 2FA",
+      "disable2faTitle": "Désactiver l'authentification à deux facteurs",
+      "enable2fa": "Activer la 2FA",
+      "newPassword": "Nouveau mot de passe",
+      "password": "Mot de passe",
+      "passwordChanged": "Mot de passe modifié",
+      "passwordDesc": "Modifiez le mot de passe de votre compte",
+      "passwordFailed": "Impossible de modifier le mot de passe",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "reconfigure": "Reconfigurer",
+      "reconfigureHint": "Configurer un nouvel appareil d'authentification",
+      "title": "Sécurité",
+      "twoFactor": "Authentification à deux facteurs",
+      "twoFactorDisabled": "La 2FA est désactivée",
+      "twoFactorDisabledSuccess": "2FA désactivée",
+      "twoFactorEnabled": "La 2FA est activée"
+    },
+    "subtitle": "Gérez votre compte et vos préférences",
+    "tabs": {
+      "appearance": "Apparence",
+      "dangerZone": "Zone dangereuse",
+      "dashboard": "Tableau de bord",
+      "data": "Données",
+      "profile": "Profil",
+      "security": "Sécurité"
+    },
+    "title": "Paramètres",
+    "toast": {
+      "colorSchemeError": "Impossible de mettre à jour le jeu de couleurs",
+      "dashboardError": "Impossible de mettre à jour la disposition du tableau de bord",
+      "preferencesError": "Impossible de mettre à jour les préférences",
+      "profileError": "Impossible d'enregistrer le profil",
+      "profileSaved": "Profil enregistré",
+      "themeError": "Impossible de mettre à jour le thème"
+    },
+    "twoFactor": {
+      "cantScan": "Impossible de scanner ? Saisissez ce code manuellement :",
+      "codesNotGenerated": "Les codes de récupération n'ont pas pu être générés. Vous pouvez les régénérer depuis les paramètres.",
+      "copied": "Copié",
+      "copy": "Copier",
+      "copyAll": "Tout copier",
+      "download": "Télécharger",
+      "enterCode": "Saisissez le code à 6 chiffres de l'application d'authentification pour confirmer la configuration.",
+      "next": "Suivant",
+      "preparing": "Préparation de la 2FA…",
+      "recoveryTitle": "Conservez vos codes de récupération",
+      "saveRecoveryCodes": "Conservez ces codes de récupération dans un endroit sûr. Ils servent de secours si vous perdez l'accès à votre application d'authentification.",
+      "savedCodes": "J'ai conservé mes codes de récupération",
+      "scanQR": "Scannez ce code QR avec votre application d'authentification (Google Authenticator, Authy, Microsoft Authenticator, etc.)",
+      "setupTitle": "Configurer l'authentification à deux facteurs",
+      "verifyEnable": "Vérifier et activer la 2FA"
+    },
+    "twoFactorSetup": {
+      "cantScan": "Impossible de scanner ? Saisissez ce code manuellement :",
+      "codesFailedFallback": "Les codes de récupération n'ont pas pu être générés. Vous pouvez les régénérer depuis les paramètres.",
+      "codesTitle": "Conservez vos codes de récupération",
+      "copied": "Copié",
+      "copy": "Copier",
+      "copyAll": "Tout copier",
+      "download": "Télécharger",
+      "enabled": "2FA activée",
+      "enterCode": "Saisissez le code à 6 chiffres de l'application d'authentification pour confirmer la configuration.",
+      "invalidCode": "Code non valide",
+      "loading": "Préparation de la 2FA…",
+      "saveCodesAlert": "Conservez ces codes de récupération dans un endroit sûr.",
+      "savedCodes": "J'ai conservé mes codes de récupération",
+      "scanQr": "Scannez ce code QR avec votre application d'authentification",
+      "setupFailed": "Impossible de configurer la 2FA",
+      "setupTitle": "Configurer l'authentification à deux facteurs",
+      "verifyAndEnable": "Vérifier et activer la 2FA"
+    },
+    "widgets": {
+      "budgetStability": {
+        "description": "Cohérence historique",
+        "name": "Stabilité du budget"
+      },
+      "cashFlow": {
+        "description": "Entrées et sorties",
+        "name": "Trésorerie"
+      },
+      "currentPeriod": {
+        "description": "Avancement du budget sur la période active",
+        "name": "Période en cours"
+      },
+      "fixedCategories": {
+        "description": "Liste des dépenses prévisibles",
+        "name": "Catégories fixes"
+      },
+      "netPosition": {
+        "description": "Total sur tous les comptes",
+        "name": "Position nette"
+      },
+      "recentTransactions": {
+        "description": "Activité la plus récente",
+        "name": "Transactions récentes"
+      },
+      "spendingTrend": {
+        "description": "Dépenses au fil du temps",
+        "name": "Tendance des dépenses"
+      },
+      "subscriptions": {
+        "description": "Calendrier des prélèvements récurrents",
+        "name": "Abonnements"
+      },
+      "topVendors": {
+        "description": "Où va votre argent",
+        "name": "Principaux commerçants"
+      },
+      "variableCategories": {
+        "description": "Dépenses variables au fil du temps",
+        "name": "Catégories variables"
+      },
+      "gettingStarted": {
+        "name": "Pour commencer",
+        "description": "Liste de configuration pour les nouveaux utilisateurs"
+      }
+    }
+  },
+  "subscriptions": {
+    "activeCount": "{{count}} en cours",
+    "activeSince": "Actif depuis",
+    "activeSubscriptions": "Abonnements actifs",
+    "addFirst": "+ Ajouter votre premier abonnement",
+    "addFirstSubscription": "+ Ajouter votre premier abonnement",
+    "addSubscription": "+ Ajouter un abonnement",
+    "allTime": "Depuis toujours",
+    "amount": "Montant",
+    "autoDetected": "Détecté automatiquement",
+    "billingDay": "Jour de prélèvement",
+    "billingHistory": "Historique des prélèvements",
+    "breadcrumb": "← Abonnements",
+    "cancel": {
+      "amount": "Montant :",
+      "cancellationDate": "Date d'annulation",
+      "cancellationDateDesc": "Quand vous avez annulé (ou prévoyez d'annuler) auprès du fournisseur",
+      "confirmCancel": "Annuler l'abonnement",
+      "description": "Marquer « {{name}} » comme annulé dans PiggyPulse.",
+      "failed": "Impossible d'annuler l'abonnement",
+      "keepActive": "Conserver actif",
+      "subscription": "Abonnement :",
+      "success": "Abonnement annulé",
+      "title": "Annuler l'abonnement",
+      "warning": "Cela marque uniquement l'abonnement comme annulé dans PiggyPulse. Vous devez aussi l'annuler directement auprès du fournisseur."
+    },
+    "cancelModal": {
+      "amount": "Montant :",
+      "dateDescription": "Quand vous avez annulé (ou prévoyez d'annuler) auprès du fournisseur",
+      "dateLabel": "Date d'annulation",
+      "description": "Marquer « {{name}} » comme annulé dans PiggyPulse.",
+      "disclaimer": "Cela marque uniquement l'abonnement comme annulé dans PiggyPulse. Vous devez aussi l'annuler directement auprès du fournisseur. Si un prélèvement intervient après l'annulation, PiggyPulse le signalera.",
+      "keepActive": "Conserver actif",
+      "submit": "Annuler l'abonnement",
+      "subscription": "Abonnement :",
+      "title": "Annuler l'abonnement"
+    },
+    "cancelledCount": "Annulés ({{count}})",
+    "cancelledToggle": "Annulés",
+    "cycleSuffix": {
+      "monthly": "/mois",
+      "quarterly": "/trim.",
+      "yearly": "/an"
+    },
+    "deleteFailed": "Impossible de supprimer l'abonnement",
+    "deleted": "Abonnement supprimé",
+    "detail": {
+      "activeSince": "Actif depuis",
+      "allTime": "Depuis toujours",
+      "amount": "Montant",
+      "autoDetected": "Détecté automatiquement",
+      "backLink": "← Abonnements",
+      "billingDay": "Jour de prélèvement",
+      "billingHistory": "Historique des prélèvements",
+      "cancel": "Annuler",
+      "month": "mois",
+      "nextCharge": "Prochain prélèvement",
+      "ofEach": "de chaque",
+      "postCancellation": {
+        "count_one": "{{count}} prélèvement détecté après l'annulation.",
+        "count_other": "{{count}} prélèvements détectés après l'annulation.",
+        "review": "Consultez l'historique des prélèvements ci-dessous.",
+        "title": "Prélèvement inattendu après annulation"
+      },
+      "postCancellationLabel": "Après annulation",
+      "quarter": "trimestre",
+      "status": "Statut",
+      "thisYear": "Cette année",
+      "year": "année"
+    },
+    "empty": {
+      "message": "Créez une catégorie avec le comportement « Abonnement » pour commencer à suivre les prélèvements récurrents. Vous y verrez les dates de prélèvement, les coûts et l'historique des paiements.",
+      "title": "Aucun abonnement pour l'instant"
+    },
+    "emptyDescription": "Créez une catégorie avec le comportement « Abonnement » pour commencer à suivre les prélèvements récurrents.",
+    "emptyTitle": "Aucun abonnement pour l'instant",
+    "loadError": "Un problème est survenu lors du chargement de vos abonnements.",
+    "monthlyCost": "Coût mensuel",
+    "monthlyCount": "{{count}} en cours",
+    "nextCharge": "Prochain prélèvement",
+    "nextChargeDate": "Prochain prélèvement",
+    "notFound": "Abonnement introuvable.",
+    "paused": "En pause",
+    "postCancellation": "Après annulation",
+    "row": {
+      "cancelled": "Annulé",
+      "next": "Prochain :"
+    },
+    "stats": {
+      "active": "Actif",
+      "monthlyCost": "Coût mensuel",
+      "nextCharge": "Prochain prélèvement",
+      "yearlyTotal": "Total annuel"
+    },
+    "status": "Statut",
+    "subtitle": "Suivez vos prélèvements récurrents",
+    "thisYear": "Cette année",
+    "title": "Abonnements",
+    "unexpectedCharge": "Prélèvement inattendu après annulation",
+    "unexpectedChargeDesc": "{{count}} prélèvements détectés après l'annulation.",
+    "upcomingCharges": "Prochains prélèvements",
+    "yearlyTotal": "Total annuel",
+    "form": {
+      "editTitle": "Modifier l'abonnement",
+      "createTitle": "Ajouter un abonnement",
+      "name": "Nom de l'abonnement",
+      "namePlaceholder": "p. ex. Netflix",
+      "category": "Catégorie",
+      "categoryDesc": "Associer à une catégorie au comportement d'abonnement",
+      "vendor": "Commerçant",
+      "billing": "Prélèvement",
+      "amount": "Montant",
+      "cycle": "Cycle",
+      "billingDay": "Jour de prélèvement",
+      "billingDayDesc": "Jour du mois (1-31)",
+      "nextCharge": "Prochain prélèvement prévu",
+      "createButton": "Créer l'abonnement",
+      "updated": "Abonnement mis à jour",
+      "created": "Abonnement créé",
+      "error": "Impossible de {{action}} l'abonnement",
+      "cycles": {
+        "monthly": "Mensuel",
+        "quarterly": "Trimestriel",
+        "yearly": "Annuel"
+      },
+      "categoryFixed": "La catégorie est présélectionnée et ne peut pas être modifiée"
+    },
+    "emptyTips": {
+      "recurring": "Les abonnements sont distincts des transactions classiques : ils représentent des engagements récurrents.",
+      "upcoming": "Une fois ajoutés, les prochains prélèvements apparaissent ici pour vous permettre d'anticiper.",
+      "cancel": "Vous pouvez mettre en pause ou annuler des abonnements pour suivre leur cycle de vie."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Ajoutez un abonnement",
+        "description": "Indiquez le nom du service, le montant prélevé et la fréquence."
+      },
+      "schedule": {
+        "title": "Définissez le calendrier de prélèvement",
+        "description": "Choisissez un prélèvement mensuel, trimestriel ou annuel pour que les prochains prélèvements soient calculés."
+      },
+      "monitor": {
+        "title": "Suivez les coûts à venir",
+        "description": "La section des prochains prélèvements montre ce qui arrive et quand."
+      }
+    },
+    "manage": "Gérer la catégorie"
+  },
+  "targets": {
+    "actual": "Réel",
+    "category": "Catégorie",
+    "empty": {
+      "message": "Définissez les objectifs de budget lors de la création ou de la modification des catégories.",
+      "title": "Aucun objectif défini"
+    },
+    "emptyDescription": "Définissez les objectifs de budget lors de la création ou de la modification des catégories.",
+    "emptyTitle": "Aucun objectif défini",
+    "excludeFailed": "Impossible d'exclure la catégorie",
+    "excludeFromTargets": "Exclure des objectifs",
+    "excluded": "{{name}} exclue des objectifs",
+    "allowanceBudget": "Enveloppes d'allocation",
+    "expenseBudget": "Budget de dépenses",
+    "incomeTarget": "Objectif de revenus",
+    "loadError": "Un problème est survenu lors du chargement de vos objectifs.",
+    "period": "Période",
+    "previous": "Précédent :",
+    "progress": "Progression",
+    "stats": {
+      "expenseBudget": "Budget de dépenses",
+      "incomeTarget": "Objectif de revenus",
+      "period": "Période",
+      "withTargets": "Avec objectif"
+    },
+    "subtitle": "Objectifs de budget pour cette période. Modifiez-les dans Catégories.",
+    "tableHeader": {
+      "actual": "Réel",
+      "category": "Catégorie",
+      "progress": "Progression",
+      "target": "Objectif"
+    },
+    "target": "Objectif",
+    "title": "Objectifs",
+    "toast": {
+      "excludeError": "Impossible d'exclure la catégorie",
+      "excluded": "{{name}} exclue des objectifs"
+    },
+    "withTargets": "Avec objectif"
+  },
+  "transactions": {
+    "addFirst": "+ Ajouter votre première transaction",
+    "addFirstTransaction": "+ Ajouter votre première transaction",
+    "addTransaction": "+ Ajouter une transaction",
+    "confirmDelete": "Supprimer cette transaction ?",
+    "created": "Transaction ajoutée",
+    "dateGroupCount": "{{count}} transactions",
+    "deleteConfirm": "Supprimer cette transaction ?",
+    "deleteFailed": "Impossible de supprimer la transaction",
+    "deleted": "Transaction supprimée",
+    "directionAll": "Toutes",
+    "directionIn": "Entrée",
+    "directionOut": "Sortie",
+    "directionTransfer": "Virement",
+    "empty": {
+      "message": "Ajoutez votre première transaction pour commencer à suivre vos dépenses et revenus.",
+      "noMatch": "Aucune transaction ne correspond aux filtres. Ajustez votre recherche ou vos filtres.",
+      "title": "Aucune transaction pour l'instant"
+    },
+    "emptyDescription": "Ajoutez votre première transaction pour commencer à suivre vos dépenses et revenus.",
+    "emptyFilterDescription": "Aucune transaction ne correspond aux filtres. Ajustez votre recherche ou vos filtres.",
+    "emptyTitle": "Aucune transaction pour l'instant",
+    "filters": {
+      "account": "Compte",
+      "all": "Toutes",
+      "category": "Catégorie",
+      "in": "Entrée",
+      "out": "Sortie",
+      "transfer": "Virement",
+      "vendor": "Commerçant"
+    },
+    "form": {
+      "account": "Compte",
+      "addTitle": "Ajouter une transaction",
+      "addTransaction": "Ajouter une transaction",
+      "addTransactionButton": "Ajouter une transaction",
+      "addTransfer": "Ajouter un virement",
+      "addTransferButton": "Ajouter un virement",
+      "addTransferTitle": "Ajouter un virement",
+      "amount": "Montant",
+      "category": "Catégorie",
+      "date": "Date",
+      "descPlaceholder": "p. ex. Courses Carrefour",
+      "descPlaceholderTransfer": "p. ex. Versement d'allocation",
+      "description": "Description",
+      "descriptionPlaceholder": "p. ex. Courses Carrefour",
+      "descriptionTransferPlaceholder": "p. ex. Versement d'allocation",
+      "editTitle": "Modifier la transaction",
+      "fromAccount": "Compte source",
+      "isTransfer": "Virement entre comptes",
+      "toAccount": "Compte de destination",
+      "toast": {
+        "created": "Transaction ajoutée",
+        "error": "Impossible de {{action}} la transaction",
+        "updated": "Transaction mise à jour"
+      },
+      "transferHint": "sera soustrait de la source et ajouté à la destination",
+      "missingFields": "Remplissez tous les champs obligatoires.",
+      "missingToAccount": "Sélectionnez un compte de destination.",
+      "createTransferFailed": "Impossible de créer la catégorie de virement.",
+      "missingTransferCategory": "Catégorie de virement introuvable. Assurez-vous qu'une catégorie de type « virement » existe.",
+      "transferNote": "Catégorie et commerçant ne s'appliquent pas aux virements",
+      "transferOffDesc": "Activez pour transférer de l'argent entre vos comptes",
+      "transferOnDesc": "Catégorie et commerçant ne s'appliquent pas aux virements",
+      "transferSummaryFull": "sera soustrait de la source et ajouté à la destination",
+      "transferToggle": "Activez pour transférer de l'argent entre vos comptes",
+      "vendor": "Commerçant (facultatif)",
+      "vendorOptional": "Commerçant (facultatif)"
+    },
+    "inflows": "Entrées",
+    "loadError": "Un problème est survenu lors du chargement de vos transactions.",
+    "net": "Net",
+    "outflows": "Sorties",
+    "quickAdd": {
+      "account": "Compte",
+      "accountPlaceholder": "Compte",
+      "add": "Ajouter",
+      "amount": "Montant",
+      "amountPlaceholder": "Montant",
+      "category": "Catégorie",
+      "categoryPlaceholder": "Catégorie",
+      "description": "Description",
+      "descriptionPlaceholder": "Description",
+      "failed": "Impossible d'ajouter la transaction",
+      "hint": "Appuyez sur Entrée pour ajouter et continuer. La catégorie et le compte sont conservés entre les saisies.",
+      "success": "Transaction ajoutée",
+      "title": "Ajout rapide",
+      "vendor": "Commerçant",
+      "vendorPlaceholder": "Commerçant"
+    },
+    "saveFailed": "Impossible d'enregistrer la transaction",
+    "searchPlaceholder": "Rechercher par description ou montant…",
+    "stats": {
+      "count": "transactions",
+      "inflows": "Entrées",
+      "net": "Net",
+      "outflows": "Sorties"
+    },
+    "subtitle": "{{count}} transactions",
+    "title": "Transactions",
+    "toast": {
+      "deleteError": "Impossible de supprimer la transaction",
+      "deleted": "Transaction supprimée"
+    },
+    "transactionsCount": "transactions",
+    "transferAdded": "Virement ajouté",
+    "updated": "Transaction mise à jour",
+    "emptyTips": {
+      "quickAdd": "Utilisez la barre d'Ajout rapide ci-dessus pour enregistrer des transactions sans ouvrir de formulaire.",
+      "categorize": "Chaque transaction est liée à une catégorie, ce qui détermine la manière dont elle apparaît dans votre budget.",
+      "filters": "Utilisez les filtres de sens et de catégorie pour retrouver des transactions précises."
+    },
+    "emptySteps": {
+      "add": {
+        "title": "Ajoutez une transaction",
+        "description": "Utilisez le bouton ci-dessus ou la barre d'Ajout rapide pour enregistrer votre première transaction."
+      },
+      "categorize": {
+        "title": "Attribuez une catégorie",
+        "description": "Choisissez une catégorie de revenu ou de dépense pour que la transaction compte dans votre budget."
+      },
+      "review": {
+        "title": "Consultez le tableau de bord",
+        "description": "Vos transactions apparaîtront dans des widgets comme Trésorerie et Transactions récentes."
+      }
+    }
+  },
+  "vendors": {
+    "actions": {
+      "archive": "Archiver",
+      "delete": "Supprimer",
+      "merge": "Fusionner",
+      "unarchive": "Désarchiver"
+    },
+    "active": "Actif",
+    "addFirst": "+ Ajouter votre premier commerçant",
+    "addFirstVendor": "+ Ajouter votre premier commerçant",
+    "addVendor": "+ Ajouter un commerçant",
+    "archiveFailed": "Impossible d'archiver le commerçant",
+    "archived": "Commerçant archivé",
+    "archivedNamed": "{{name}} archivé",
+    "archivedToggle": "Commerçants archivés",
+    "archivedVendors": "Commerçants archivés ({{count}})",
+    "avgPerTxn": "Moyenne / tx",
+    "avgPerVendor": "Moyenne / commerçant",
+    "breadcrumb": "← Commerçants",
+    "created": "Commerçant créé",
+    "deleteFailed": "Impossible de supprimer — archivez-le ou fusionnez-le.",
+    "deleteFailedShort": "Impossible de supprimer le commerçant",
+    "deleted": "Commerçant supprimé",
+    "detail": {
+      "avgPerTxn": "Moyenne / tx",
+      "backLink": "← Commerçants",
+      "recentTransactions": "Transactions récentes — {{count}} affichées",
+      "spendingTrend": "Dépenses chez ce commerçant — {{count}} dernières périodes",
+      "spent": "Dépensé",
+      "topCategories": "Principales catégories chez ce commerçant",
+      "transactions": "Transactions"
+    },
+    "detailLoadError": "Un problème est survenu lors du chargement de ce commerçant.",
+    "empty": {
+      "message": "Les commerçants vous aident à suivre où va votre argent. Ajoutez votre premier commerçant pour commencer à classer vos dépenses.",
+      "title": "Aucun commerçant pour l'instant"
+    },
+    "emptyDescription": "Les commerçants vous aident à suivre où va votre argent. Ajoutez votre premier commerçant pour commencer à classer vos dépenses.",
+    "emptyTitle": "Aucun commerçant pour l'instant",
+    "form": {
+      "createButton": "Créer le commerçant",
+      "createTitle": "Ajouter un commerçant",
+      "description": "Description",
+      "descriptionPlaceholder": "Description facultative",
+      "editTitle": "Modifier le commerçant",
+      "name": "Nom du commerçant",
+      "namePlaceholder": "p. ex. Carrefour",
+      "toast": {
+        "created": "Commerçant créé",
+        "error": "Impossible de {{action}} le commerçant",
+        "updated": "Commerçant mis à jour"
+      },
+      "vendorName": "Nom du commerçant",
+      "vendorNamePlaceholder": "p. ex. Carrefour"
+    },
+    "loadError": "Un problème est survenu lors du chargement de vos commerçants.",
+    "merge": {
+      "description": "Toutes les transactions de « {{source}} » seront transférées vers le commerçant cible. Le commerçant source sera supprimé.",
+      "failed": "Impossible de fusionner le commerçant",
+      "mergeAndDelete": "Fusionner et supprimer la source",
+      "mergeInto": "Fusionner avec",
+      "selectTarget": "Sélectionnez le commerçant cible…",
+      "source": "Source :",
+      "submit": "Fusionner et supprimer la source",
+      "success": "Commerçant fusionné",
+      "title": "Fusionner les commerçants",
+      "toast": {
+        "error": "Impossible de fusionner le commerçant",
+        "success": "« {{source}} » fusionné avec le commerçant cible"
+      }
+    },
+    "noMatch": "Aucun commerçant ne correspond à votre recherche",
+    "notFound": "Commerçant introuvable.",
+    "recentTransactions": "Transactions récentes — {{count}} affichées",
+    "saveFailed": "Impossible d'enregistrer le commerçant",
+    "searchPlaceholder": "Rechercher des commerçants…",
+    "spendingTrend": "Dépenses chez ce commerçant — {{count}} dernières périodes",
+    "spent": "Dépensé",
+    "stats": {
+      "active": "Actif",
+      "avgPerVendor": "Moyenne / commerçant",
+      "totalSpent": "Total dépensé"
+    },
+    "subtitle": "Où va votre argent",
+    "title": "Commerçants",
+    "toast": {
+      "archiveError": "Impossible d'archiver le commerçant",
+      "archived": "Commerçant archivé",
+      "deleteError": "Impossible de supprimer — archivez-le ou fusionnez-le.",
+      "deleted": "Commerçant supprimé",
+      "unarchiveError": "Impossible de désarchiver le commerçant",
+      "unarchived": "Commerçant désarchivé"
+    },
+    "topCategories": "Principales catégories chez ce commerçant",
+    "totalSpent": "Total dépensé",
+    "transactions": "Transactions",
+    "unarchiveFailed": "Impossible de désarchiver le commerçant",
+    "unarchived": "Commerçant désarchivé",
+    "unarchivedNamed": "{{name}} désarchivé",
+    "updated": "Commerçant mis à jour",
+    "emptyTips": {
+      "organize": "Les commerçants vous permettent de voir où vous dépensez le plus au fil du temps.",
+      "merge": "Si vous avez des doublons de commerçants, vous pouvez les fusionner en un seul.",
+      "archive": "Archivez les commerçants que vous n'utilisez plus pour garder la liste claire."
+    },
+    "emptySteps": {
+      "create": {
+        "title": "Créez un commerçant",
+        "description": "Ajoutez le nom d'un magasin, d'un service ou d'un bénéficiaire avec qui vous traitez régulièrement."
+      },
+      "link": {
+        "title": "Reliez-le aux transactions",
+        "description": "Lors de l'ajout d'une transaction, sélectionnez un commerçant pour y associer la dépense."
+      },
+      "track": {
+        "title": "Suivez les tendances de dépense",
+        "description": "Consultez combien vous dépensez par commerçant au fil du temps depuis la page de détail du commerçant."
+      }
+    }
+  },
+  "nav": {
+    "overview": "Vue d'ensemble",
+    "planning": "Planification",
+    "tracking": "Suivi",
+    "dashboard": "Tableau de bord",
+    "transactions": "Transactions",
+    "periods": "Périodes",
+    "categories": "Catégories",
+    "targets": "Objectifs",
+    "accounts": "Comptes",
+    "subscriptions": "Abonnements",
+    "vendors": "Commerçants",
+    "settings": "Paramètres"
+  },
+  "hints": {
+    "dashboard": "Votre tableau de bord donne un aperçu de vos finances sur la période sélectionnée. Utilisez le bouton Personnaliser pour choisir et réorganiser les widgets affichés.",
+    "transactions": "Les transactions sont le cœur de votre budget. Chacune est liée à une catégorie et à un compte, ce qui vous permet de voir où va votre argent sur chaque période.",
+    "vendors": "Les commerçants représentent les endroits où vous dépensez de l'argent. Associer vos transactions à des commerçants permet de voir les tendances de dépense au fil du temps.",
+    "subscriptions": "Les abonnements suivent les prélèvements récurrents : services de streaming, cotisations, factures. Les ajouter ici vous aide à anticiper les coûts à venir.",
+    "periods": "Les périodes sont des fenêtres temporelles pour votre budget, généralement mensuelles. Toutes les transactions et tous les objectifs sont rattachés à la période active.",
+    "accounts": "Les comptes représentent l'endroit où se trouve votre argent : compte courant, épargne, cartes de crédit ou portefeuilles. Les soldes se mettent à jour au fil de vos transactions."
+  },
+  "gettingStarted": {
+    "title": "Pour commencer",
+    "subtitle": "Suivez ces étapes pour configurer votre budget",
+    "steps": {
+      "createAccount": {
+        "title": "Créez un compte",
+        "description": "Ajoutez un compte courant, une épargne ou une carte de crédit pour suivre vos soldes"
+      },
+      "createPeriod": {
+        "title": "Configurez une période de budget",
+        "description": "Créez une fenêtre temporelle (p. ex. mensuelle) pour encadrer vos transactions et objectifs"
+      },
+      "setCategories": {
+        "title": "Configurez vos catégories",
+        "description": "Définissez des catégories de revenus et de dépenses pour organiser vos transactions"
+      },
+      "addTransaction": {
+        "title": "Ajoutez votre première transaction",
+        "description": "Enregistrez une transaction pour commencer à suivre vos dépenses"
+      }
+    }
+  },
+  "states": {
+    "contract": {
+      "emptyTitle": "Aucun {{items}} pour l'instant.",
+      "items": {
+        "data": "élément"
+      }
+    },
+    "empty": {
+      "filter": {
+        "removeTag": "Retirer le filtre {{tag}}"
+      },
+      "search": {
+        "noResults": "Aucun résultat trouvé pour"
+      },
+      "tips": {
+        "title": "Conseils rapides"
+      }
+    },
+    "locked": {
+      "message": {
+        "periodRequired": "Une période de budget est nécessaire pour afficher ce contenu."
+      },
+      "status": {
+        "notConfigured": "Non configuré"
+      }
+    },
+    "error": {
+      "403": {
+        "title": "Accès refusé",
+        "message": "Vous n'avez pas l'autorisation d'accéder à cette ressource. Si vous pensez qu'il s'agit d'une erreur, contactez votre administrateur."
+      },
+      "404": {
+        "title": "Page introuvable",
+        "message": "La page que vous cherchez n'existe pas ou a été déplacée. Nous vous remettons sur la bonne voie."
+      },
+      "500": {
+        "title": "Une erreur est survenue",
+        "message": "Nous rencontrons des difficultés techniques. Notre équipe est informée et travaille sur une correction. Réessayez plus tard."
+      },
+      "503": {
+        "title": "Service indisponible",
+        "message": "Le service est temporairement indisponible. Réessayez dans quelques minutes."
+      },
+      "retry": "Réessayer",
+      "loadFailed": {
+        "message": "Nous n'avons pas pu charger vos données. Il peut s'agir d'un problème temporaire sur nos serveurs."
+      },
+      "generic": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur inattendue s'est produite. Veuillez réessayer."
+      },
+      "details": {
+        "title": "Détails de l'erreur",
+        "code": "Code d'erreur",
+        "requestId": "ID de requête",
+        "timestamp": "Date et heure"
+      },
+      "actions": {
+        "refresh": "Actualiser la page",
+        "goHome": "Aller au tableau de bord",
+        "goBack": "Retour",
+        "requestAccess": "Demander l'accès"
+      }
+    }
+  }
+}
